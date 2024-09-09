@@ -1,0 +1,48 @@
+name: ngu_app
+description: "A new Flutter project."
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.4 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  animated_text_kit: ^4.2.2
+  get: ^4.6.6
+  lottie: ^3.1.2
+  cached_network_image: ^3.4.1
+  accordion: ^2.6.0
+  shared_preferences: ^2.3.2
+  http: ^1.2.2
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/animations/
+
+  fonts:
+    - family: tajawal
+      fonts:
+        - asset: assets/fonts/tajawal/Tajawal-Black.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Bold.ttf
+        - asset: assets/fonts/tajawal/Tajawal-ExtraBold.ttf
+        - asset: assets/fonts/tajawal/Tajawal-ExtraLight.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Light.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Medium.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Regular.ttf
