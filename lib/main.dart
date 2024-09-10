@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/core/lang/localization_service.dart';
+import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
 
 void main() {

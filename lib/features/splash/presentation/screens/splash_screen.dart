@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:lottie/lottie.dart';
-import 'package:ngu_app/core/config/app_ui.dart';
-import 'package:ngu_app/core/config/constant.dart';
-import 'package:ngu_app/core/presentation/widgets/background_image.dart';
+import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/core/widgets/background_image.dart';
+import 'package:ngu_app/features/home/presentation/pages/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void go() async {
     await Future.delayed(const Duration(seconds: 3));
-    // Get.to(page);
+    Get.off(const HomeScreen());
   }
 
   @override

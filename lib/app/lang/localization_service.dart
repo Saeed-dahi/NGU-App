@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:ngu_app/core/lang/ar.dart';
-import 'package:ngu_app/core/lang/en.dart';
+import 'package:ngu_app/app/lang/ar.dart';
+import 'package:ngu_app/app/lang/en.dart';
 
 class LocalizationService extends Translations {
   @override

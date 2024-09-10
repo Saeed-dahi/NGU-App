@@ -36,6 +36,7 @@ class Dimensions {
   static const double heightDialog = 40;
   static const double widthDialog = 500;
 
+  static const double smallIconSize = 20;
   static const double iconSize = 30;
   static const double largeIconSize = 34;
   static const int invalidId = -1;
@@ -44,4 +45,12 @@ class Dimensions {
   static const double smallScreenWidth = 600;
   static const double mediumScreenWidth = 1024;
   static const double largeScreenWidth = 1440;
+
+  // divider sizes
+  static const double smallDividerThickness = 2;
+  static const double mediumDividerThickness = 4;
+  static const double largeDividerThickness = 6;
+  static const double smallDividerHeight = 10;
+  static const double mediumDividerHeight = 16;
+  static const double largeDividerHeight = 18;
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/core/config/app_ui.dart';
+import 'package:ngu_app/app/config/app_ui.dart';
 
 class BackgroundImage extends StatelessWidget {
   final Widget body;
