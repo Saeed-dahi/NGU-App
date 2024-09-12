@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
 class BasicListTile extends StatelessWidget {
   final String title;
+  final Widget trailing;
   final IconData icon;
-  final Function? function;
+  final VoidCallback? onTap;
+  final Color hoverColor;
   const BasicListTile(
-      {super.key, required this.title, required this.icon, this.function});
+      {super.key,
+      required this.title,
+      this.trailing = const SizedBox(),
+      required this.icon,
+      this.onTap,
+      this.hoverColor = AppColors.secondaryColor});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      hoverColor: AppUI.secondaryColor,
-      title: Text(
-        title,
-      ),
-      leading: Icon(
-        icon,
-      ),
-      onTap: () {
-        function ?? () {};
-      },
-    );
+        hoverColor: hoverColor,
+        title: Text(
+          title,
+        ),
+        leading: Icon(
+          icon,
+        ),
+        onTap: onTap,
+        trailing: trailing);
   }
 }

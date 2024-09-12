@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:lottie/lottie.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/background_image.dart';
 import 'package:ngu_app/features/home/presentation/pages/home_screen.dart';
@@ -47,10 +47,10 @@ class _SplashScreenState extends State<SplashScreen>
             AnimatedTextKit(
               animatedTexts: [
                 ColorizeAnimatedText(
-                  '${'accounting_system'.tr} ${'ngu'.tr} ',
+                  '${'accounting_system'.tr}  ',
                   colors: [
-                    AppUI.secondaryColor,
-                    AppUI.transparent,
+                    AppColors.secondaryColor,
+                    AppColors.transparent,
                   ],
                   textStyle:
                       const TextStyle(fontSize: Dimensions.largeTextSize),

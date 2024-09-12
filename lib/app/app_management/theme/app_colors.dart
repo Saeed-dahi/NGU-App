@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AppUI {
-  static const Color primaryColor = Color.fromARGB(255, 223, 223, 223);
-  static const Color primaryColorLow = Color.fromARGB(179, 242, 242, 242);
-  static const Color secondaryColor = Color.fromARGB(255, 14, 102, 143);
-  static const Color secondaryColorLow = Color.fromARGB(255, 53, 113, 141);
+class AppColors {
+  static const Color secondaryColor = Color.fromARGB(255, 223, 223, 223);
+  static const Color secondaryColorLow = Color.fromARGB(179, 242, 242, 242);
+  static const Color primaryColor = Color.fromARGB(255, 14, 102, 143);
+  static const Color primaryColorLow = Color.fromARGB(255, 55, 126, 159);
 
   static const Color lightSelectedColor = Color(0xFFFFFFFF);
   static const Color darkUnselectedColor = Color(0xff455A64);

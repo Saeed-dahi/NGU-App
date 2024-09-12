@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/sections/accounts_section.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/sections/data_section.dart';
@@ -18,7 +18,7 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   Drawer build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppUI.secondaryColorLow,
+      backgroundColor: AppColors.secondaryColorLow,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -42,7 +42,7 @@ class _AppDrawerState extends State<AppDrawer> {
             endIndent: 10,
             indent: 10,
           ),
-          SettingsSection()
+          const SettingsSection()
         ],
       ),
     );

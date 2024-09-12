@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
 class CustomSectionTitle extends StatelessWidget {
   final String title;
@@ -12,11 +12,11 @@ class CustomSectionTitle extends StatelessWidget {
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(color: AppUI.primaryColorLow),
+        style: const TextStyle(color: AppColors.primaryColorLow),
       ),
       leading: Icon(
         icon,
-        color: AppUI.primaryColorLow,
+        color: AppColors.primaryColorLow,
       ),
       onTap: () {},
     );

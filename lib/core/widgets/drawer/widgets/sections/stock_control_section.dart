@@ -1,8 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';

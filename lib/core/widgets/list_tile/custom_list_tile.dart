@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
 class CustomListTile extends StatelessWidget {
   final String title;
@@ -25,17 +24,17 @@ class CustomListTile extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: AppUI.white,
+        color: AppColors.white,
         // size: Dimensions.smallIconSize,
       ),
       title: Text(
         title,
-        style: const TextStyle(color: AppUI.white),
+        style: const TextStyle(color: AppColors.white),
       ),
       trailing: isTrailing
           ? Icon(
               trailingIcon,
-              color: AppUI.white,
+              color: AppColors.white,
             )
           : null,
       subtitle: subTitle != ' '
@@ -47,7 +46,7 @@ class CustomListTile extends StatelessWidget {
                   ),
             )
           : null,
-      splashColor: AppUI.white.withOpacity(0.3),
+      splashColor: AppColors.white.withOpacity(0.3),
       onTap: () {
         onTap();
       },

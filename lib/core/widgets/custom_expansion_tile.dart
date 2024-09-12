@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 
 class CustomExpansionTile extends StatelessWidget {
@@ -17,8 +17,8 @@ class CustomExpansionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExpansionTile(
       backgroundColor: const Color.fromARGB(163, 255, 255, 255),
-      collapsedIconColor: AppUI.white,
-      collapsedTextColor: AppUI.white,
+      collapsedIconColor: AppColors.white,
+      collapsedTextColor: AppColors.white,
       leading: Icon(
         icon,
         size: Dimensions.iconSize,

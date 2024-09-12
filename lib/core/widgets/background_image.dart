@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
 class BackgroundImage extends StatelessWidget {
   final Widget body;
@@ -16,7 +16,7 @@ class BackgroundImage extends StatelessWidget {
           //     fit: BoxFit.fill,
           //     opacity: 0.05,
           //     repeat: ImageRepeat.repeatX),
-          color: AppUI.primaryColorLow),
+          color: AppColors.primaryColorLow),
       child: body,
     );
   }

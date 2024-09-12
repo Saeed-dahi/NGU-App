@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/config/app_ui.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 
 class TopAppBar extends StatelessWidget {
@@ -24,16 +24,16 @@ class TopAppBar extends StatelessWidget {
         children: [
           AppBar(
             // forceMaterialTransparency: true,
-            backgroundColor: AppUI.secondaryColor,
+            backgroundColor: AppColors.secondaryColor,
             automaticallyImplyLeading: hasBackButton,
-            iconTheme: const IconThemeData(color: AppUI.white),
-            shadowColor: AppUI.white,
+            iconTheme: const IconThemeData(color: AppColors.white),
+            shadowColor: AppColors.white,
             elevation: 0,
             title: Text(
-              '${'ngu'.tr} ${'accounting_system'.tr}',
+              ' ${'accounting_system'.tr}',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: AppUI.white,
+                color: AppColors.white,
               ),
             ),
           ),
