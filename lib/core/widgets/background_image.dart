@@ -16,7 +16,7 @@ class BackgroundImage extends StatelessWidget {
           //     fit: BoxFit.fill,
           //     opacity: 0.05,
           //     repeat: ImageRepeat.repeatX),
-          color: AppColors.primaryColorLow),
+          color: AppColors.secondaryColorLow),
       child: body,
     );
   }

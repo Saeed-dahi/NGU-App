@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_title.dart';
-import 'package:ngu_app/core/widgets/list_tile/basic_list_tile.dart';
+import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 
@@ -27,19 +29,23 @@ class AccountsSection extends StatelessWidget {
                 icon: Icons.badge_outlined,
                 children: [
                   BasicListTile(
-                      title: 'account_record'.tr, icon: Icons.badge_outlined),
+                    title: 'account_record'.tr,
+                    icon: Icons.badge_outlined,
+                    onTap: () => ShowDialog.showCustomDialog(
+                        context: context, content: const AccountRecord()),
+                  ),
                   BasicListTile(
                     title: 'accounts_tree'.tr,
                     icon: Icons.account_tree_outlined,
                     onTap: () {
-                      Get.to(const AccountsTree(title: 'Account tree'));
+                      Get.to(() => const AccountsTree(title: 'Account tree'));
                     },
                   ),
                   BasicListTile(
                     title: 'accounts_table'.tr,
                     icon: Icons.table_rows_outlined,
                     onTap: () {
-                      Get.to(const AccountsTable());
+                      Get.to(() => const AccountsTable());
                     },
                   ),
                   BasicListTile(

@@ -49,10 +49,15 @@ Map<String, String> en = {
   'tax_invoices_table': 'Tax Invoices Table',
 
   //
+  'account': 'Account',
   'account_info': 'Account Information',
+  'account_sts': 'Account Statement',
+  'add_new_account': 'Add New Account',
   'email': 'Email',
   'code': 'Code',
   'name': 'Name',
+  'en_name': 'English Name',
+  'ar_name': 'Arabic Name',
   'account_type': 'Account Type',
   'account_nature': 'Account Nature',
   'account_category': 'Account Category',
@@ -71,4 +76,29 @@ Map<String, String> en = {
   'debit_balance': 'Debit Balance',
   'credit_balance': 'Credit Balance',
   'balance': 'Balance',
+
+  //
+  'next': 'Next',
+  'previous': 'Previous',
+  'last': 'Last',
+  'first': 'First',
+  'add': 'Add',
+  'edit': 'Edit',
+  'print': 'Print',
+  'delete': 'Delete',
+
+  //
+  'asset': 'Asset',
+  'liability': 'Liability',
+  'equity': 'Equity',
+  'revenue': 'Revenue',
+  'expense': 'Expense',
+
+  //
+  'debit': 'Debit',
+  'credit': 'Credit',
+
+  //
+  'main': 'Main',
+  'sub': 'Sub',
 };

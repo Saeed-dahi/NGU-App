@@ -17,11 +17,11 @@ class StockControlSection extends StatelessWidget {
           ListTile(
             title: Text(
               'stock_control'.tr,
-              style: const TextStyle(color: AppColors.primaryColorLow),
+              style: const TextStyle(color: AppColors.secondaryColorLow),
             ),
             leading: const Icon(
               Icons.store,
-              color: AppColors.primaryColorLow,
+              color: AppColors.secondaryColorLow,
             ),
             onTap: () {},
           ),

@@ -49,10 +49,15 @@ Map<String, String> ar = {
   'tax_invoices_table': 'جدول ضريبة الفواتير',
 
   //
+  'account': 'الحساب',
   'account_info': 'معلومات الحساب',
+  'account_sts': 'كشف الحساب',
+  'add_new_account': 'إضافة حساب جديد',
   'email': 'الايميل',
   'code': 'رقم الحساب',
   'name': 'الاسم',
+  'ar_name': 'الاسم العربي',
+  'en_name': 'الاسم الأنجليزي',
   'account_type': 'نوع الحساب',
   'account_nature': 'طبيعة الحساب',
   'account_category': 'فئة الحساب',
@@ -71,4 +76,29 @@ Map<String, String> ar = {
   'debit_balance': 'الرصيد الدائن',
   'credit_balance': 'الرصيد المدين',
   'balance': 'الرصيد',
+
+  //
+  'next': 'التالي',
+  'previous': 'السابق',
+  'last': 'الاخير',
+  'first': 'الأول',
+  'add': 'إضافة',
+  'edit': 'تعديل',
+  'print': 'طباعة',
+  'delete': 'حذف',
+
+  //
+  'asset': 'الموجودات',
+  'liability': 'المسؤوليات',
+  'equity': 'الإنصاف',
+  'revenue': 'الإيرادات',
+  'expense': 'النفقات',
+
+  //
+  'debit': 'مدين',
+  'credit': 'دائن',
+
+  //
+  'main': 'رئيسي',
+  'sub': 'فرعي',
 };

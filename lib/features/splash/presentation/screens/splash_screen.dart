@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   void go() async {
     await Future.delayed(const Duration(seconds: 3));
-    Get.off(const HomeScreen());
+    Get.off(() => const HomeScreen());
   }
 
   @override
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
                 ColorizeAnimatedText(
                   '${'accounting_system'.tr}  ',
                   colors: [
-                    AppColors.secondaryColor,
+                    AppColors.primaryColor,
                     AppColors.transparent,
                   ],
                   textStyle:

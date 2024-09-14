@@ -12,7 +12,7 @@ class AccountInformationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
-      color: AppColors.primaryColorLow,
+      color: AppColors.secondaryColorLow,
       elevation: 0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -12,11 +12,11 @@ class CustomSectionTitle extends StatelessWidget {
     return ListTile(
       title: Text(
         title,
-        style: const TextStyle(color: AppColors.primaryColorLow),
+        style: const TextStyle(color: AppColors.secondaryColorLow),
       ),
       leading: Icon(
         icon,
-        color: AppColors.primaryColorLow,
+        color: AppColors.secondaryColorLow,
       ),
       onTap: () {},
     );

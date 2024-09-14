@@ -18,7 +18,7 @@ class _AppDrawerState extends State<AppDrawer> {
   @override
   Drawer build(BuildContext context) {
     return Drawer(
-      backgroundColor: AppColors.secondaryColorLow,
+      backgroundColor: AppColors.primaryColorLow,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[

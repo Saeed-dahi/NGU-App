@@ -4,7 +4,7 @@ import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/app_bar.dart';
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
-import 'package:ngu_app/features/accounts/presentation/pages/accounts_information_sidebar.dart';
+import 'package:ngu_app/features/accounts/presentation/widgets/accounts_information_sidebar.dart';
 
 class AccountsTree extends StatefulWidget {
   const AccountsTree({super.key, required this.title});
@@ -64,28 +64,26 @@ class AccountsTreeState extends State<AccountsTree> {
               ),
               indentation: const Indentation(
                   style: IndentStyle.squareJoint,
-                  color: AppColors.secondaryColor,
+                  color: AppColors.primaryColor,
                   thickness: 1.4),
               onItemTap: (item) {},
               onTreeReady: (controller) {
                 _controller = controller;
               },
-              builder: (context, node) =>
-                  // Card(
-                  //   color: node.children.isNotEmpty
-                  //       ? AppUI.primaryColorLow
-                  //       : AppUI.white,
-                  //   child:
-                  ListTile(
-                title: Text(node.key),
-                trailing: Icon(
-                  node.children.isEmpty || node.isExpanded
-                      ? Icons.folder_copy_outlined
-                      : Icons.folder,
+              builder: (context, node) => Card(
+                color: node.children.isEmpty
+                    ? AppColors.white
+                    : AppColors.secondaryColorLow,
+                child: ListTile(
+                  title: Text(node.key),
+                  trailing: Icon(
+                    node.children.isEmpty || node.isExpanded
+                        ? Icons.folder_copy_outlined
+                        : Icons.folder,
+                  ),
+                  subtitle: Text('${100 * node.level}'),
                 ),
-                subtitle: Text('${100 * node.level}'),
               ),
-              // ),
             ),
           ),
           //  side bar
@@ -95,7 +93,7 @@ class AccountsTreeState extends State<AccountsTree> {
             width: MediaQuery.of(context).size.width * 0.25,
             child: const Card(
                 elevation: 1,
-                color: AppColors.primaryColorLow,
+                color: AppColors.secondaryColorLow,
                 child: AccountsInformationSidebar()),
           )
         ],

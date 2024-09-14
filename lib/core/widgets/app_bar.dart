@@ -24,13 +24,10 @@ class TopAppBar extends StatelessWidget {
         children: [
           AppBar(
             // forceMaterialTransparency: true,
-            backgroundColor: AppColors.secondaryColor,
-            automaticallyImplyLeading: hasBackButton,
-            iconTheme: const IconThemeData(color: AppColors.white),
-            shadowColor: AppColors.white,
             elevation: 0,
             title: Text(
               ' ${'accounting_system'.tr}',
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 color: AppColors.white,

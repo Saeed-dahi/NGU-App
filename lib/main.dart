@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/theme/app_theme.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
+import 'package:window_manager/window_manager.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize window manager
+  await windowManager.ensureInitialized();
+
+  // Set minimum window size
+  windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
+
   runApp(const MyApp());
 }
 
@@ -19,11 +29,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ar'),
       fallbackLocale: const Locale('ar'),
       translations: LocalizationService(),
-      theme: ThemeData(
-        fontFamily: 'tajawal',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: CustomTheme.lightTheme,
       home: const SplashScreen(),
     );
   }

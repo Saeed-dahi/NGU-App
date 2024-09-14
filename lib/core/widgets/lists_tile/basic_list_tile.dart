@@ -13,7 +13,7 @@ class BasicListTile extends StatelessWidget {
       this.trailing = const SizedBox(),
       required this.icon,
       this.onTap,
-      this.hoverColor = AppColors.secondaryColor});
+      this.hoverColor = AppColors.primaryColor});
 
   @override
   Widget build(BuildContext context) {

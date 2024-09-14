@@ -4,7 +4,7 @@ import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_title.dart';
-import 'package:ngu_app/core/widgets/list_tile/basic_list_tile.dart';
+import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 
 class StockControlSection extends StatelessWidget {
   const StockControlSection({super.key});
