@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_title.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
+import 'package:ngu_app/features/settings/presenation/system_constant.dart';
 
 class SettingsSection extends StatelessWidget {
   const SettingsSection({super.key});
@@ -25,8 +27,11 @@ class SettingsSection extends StatelessWidget {
                 icon: Icons.settings_outlined,
                 children: [
                   BasicListTile(
-                      title: 'system_constant'.tr,
-                      icon: Icons.padding_outlined),
+                    title: 'system_constant'.tr,
+                    icon: Icons.padding_outlined,
+                    onTap: () => ShowDialog.showCustomDialog(
+                        context: context, content: const SystemConstant()),
+                  ),
                   BasicListTile(
                       title: 'information_constant'.tr, icon: Icons.search),
                 ],

@@ -24,7 +24,7 @@ class AddNewAccount extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Expanded(child: accountBasicInfo(context)),
+        accountBasicInfo(context),
       ],
     );
   }
@@ -48,14 +48,14 @@ class AddNewAccount extends StatelessWidget {
           helper: 'en_name'.tr,
           controller: TextEditingController(text: '123'),
         ),
-        Row(
-          children: [
-            CustomDropdown(
-              dropdownValue: getEnumValues(AccountType.values),
-              helper: 'account_type'.tr,
-              value: 'main',
-            ),
-          ],
+        Container(
+          margin: const EdgeInsets.all(8),
+          child: CustomDropdown(
+            dropdownValue: getEnumValues(AccountType.values),
+            helper: 'account_type'.tr,
+            value: 'main',
+            onChanged: (value) {},
+          ),
         ),
       ],
     );

@@ -26,7 +26,7 @@ class CustomTheme {
       style: const ButtonStyle(
         shape: WidgetStatePropertyAll(
           CircleBorder(
-            side: BorderSide(color: AppColors.primaryColorLow, width: 2),
+            // side: BorderSide(color: AppColors.primaryColorLow, width: 2),
           ),
         ),
       ),

@@ -21,11 +21,11 @@ class AccountInformationCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: Dimensions.primaryTextSize),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             Text(
               subtitle,
-              style: const TextStyle(fontSize: Dimensions.primaryTextSize),
+              style: const TextStyle(fontSize: Dimensions.secondaryTextSize),
             )
           ],
         ),

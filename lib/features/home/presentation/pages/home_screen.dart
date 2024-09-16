@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -79,7 +78,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             )
           : TabBarView(
               controller: _tabController,
-              children: tabs.map((tab) => tab.content).toList(),
+              children: tabs
+                  .map((tab) => Column(
+                        children: [
+                          tab.content,
+                        ],
+                      ))
+                  .toList(),
             ),
     );
   }

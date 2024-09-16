@@ -13,6 +13,7 @@ class CustomDropdown extends StatelessWidget {
   final bool enabled;
   final bool required;
   final bool readOnly;
+  final ValueChanged<String?>? onChanged;
   final List<String> dropdownValue;
 
   const CustomDropdown(
@@ -26,48 +27,46 @@ class CustomDropdown extends StatelessWidget {
       this.enabled = true,
       this.required = true,
       this.readOnly = false,
+      this.onChanged,
       required this.dropdownValue});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: DropdownButtonFormField(
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-        items: dropdownValue.map(
-          (item) {
-            return DropdownMenuItem(
-              value: item,
-              enabled: enabled,
-              child: Text(
-                item.tr.toString(),
-                style:
-                    TextStyle(color: enabled ? AppColors.black : Colors.grey),
-              ),
-            );
-          },
-        ).toList(),
-        value: value == '' ? dropdownValue[0].toString() : value.toString(),
-        focusColor: AppColors.transparent,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          label: Text(label),
-          hintText: hint,
-          prefixText: prefix,
-          suffixText: suffix,
-          helperText: helper,
-          enabled: enabled,
-
-          // icon: Text(helper),
-          hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),
-        ),
-        onChanged: (value) {},
-        validator: (value) {
-          if (required && enabled) {}
-          return null;
+    return DropdownButtonFormField(
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
+      items: dropdownValue.map(
+        (item) {
+          return DropdownMenuItem(
+            value: item,
+            enabled: enabled,
+            child: Text(
+              item.tr.toString(),
+              style: TextStyle(color: enabled ? AppColors.black : Colors.grey),
+            ),
+          );
         },
+      ).toList(),
+      value: value == '' ? dropdownValue[0].toString() : value.toString(),
+      focusColor: AppColors.transparent,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        label: Text(label),
+        hintText: hint,
+        prefixText: prefix,
+        suffixText: suffix,
+        helperText: helper,
+        enabled: enabled,
+
+        // icon: Text(helper),
+        hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),
       ),
+      onChanged: enabled && !readOnly ? onChanged : null,
+      validator: (value) {
+        if (required && enabled) {}
+        return null;
+      },
     );
   }
 }

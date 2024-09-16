@@ -1,4 +1,5 @@
 Map<String, String> ar = {
+  // Global
   'accounting_system': 'نظام محاسبة',
   'ngu': 'إن جي يو',
   'data': 'بيانات',
@@ -7,7 +8,8 @@ Map<String, String> ar = {
   'backup': 'نسخ احتياطي',
   'backup_all_data': 'نسخ كل البيانات',
   'backup_some_data': 'نسخ جزئي للبيانات',
-  //
+
+  // Accounts
   'accounting': 'المحاسبة',
   'accounts_record': 'بطاقات الحسابات',
   'account_record': 'بطاقة الحساب',
@@ -18,20 +20,20 @@ Map<String, String> ar = {
   'opening_voucher': 'سند افتتاحي',
   'accounts_setting': 'إعدادات الحسابات',
 
-  //
+  // Currencies
   'currencies': 'العملات',
   'currencies_prices': 'أسعار العملات',
   'currencies_records': 'بطاقات العملات',
   'rounding': 'التقريب والتفقيط',
 
-  //
+  // Stock
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',
   'product_card': 'بطاقة مادة',
   'search': 'بحث',
   'products_table': 'جدول المواد',
 
-  //
+  // Settings
   'settings': 'الإعدادات',
   'general_settings': 'إعدادات عامة',
   'system_constant': 'ثوابت النظام',
@@ -40,7 +42,7 @@ Map<String, String> ar = {
   'import': 'استيراد',
   'shortcuts': 'اختصارات',
 
-  //
+  // Invoices
   'purchase_invoices': 'فواتير الشراء',
   'sales_invoices': 'فواتير المبيع',
   'all_invoices': 'كل الفواتير',
@@ -48,7 +50,7 @@ Map<String, String> ar = {
   'ready_invoices_table': 'جدول الفواتير الجاهزة',
   'tax_invoices_table': 'جدول ضريبة الفواتير',
 
-  //
+  // Account Record
   'account': 'الحساب',
   'account_info': 'معلومات الحساب',
   'account_sts': 'كشف الحساب',
@@ -77,7 +79,7 @@ Map<String, String> ar = {
   'credit_balance': 'الرصيد المدين',
   'balance': 'الرصيد',
 
-  //
+  // Toolbar
   'next': 'التالي',
   'previous': 'السابق',
   'last': 'الاخير',
@@ -87,18 +89,23 @@ Map<String, String> ar = {
   'print': 'طباعة',
   'delete': 'حذف',
 
-  //
+  // Account Category
   'asset': 'الموجودات',
   'liability': 'المسؤوليات',
   'equity': 'الإنصاف',
   'revenue': 'الإيرادات',
   'expense': 'النفقات',
 
-  //
+  // Account Nature
   'debit': 'مدين',
   'credit': 'دائن',
 
-  //
+  // Account Type
   'main': 'رئيسي',
   'sub': 'فرعي',
+
+  // Language
+  'en': 'الانجليزية',
+  'ar': 'العربية',
+  'language': 'اللغة',
 };

@@ -98,31 +98,40 @@ class AccountRecord extends StatelessWidget {
           helper: 'description'.tr,
           controller: TextEditingController(text: ''),
         ),
-        Row(
+        Wrap(
           children: [
-            CustomDropdown(
-              dropdownValue: getEnumValues(AccountCategory.values),
-              enabled: enableEditing,
-              helper: 'account_type'.tr,
-              value: 'equity',
-              // value: 's',
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.15,
+              child: CustomDropdown(
+                dropdownValue: getEnumValues(AccountCategory.values),
+                enabled: enableEditing,
+                helper: 'account_type'.tr,
+                value: 'equity',
+                // value: 's',
+              ),
             ),
             const SizedBox(
               width: 8,
             ),
-            CustomDropdown(
-              dropdownValue: getEnumValues(AccountNature.values),
-              enabled: enableEditing,
-              helper: 'account_nature'.tr,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.15,
+              child: CustomDropdown(
+                dropdownValue: getEnumValues(AccountNature.values),
+                enabled: enableEditing,
+                helper: 'account_nature'.tr,
+              ),
             ),
             const SizedBox(
               width: 8,
             ),
-            CustomDropdown(
-              dropdownValue: getEnumValues(AccountCategory.values),
-              enabled: enableEditing,
-              helper: 'closing_account_id'.tr,
-              // value: AccountCategory.asset.name,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.15,
+              child: CustomDropdown(
+                dropdownValue: getEnumValues(AccountCategory.values),
+                enabled: enableEditing,
+                helper: 'closing_account_id'.tr,
+                // value: AccountCategory.asset.name,
+              ),
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 Map<String, String> en = {
+  // Global
   'accounting_system': 'Accounting System',
   'ngu': 'NGU',
   'data': 'Data',
@@ -7,7 +8,8 @@ Map<String, String> en = {
   'backup': 'Backup',
   'backup_all_data': 'Backup All Data',
   'backup_some_data': 'Backup Some Data',
-  //
+
+  // Accounts
   'accounting': 'Accounting',
   'accounts_record': 'Accounts Record',
   'account_record': 'Account Record',
@@ -18,20 +20,20 @@ Map<String, String> en = {
   'opening_voucher': 'Opening Voucher',
   'accounts_setting': 'Accounts Setting',
 
-  //
+  // Currencies
   'currencies': 'Currencies',
   'currencies_prices': 'Currencies Prices',
   'currencies_records': 'Currencies Records',
   'rounding': 'Rounding',
 
-  //
+  // Stock
   'stock_control': 'ٍStock Control',
   'products': 'Products',
   'product_card': 'Product Card',
   'search': 'Search',
   'products_table': 'Products Table',
 
-  //
+  // Settings
   'settings': 'Settings',
   'general_settings': 'General Settings',
   'system_constant': 'System Constants',
@@ -40,7 +42,7 @@ Map<String, String> en = {
   'import': 'Import',
   'shortcuts': 'Shortcuts',
 
-  //
+  // Invoices
   'purchase_invoices': 'Purchase Invoices',
   'sales_invoices': 'Sales Invoices',
   'all_invoices': 'All Invoices',
@@ -48,7 +50,7 @@ Map<String, String> en = {
   'ready_invoices_table': 'Ready Invoices Table',
   'tax_invoices_table': 'Tax Invoices Table',
 
-  //
+  // Account Record
   'account': 'Account',
   'account_info': 'Account Information',
   'account_sts': 'Account Statement',
@@ -77,7 +79,7 @@ Map<String, String> en = {
   'credit_balance': 'Credit Balance',
   'balance': 'Balance',
 
-  //
+  // Toolbar
   'next': 'Next',
   'previous': 'Previous',
   'last': 'Last',
@@ -87,18 +89,23 @@ Map<String, String> en = {
   'print': 'Print',
   'delete': 'Delete',
 
-  //
+  // Account Category
   'asset': 'Asset',
   'liability': 'Liability',
   'equity': 'Equity',
   'revenue': 'Revenue',
   'expense': 'Expense',
 
-  //
+  // Account Nature
   'debit': 'Debit',
   'credit': 'Credit',
 
-  //
+  // Account Type
   'main': 'Main',
   'sub': 'Sub',
+
+  // Language
+  'en': 'English',
+  'ar': 'Arabic',
+  'language': 'Language',
 };

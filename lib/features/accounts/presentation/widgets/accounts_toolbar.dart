@@ -58,7 +58,7 @@ class AccountsToolbar extends StatelessWidget {
                         context: context,
                         content: const AddNewAccount(),
                         width: 0.4,
-                        height: 0.4);
+                        height: 0.5);
                   },
                 ),
                 CustomIconButton(
