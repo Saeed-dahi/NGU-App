@@ -5,12 +5,9 @@ class AccountsTable extends StatelessWidget {
   const AccountsTable({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('PlutoGrid Demo'),
-      ),
-      body: Container(
-          padding: const EdgeInsets.all(30), child: CustomPlutoTable()),
+    return Container(
+      padding: const EdgeInsets.all(30),
+      child: CustomPlutoTable(),
     );
   }
 }

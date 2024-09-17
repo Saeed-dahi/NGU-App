@@ -69,6 +69,42 @@ class CustomPlutoTable extends StatelessWidget {
         'time_field': PlutoCell(value: '23:59'),
       },
     ),
+    PlutoRow(
+      cells: {
+        'text_field': PlutoCell(value: 'Text cell value3'),
+        'number_field': PlutoCell(value: 2022),
+        'select_field': PlutoCell(value: 'item3'),
+        'date_field': PlutoCell(value: '2020-08-08'),
+        'time_field': PlutoCell(value: '23:59'),
+      },
+    ),
+    PlutoRow(
+      cells: {
+        'text_field': PlutoCell(value: 'Text cell value3'),
+        'number_field': PlutoCell(value: 2022),
+        'select_field': PlutoCell(value: 'item3'),
+        'date_field': PlutoCell(value: '2020-08-08'),
+        'time_field': PlutoCell(value: '23:59'),
+      },
+    ),
+    PlutoRow(
+      cells: {
+        'text_field': PlutoCell(value: 'Text cell value3'),
+        'number_field': PlutoCell(value: 2022),
+        'select_field': PlutoCell(value: 'item3'),
+        'date_field': PlutoCell(value: '2020-08-08'),
+        'time_field': PlutoCell(value: '23:59'),
+      },
+    ),
+    PlutoRow(
+      cells: {
+        'text_field': PlutoCell(value: 'Text cell value3'),
+        'number_field': PlutoCell(value: 2022),
+        'select_field': PlutoCell(value: 'item3'),
+        'date_field': PlutoCell(value: '2020-08-08'),
+        'time_field': PlutoCell(value: '23:59'),
+      },
+    ),
   ];
 
   @override

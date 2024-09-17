@@ -1,6 +1,11 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/app/config/constant.dart';
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,89 +15,114 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  List<TabData> tabs = [];
-
   TabController? _tabController;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  @override
-  void initState() {
-    super.initState();
-    _addNewTab();
-  }
+  _updateTabController(int length) {
+    _tabController?.dispose();
+    _tabController = TabController(length: length, vsync: this);
+    if (length > 0) _tabController?.animateTo(length - 1);
 
-  _addNewTab() {
-    setState(() {
-      tabs.add(
-          TabData(title: 'title', content: const Center(child: Text('data'))));
-      _tabController = TabController(length: tabs.length, vsync: this);
-    });
-  }
-
-  _removeTab(int index) {
-    setState(() {
-      tabs.removeAt(index);
-      _tabController = TabController(length: tabs.length, vsync: this);
-    });
+    if (scaffoldKey.currentState!.isDrawerOpen) {
+      scaffoldKey.currentState!.closeDrawer();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: AppBar(
-        title: Text(' ${'accounting_system'.tr}'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                _addNewTab();
-              },
-              icon: const Icon(Icons.add))
-        ],
-        bottom: tabs.isEmpty
-            ? null
-            : TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                tabs: List.generate(
-                  tabs.length,
-                  (index) {
-                    return Tab(
-                      child: Row(
-                        children: [
-                          Text(tabs[index].title),
-                          IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () => _removeTab(index),
-                            padding: EdgeInsets.zero,
-                          ),
-                        ],
+    return BlocConsumer<TabCubit, TabState>(
+      listener: (context, state) {
+        _updateTabController(state.tabs.length);
+      },
+      builder: (context, state) {
+        final isTabsEmpty = state.tabs.isEmpty;
+        return Scaffold(
+          key: scaffoldKey,
+          drawer: const AppDrawer(),
+          appBar: AppBar(
+            title: Text('accounting_system'.tr),
+            bottom: PreferredSize(
+              preferredSize:
+                  Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
+              child: isTabsEmpty
+                  ? const SizedBox()
+                  : TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabs: List.generate(
+                        state.tabs.length,
+                        (index) {
+                          return Tab(
+                            child: Row(
+                              children: [
+                                Text(state.tabs[index].title),
+                                IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    context.read<TabCubit>().removeTab(index);
+                                  },
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
-      ),
-      body: tabs.isEmpty
-          ? const Center(
-              child: Text('Hi'),
-            )
-          : TabBarView(
-              controller: _tabController,
-              children: tabs
-                  .map((tab) => Column(
-                        children: [
-                          tab.content,
-                        ],
-                      ))
-                  .toList(),
+                    ),
             ),
+          ),
+          body: isTabsEmpty
+              ? Center(
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      ColorizeAnimatedText(
+                        '${'accounting_system'.tr}  ',
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.transparent,
+                        ],
+                        textStyle:
+                            const TextStyle(fontSize: Dimensions.largeTextSize),
+                      ),
+                    ],
+                    repeatForever: false,
+                  ),
+                )
+              : TabBarView(
+                  controller: _tabController,
+                  children: state.tabs
+                      .map(
+                        (tab) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TabContent(content: tab.content),
+                        ),
+                      )
+                      .toList(),
+                ),
+        );
+      },
     );
   }
 }
 
-class TabData {
-  final String title;
+// to prevent updating a live tabs
+class TabContent extends StatefulWidget {
   final Widget content;
+  const TabContent({super.key, required this.content});
 
-  TabData({required this.title, required this.content});
+  @override
+  State<TabContent> createState() => _TabContentState();
+}
+
+class _TabContentState extends State<TabContent>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return widget.content;
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

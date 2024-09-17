@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import 'package:ngu_app/app/config/constant.dart';
@@ -10,6 +11,7 @@ import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class AccountsSection extends StatelessWidget {
   const AccountsSection({super.key});
@@ -38,14 +40,17 @@ class AccountsSection extends StatelessWidget {
                     title: 'accounts_tree'.tr,
                     icon: Icons.account_tree_outlined,
                     onTap: () {
-                      Get.to(() => const AccountsTree(title: 'Account tree'));
+                      context.read<TabCubit>().addNewTab(
+                          title: 'accounts_tree'.tr, content: const AccountsTree());
                     },
                   ),
                   BasicListTile(
                     title: 'accounts_table'.tr,
                     icon: Icons.table_rows_outlined,
                     onTap: () {
-                      Get.to(() => const AccountsTable());
+                      context.read<TabCubit>().addNewTab(
+                          title: 'accounts_table'.tr,
+                          content: const AccountsTable());
                     },
                   ),
                   BasicListTile(

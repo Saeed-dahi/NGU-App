@@ -2,14 +2,10 @@ import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
-import 'package:ngu_app/core/widgets/app_bar.dart';
-import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_information_sidebar.dart';
 
 class AccountsTree extends StatefulWidget {
-  const AccountsTree({super.key, required this.title});
-
-  final String title;
+  const AccountsTree({super.key});
 
   @override
   AccountsTreeState createState() => AccountsTreeState();
@@ -21,13 +17,6 @@ class AccountsTreeState extends State<AccountsTree> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const AppDrawer(),
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(Dimensions.appBarSize),
-        child: TopAppBar(
-          'Home page',
-        ),
-      ),
       floatingActionButton: ValueListenableBuilder<bool>(
         valueListenable: sampleTree.expansionNotifier,
         builder: (context, isExpanded, _) {

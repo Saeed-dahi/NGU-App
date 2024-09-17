@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/home/presentation/pages/home_screen.dart';
 
 part 'splash_state.dart';
@@ -16,6 +17,9 @@ class SplashCubit extends Cubit<SplashState> {
 
   void go() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.off(() => const HomeScreen());
+    Get.off(() => BlocProvider(
+          create: (context) => TabCubit(),
+          child: const HomeScreen(),
+        ));
   }
 }
