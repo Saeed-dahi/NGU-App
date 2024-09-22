@@ -27,6 +27,9 @@ dependencies:
   window_manager: ^0.4.2
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
+  dartz: ^0.10.1
+  internet_connection_checker: ^2.0.0
+  get_it: ^7.7.0
 
 dev_dependencies:
   flutter_test:

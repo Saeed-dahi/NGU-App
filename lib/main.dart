@@ -4,17 +4,19 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_theme.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
-
+import 'app/dependency_injection/dependency_injection.dart' as di;
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
-import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // dependency injection
+  await di.init();
+
   // Initialize window manager
-  await windowManager.ensureInitialized();
-  // Set minimum window size
-  windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
+  // await windowManager.ensureInitialized();
+  // // Set minimum window size
+  // windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
 
   runApp(const MyApp());
 }
@@ -24,8 +26,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LanguageCubit()..getSavedLanguage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LanguageCubit()..getSavedLanguage(),
+        ),
+      ],
       child: BlocBuilder<LanguageCubit, ChangeLanguageState>(
         builder: (context, state) {
           return GetMaterialApp(

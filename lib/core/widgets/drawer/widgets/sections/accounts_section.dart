@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
@@ -11,6 +11,8 @@ import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
+import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
+import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_accounts.dart';
 import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class AccountsSection extends StatelessWidget {
@@ -41,7 +43,8 @@ class AccountsSection extends StatelessWidget {
                     icon: Icons.account_tree_outlined,
                     onTap: () {
                       context.read<TabCubit>().addNewTab(
-                          title: 'accounts_tree'.tr, content: const AccountsTree());
+                          title: 'accounts_tree'.tr,
+                          content: const AccountsTree());
                     },
                   ),
                   BasicListTile(
@@ -79,6 +82,28 @@ class AccountsSection extends StatelessWidget {
                       icon: Icons.payment_outlined),
                   BasicListTile(
                       title: 'rounding'.tr, icon: Icons.equalizer_outlined),
+                ],
+              ), //
+              CustomExpansionTile(
+                title: 'closing_vouchers'.tr,
+                icon: Icons.assignment_turned_in_outlined,
+                children: [
+                  BasicListTile(
+                    title: 'closing_accounts'.tr,
+                    icon: Icons.monetization_on_outlined,
+                    onTap: () => ShowDialog.showCustomDialog(
+                        context: context,
+                        content: BlocProvider(
+                          create: (context) => sl<ClosingAccountsBloc>()
+                            ..add(
+                                const ShowClosingsAccountsEvent(accountId: 1)),
+                          child: const ClosingAccounts(),
+                        ),
+                        height: 0.4),
+                  ),
+                  BasicListTile(
+                      title: 'profit_and_loss'.tr,
+                      icon: Icons.payment_outlined),
                 ],
               )
             ],

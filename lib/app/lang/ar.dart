@@ -26,6 +26,11 @@ Map<String, String> ar = {
   'currencies_records': 'بطاقات العملات',
   'rounding': 'التقريب والتفقيط',
 
+  // Closing Vouchers
+  'closing_vouchers': 'القيود الختامية',
+  'closing_accounts': 'الحسابات الختامية',
+  'profit_and_loss': 'الأرباح والخسائر',
+
   // Stock
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',

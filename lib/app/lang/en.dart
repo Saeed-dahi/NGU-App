@@ -26,6 +26,11 @@ Map<String, String> en = {
   'currencies_records': 'Currencies Records',
   'rounding': 'Rounding',
 
+  // Closing Vouchers
+  'closing_vouchers': 'Closing Vouchers',
+  'closing_accounts': 'Closing Accounts',
+  'profit_and_loss': 'Profit and loss',
+
   // Stock
   'stock_control': 'ٍStock Control',
   'products': 'Products',
