@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_theme.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
+import 'package:window_manager/window_manager.dart';
 import 'app/dependency_injection/dependency_injection.dart' as di;
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
 
@@ -14,9 +15,9 @@ void main() async {
   await di.init();
 
   // Initialize window manager
-  // await windowManager.ensureInitialized();
-  // // Set minimum window size
-  // windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
+  await windowManager.ensureInitialized();
+  // Set minimum window size
+  windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
 
   runApp(const MyApp());
 }

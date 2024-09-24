@@ -21,6 +21,14 @@ class ShowClosingsAccountsEvent extends ClosingAccountsEvent {
   });
 }
 
-class AddNewClosingAccountEvent extends ClosingAccountsEvent {}
+class CreateClosingAccountEvent extends ClosingAccountsEvent {
+  final ClosingAccountEntity closingAccountEntity;
 
-class UpdateClosingAccountEvent extends ClosingAccountsEvent {}
+  const CreateClosingAccountEvent({required this.closingAccountEntity});
+}
+
+class UpdateClosingAccountEvent extends ClosingAccountsEvent {
+  final ClosingAccountEntity closingAccountEntity;
+
+  const UpdateClosingAccountEvent({required this.closingAccountEntity});
+}

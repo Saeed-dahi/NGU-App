@@ -12,7 +12,7 @@ abstract class ClosingAccountDataSource {
   Future<List<ClosingAccountModel>> getAllClosingAccounts();
   Future<ClosingAccountModel> showClosingAccount(
       int accountId, String? direction);
-  Future<Unit> addNewClosingAccount(ClosingAccountModel closingAccountModel);
+  Future<Unit> createClosingAccount(ClosingAccountModel closingAccountModel);
   Future<Unit> updateClosingAccounts(ClosingAccountModel closingAccountModel);
 }
 
@@ -48,11 +48,12 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
     final response = await networkConnection
         .get('${APIList.closingAccounts}/$accountId', {'direction': direction});
 
-    if (response.statusCode == 200) {
-      var decodedJson = jsonDecode(response.body);
+    var decodedJson = jsonDecode(response.body);
 
+    if (response.statusCode == 200) {
       ClosingAccountModel closingAccountModel =
           ClosingAccountModel.fromJson(decodedJson['data']);
+
       return closingAccountModel;
     } else {
       throw ServerException();
@@ -60,16 +61,20 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
   }
 
   @override
-  Future<Unit> addNewClosingAccount(
+  Future<Unit> createClosingAccount(
       ClosingAccountModel closingAccountModel) async {
     final body = {
       'ar_name': closingAccountModel.arName,
       'en_name': closingAccountModel.enName,
     };
     var response = await networkConnection.post(APIList.closingAccounts, body);
+    var decodedJson = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       return Future.value(unit);
+    }
+    if (response.statusCode == 422) {
+      throw ValidationException(errors: decodedJson['errors']);
     } else {
       throw ServerException();
     }
@@ -82,10 +87,15 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
       'ar_name': closingAccountModel.arName,
       'en_name': closingAccountModel.enName,
     };
-    var response = await networkConnection.put(APIList.closingAccounts, body);
+    var response = await networkConnection.put(
+        '${APIList.closingAccounts}/ ${closingAccountModel.id}', body);
+    var decodedJson = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       return Future.value(unit);
+    }
+    if (response.statusCode == 422) {
+      throw ValidationException(errors: decodedJson['errors']);
     } else {
       throw ServerException();
     }

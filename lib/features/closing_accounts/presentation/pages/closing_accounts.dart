@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/config/constant.dart';
@@ -9,21 +10,64 @@ import 'package:ngu_app/features/closing_accounts/domain/entities/closing_accoun
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_accounts_toolbar.dart';
 
-class ClosingAccounts extends StatelessWidget {
-  final bool enableEditing = false;
+class ClosingAccounts extends StatefulWidget {
   const ClosingAccounts({super.key});
+
+  @override
+  State<ClosingAccounts> createState() => _ClosingAccountsState();
+}
+
+class _ClosingAccountsState extends State<ClosingAccounts> {
+  final bool enableEditing = true;
+
+  final formKey = GlobalKey<FormState>();
+
+  late TextEditingController idController;
+
+  late TextEditingController arNameController;
+
+  late TextEditingController enNameController;
+
+  @override
+  void initState() {
+    enNameController = TextEditingController();
+    idController = TextEditingController();
+    arNameController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    arNameController.dispose();
+    enNameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
       builder: (context, state) {
         if (state is LoadedClosingAccountsState) {
-          return _pageBody(closingAccount: state.closingAccounts);
+          return _pageBody(
+              closingAccount: state.closingAccounts,
+              context: context,
+              errors: {});
         }
         if (state is ErrorClosingAccountsState) {
-          return MessageScreen(
-            text: state.message,
+          return Column(
+            children: [
+              ClosingAccountsToolbar(accountId: -1, formKey: formKey),
+              MessageScreen(
+                text: state.message,
+              ),
+            ],
           );
+        }
+        if (state is ValidationClosingAccountState) {
+          return _pageBody(
+              closingAccount: _getPreviousFormData(),
+              context: context,
+              errors: state.errors);
         }
         return Center(
           child: Loaders.loading(),
@@ -32,7 +76,12 @@ class ClosingAccounts extends StatelessWidget {
     );
   }
 
-  Column _pageBody({required ClosingAccountEntity closingAccount}) {
+  Column _pageBody(
+      {required ClosingAccountEntity closingAccount,
+      required BuildContext context,
+      required Map<String, dynamic> errors}) {
+    // init text Controllers
+    _updateTextEditingController(closingAccount);
     return Column(
       children: [
         Text(
@@ -44,27 +93,75 @@ class ClosingAccounts extends StatelessWidget {
           height: 10,
         ),
         ClosingAccountsToolbar(
-          accountId: closingAccount.id,
+          accountId: closingAccount.id!,
+          editing: enableEditing,
+          formKey: formKey,
+          onSave: () {
+            _onSave(context, closingAccount.id!);
+          },
         ),
-        CustomInputField(
-          inputType: TextInputType.name,
-          enabled: enableEditing,
-          helper: 'code'.tr,
-          controller: TextEditingController(text: closingAccount.id.toString()),
-        ),
-        CustomInputField(
-          inputType: TextInputType.name,
-          enabled: enableEditing,
-          helper: 'en_name'.tr,
-          controller: TextEditingController(text: closingAccount.enName),
-        ),
-        CustomInputField(
-          inputType: TextInputType.name,
-          enabled: enableEditing,
-          helper: 'ar_name'.tr,
-          controller: TextEditingController(text: closingAccount.arName),
-        ),
+        _closingAccountForm(closingAccount, errors),
       ],
+    );
+  }
+
+  void _onSave(BuildContext context, int accountId) {
+    if (formKey.currentState!.validate()) {
+      context.read<ClosingAccountsBloc>().add(
+            UpdateClosingAccountEvent(
+              closingAccountEntity: ClosingAccountEntity(
+                // params
+                id: accountId,
+                //
+                arName: arNameController.text,
+                enName: enNameController.text,
+              ),
+            ),
+          );
+    }
+  }
+
+  Form _closingAccountForm(ClosingAccountEntity closingAccount, errors) {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          CustomInputField(
+            inputType: TextInputType.name,
+            enabled: false,
+            helper: 'code'.tr,
+            controller: idController,
+          ),
+          CustomInputField(
+            inputType: TextInputType.name,
+            enabled: enableEditing,
+            helper: 'en_name'.tr,
+            controller: enNameController,
+            error: errors['en_name']?.join('\n'),
+          ),
+          CustomInputField(
+            inputType: TextInputType.name,
+            enabled: enableEditing,
+            helper: 'ar_name'.tr,
+            controller: arNameController,
+            error: errors['ar_name']?.join('\n'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _updateTextEditingController(ClosingAccountEntity closingAccount) {
+    idController = TextEditingController(text: closingAccount.id.toString());
+    enNameController = TextEditingController(text: closingAccount.enName);
+    arNameController = TextEditingController(text: closingAccount.arName);
+  }
+
+  ClosingAccountEntity _getPreviousFormData() {
+    return ClosingAccountEntity(
+      id: int.tryParse(idController.text),
+      arName: arNameController.text,
+      enName: enNameController.text,
     );
   }
 }

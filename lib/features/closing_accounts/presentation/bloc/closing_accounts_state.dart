@@ -28,3 +28,9 @@ class ErrorClosingAccountsState extends ClosingAccountsState {
   @override
   List<Object> get props => [message];
 }
+
+class ValidationClosingAccountState extends ClosingAccountsState {
+  final Map<String, dynamic> errors;
+
+  const ValidationClosingAccountState({required this.errors});
+}

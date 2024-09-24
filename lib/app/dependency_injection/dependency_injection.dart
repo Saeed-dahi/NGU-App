@@ -17,14 +17,16 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // Closing Accounts
   // Bloc
-  sl.registerFactory(
-      () => ClosingAccountsBloc(showClosingAccountUseCase: sl()));
+  sl.registerFactory(() => ClosingAccountsBloc(
+      showClosingAccountUseCase: sl(),
+      createClosingAccountUseCase: sl(),
+      updateClosingAccountUseCase: sl()));
 
   // UseCases
   sl.registerLazySingleton(
       () => GetAllClosingAccountsUseCase(closingAccountRepository: sl()));
   sl.registerLazySingleton(
-      () => AddNewClosingAccountUseCase(closingAccountRepository: sl()));
+      () => CreateClosingAccountUseCase(closingAccountRepository: sl()));
   sl.registerLazySingleton(
       () => UpdateClosingAccountUseCase(closingAccountRepository: sl()));
   sl.registerLazySingleton(

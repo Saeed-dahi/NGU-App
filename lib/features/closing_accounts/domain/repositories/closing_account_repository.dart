@@ -6,7 +6,7 @@ abstract class ClosingAccountRepository {
   Future<Either<Failure, List<ClosingAccountEntity>>> getAllClosingAccounts();
   Future<Either<Failure, ClosingAccountEntity>> showClosingAccount(
       int accountId, String? direction);
-  Future<Either<Failure, Unit>> addNewClosingAccount(
+  Future<Either<Failure, Unit>> createClosingAccount(
       ClosingAccountEntity closingAccountEntity);
   Future<Either<Failure, Unit>> updateClosingAccount(
       ClosingAccountEntity closingAccountEntity);

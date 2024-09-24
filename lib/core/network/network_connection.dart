@@ -33,7 +33,7 @@ class HttpConnection implements NetworkConnection {
   @override
   Future<Response> delete(String apiUrl, Map<String, dynamic> body) async {
     final response = await http.delete(
-        Uri.https(APIList.baseUrl, APIList.api + apiUrl),
+        Uri.http(APIList.baseUrl, APIList.api + apiUrl),
         body: body,
         headers: {
           "Accept": "application/json",
@@ -45,7 +45,7 @@ class HttpConnection implements NetworkConnection {
   @override
   Future<Response> post(String apiUrl, Map<String, dynamic> body) async {
     var response = await http.post(
-        Uri.https(APIList.baseUrl, APIList.api + apiUrl),
+        Uri.http(APIList.baseUrl, APIList.api + apiUrl),
         body: body,
         headers: {
           "Accept": "application/json",
@@ -57,7 +57,7 @@ class HttpConnection implements NetworkConnection {
   @override
   Future<Response> put(String apiUrl, Map<String, dynamic> body) async {
     var response = await http.put(
-        Uri.https(APIList.baseUrl, APIList.api + apiUrl),
+        Uri.http(APIList.baseUrl, APIList.api + apiUrl),
         body: body,
         headers: {
           "Accept": "application/json",

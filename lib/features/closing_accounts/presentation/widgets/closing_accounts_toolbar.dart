@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
-import 'package:ngu_app/features/closing_accounts/presentation/pages/add_new_clsoing_account.dart';
+import 'package:ngu_app/features/closing_accounts/presentation/pages/create_closing_account.dart';
 
 class ClosingAccountsToolbar extends StatelessWidget {
   final int accountId;
-  final bool editing = false;
-  const ClosingAccountsToolbar({super.key, required this.accountId});
+  final bool editing;
+  final VoidCallback? onSave;
+  final GlobalKey formKey;
+  const ClosingAccountsToolbar(
+      {super.key,
+      required this.accountId,
+      this.editing = false,
+      this.onSave,
+      required this.formKey});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class ClosingAccountsToolbar extends StatelessWidget {
       child: Visibility(
         visible: !editing,
         replacement: CustomIconButton(
-            icon: Icons.save, tooltip: 'save'.tr, onPressed: () {}),
+            icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,10 +71,14 @@ class ClosingAccountsToolbar extends StatelessWidget {
                   tooltip: 'add'.tr,
                   onPressed: () {
                     ShowDialog.showCustomDialog(
-                        context: context,
-                        content: const AddNewClosingAccount(),
-                        height: 0.3,
-                        width: 0.4);
+                      context: context,
+                      content: BlocProvider(
+                        create: (context) => sl<ClosingAccountsBloc>(),
+                        child: CreateClosingAccount(),
+                      ),
+                      height: 0.3,
+                      width: 0.4,
+                    );
                   },
                 ),
                 CustomIconButton(

@@ -26,7 +26,7 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
       } on ServerException {
         return left(const ServerFailure());
       } catch (e) {
-        return left(ServerFailure(errors: [e.toString()]));
+        return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
       return left(const OfflineFailure());
@@ -34,7 +34,7 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> addNewClosingAccount(
+  Future<Either<Failure, Unit>> createClosingAccount(
       ClosingAccountEntity closingAccountEntity) async {
     ClosingAccountModel closingAccountModel =
         getClosingAccountModel(closingAccountEntity);
@@ -42,11 +42,15 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
     if (await networkInfo.isConnected) {
       try {
         await closingAccountDataSource
-            .addNewClosingAccount(closingAccountModel);
+            .createClosingAccount(closingAccountModel);
 
         return right(unit);
       } on ServerException {
         return left(const ServerFailure());
+      } on ValidationException catch (messages) {
+        return left(ValidationFailure(errors: messages.errors));
+      } catch (e) {
+        return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
       return left(const OfflineFailure());
@@ -79,6 +83,8 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
             .updateClosingAccounts(closingAccountModel);
 
         return right(unit);
+      } on ValidationException catch (messages) {
+        return left(ValidationFailure(errors: messages.errors));
       } on ServerException {
         return left(const ServerFailure());
       }
@@ -99,7 +105,7 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
       } on ServerException {
         return left(const ServerFailure());
       } catch (e) {
-        return left(ServerFailure(errors: [e.toString()]));
+        return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
       return left(const OfflineFailure());

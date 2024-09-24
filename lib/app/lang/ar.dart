@@ -8,6 +8,9 @@ Map<String, String> ar = {
   'backup': 'نسخ احتياطي',
   'backup_all_data': 'نسخ كل البيانات',
   'backup_some_data': 'نسخ جزئي للبيانات',
+  'save': 'حفظ',
+  'required': 'حقل مطلوب',
+  'success': 'تمت العملية بنجاح',
 
   // Accounts
   'accounting': 'المحاسبة',

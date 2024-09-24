@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/config/constant.dart';
 
 class ShowDialog {
@@ -8,7 +6,9 @@ class ShowDialog {
       {required BuildContext context,
       required content,
       double width = 0.5,
-      double height = 0.6}) {
+      double height = 0.7,
+      bool saveButton = false,
+      VoidCallback? onSave}) {
     return showDialog(
       context: context,
       builder: (BuildContext context) => Builder(
@@ -28,27 +28,6 @@ class ShowDialog {
                 ),
               ),
             ),
-            actions: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Get.back();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColorLow,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      Dimensions.primaryRadius,
-                    ),
-                  ),
-                ),
-                child: Text(
-                  "close".tr,
-                  style: const TextStyle(
-                    color: AppColors.lightBgGrayColor,
-                  ),
-                ),
-              ),
-            ],
           );
         },
       ),

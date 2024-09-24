@@ -8,6 +8,9 @@ Map<String, String> en = {
   'backup': 'Backup',
   'backup_all_data': 'Backup All Data',
   'backup_some_data': 'Backup Some Data',
+  'save': 'Save',
+  'required': 'Required Filed',
+  'success': 'The operation has completed successfully',
 
   // Accounts
   'accounting': 'Accounting',

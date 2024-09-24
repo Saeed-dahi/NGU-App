@@ -12,6 +12,7 @@ class CustomInputField extends StatelessWidget {
   final String prefix;
   final String suffix;
   final String helper;
+  final String? error;
   final bool enabled;
   final bool required;
   final bool readOnly;
@@ -27,6 +28,7 @@ class CustomInputField extends StatelessWidget {
       this.prefix = '',
       this.suffix = '',
       this.helper = '',
+      this.error,
       this.enabled = true,
       this.required = true,
       this.readOnly = false,
@@ -61,6 +63,7 @@ class CustomInputField extends StatelessWidget {
             prefixText: prefix,
             suffixText: suffix,
             helperText: helper,
+            errorText: error,
             // icon: Text(helper),
             hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize)),
       ),
