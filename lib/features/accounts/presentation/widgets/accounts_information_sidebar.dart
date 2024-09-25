@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_information_card.dart';
 
 class AccountsInformationSidebar extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';

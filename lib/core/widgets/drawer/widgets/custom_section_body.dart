@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 
 class CustomSectionBody extends StatelessWidget {
   final List<Widget> children;

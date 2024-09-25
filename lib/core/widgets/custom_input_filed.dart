@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 
 class CustomInputField extends StatelessWidget {
   final String label;

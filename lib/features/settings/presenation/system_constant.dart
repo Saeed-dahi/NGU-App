@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 

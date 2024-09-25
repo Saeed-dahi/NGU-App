@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
-import 'package:ngu_app/app/config/api_list.dart';
-
-import 'package:ngu_app/core/error/exception.dart';
+import 'package:ngu_app/app/app_config/api_list.dart';
+import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/closing_accounts/data/models/closing_account_model.dart';
 import 'package:http/http.dart' as http;
@@ -27,19 +26,16 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
   @override
   Future<List<ClosingAccountModel>> getAllClosingAccounts() async {
     final response = await networkConnection.get(APIList.closingAccounts, {});
+    var decodedJson = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-      List<ClosingAccountModel> closingAccountModel =
-          decodedJson['data'].map<ClosingAccountModel>((closingAccount) {
-        return ClosingAccountModel.fromJson(closingAccount);
-      }).toList();
+    List<ClosingAccountModel> closingAccountModel =
+        decodedJson['data'].map<ClosingAccountModel>((closingAccount) {
+      return ClosingAccountModel.fromJson(closingAccount);
+    }).toList();
 
-      return closingAccountModel;
-    } else {
-      throw ServerException();
-    }
+    return closingAccountModel;
   }
 
   @override
@@ -49,15 +45,12 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
         .get('${APIList.closingAccounts}/$accountId', {'direction': direction});
 
     var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    if (response.statusCode == 200) {
-      ClosingAccountModel closingAccountModel =
-          ClosingAccountModel.fromJson(decodedJson['data']);
+    ClosingAccountModel closingAccountModel =
+        ClosingAccountModel.fromJson(decodedJson['data']);
 
-      return closingAccountModel;
-    } else {
-      throw ServerException();
-    }
+    return closingAccountModel;
   }
 
   @override
@@ -70,14 +63,9 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
     var response = await networkConnection.post(APIList.closingAccounts, body);
     var decodedJson = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      return Future.value(unit);
-    }
-    if (response.statusCode == 422) {
-      throw ValidationException(errors: decodedJson['errors']);
-    } else {
-      throw ServerException();
-    }
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    return Future.value(unit);
   }
 
   @override
@@ -90,14 +78,8 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
     var response = await networkConnection.put(
         '${APIList.closingAccounts}/ ${closingAccountModel.id}', body);
     var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    if (response.statusCode == 200) {
-      return Future.value(unit);
-    }
-    if (response.statusCode == 422) {
-      throw ValidationException(errors: decodedJson['errors']);
-    } else {
-      throw ServerException();
-    }
+    return Future.value(unit);
   }
 }

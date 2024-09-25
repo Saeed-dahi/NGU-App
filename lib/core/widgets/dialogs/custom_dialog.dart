@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ngu_app/app/config/constant.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 
 class ShowDialog {
   static showCustomDialog(

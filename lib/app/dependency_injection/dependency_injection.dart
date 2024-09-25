@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/core/network/network_info.dart';
 import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_account_data_source.dart';
@@ -35,7 +36,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton<ClosingAccountRepository>(() =>
       ClosingAccountRepositoryImpl(
-          closingAccountDataSource: sl(), networkInfo: sl()));
+          closingAccountDataSource: sl(), networkInfo: sl(), apiHelper: sl()));
 
   // DataSource
 
@@ -47,6 +48,8 @@ Future<void> init() async {
       () => NetworkInfoImpl(internetConnectionChecker: sl()));
   sl.registerLazySingleton<NetworkConnection>(
       () => HttpConnection(client: sl()));
+
+  sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
 
   // External
   final sharedPref = await SharedPreferences.getInstance();

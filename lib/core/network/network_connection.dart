@@ -1,5 +1,5 @@
 import 'package:http/http.dart';
-import 'package:ngu_app/app/config/api_list.dart';
+import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:http/http.dart' as http;
 import 'package:ngu_app/app/lang/localization_service.dart';
 
