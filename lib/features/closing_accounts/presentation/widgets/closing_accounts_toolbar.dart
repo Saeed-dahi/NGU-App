@@ -74,7 +74,7 @@ class ClosingAccountsToolbar extends StatelessWidget {
                       context: context,
                       content: BlocProvider(
                         create: (context) => sl<ClosingAccountsBloc>(),
-                        child: CreateClosingAccount(),
+                        child: const CreateClosingAccount(),
                       ),
                       height: 0.3,
                       width: 0.4,
@@ -84,7 +84,11 @@ class ClosingAccountsToolbar extends StatelessWidget {
                 CustomIconButton(
                   icon: Icons.edit,
                   tooltip: 'edit'.tr,
-                  onPressed: () {},
+                  onPressed: () {
+                    context
+                        .read<ClosingAccountsBloc>()
+                        .add(const ToggleEditingEvent(enableEditing: true));
+                  },
                 ),
                 CustomIconButton(
                   icon: Icons.print,

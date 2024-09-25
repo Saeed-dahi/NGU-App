@@ -18,8 +18,6 @@ class ClosingAccounts extends StatefulWidget {
 }
 
 class _ClosingAccountsState extends State<ClosingAccounts> {
-  final bool enableEditing = true;
-
   final formKey = GlobalKey<FormState>();
 
   late TextEditingController idController;
@@ -51,6 +49,7 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
           return _pageBody(
               closingAccount: state.closingAccounts,
               context: context,
+              enableEditing: state.enableEditing,
               errors: {});
         }
         if (state is ErrorClosingAccountsState) {
@@ -67,6 +66,7 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
           return _pageBody(
               closingAccount: _getPreviousFormData(),
               context: context,
+              enableEditing: true,
               errors: state.errors);
         }
         return Center(
@@ -79,6 +79,7 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
   Column _pageBody(
       {required ClosingAccountEntity closingAccount,
       required BuildContext context,
+      required bool enableEditing,
       required Map<String, dynamic> errors}) {
     // init text Controllers
     _updateTextEditingController(closingAccount);
@@ -100,7 +101,7 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
             _onSave(context, closingAccount.id!);
           },
         ),
-        _closingAccountForm(closingAccount, errors),
+        _closingAccountForm(closingAccount, errors, enableEditing),
       ],
     );
   }
@@ -121,7 +122,8 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
     }
   }
 
-  Form _closingAccountForm(ClosingAccountEntity closingAccount, errors) {
+  Form _closingAccountForm(
+      ClosingAccountEntity closingAccount, errors, bool enableEditing) {
     return Form(
       key: formKey,
       child: Column(
@@ -135,16 +137,16 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
-            helper: 'en_name'.tr,
-            controller: enNameController,
-            error: errors['en_name']?.join('\n'),
+            helper: 'ar_name'.tr,
+            controller: arNameController,
+            error: errors['ar_name']?.join('\n'),
           ),
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
-            helper: 'ar_name'.tr,
-            controller: arNameController,
-            error: errors['ar_name']?.join('\n'),
+            helper: 'en_name'.tr,
+            controller: enNameController,
+            error: errors['en_name']?.join('\n'),
           ),
         ],
       ),

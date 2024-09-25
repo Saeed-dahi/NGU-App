@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_stings.dart';
 
 abstract class Failure extends Equatable {
@@ -8,14 +9,16 @@ abstract class Failure extends Equatable {
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure({super.errors = const {'error': AppStings.unKnown}});
+  ServerFailure({Map<String, String>? errors})
+      : super(errors: errors ?? {'error': AppStings.unKnown});
 
   @override
   List<Object?> get props => [errors];
 }
 
 class OfflineFailure extends Failure {
-  const OfflineFailure({super.errors = const {'error': AppStings.unKnown}});
+  OfflineFailure({Map<String, String>? errors})
+      : super(errors: errors ?? {'error': AppStings.noInternetConnection});
 
   @override
   List<Object?> get props => [errors];

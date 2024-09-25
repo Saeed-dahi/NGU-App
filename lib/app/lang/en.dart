@@ -116,4 +116,21 @@ Map<String, String> en = {
   'en': 'English',
   'ar': 'Arabic',
   'language': 'Language',
+
+  // Error Messages
+  'no_route_found': "No Route Found",
+  "no_content": "No Content",
+  "bad_request": "Bad request, try again later",
+  "un_Authorized": "User is unauthorized",
+  "forbidden": "Forbidden request, try again later",
+  "not_found": "Not found, try again later",
+  "internal_server_error": "Something went wrong, try again later",
+  "connection_timeout": "Timeout error, try again later",
+  "cancel": "Request was canceled, try again later",
+  "receive_timeout": "Timeout error, try again later",
+  "send_timeout": "Timeout error, try again later",
+  "cache_error": "Cache error, try again later",
+  "noInternet_connection":
+      "Please check your internet connection and try again",
+  "unKnown": "Something went wrong, try again later",
 };

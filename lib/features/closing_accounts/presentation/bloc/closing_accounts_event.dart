@@ -9,6 +9,12 @@ sealed class ClosingAccountsEvent extends Equatable {
 
 class GetAllClosingAccountsEvent extends ClosingAccountsEvent {}
 
+class ToggleEditingEvent extends ClosingAccountsEvent {
+  final bool enableEditing;
+
+  const ToggleEditingEvent({required this.enableEditing});
+}
+
 class RefreshClosingsAccountsEvent extends ClosingAccountsEvent {}
 
 class ShowClosingsAccountsEvent extends ClosingAccountsEvent {

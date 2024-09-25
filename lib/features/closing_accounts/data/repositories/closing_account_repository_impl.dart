@@ -24,12 +24,12 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
 
         return right(closingAccounts);
       } on ServerException {
-        return left(const ServerFailure());
+        return left(ServerFailure());
       } catch (e) {
         return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
-      return left(const OfflineFailure());
+      return left(OfflineFailure());
     }
   }
 
@@ -46,14 +46,14 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
 
         return right(unit);
       } on ServerException {
-        return left(const ServerFailure());
+        return left(ServerFailure());
       } on ValidationException catch (messages) {
         return left(ValidationFailure(errors: messages.errors));
       } catch (e) {
         return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
-      return left(const OfflineFailure());
+      return left(OfflineFailure());
     }
   }
 
@@ -86,10 +86,10 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
       } on ValidationException catch (messages) {
         return left(ValidationFailure(errors: messages.errors));
       } on ServerException {
-        return left(const ServerFailure());
+        return left(ServerFailure());
       }
     } else {
-      return left(const OfflineFailure());
+      return left(OfflineFailure());
     }
   }
 
@@ -103,12 +103,12 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
 
         return right(closingAccounts);
       } on ServerException {
-        return left(const ServerFailure());
+        return left(ServerFailure());
       } catch (e) {
         return left(ServerFailure(errors: {'error': e.toString()}));
       }
     } else {
-      return left(const OfflineFailure());
+      return left(OfflineFailure());
     }
   }
 }
