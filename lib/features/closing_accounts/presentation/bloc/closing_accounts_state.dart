@@ -19,7 +19,7 @@ class LoadedClosingAccountsState extends ClosingAccountsState {
       {required this.enableEditing, required this.closingAccounts});
 
   @override
-  List<Object> get props => [closingAccounts];
+  List<Object> get props => [closingAccounts, enableEditing];
 }
 
 class ErrorClosingAccountsState extends ClosingAccountsState {

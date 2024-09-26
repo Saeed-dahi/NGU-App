@@ -10,34 +10,34 @@ import 'package:ngu_app/features/closing_accounts/domain/entities/closing_accoun
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_accounts_toolbar.dart';
 
-class ClosingAccounts extends StatefulWidget {
-  const ClosingAccounts({super.key});
+class ClosingAccountRecord extends StatefulWidget {
+  const ClosingAccountRecord({super.key});
 
   @override
-  State<ClosingAccounts> createState() => _ClosingAccountsState();
+  State<ClosingAccountRecord> createState() => _ClosingAccountRecordState();
 }
 
-class _ClosingAccountsState extends State<ClosingAccounts> {
-  final formKey = GlobalKey<FormState>();
+class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
+  final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController idController;
+  late TextEditingController _idController;
 
-  late TextEditingController arNameController;
+  late TextEditingController _arNameController;
 
-  late TextEditingController enNameController;
+  late TextEditingController _enNameController;
 
   @override
   void initState() {
-    enNameController = TextEditingController();
-    idController = TextEditingController();
-    arNameController = TextEditingController();
+    _enNameController = TextEditingController();
+    _idController = TextEditingController();
+    _arNameController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    arNameController.dispose();
-    enNameController.dispose();
+    _arNameController.dispose();
+    _enNameController.dispose();
     super.dispose();
   }
 
@@ -55,7 +55,9 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
         if (state is ErrorClosingAccountsState) {
           return Column(
             children: [
-              ClosingAccountsToolbar(accountId: -1, formKey: formKey),
+              const ClosingAccountsToolbar(
+                accountId: -1,
+              ),
               MessageScreen(
                 text: state.message,
               ),
@@ -95,27 +97,27 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
         ),
         ClosingAccountsToolbar(
           accountId: closingAccount.id!,
-          editing: enableEditing,
-          formKey: formKey,
+          enableEditing: enableEditing,
           onSave: () {
             _onSave(context, closingAccount.id!);
           },
         ),
-        _closingAccountForm(closingAccount, errors, enableEditing),
+        Expanded(
+            child: _closingAccountForm(closingAccount, errors, enableEditing)),
       ],
     );
   }
 
   void _onSave(BuildContext context, int accountId) {
-    if (formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       context.read<ClosingAccountsBloc>().add(
             UpdateClosingAccountEvent(
               closingAccountEntity: ClosingAccountEntity(
                 // params
                 id: accountId,
                 //
-                arName: arNameController.text,
-                enName: enNameController.text,
+                arName: _arNameController.text,
+                enName: _enNameController.text,
               ),
             ),
           );
@@ -125,27 +127,27 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
   Form _closingAccountForm(
       ClosingAccountEntity closingAccount, errors, bool enableEditing) {
     return Form(
-      key: formKey,
-      child: Column(
+      key: _formKey,
+      child: ListView(
         children: [
           CustomInputField(
             inputType: TextInputType.name,
             enabled: false,
             helper: 'code'.tr,
-            controller: idController,
+            controller: _idController,
           ),
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
             helper: 'ar_name'.tr,
-            controller: arNameController,
+            controller: _arNameController,
             error: errors['ar_name']?.join('\n'),
           ),
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
             helper: 'en_name'.tr,
-            controller: enNameController,
+            controller: _enNameController,
             error: errors['en_name']?.join('\n'),
           ),
         ],
@@ -154,16 +156,16 @@ class _ClosingAccountsState extends State<ClosingAccounts> {
   }
 
   void _updateTextEditingController(ClosingAccountEntity closingAccount) {
-    idController = TextEditingController(text: closingAccount.id.toString());
-    enNameController = TextEditingController(text: closingAccount.enName);
-    arNameController = TextEditingController(text: closingAccount.arName);
+    _idController = TextEditingController(text: closingAccount.id.toString());
+    _enNameController = TextEditingController(text: closingAccount.enName);
+    _arNameController = TextEditingController(text: closingAccount.arName);
   }
 
   ClosingAccountEntity _getPreviousFormData() {
     return ClosingAccountEntity(
-      id: int.tryParse(idController.text),
-      arName: arNameController.text,
-      enName: enNameController.text,
+      id: int.tryParse(_idController.text),
+      arName: _arNameController.text,
+      enName: _enNameController.text,
     );
   }
 }

@@ -9,7 +9,7 @@ class CustomDropdown extends StatelessWidget {
   final String prefix;
   final String suffix;
   final String helper;
-  final String value;
+  final String? value;
   final bool enabled;
   final bool required;
   final bool readOnly;
@@ -23,7 +23,7 @@ class CustomDropdown extends StatelessWidget {
       this.prefix = '',
       this.suffix = '',
       this.helper = '',
-      this.value = '',
+      this.value,
       this.enabled = true,
       this.required = true,
       this.readOnly = false,
@@ -32,41 +32,45 @@ class CustomDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField(
-      borderRadius: const BorderRadius.all(Radius.circular(12)),
-      items: dropdownValue.map(
-        (item) {
-          return DropdownMenuItem(
-            value: item,
-            enabled: enabled,
-            child: Text(
-              item.tr.toString(),
-              style: TextStyle(color: enabled ? AppColors.black : Colors.grey),
-            ),
-          );
-        },
-      ).toList(),
-      value: value == '' ? dropdownValue[0].toString() : value.toString(),
-      focusColor: AppColors.transparent,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        label: Text(label),
-        hintText: hint,
-        prefixText: prefix,
-        suffixText: suffix,
-        helperText: helper,
-        enabled: enabled,
+    return Padding(
+      padding: const EdgeInsets.all(Dimensions.primaryPadding),
+      child: DropdownButtonFormField(
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+        items: dropdownValue.map(
+          (item) {
+            return DropdownMenuItem(
+              value: item,
+              enabled: enabled,
+              child: Text(
+                item.tr.toString(),
+                style:
+                    TextStyle(color: enabled ? AppColors.black : Colors.grey),
+              ),
+            );
+          },
+        ).toList(),
+        value: value,
+        focusColor: AppColors.transparent,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          label: Text(label),
+          hintText: hint,
+          prefixText: prefix,
+          suffixText: suffix,
+          helperText: helper,
+          enabled: enabled,
 
-        // icon: Text(helper),
-        hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),
+          // icon: Text(helper),
+          hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),
+        ),
+        onChanged: enabled && !readOnly ? onChanged : null,
+        validator: (value) {
+          if (required && enabled) {}
+          return null;
+        },
       ),
-      onChanged: enabled && !readOnly ? onChanged : null,
-      validator: (value) {
-        if (required && enabled) {}
-        return null;
-      },
     );
   }
 }

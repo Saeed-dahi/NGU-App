@@ -22,13 +22,13 @@ class ClosingAccountsBloc
       required this.createClosingAccountUseCase,
       required this.updateClosingAccountUseCase})
       : super(ClosingAccountsInitial()) {
-    on<ShowClosingsAccountsEvent>(_onShowClosingsAccounts);
+    on<ShowClosingsAccountsEvent>(_onShowClosingAccount);
     on<CreateClosingAccountEvent>(_onCreateClosingAccount);
     on<UpdateClosingAccountEvent>(_onUpdateClosingAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
   }
 
-  Future<void> _onShowClosingsAccounts(ShowClosingsAccountsEvent event,
+  Future<void> _onShowClosingAccount(ShowClosingsAccountsEvent event,
       Emitter<ClosingAccountsState> emit) async {
     await _handleShowClosingAccount(emit, event);
   }
@@ -90,10 +90,7 @@ class ClosingAccountsBloc
     final currentState = state as LoadedClosingAccountsState;
 
     emit(LoadedClosingAccountsState(
-      closingAccounts: ClosingAccountEntity(
-          id: currentState.closingAccounts.id,
-          arName: currentState.closingAccounts.arName,
-          enName: currentState.closingAccounts.enName),
+      closingAccounts: currentState.closingAccounts,
       enableEditing: event.enableEditing,
     ));
   }

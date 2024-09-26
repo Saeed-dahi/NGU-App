@@ -5,5 +5,6 @@ class APIList {
   static const String register = "register";
   static const String closingAccounts = "closing-account";
   static const String account = "account";
+  static const String getSuggestionCode = "get-suggestion-code";
   static const String accountInformation = "account-information";
 }

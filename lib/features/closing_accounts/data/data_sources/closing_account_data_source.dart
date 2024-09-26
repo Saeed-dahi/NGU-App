@@ -5,7 +5,6 @@ import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/closing_accounts/data/models/closing_account_model.dart';
-import 'package:http/http.dart' as http;
 
 abstract class ClosingAccountDataSource {
   Future<List<ClosingAccountModel>> getAllClosingAccounts();
@@ -16,10 +15,8 @@ abstract class ClosingAccountDataSource {
 }
 
 class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
-  final http.Client client;
   final NetworkConnection networkConnection;
   ClosingAccountDataSourceImpl({
-    required this.client,
     required this.networkConnection,
   });
 
@@ -65,7 +62,7 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    return Future.value(unit);
+    return unit;
   }
 
   @override
@@ -80,6 +77,6 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
     var decodedJson = jsonDecode(response.body);
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    return Future.value(unit);
+    return unit;
   }
 }

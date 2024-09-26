@@ -11,104 +11,119 @@ import 'package:ngu_app/features/closing_accounts/presentation/pages/create_clos
 
 class ClosingAccountsToolbar extends StatelessWidget {
   final int accountId;
-  final bool editing;
+  final bool enableEditing;
   final VoidCallback? onSave;
-  final GlobalKey formKey;
-  const ClosingAccountsToolbar(
-      {super.key,
-      required this.accountId,
-      this.editing = false,
-      this.onSave,
-      required this.formKey});
+
+  const ClosingAccountsToolbar({
+    super.key,
+    required this.accountId,
+    this.enableEditing = false,
+    this.onSave,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Visibility(
-        visible: !editing,
-        replacement: CustomIconButton(
-            icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
+        visible: !enableEditing,
+        replacement: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomIconButton(
+                icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
+            CustomIconButton(
+                icon: Icons.close,
+                tooltip: 'close'.tr,
+                onPressed: () => _close(context)),
+          ],
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Wrap(
-              children: [
-                CustomIconButton(
-                  icon: Icons.fast_rewind_rounded,
-                  tooltip: 'first'.tr,
-                  onPressed: () {
-                    _onPressed(context, accountId, DirectionType.first.name);
-                  },
-                ),
-                CustomIconButton(
-                  icon: Icons.arrow_left_rounded,
-                  tooltip: 'previous'.tr,
-                  onPressed: () {
-                    _onPressed(context, accountId, DirectionType.previous.name);
-                  },
-                ),
-                CustomIconButton(
-                  icon: Icons.arrow_right_rounded,
-                  tooltip: 'next'.tr,
-                  onPressed: () {
-                    _onPressed(context, accountId, DirectionType.next.name);
-                  },
-                ),
-                CustomIconButton(
-                  icon: Icons.fast_forward_rounded,
-                  tooltip: 'last'.tr,
-                  onPressed: () {
-                    _onPressed(context, accountId, DirectionType.last.name);
-                  },
-                ),
-              ],
-            ),
-            Wrap(
-              children: [
-                CustomIconButton(
-                  icon: Icons.add,
-                  tooltip: 'add'.tr,
-                  onPressed: () {
-                    ShowDialog.showCustomDialog(
-                      context: context,
-                      content: BlocProvider(
-                        create: (context) => sl<ClosingAccountsBloc>(),
-                        child: const CreateClosingAccount(),
-                      ),
-                      height: 0.3,
-                      width: 0.4,
-                    );
-                  },
-                ),
-                CustomIconButton(
-                  icon: Icons.edit,
-                  tooltip: 'edit'.tr,
-                  onPressed: () {
-                    context
-                        .read<ClosingAccountsBloc>()
-                        .add(const ToggleEditingEvent(enableEditing: true));
-                  },
-                ),
-                CustomIconButton(
-                  icon: Icons.print,
-                  tooltip: 'print'.tr,
-                  onPressed: () {},
-                ),
-              ],
-            ),
+            _navigateActions(context),
+            _crudActions(context),
           ],
         ),
       ),
     );
   }
 
-  void _onPressed(BuildContext context, int accountId, String direction) {
+  Wrap _crudActions(BuildContext context) {
+    return Wrap(
+      children: [
+        CustomIconButton(
+          icon: Icons.add,
+          tooltip: 'add'.tr,
+          onPressed: () {
+            ShowDialog.showCustomDialog(
+              context: context,
+              content: BlocProvider(
+                create: (context) => sl<ClosingAccountsBloc>(),
+                child: const CreateClosingAccount(),
+              ),
+              height: 0.3,
+              width: 0.4,
+            );
+          },
+        ),
+        CustomIconButton(
+          icon: Icons.edit,
+          tooltip: 'edit'.tr,
+          onPressed: () {
+            context
+                .read<ClosingAccountsBloc>()
+                .add(const ToggleEditingEvent(enableEditing: true));
+          },
+        ),
+        CustomIconButton(
+          icon: Icons.print,
+          tooltip: 'print'.tr,
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
+  Wrap _navigateActions(BuildContext context) {
+    return Wrap(
+      children: [
+        CustomIconButton(
+            icon: Icons.fast_rewind_rounded,
+            tooltip: 'first'.tr,
+            onPressed: () =>
+                _navigate(context, accountId, DirectionType.first.name)),
+        CustomIconButton(
+            icon: Icons.arrow_left_rounded,
+            tooltip: 'previous'.tr,
+            onPressed: () =>
+                _navigate(context, accountId, DirectionType.previous.name)),
+        CustomIconButton(
+            icon: Icons.arrow_right_rounded,
+            tooltip: 'next'.tr,
+            onPressed: () =>
+                _navigate(context, accountId, DirectionType.next.name)),
+        CustomIconButton(
+            icon: Icons.fast_forward_rounded,
+            tooltip: 'last'.tr,
+            onPressed: () =>
+                _navigate(context, accountId, DirectionType.last.name)),
+      ],
+    );
+  }
+
+  void _navigate(BuildContext context, int accountId, String direction) {
     return context.read<ClosingAccountsBloc>().add(
           ShowClosingsAccountsEvent(
             accountId: accountId,
             direction: direction,
           ),
         );
+  }
+
+  void _close(BuildContext context) {
+    context
+        .read<ClosingAccountsBloc>()
+        .add(const ToggleEditingEvent(enableEditing: false));
   }
 }

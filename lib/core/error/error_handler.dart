@@ -11,7 +11,8 @@ class ErrorHandler extends Equatable {
       case ResponseCode.errorValidation:
         throw ValidationException(errors: responseBody['errors']);
       case ResponseCode.badRequest:
-        throw ServerException(error: AppStrings.badRequest.tr);
+        throw ServerException(
+            error: responseBody['message'] ?? AppStrings.badRequest.tr);
       case ResponseCode.unAuthorized:
         throw ServerException(error: AppStrings.unAuthorized.tr);
       case ResponseCode.forbidden:

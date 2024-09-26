@@ -8,11 +8,12 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_title.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
+import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
-import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_accounts.dart';
+import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class AccountsSection extends StatelessWidget {
@@ -36,7 +37,13 @@ class AccountsSection extends StatelessWidget {
                     title: 'account_record'.tr,
                     icon: Icons.badge_outlined,
                     onTap: () => ShowDialog.showCustomDialog(
-                        context: context, content: const AccountRecord()),
+                        context: context,
+                        height: 0.6,
+                        content: BlocProvider(
+                          create: (context) => sl<AccountsBloc>()
+                            ..add(const ShowAccountsEvent(accountId: '1')),
+                          child: const AccountRecord(),
+                        )),
                   ),
                   BasicListTile(
                     title: 'accounts_tree'.tr,
@@ -97,7 +104,7 @@ class AccountsSection extends StatelessWidget {
                           create: (context) => sl<ClosingAccountsBloc>()
                             ..add(
                                 const ShowClosingsAccountsEvent(accountId: 1)),
-                          child: const ClosingAccounts(),
+                          child: const ClosingAccountRecord(),
                         ),
                         height: 0.4),
                   ),
