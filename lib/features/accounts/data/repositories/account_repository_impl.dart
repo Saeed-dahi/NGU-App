@@ -56,6 +56,7 @@ class AccountRepositoryImpl implements AccountRepository {
         accountNature: accountEntity.accountNature,
         accountCategory: accountEntity.accountCategory,
         balance: accountEntity.balance,
+        closingAccountId: accountEntity.closingAccountId,
         parentId: accountEntity.parentId,
         createdAt: accountEntity.createdAt,
         updatedAt: accountEntity.updatedAt);

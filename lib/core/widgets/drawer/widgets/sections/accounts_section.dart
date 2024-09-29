@@ -39,9 +39,18 @@ class AccountsSection extends StatelessWidget {
                     onTap: () => ShowDialog.showCustomDialog(
                         context: context,
                         height: 0.6,
-                        content: BlocProvider(
-                          create: (context) => sl<AccountsBloc>()
-                            ..add(const ShowAccountsEvent(accountId: 1)),
+                        content: MultiBlocProvider(
+                          providers: [
+                            BlocProvider(
+                              create: (context) => sl<AccountsBloc>()
+                                // TODO: fix sending default value
+                                ..add(const ShowAccountsEvent(accountId: 1)),
+                            ),
+                            BlocProvider(
+                              create: (context) => sl<ClosingAccountsBloc>()
+                                ..add(GetAllClosingAccountsEvent()),
+                            ),
+                          ],
                           child: const AccountRecord(),
                         )),
                   ),

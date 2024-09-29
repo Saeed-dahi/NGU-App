@@ -30,7 +30,8 @@ Future<void> init() async {
   sl.registerFactory(() => ClosingAccountsBloc(
       showClosingAccountUseCase: sl(),
       createClosingAccountUseCase: sl(),
-      updateClosingAccountUseCase: sl()));
+      updateClosingAccountUseCase: sl(),
+      getAllClosingAccountsUseCase: sl()));
   // UseCases
   sl.registerLazySingleton(
       () => GetAllClosingAccountsUseCase(closingAccountRepository: sl()));

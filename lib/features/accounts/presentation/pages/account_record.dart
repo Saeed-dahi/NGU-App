@@ -11,6 +11,8 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_toolbar.dart';
+import 'package:ngu_app/features/accounts/presentation/widgets/closing_account_drop_down.dart';
+import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 
 class AccountRecord extends StatefulWidget {
   const AccountRecord({super.key});
@@ -26,6 +28,7 @@ class _AccountRecordState extends State<AccountRecord> {
   late TextEditingController _arNameController;
   late TextEditingController _enNameController;
   late TextEditingController _codeController;
+  int? _closingAccountId;
   String? _accountType;
   String? _accountNature;
   String? _accountCategory;
@@ -167,13 +170,22 @@ class _AccountRecordState extends State<AccountRecord> {
             controller: TextEditingController(text: account.balance.toString()),
             helper: 'balance'.tr,
           ),
-          CustomDropdown(
-            dropdownValue: getEnumValues(AccountType.values),
-            helper: 'closing_account_id'.tr,
-            value: account.accountType,
-            enabled: _enableEditing,
-            onChanged: (value) {
-              // _accountType = value!;
+          BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
+            builder: (context, state) {
+              if (state is LoadedAllClosingAccountsState) {
+                return ClosingAccountDropDown(
+                  closingAccounts: state.closingAccounts,
+                  enableEditing: _enableEditing,
+                  value: account.closingAccountId!,
+                  onChanged: (closingAccountId) {
+                    _closingAccountId = closingAccountId;
+                  },
+                );
+              }
+              return CustomInputField(
+                inputType: TextInputType.text,
+                enabled: false,
+              );
             },
           ),
           CustomDropdown(
@@ -223,6 +235,7 @@ class _AccountRecordState extends State<AccountRecord> {
       code: _codeController.text,
       arName: _arNameController.text,
       parentId: accountEntity.parentId,
+      closingAccountId: _closingAccountId ?? accountEntity.closingAccountId,
       enName: _enNameController.text,
       accountType: _accountType ?? accountEntity.accountType,
       accountNature: _accountNature ?? accountEntity.accountNature,

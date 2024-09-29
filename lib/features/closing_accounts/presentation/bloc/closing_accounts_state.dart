@@ -22,6 +22,15 @@ class LoadedClosingAccountsState extends ClosingAccountsState {
   List<Object> get props => [closingAccount, enableEditing];
 }
 
+class LoadedAllClosingAccountsState extends ClosingAccountsState {
+  final List<ClosingAccountEntity> closingAccounts;
+
+  const LoadedAllClosingAccountsState({required this.closingAccounts});
+
+  @override
+  List<Object> get props => [closingAccounts];
+}
+
 class ErrorClosingAccountsState extends ClosingAccountsState {
   final String message;
 

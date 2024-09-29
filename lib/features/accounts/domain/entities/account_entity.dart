@@ -9,6 +9,7 @@ class AccountEntity extends Equatable {
   final String? accountNature;
   final String? accountCategory;
   final double? balance;
+  final int? closingAccountId;
   final int? parentId;
   final String? createdAt;
   final String? updatedAt;
@@ -22,6 +23,7 @@ class AccountEntity extends Equatable {
       this.accountNature,
       this.accountCategory,
       this.balance,
+      this.closingAccountId,
       this.parentId,
       this.createdAt,
       this.updatedAt});
@@ -36,6 +38,7 @@ class AccountEntity extends Equatable {
         accountNature,
         accountCategory,
         balance,
+        closingAccountId,
         parentId,
         createdAt,
         updatedAt

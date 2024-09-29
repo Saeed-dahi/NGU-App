@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
+
 import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_entity.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/add_new_closing_account_use_case.dart';
+import 'package:ngu_app/features/closing_accounts/domain/use_cases/get_all_closing_accounts_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
 part 'closing_accounts_event.dart';
@@ -16,15 +19,18 @@ class ClosingAccountsBloc
   final ShowClosingAccountUseCase showClosingAccountUseCase;
   final CreateClosingAccountUseCase createClosingAccountUseCase;
   final UpdateClosingAccountUseCase updateClosingAccountUseCase;
+  final GetAllClosingAccountsUseCase getAllClosingAccountsUseCase;
 
   ClosingAccountsBloc(
       {required this.showClosingAccountUseCase,
       required this.createClosingAccountUseCase,
-      required this.updateClosingAccountUseCase})
+      required this.updateClosingAccountUseCase,
+      required this.getAllClosingAccountsUseCase})
       : super(ClosingAccountsInitial()) {
     on<ShowClosingsAccountsEvent>(_onShowClosingAccount);
     on<CreateClosingAccountEvent>(_onCreateClosingAccount);
     on<UpdateClosingAccountEvent>(_onUpdateClosingAccount);
+    on<GetAllClosingAccountsEvent>(_onGetAllClosingAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
   }
 
@@ -89,6 +95,26 @@ class ClosingAccountsBloc
         emit(LoadedClosingAccountsState(
             enableEditing: false, closingAccount: event.closingAccountEntity));
         ShowSnackBar.showSuccessSnackbar(message: 'success'.tr);
+      },
+    );
+  }
+
+  Future<void> _onGetAllClosingAccount(GetAllClosingAccountsEvent event,
+      Emitter<ClosingAccountsState> emit) async {
+    emit(LoadingClosingAccountsState());
+
+    final result = await getAllClosingAccountsUseCase();
+
+    result.fold(
+      (failure) {
+        emit(ErrorClosingAccountsState(message: failure.errors['error']));
+      },
+      (data) {
+      
+
+        emit(
+          LoadedAllClosingAccountsState(closingAccounts: data),
+        );
       },
     );
   }

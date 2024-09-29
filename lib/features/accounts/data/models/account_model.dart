@@ -12,7 +12,8 @@ class AccountModel extends AccountEntity {
       required super.balance,
       required super.parentId,
       required super.createdAt,
-      required super.updatedAt});
+      required super.updatedAt,
+      required super.closingAccountId});
 
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
@@ -24,6 +25,7 @@ class AccountModel extends AccountEntity {
         accountNature: json['account_nature'],
         accountCategory: json['account_category'],
         balance: double.tryParse(json['balance']?.toString() ?? '0.0'),
+        closingAccountId: json['closing_account_id'],
         parentId: json['parent_id'],
         createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString());
@@ -38,7 +40,8 @@ class AccountModel extends AccountEntity {
       'account_type': accountType,
       if (accountNature != null) 'account_nature': accountNature,
       if (accountCategory != null) 'account_category': accountCategory,
-      // if (balance != null) 'balance': balance,
+      if (closingAccountId != null)
+        'closing_account_id': closingAccountId.toString(),
       if (parentId != null) 'parent_id': parentId.toString(),
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
