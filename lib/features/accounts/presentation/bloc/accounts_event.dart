@@ -10,7 +10,7 @@ sealed class AccountsEvent extends Equatable {
 class GetAllAccountsEvent extends AccountsEvent {}
 
 class ShowAccountsEvent extends AccountsEvent {
-  final String accountId;
+  final int accountId;
   final String? direction;
 
   const ShowAccountsEvent({
@@ -40,7 +40,7 @@ class ToggleEditingEvent extends AccountsEvent {
 }
 
 class GetSuggestionCodeEvent extends AccountsEvent {
-  final String parentId;
+  final int parentId;
 
   const GetSuggestionCodeEvent({required this.parentId});
 }

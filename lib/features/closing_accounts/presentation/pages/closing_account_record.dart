@@ -68,7 +68,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
         if (state is ValidationClosingAccountState) {
           _errors = state.errors;
           return _pageBody(
-            closingAccount: _getPreviousFormData(),
+            closingAccount: _getFormData(),
             context: context,
             enableEditing: true,
           );
@@ -112,15 +112,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
   void _onSave(BuildContext context, int accountId) {
     if (_formKey.currentState!.validate()) {
       context.read<ClosingAccountsBloc>().add(
-            UpdateClosingAccountEvent(
-              closingAccountEntity: ClosingAccountEntity(
-                // params
-                id: accountId,
-                //
-                arName: _arNameController.text,
-                enName: _enNameController.text,
-              ),
-            ),
+            UpdateClosingAccountEvent(closingAccountEntity: _getFormData()),
           );
     }
   }
@@ -162,7 +154,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
     _arNameController = TextEditingController(text: closingAccount.arName);
   }
 
-  ClosingAccountEntity _getPreviousFormData() {
+  ClosingAccountEntity _getFormData() {
     return ClosingAccountEntity(
       id: _closingAccountEntity.id,
       arName: _arNameController.text,

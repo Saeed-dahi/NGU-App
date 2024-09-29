@@ -9,7 +9,7 @@ import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/create_account.dart';
 
 class AccountsToolbar extends StatelessWidget {
-  final String accountId;
+  final int accountId;
   final bool enableEditing;
   final VoidCallback? onSave;
   const AccountsToolbar({
@@ -122,7 +122,7 @@ class AccountsToolbar extends StatelessWidget {
     );
   }
 
-  void _navigate(BuildContext context, String accountId, String direction) {
+  void _navigate(BuildContext context, int accountId, String direction) {
     return context.read<AccountsBloc>().add(
           ShowAccountsEvent(
             accountId: accountId,

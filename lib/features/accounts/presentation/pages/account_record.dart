@@ -53,7 +53,8 @@ class _AccountRecordState extends State<AccountRecord> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AccountsBloc, AccountsState>(
+    return BlocConsumer<AccountsBloc, AccountsState>(
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is LoadedAccountsState) {
           _enableEditing = state.enableEditing;
@@ -64,7 +65,7 @@ class _AccountRecordState extends State<AccountRecord> {
           return Column(
             children: [
               const AccountsToolbar(
-                accountId: '',
+                accountId: 1,
                 enableEditing: false,
               ),
               MessageScreen(
@@ -76,7 +77,7 @@ class _AccountRecordState extends State<AccountRecord> {
         if (state is ValidationAccountState) {
           _errors = state.errors;
           // with errors
-          return _pageBody(context, _getPreviousFormData());
+          return _pageBody(context, _getFormData());
         }
         return Center(
           child: Loaders.loading(),
@@ -210,26 +211,18 @@ class _AccountRecordState extends State<AccountRecord> {
   void _onSave(BuildContext context, AccountEntity account) {
     if (_formKey.currentState!.validate()) {
       context.read<AccountsBloc>().add(
-            UpdateAccountEvent(
-                accountEntity: AccountEntity(
-                    id: account.id,
-                    code: _codeController.text,
-                    arName: _arNameController.text,
-                    enName: _enNameController.text,
-                    parentId: account.parentId,
-                    accountNature: _accountNature,
-                    accountCategory: _accountCategory,
-                    accountType: _accountType ?? account.accountType)),
+            UpdateAccountEvent(accountEntity: _getFormData()),
           );
     }
   }
 
-  AccountEntity _getPreviousFormData() {
+  AccountEntity _getFormData() {
     return AccountEntity(
       id: accountEntity.id,
       balance: accountEntity.balance,
       code: _codeController.text,
       arName: _arNameController.text,
+      parentId: accountEntity.parentId,
       enName: _enNameController.text,
       accountType: _accountType ?? accountEntity.accountType,
       accountNature: _accountNature ?? accountEntity.accountNature,

@@ -7,7 +7,7 @@ class GetSuggestionCodeUseCase {
 
   GetSuggestionCodeUseCase({required this.accountRepository});
 
-  Future<Either<Failure, String>> call(String parentId) async {
+  Future<Either<Failure, String>> call(int parentId) async {
     return await accountRepository.getSuggestionCode(parentId);
   }
 }

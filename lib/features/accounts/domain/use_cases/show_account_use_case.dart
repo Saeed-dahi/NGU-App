@@ -9,7 +9,7 @@ class ShowAccountUseCase {
   ShowAccountUseCase({required this.accountRepository});
 
   Future<Either<Failure, AccountEntity>> call(
-      String accountId, String? direction) async {
+      int accountId, String? direction) async {
     return await accountRepository.showAccount(accountId, direction);
   }
 }

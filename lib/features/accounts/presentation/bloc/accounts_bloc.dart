@@ -79,6 +79,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
   _onUpdateAccount(
       UpdateAccountEvent event, Emitter<AccountsState> emit) async {
+    emit(LoadingAccountsState());
     final result = await updateAccountUseCase(event.accountEntity);
     result.fold((failure) {
       if (failure is ValidationFailure) {
@@ -87,7 +88,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
         emit(ErrorAccountsState(message: failure.errors['error']));
       }
     }, (_) {
-      Get.back();
+      emit(LoadedAccountsState(
+          enableEditing: false, accountEntity: event.accountEntity));
       ShowSnackBar.showSuccessSnackbar(message: 'success'.tr);
     });
   }

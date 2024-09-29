@@ -30,23 +30,6 @@ class ClosingAccountsBloc
 
   Future<void> _onShowClosingAccount(ShowClosingsAccountsEvent event,
       Emitter<ClosingAccountsState> emit) async {
-    await _handleShowClosingAccount(emit, event);
-  }
-
-  Future<void> _onCreateClosingAccount(CreateClosingAccountEvent event,
-      Emitter<ClosingAccountsState> emit) async {
-    await _handleCreateOrUpdateEventResult(
-        emit, event, createClosingAccountUseCase);
-  }
-
-  Future<void> _onUpdateClosingAccount(UpdateClosingAccountEvent event,
-      Emitter<ClosingAccountsState> emit) async {
-    await _handleCreateOrUpdateEventResult(
-        emit, event, updateClosingAccountUseCase);
-  }
-
-  Future<void> _handleShowClosingAccount(Emitter<ClosingAccountsState> emit,
-      ShowClosingsAccountsEvent event) async {
     emit(LoadingClosingAccountsState());
 
     final result =
@@ -63,12 +46,13 @@ class ClosingAccountsBloc
     );
   }
 
-  Future<void> _handleCreateOrUpdateEventResult(
-      Emitter<ClosingAccountsState> emit, event, function) async {
+  Future<void> _onCreateClosingAccount(CreateClosingAccountEvent event,
+      Emitter<ClosingAccountsState> emit) async {
     emit(
       LoadingClosingAccountsState(),
     );
-    final result = await function(event.closingAccountEntity);
+    final result =
+        await createClosingAccountUseCase(event.closingAccountEntity);
 
     result.fold(
       (failure) {
@@ -80,6 +64,30 @@ class ClosingAccountsBloc
       },
       (_) {
         Get.back();
+        ShowSnackBar.showSuccessSnackbar(message: 'success'.tr);
+      },
+    );
+  }
+
+  Future<void> _onUpdateClosingAccount(UpdateClosingAccountEvent event,
+      Emitter<ClosingAccountsState> emit) async {
+    emit(
+      LoadingClosingAccountsState(),
+    );
+    final result =
+        await updateClosingAccountUseCase(event.closingAccountEntity);
+
+    result.fold(
+      (failure) {
+        if (failure is ValidationFailure) {
+          emit(ValidationClosingAccountState(errors: failure.errors));
+        } else {
+          emit(ErrorClosingAccountsState(message: failure.errors['error']));
+        }
+      },
+      (_) {
+        emit(LoadedClosingAccountsState(
+            enableEditing: false, closingAccount: event.closingAccountEntity));
         ShowSnackBar.showSuccessSnackbar(message: 'success'.tr);
       },
     );

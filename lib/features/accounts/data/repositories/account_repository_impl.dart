@@ -21,7 +21,7 @@ class AccountRepositoryImpl implements AccountRepository {
 
   @override
   Future<Either<Failure, AccountEntity>> showAccount(
-      String id, String? direction) async {
+      int id, String? direction) async {
     return await apiHelper
         .safeApiCall(() => accountDataSource.showAccount(id, direction));
   }
@@ -41,7 +41,7 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getSuggestionCode(String parentId) async {
+  Future<Either<Failure, String>> getSuggestionCode(int parentId) async {
     return await apiHelper
         .safeApiCall(() => accountDataSource.getSuggestionCode(parentId));
   }

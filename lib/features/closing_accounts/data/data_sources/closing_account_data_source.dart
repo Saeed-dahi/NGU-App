@@ -53,11 +53,8 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
   @override
   Future<Unit> createClosingAccount(
       ClosingAccountModel closingAccountModel) async {
-    final body = {
-      'ar_name': closingAccountModel.arName,
-      'en_name': closingAccountModel.enName,
-    };
-    var response = await networkConnection.post(APIList.closingAccounts, body);
+    var response = await networkConnection.post(
+        APIList.closingAccounts, closingAccountModel.toJson());
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -68,12 +65,9 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
   @override
   Future<Unit> updateClosingAccounts(
       ClosingAccountModel closingAccountModel) async {
-    final body = {
-      'ar_name': closingAccountModel.arName,
-      'en_name': closingAccountModel.enName,
-    };
     var response = await networkConnection.put(
-        '${APIList.closingAccounts}/ ${closingAccountModel.id}', body);
+        '${APIList.closingAccounts}/ ${closingAccountModel.id}',
+        closingAccountModel.toJson());
     var decodedJson = jsonDecode(response.body);
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 

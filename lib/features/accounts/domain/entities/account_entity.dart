@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class AccountEntity extends Equatable {
-  final String? id;
+  final int? id;
   final String code;
   final String arName;
   final String enName;
@@ -9,7 +9,7 @@ class AccountEntity extends Equatable {
   final String? accountNature;
   final String? accountCategory;
   final double? balance;
-  final String? parentId;
+  final int? parentId;
   final String? createdAt;
   final String? updatedAt;
 

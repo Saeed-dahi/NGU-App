@@ -8,10 +8,10 @@ import 'package:ngu_app/features/accounts/data/models/account_model.dart';
 
 abstract class AccountDataSource {
   Future<List<AccountModel>> getAllAccounts();
-  Future<AccountModel> showAccount(String id, String? direction);
+  Future<AccountModel> showAccount(int id, String? direction);
   Future<Unit> createAccount(AccountModel accountModel);
   Future<Unit> updateAccount(AccountModel accountModel);
-  Future<String> getSuggestionCode(String parentId);
+  Future<String> getSuggestionCode(int parentId);
 }
 
 class AccountDataSourceWithHttp implements AccountDataSource {
@@ -49,7 +49,7 @@ class AccountDataSourceWithHttp implements AccountDataSource {
   }
 
   @override
-  Future<AccountModel> showAccount(String id, String? direction) async {
+  Future<AccountModel> showAccount(int id, String? direction) async {
     final response = await networkConnection
         .get('${APIList.account}/$id', {'direction': direction});
     var decodedJson = jsonDecode(response.body);
@@ -62,9 +62,9 @@ class AccountDataSourceWithHttp implements AccountDataSource {
   }
 
   @override
-  Future<String> getSuggestionCode(String parentId) async {
+  Future<String> getSuggestionCode(int parentId) async {
     final response = await networkConnection
-        .get(APIList.getSuggestionCode, {'parent_id': parentId});
+        .get(APIList.getSuggestionCode, {'parent_id': parentId.toString()});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

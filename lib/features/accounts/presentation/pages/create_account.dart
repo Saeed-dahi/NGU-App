@@ -14,7 +14,7 @@ import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
 
 class CreateAccount extends StatefulWidget {
-  final String parentAccountId;
+  final int parentAccountId;
   const CreateAccount({super.key, required this.parentAccountId});
 
   @override

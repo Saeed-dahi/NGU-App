@@ -41,7 +41,7 @@ class AccountsSection extends StatelessWidget {
                         height: 0.6,
                         content: BlocProvider(
                           create: (context) => sl<AccountsBloc>()
-                            ..add(const ShowAccountsEvent(accountId: '1')),
+                            ..add(const ShowAccountsEvent(accountId: 1)),
                           child: const AccountRecord(),
                         )),
                   ),

@@ -4,11 +4,10 @@ import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 
 abstract class AccountRepository {
   Future<Either<Failure, List<AccountEntity>>> getAllAccounts();
-  Future<Either<Failure, AccountEntity>> showAccount(
-      String id, String? direction);
+  Future<Either<Failure, AccountEntity>> showAccount(int id, String? direction);
 
   Future<Either<Failure, Unit>> createAccount(AccountEntity accountEntity);
   Future<Either<Failure, Unit>> updateAccount(AccountEntity accountEntity);
 
-  Future<Either<Failure, String>> getSuggestionCode(String parentId);
+  Future<Either<Failure, String>> getSuggestionCode(int parentId);
 }

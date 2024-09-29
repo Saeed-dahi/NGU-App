@@ -16,7 +16,7 @@ class AccountModel extends AccountEntity {
 
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
-        id: json['id']?.toString(),
+        id: json['id'],
         code: json['code'],
         arName: json['ar_name'],
         enName: json['en_name'],
@@ -24,22 +24,22 @@ class AccountModel extends AccountEntity {
         accountNature: json['account_nature'],
         accountCategory: json['account_category'],
         balance: double.tryParse(json['balance']?.toString() ?? '0.0'),
-        parentId: json['parent_id']?.toString(),
+        parentId: json['parent_id'],
         createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString());
   }
 
   Map<String, dynamic> toJson() {
     return {
-      if (id != null) 'id': id,
+      if (id != null) 'id': id.toString(),
       'code': code,
       'ar_name': arName,
       'en_name': enName,
       'account_type': accountType,
       if (accountNature != null) 'account_nature': accountNature,
       if (accountCategory != null) 'account_category': accountCategory,
-      if (balance != null) 'balance': balance,
-      if (parentId != null) 'parent_id': parentId,
+      // if (balance != null) 'balance': balance,
+      if (parentId != null) 'parent_id': parentId.toString(),
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     };
