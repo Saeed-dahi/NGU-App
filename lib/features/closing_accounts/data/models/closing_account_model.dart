@@ -19,11 +19,11 @@ class ClosingAccountModel extends ClosingAccountEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'ar_name': arName,
       'en_name': enName,
-      'created_at': createdAt,
-      'updated_at': updatedAt,
+      if (createdAt != null) 'created_at': createdAt,
+      if (createdAt != null) 'updated_at': updatedAt,
     };
   }
 }

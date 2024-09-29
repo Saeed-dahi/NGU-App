@@ -13,13 +13,13 @@ class LoadingClosingAccountsState extends ClosingAccountsState {}
 
 class LoadedClosingAccountsState extends ClosingAccountsState {
   final bool enableEditing;
-  final ClosingAccountEntity closingAccounts;
+  final ClosingAccountEntity closingAccount;
 
   const LoadedClosingAccountsState(
-      {required this.enableEditing, required this.closingAccounts});
+      {required this.enableEditing, required this.closingAccount});
 
   @override
-  List<Object> get props => [closingAccounts, enableEditing];
+  List<Object> get props => [closingAccount, enableEditing];
 }
 
 class ErrorClosingAccountsState extends ClosingAccountsState {

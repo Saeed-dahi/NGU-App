@@ -19,18 +19,18 @@ class ClosingAccountRecord extends StatefulWidget {
 
 class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
   final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController _idController;
-
+  late ClosingAccountEntity _closingAccountEntity;
   late TextEditingController _arNameController;
-
   late TextEditingController _enNameController;
+
+  late Map<String, dynamic> _errors;
 
   @override
   void initState() {
     _enNameController = TextEditingController();
-    _idController = TextEditingController();
+
     _arNameController = TextEditingController();
+    _errors = {};
     super.initState();
   }
 
@@ -46,11 +46,12 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
     return BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
       builder: (context, state) {
         if (state is LoadedClosingAccountsState) {
+          _closingAccountEntity = state.closingAccount;
           return _pageBody(
-              closingAccount: state.closingAccounts,
-              context: context,
-              enableEditing: state.enableEditing,
-              errors: {});
+            closingAccount: state.closingAccount,
+            context: context,
+            enableEditing: state.enableEditing,
+          );
         }
         if (state is ErrorClosingAccountsState) {
           return Column(
@@ -65,11 +66,12 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
           );
         }
         if (state is ValidationClosingAccountState) {
+          _errors = state.errors;
           return _pageBody(
-              closingAccount: _getPreviousFormData(),
-              context: context,
-              enableEditing: true,
-              errors: state.errors);
+            closingAccount: _getPreviousFormData(),
+            context: context,
+            enableEditing: true,
+          );
         }
         return Center(
           child: Loaders.loading(),
@@ -78,11 +80,11 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
     );
   }
 
-  Column _pageBody(
-      {required ClosingAccountEntity closingAccount,
-      required BuildContext context,
-      required bool enableEditing,
-      required Map<String, dynamic> errors}) {
+  Column _pageBody({
+    required ClosingAccountEntity closingAccount,
+    required BuildContext context,
+    required bool enableEditing,
+  }) {
     // init text Controllers
     _updateTextEditingController(closingAccount);
     return Column(
@@ -102,8 +104,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
             _onSave(context, closingAccount.id!);
           },
         ),
-        Expanded(
-            child: _closingAccountForm(closingAccount, errors, enableEditing)),
+        Expanded(child: _closingAccountForm(closingAccount, enableEditing)),
       ],
     );
   }
@@ -125,7 +126,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
   }
 
   Form _closingAccountForm(
-      ClosingAccountEntity closingAccount, errors, bool enableEditing) {
+      ClosingAccountEntity closingAccount, bool enableEditing) {
     return Form(
       key: _formKey,
       child: ListView(
@@ -134,21 +135,22 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
             inputType: TextInputType.name,
             enabled: false,
             helper: 'code'.tr,
-            controller: _idController,
+            controller: TextEditingController(
+                text: _closingAccountEntity.id.toString()),
           ),
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
             helper: 'ar_name'.tr,
             controller: _arNameController,
-            error: errors['ar_name']?.join('\n'),
+            error: _errors['ar_name']?.join('\n'),
           ),
           CustomInputField(
             inputType: TextInputType.name,
             enabled: enableEditing,
             helper: 'en_name'.tr,
             controller: _enNameController,
-            error: errors['en_name']?.join('\n'),
+            error: _errors['en_name']?.join('\n'),
           ),
         ],
       ),
@@ -156,14 +158,13 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
   }
 
   void _updateTextEditingController(ClosingAccountEntity closingAccount) {
-    _idController = TextEditingController(text: closingAccount.id.toString());
     _enNameController = TextEditingController(text: closingAccount.enName);
     _arNameController = TextEditingController(text: closingAccount.arName);
   }
 
   ClosingAccountEntity _getPreviousFormData() {
     return ClosingAccountEntity(
-      id: int.tryParse(_idController.text),
+      id: _closingAccountEntity.id,
       arName: _arNameController.text,
       enName: _enNameController.text,
     );

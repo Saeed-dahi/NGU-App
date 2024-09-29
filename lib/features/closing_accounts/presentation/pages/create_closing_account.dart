@@ -8,6 +8,7 @@ import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_entity.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 
@@ -53,6 +54,9 @@ class _CreateClosingAccountState extends State<CreateClosingAccount> {
         }
         if (state is ValidationClosingAccountState) {
           _errors = state.errors;
+        }
+        if (state is ErrorClosingAccountsState) {
+          return MessageScreen(text: state.message);
         }
         return _pageBody(
           context,

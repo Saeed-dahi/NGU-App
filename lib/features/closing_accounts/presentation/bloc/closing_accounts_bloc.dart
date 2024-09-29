@@ -58,7 +58,7 @@ class ClosingAccountsBloc
       },
       (data) {
         emit(LoadedClosingAccountsState(
-            closingAccounts: data, enableEditing: false));
+            closingAccount: data, enableEditing: false));
       },
     );
   }
@@ -90,7 +90,7 @@ class ClosingAccountsBloc
     final currentState = state as LoadedClosingAccountsState;
 
     emit(LoadedClosingAccountsState(
-      closingAccounts: currentState.closingAccounts,
+      closingAccount: currentState.closingAccount,
       enableEditing: event.enableEditing,
     ));
   }
