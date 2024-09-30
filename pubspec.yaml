@@ -23,7 +23,8 @@ dependencies:
   shimmer: ^3.0.0
   animated_tree_view: ^2.3.0
   flutter_smart_dialog: ^4.9.8+1
-  pluto_grid: ^8.0.0
+  # pluto_grid: ^8.0.0
+  pluto_grid_plus: ^8.4.2
   window_manager: ^0.4.2
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5

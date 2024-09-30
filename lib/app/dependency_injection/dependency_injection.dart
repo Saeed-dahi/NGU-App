@@ -12,7 +12,7 @@ import 'package:ngu_app/features/accounts/domain/use_cases/get_all_accounts_use_
 import 'package:ngu_app/features/accounts/domain/use_cases/get_suggestion_code_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/show_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/update_account_use_case.dart';
-import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
+import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_account_data_source.dart';
 import 'package:ngu_app/features/closing_accounts/data/repositories/closing_account_repository_impl.dart';
 import 'package:ngu_app/features/closing_accounts/domain/repositories/closing_account_repository.dart';

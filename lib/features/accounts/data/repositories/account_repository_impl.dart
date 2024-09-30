@@ -58,6 +58,7 @@ class AccountRepositoryImpl implements AccountRepository {
         balance: accountEntity.balance,
         closingAccountId: accountEntity.closingAccountId,
         parentId: accountEntity.parentId,
+        subAccounts: const [],
         createdAt: accountEntity.createdAt,
         updatedAt: accountEntity.updatedAt);
   }

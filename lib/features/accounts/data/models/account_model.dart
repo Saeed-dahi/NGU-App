@@ -11,6 +11,7 @@ class AccountModel extends AccountEntity {
       required super.accountCategory,
       required super.balance,
       required super.parentId,
+      required super.subAccounts,
       required super.createdAt,
       required super.updatedAt,
       required super.closingAccountId});
@@ -27,6 +28,9 @@ class AccountModel extends AccountEntity {
         balance: double.tryParse(json['balance']?.toString() ?? '0.0'),
         closingAccountId: json['closing_account_id'],
         parentId: json['parent_id'],
+        subAccounts: json['sub_accounts']
+            ?.map<AccountModel>((e) => AccountModel.fromJson(e))
+            .toList(),
         createdAt: json['created_at']?.toString(),
         updatedAt: json['updated_at']?.toString());
   }

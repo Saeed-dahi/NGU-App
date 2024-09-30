@@ -5,7 +5,7 @@ import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
-import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
+import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/create_account.dart';
 
 class AccountsToolbar extends StatelessWidget {
@@ -53,19 +53,7 @@ class AccountsToolbar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add'.tr,
-          onPressed: () {
-            ShowDialog.showCustomDialog(
-                context: context,
-                content: BlocProvider(
-                  create: (context) => sl<AccountsBloc>()
-                    ..add(GetSuggestionCodeEvent(parentId: accountId)),
-                  child: CreateAccount(
-                    parentAccountId: accountId,
-                  ),
-                ),
-                width: 0.4,
-                height: 0.5);
-          },
+          onPressed: () => _add(context),
         ),
         CustomIconButton(
           icon: Icons.edit,
@@ -135,5 +123,19 @@ class AccountsToolbar extends StatelessWidget {
     context
         .read<AccountsBloc>()
         .add(const ToggleEditingEvent(enableEditing: false));
+  }
+
+  void _add(BuildContext context) {
+    ShowDialog.showCustomDialog(
+        context: context,
+        content: BlocProvider(
+          create: (context) => sl<AccountsBloc>()
+            ..add(GetSuggestionCodeEvent(parentId: accountId)),
+          child: CreateAccount(
+            parentAccountId: accountId,
+          ),
+        ),
+        width: 0.4,
+        height: 0.5);
   }
 }

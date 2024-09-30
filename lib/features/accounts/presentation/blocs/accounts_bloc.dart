@@ -33,6 +33,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     on<ShowAccountsEvent>(_onShowAccount);
     on<GetSuggestionCodeEvent>(_onGetSuggestionCode);
     on<CreateAccountEvent>(_onCreateAccount);
+    on<GetAllAccountsEvent>(_onGetAllAccounts);
     on<UpdateAccountEvent>(_onUpdateAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
   }
@@ -91,6 +92,17 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       emit(LoadedAccountsState(
           enableEditing: false, accountEntity: event.accountEntity));
       ShowSnackBar.showSuccessSnackbar(message: 'success'.tr);
+    });
+  }
+
+  _onGetAllAccounts(
+      GetAllAccountsEvent event, Emitter<AccountsState> emit) async {
+    emit(LoadingAccountsState());
+    final result = await getAllAccountsUseCase();
+    result.fold((failure) {
+      emit(ErrorAccountsState(message: failure.errors['error']));
+    }, (data) {
+      emit(GetAllAccountsState(accounts: data));
     });
   }
 

@@ -19,8 +19,6 @@ class ShowAccountsEvent extends AccountsEvent {
   });
 }
 
-class RefreshAccountsEvent extends AccountsEvent {}
-
 class CreateAccountEvent extends AccountsEvent {
   final AccountEntity accountEntity;
 

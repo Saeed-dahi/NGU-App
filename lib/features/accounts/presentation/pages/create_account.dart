@@ -11,10 +11,10 @@ import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
-import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
+import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 
 class CreateAccount extends StatefulWidget {
-  final int parentAccountId;
+  final int? parentAccountId;
   const CreateAccount({super.key, required this.parentAccountId});
 
   @override
@@ -137,6 +137,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               code: _codeController.text,
                               arName: _arNameController.text,
                               enName: _enNameController.text,
+                              subAccounts: const [],
                               accountType: _accountType,
                               parentId: widget.parentAccountId,
                             ),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
@@ -34,8 +33,8 @@ class ClosingAccountsBloc
     on<ToggleEditingEvent>(_onToggleEditing);
   }
 
-  Future<void> _onShowClosingAccount(ShowClosingsAccountsEvent event,
-      Emitter<ClosingAccountsState> emit) async {
+  Future<void> _onShowClosingAccount(
+      event, Emitter<ClosingAccountsState> emit) async {
     emit(LoadingClosingAccountsState());
 
     final result =
@@ -110,8 +109,6 @@ class ClosingAccountsBloc
         emit(ErrorClosingAccountsState(message: failure.errors['error']));
       },
       (data) {
-      
-
         emit(
           LoadedAllClosingAccountsState(closingAccounts: data),
         );

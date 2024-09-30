@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
@@ -47,10 +46,13 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
       builder: (context, state) {
         if (state is LoadedClosingAccountsState) {
           _closingAccountEntity = state.closingAccount;
-          return _pageBody(
-            closingAccount: state.closingAccount,
-            context: context,
-            enableEditing: state.enableEditing,
+          return RefreshIndicator(
+            onRefresh: () => _refresh(),
+            child: _pageBody(
+              closingAccount: state.closingAccount,
+              context: context,
+              enableEditing: state.enableEditing,
+            ),
           );
         }
         if (state is ErrorClosingAccountsState) {
@@ -160,5 +162,11 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
       arName: _arNameController.text,
       enName: _enNameController.text,
     );
+  }
+
+  Future<void> _refresh() async {
+    context
+        .read<ClosingAccountsBloc>()
+        .add(ShowClosingsAccountsEvent(accountId: _closingAccountEntity.id!));
   }
 }

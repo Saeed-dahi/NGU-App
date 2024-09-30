@@ -9,7 +9,7 @@ import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
-import 'package:ngu_app/features/accounts/presentation/bloc/accounts_bloc.dart';
+import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_toolbar.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/closing_account_drop_down.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
@@ -122,7 +122,9 @@ class _AccountRecordState extends State<AccountRecord> {
             child: TabBarView(
               children: [
                 // General Account info
-                _accountBasicInfoForm(context, account),
+                RefreshIndicator(
+                    onRefresh: () => _refresh(),
+                    child: _accountBasicInfoForm(context, account)),
                 const SizedBox(
                   child: Text('Account Information'),
                 ),
@@ -237,9 +239,16 @@ class _AccountRecordState extends State<AccountRecord> {
       parentId: accountEntity.parentId,
       closingAccountId: _closingAccountId ?? accountEntity.closingAccountId,
       enName: _enNameController.text,
+      subAccounts: const [],
       accountType: _accountType ?? accountEntity.accountType,
       accountNature: _accountNature ?? accountEntity.accountNature,
       accountCategory: _accountCategory ?? accountEntity.accountCategory,
     );
+  }
+
+  Future<void> _refresh() async {
+    context
+        .read<AccountsBloc>()
+        .add(ShowAccountsEvent(accountId: accountEntity.id!));
   }
 }

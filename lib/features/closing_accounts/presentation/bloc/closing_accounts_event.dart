@@ -15,8 +15,6 @@ class ToggleEditingEvent extends ClosingAccountsEvent {
   const ToggleEditingEvent({required this.enableEditing});
 }
 
-class RefreshClosingsAccountsEvent extends ClosingAccountsEvent {}
-
 class ShowClosingsAccountsEvent extends ClosingAccountsEvent {
   final int accountId;
   final String? direction;

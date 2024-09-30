@@ -17,6 +17,7 @@ class CustomInputField extends StatelessWidget {
   final bool required;
   final bool readOnly;
   VoidCallback? onTap;
+  final ValueChanged<String?>? onChanged;
   final TextInputType inputType;
   TextEditingController? controller = TextEditingController();
 
@@ -33,7 +34,8 @@ class CustomInputField extends StatelessWidget {
       this.required = true,
       this.readOnly = false,
       this.controller,
-      this.onTap});
+      this.onTap,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class CustomInputField extends StatelessWidget {
           }
           return null;
         },
+        onChanged: onChanged,
         decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusColor: AppColors.primaryColorLow,
