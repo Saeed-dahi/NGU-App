@@ -46,6 +46,13 @@ class AccountRepositoryImpl implements AccountRepository {
         .safeApiCall(() => accountDataSource.getSuggestionCode(parentId));
   }
 
+  @override
+  Future<Either<Failure, List<AccountEntity>>> searchInAccounts(
+      String query) async {
+    return await apiHelper
+        .safeApiCall(() => accountDataSource.searchInAccounts(query));
+  }
+
   AccountModel getAccountModel(AccountEntity accountEntity) {
     return AccountModel(
         id: accountEntity.id,

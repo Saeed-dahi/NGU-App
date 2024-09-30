@@ -8,6 +8,7 @@ import 'package:ngu_app/features/accounts/data/models/account_model.dart';
 
 abstract class AccountDataSource {
   Future<List<AccountModel>> getAllAccounts();
+  Future<List<AccountModel>> searchInAccounts(String query);
   Future<AccountModel> showAccount(int id, String? direction);
   Future<Unit> createAccount(AccountModel accountModel);
   Future<Unit> updateAccount(AccountModel accountModel);
@@ -82,5 +83,22 @@ class AccountDataSourceWithHttp implements AccountDataSource {
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
     return unit;
+  }
+
+  @override
+  Future<List<AccountModel>> searchInAccounts(String query) async {
+    final response = await networkConnection
+        .get(APIList.searchAccount, {'search_query': query});
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    List<AccountModel> allAccounts =
+        decodedJson['data'].map<AccountModel>((account) {
+      return AccountModel.fromJson(account);
+    }).toList();
+    
+
+    return allAccounts;
   }
 }

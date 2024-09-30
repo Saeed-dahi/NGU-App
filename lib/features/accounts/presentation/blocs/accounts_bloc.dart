@@ -10,8 +10,10 @@ import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/create_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_all_accounts_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_suggestion_code_use_case.dart';
+import 'package:ngu_app/features/accounts/domain/use_cases/search_in_accounts_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/show_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/update_account_use_case.dart';
+import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 part 'accounts_event.dart';
 part 'accounts_state.dart';
@@ -22,20 +24,23 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   final ShowAccountUseCase showAccountUseCase;
   final UpdateAccountUseCase updateAccountUseCase;
   final GetSuggestionCodeUseCase getSuggestionCodeUseCase;
+  final SearchInAccountsUseCase searchInAccountsUseCase;
 
-  AccountsBloc(
-      {required this.createAccountUseCase,
-      required this.getAllAccountsUseCase,
-      required this.showAccountUseCase,
-      required this.updateAccountUseCase,
-      required this.getSuggestionCodeUseCase})
-      : super(AccountsInitial()) {
+  AccountsBloc({
+    required this.createAccountUseCase,
+    required this.getAllAccountsUseCase,
+    required this.showAccountUseCase,
+    required this.updateAccountUseCase,
+    required this.getSuggestionCodeUseCase,
+    required this.searchInAccountsUseCase,
+  }) : super(AccountsInitial()) {
     on<ShowAccountsEvent>(_onShowAccount);
     on<GetSuggestionCodeEvent>(_onGetSuggestionCode);
     on<CreateAccountEvent>(_onCreateAccount);
     on<GetAllAccountsEvent>(_onGetAllAccounts);
     on<UpdateAccountEvent>(_onUpdateAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
+    on<SearchInAccountsEvent>(_onSearchInAccounts);
   }
 
   _onShowAccount(ShowAccountsEvent event, Emitter<AccountsState> emit) async {
@@ -104,6 +109,41 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     }, (data) {
       emit(GetAllAccountsState(accounts: data));
     });
+  }
+
+  _onSearchInAccounts(
+      SearchInAccountsEvent event, Emitter<AccountsState> emit) async {
+    bool result = false;
+
+    event.stateManager.setFilter(
+      (row) {
+        final name = row.cells['name']!.value.toString().toLowerCase();
+        final code = row.cells['code']!.value.toString();
+
+        result = name.contains(event.query.toLowerCase()) ||
+            code.contains(event.query);
+
+        return result;
+      },
+    );
+
+    // Now check if there are any rows matching the filter
+    // bool hasResults = event.stateManager.refRows.where((row) {
+    //   final name = row.cells['name']!.value.toString().toLowerCase();
+    //   final code = row.cells['code']!.value.toString();
+
+    //   return name.contains(event.query.toLowerCase()) ||
+    //       code.contains(event.query);
+    // }).isNotEmpty;
+
+    // if (!hasResults) {
+    //   emit(LoadingAccountsState());
+    //   final result = await searchInAccountsUseCase(event.query);
+
+    //   result.fold((failure) {}, (data) {
+    //     emit(GetAllAccountsState(accounts: data));
+    //   });
+    // }
   }
 
   FutureOr<void> _onToggleEditing(
