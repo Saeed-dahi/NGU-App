@@ -10,11 +10,11 @@ sealed class AccountsEvent extends Equatable {
 class GetAllAccountsEvent extends AccountsEvent {}
 
 class SearchInAccountsEvent extends AccountsEvent {
-  final PlutoGridStateManager stateManager;
   final String query;
 
-  const SearchInAccountsEvent(
-      {required this.query, required this.stateManager});
+  const SearchInAccountsEvent({
+    required this.query,
+  });
 }
 
 class ShowAccountsEvent extends AccountsEvent {

@@ -120,7 +120,7 @@ class AccountsSection extends StatelessWidget {
               content: BlocProvider(
                 create: (context) =>
                     sl<AccountsBloc>()..add(GetAllAccountsEvent()),
-                child: const AccountsTable(),
+                child: AccountsTable(),
               ),
             );
           },

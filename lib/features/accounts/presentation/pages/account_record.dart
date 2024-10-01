@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
+import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
@@ -62,6 +65,7 @@ class _AccountRecordState extends State<AccountRecord> {
         if (state is LoadedAccountsState) {
           _enableEditing = state.enableEditing;
           accountEntity = state.accountEntity;
+          _errors = {};
           return _pageBody(context, state.accountEntity);
         }
         if (state is ErrorAccountsState) {
@@ -122,9 +126,9 @@ class _AccountRecordState extends State<AccountRecord> {
             child: TabBarView(
               children: [
                 // General Account info
-                RefreshIndicator(
-                    onRefresh: () => _refresh(),
-                    child: _accountBasicInfoForm(context, account)),
+                CustomRefreshIndicator(
+                    onRefresh: _refresh,
+                    content: _accountBasicInfoForm(context, account)),
                 const SizedBox(
                   child: Text('Account Information'),
                 ),

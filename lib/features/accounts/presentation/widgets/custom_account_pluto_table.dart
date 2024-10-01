@@ -1,47 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
-
-import 'package:ngu_app/core/widgets/custom_input_filed.dart';
+import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
-import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/option_menu.dart';
-
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomAccountPlutoTable extends StatelessWidget {
   final List<AccountEntity> accounts;
-  late PlutoGridStateManager stateManager;
-  final TextEditingController searchController = TextEditingController();
-  CustomAccountPlutoTable({super.key, required this.accounts});
+
+  const CustomAccountPlutoTable({super.key, required this.accounts});
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        CustomInputField(
-          inputType: TextInputType.text,
-          label: 'search'.tr,
-          controller: searchController,
-          onChanged: (value) => context.read<AccountsBloc>().add(
-              SearchInAccountsEvent(query: value, stateManager: stateManager)),
-        ),
-        Container(
-          height: MediaQuery.sizeOf(context).height * 0.55,
-          margin: const EdgeInsets.all(Dimensions.primaryPadding),
-          child: PlutoGrid(
-            configuration: _tableConfig(),
-            mode: PlutoGridMode.readOnly,
-            columns: _buildColumns(context),
-            rows: _buildRows().toList(),
-            onLoaded: (PlutoGridOnLoadedEvent event) {
-              stateManager = event.stateManager;
-            },
-          ),
-        ),
-      ],
+    return Container(
+      height: MediaQuery.sizeOf(context).height * 0.55,
+      margin: const EdgeInsets.all(Dimensions.primaryPadding),
+      child: PlutoGrid(
+        configuration: _tableConfig(),
+        mode: PlutoGridMode.readOnly,
+        noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
+        columns: _buildColumns(context),
+        rows: _buildRows().toList(),
+        onLoaded: (PlutoGridOnLoadedEvent event) {},
+      ),
     );
   }
 
@@ -86,17 +71,16 @@ class CustomAccountPlutoTable extends StatelessWidget {
   Iterable<PlutoRow> _buildRows() {
     return accounts.map(
       (account) {
+        bool isMainAccount = account.accountType == AccountType.main.name;
         return PlutoRow(
-          checked: account.subAccounts.isNotEmpty,
+          checked: isMainAccount,
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: account.id,
           cells: {
             'code': PlutoCell(value: account.code),
             'name': PlutoCell(value: account.arName),
             'balance': PlutoCell(
-                value: account.subAccounts.isNotEmpty
-                    ? account.balance.toString()
-                    : ''),
+                value: isMainAccount ? account.balance.toString() : ''),
           },
         );
       },

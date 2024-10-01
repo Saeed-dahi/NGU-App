@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
+import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_entity.dart';
@@ -46,9 +49,10 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
       builder: (context, state) {
         if (state is LoadedClosingAccountsState) {
           _closingAccountEntity = state.closingAccount;
-          return RefreshIndicator(
-            onRefresh: () => _refresh(),
-            child: _pageBody(
+          _errors = {};
+          return CustomRefreshIndicator(
+            onRefresh: _refresh,
+            content: _pageBody(
               closingAccount: state.closingAccount,
               context: context,
               enableEditing: state.enableEditing,

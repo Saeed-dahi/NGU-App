@@ -113,37 +113,12 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
   _onSearchInAccounts(
       SearchInAccountsEvent event, Emitter<AccountsState> emit) async {
-    bool result = false;
+    emit(LoadingAccountsState());
+    final result = await searchInAccountsUseCase(event.query);
 
-    event.stateManager.setFilter(
-      (row) {
-        final name = row.cells['name']!.value.toString().toLowerCase();
-        final code = row.cells['code']!.value.toString();
-
-        result = name.contains(event.query.toLowerCase()) ||
-            code.contains(event.query);
-
-        return result;
-      },
-    );
-
-    // Now check if there are any rows matching the filter
-    // bool hasResults = event.stateManager.refRows.where((row) {
-    //   final name = row.cells['name']!.value.toString().toLowerCase();
-    //   final code = row.cells['code']!.value.toString();
-
-    //   return name.contains(event.query.toLowerCase()) ||
-    //       code.contains(event.query);
-    // }).isNotEmpty;
-
-    // if (!hasResults) {
-    //   emit(LoadingAccountsState());
-    //   final result = await searchInAccountsUseCase(event.query);
-
-    //   result.fold((failure) {}, (data) {
-    //     emit(GetAllAccountsState(accounts: data));
-    //   });
-    // }
+    result.fold((failure) {}, (data) {
+      emit(GetAllAccountsState(accounts: data));
+    });
   }
 
   FutureOr<void> _onToggleEditing(
