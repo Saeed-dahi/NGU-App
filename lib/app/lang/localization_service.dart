@@ -24,4 +24,6 @@ class LocalizationService extends Translations {
     }
     return 'ar';
   }
+
+  static final bool isArabic = Get.locale!.languageCode == 'ar';
 }

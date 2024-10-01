@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
-import 'package:ngu_app/features/accounts/presentation/widgets/option_menu.dart';
+import 'package:ngu_app/features/accounts/presentation/widgets/account_option_menu.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomAccountPlutoTable extends StatelessWidget {
@@ -43,7 +44,7 @@ class CustomAccountPlutoTable extends StatelessWidget {
           return Row(
             children: [
               // _showMenuOption(rendererContext),
-              OptionMenu(event: rendererContext),
+              AccountOptionMenu(selectedId: rendererContext.row.data),
               const SizedBox(width: 8),
               Text(rendererContext.cell.value),
             ],
@@ -72,13 +73,15 @@ class CustomAccountPlutoTable extends StatelessWidget {
     return accounts.map(
       (account) {
         bool isMainAccount = account.accountType == AccountType.main.name;
+        String name =
+            LocalizationService.isArabic ? account.arName : account.enName;
         return PlutoRow(
           checked: isMainAccount,
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: account.id,
           cells: {
             'code': PlutoCell(value: account.code),
-            'name': PlutoCell(value: account.arName),
+            'name': PlutoCell(value: name),
             'balance': PlutoCell(
                 value: isMainAccount ? account.balance.toString() : ''),
           },
@@ -89,7 +92,7 @@ class CustomAccountPlutoTable extends StatelessWidget {
 
   PlutoGridConfiguration _tableConfig() {
     return PlutoGridConfiguration(
-      localeText: Get.locale == const Locale('ar')
+      localeText: LocalizationService.isArabic
           ? const PlutoGridLocaleText.arabic()
           : const PlutoGridLocaleText(),
       columnFilter: const PlutoGridColumnFilterConfig(),

@@ -107,7 +107,12 @@ class AccountsSection extends StatelessWidget {
           icon: Icons.account_tree_outlined,
           onTap: () {
             context.read<TabCubit>().addNewTab(
-                title: 'accounts_tree'.tr, content: const AccountsTree());
+                title: 'accounts_tree'.tr,
+                content: BlocProvider(
+                  create: (context) =>
+                      sl<AccountsBloc>()..add(GetAllAccountsEvent()),
+                  child: AccountsTree(),
+                ));
           },
         ),
         BasicListTile(
@@ -120,7 +125,7 @@ class AccountsSection extends StatelessWidget {
               content: BlocProvider(
                 create: (context) =>
                     sl<AccountsBloc>()..add(GetAllAccountsEvent()),
-                child: AccountsTable(),
+                child: const AccountsTable(),
               ),
             );
           },

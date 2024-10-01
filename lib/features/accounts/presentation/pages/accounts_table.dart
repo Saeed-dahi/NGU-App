@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
@@ -73,8 +70,11 @@ class _AccountsTableState extends State<AccountsTable> {
                   child: MessageScreen(text: state.message),
                 );
               }
-              return Center(
-                child: Loaders.loading(),
+              return SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.5,
+                child: Center(
+                  child: Loaders.loading(),
+                ),
               );
             },
           ),
@@ -97,7 +97,6 @@ class _AccountsTableState extends State<AccountsTable> {
   }
 
   List<AccountEntity> flattenAccounts(List<AccountEntity> accounts) {
-    // TODO : improve display data after search
     List<AccountEntity> allAccounts = [];
     for (var account in accounts) {
       allAccounts.add(account); // Add the main account

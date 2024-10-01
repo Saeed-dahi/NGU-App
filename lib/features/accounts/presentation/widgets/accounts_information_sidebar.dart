@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_information_card.dart';
 
 class AccountsInformationSidebar extends StatelessWidget {
-  const AccountsInformationSidebar({super.key});
+  final AccountEntity account;
+  const AccountsInformationSidebar({super.key, required this.account});
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +20,24 @@ class AccountsInformationSidebar extends StatelessWidget {
           ),
           AccountInformationCard(
             title: 'code'.tr,
-            subtitle: '123',
+            subtitle: account.code,
           ),
           AccountInformationCard(
-            title: 'name'.tr,
-            subtitle: 'الموجودات',
+            title: 'ar_name'.tr,
+            subtitle: account.arName,
+          ),
+          AccountInformationCard(
+            title: 'en_name'.tr,
+            subtitle: account.enName,
           ),
           const Divider(),
           AccountInformationCard(
             title: 'credit_balance'.tr,
-            subtitle: '123',
-          ),
-          AccountInformationCard(
-            title: 'debit_balance'.tr,
-            subtitle: '321',
+            subtitle: account.balance.toString(),
           ),
           AccountInformationCard(
             title: 'closing_account_id'.tr,
-            subtitle: 'الميزانية',
+            subtitle: account.closingAccountId.toString(),
           ),
           const Divider(),
           AccountInformationCard(
