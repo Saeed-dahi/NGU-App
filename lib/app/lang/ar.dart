@@ -11,6 +11,7 @@ Map<String, String> ar = {
   'save': 'حفظ',
   'required': 'حقل مطلوب',
   'success': 'تمت العملية بنجاح',
+  'options': 'خيارات',
 
   // Accounts
   'accounting': 'المحاسبة',

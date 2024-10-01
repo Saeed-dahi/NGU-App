@@ -4,6 +4,12 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/core/network/network_info.dart';
+import 'package:ngu_app/features/accounts/account_information/data/data_sources/account_information_data_source.dart';
+import 'package:ngu_app/features/accounts/account_information/data/repositories/account_information_repository_impl.dart';
+import 'package:ngu_app/features/accounts/account_information/domain/repositories/account_information_repository.dart';
+import 'package:ngu_app/features/accounts/account_information/domain/use_cases/show_account_information_use_case.dart';
+import 'package:ngu_app/features/accounts/account_information/domain/use_cases/update_account_information_use_case.dart';
+import 'package:ngu_app/features/accounts/account_information/presentation/bloc/account_information_bloc.dart';
 import 'package:ngu_app/features/accounts/data/data_sources/account_data_source.dart';
 import 'package:ngu_app/features/accounts/data/repositories/account_repository_impl.dart';
 import 'package:ngu_app/features/accounts/domain/repositories/account_repository.dart';
@@ -27,31 +33,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 final sl = GetIt.instance;
 Future<void> init() async {
   /// Closing Accounts
-  // Bloc
-  sl.registerFactory(() => ClosingAccountsBloc(
-      showClosingAccountUseCase: sl(),
-      createClosingAccountUseCase: sl(),
-      updateClosingAccountUseCase: sl(),
-      getAllClosingAccountsUseCase: sl()));
-  // UseCases
-  sl.registerLazySingleton(
-      () => GetAllClosingAccountsUseCase(closingAccountRepository: sl()));
-  sl.registerLazySingleton(
-      () => CreateClosingAccountUseCase(closingAccountRepository: sl()));
-  sl.registerLazySingleton(
-      () => UpdateClosingAccountUseCase(closingAccountRepository: sl()));
-  sl.registerLazySingleton(
-      () => ShowClosingAccountUseCase(closingAccountRepository: sl()));
-  // Repository
-  sl.registerLazySingleton<ClosingAccountRepository>(() =>
-      ClosingAccountRepositoryImpl(
-          closingAccountDataSource: sl(), networkInfo: sl(), apiHelper: sl()));
-  // DataSource
-  sl.registerLazySingleton<ClosingAccountDataSource>(
-      () => ClosingAccountDataSourceImpl(networkConnection: sl()));
+  _closingAccount();
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////
   /// Accounts
+  _account();
+
+  /// Accounts
+  _accountInformation();
+
+  // Core
+  _core();
+
+  // External
+  await _external();
+}
+
+Future<void> _external() async {
+  // External
+  final sharedPref = await SharedPreferences.getInstance();
+  sl.registerLazySingleton(() => sharedPref);
+
+  sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => InternetConnectionChecker());
+}
+
+void _core() {
+  // Core
+  sl.registerLazySingleton<NetworkInfo>(
+      () => NetworkInfoImpl(internetConnectionChecker: sl()));
+  sl.registerLazySingleton<NetworkConnection>(
+      () => HttpConnection(client: sl()));
+  sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
+}
+
+void _account() {
   // bloc
   sl.registerFactory(() => AccountsBloc(
       createAccountUseCase: sl(),
@@ -76,19 +91,51 @@ Future<void> init() async {
   // Data Source
   sl.registerLazySingleton<AccountDataSource>(
       () => AccountDataSourceWithHttp(networkConnection: sl()));
-  //////////////////////////////////////////////////////////////////////////////////////////////////
-  // Core
-  sl.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImpl(internetConnectionChecker: sl()));
-  sl.registerLazySingleton<NetworkConnection>(
-      () => HttpConnection(client: sl()));
+}
 
-  sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
+void _closingAccount() {
+  // bloc
+  sl.registerFactory(() => ClosingAccountsBloc(
+      showClosingAccountUseCase: sl(),
+      createClosingAccountUseCase: sl(),
+      updateClosingAccountUseCase: sl(),
+      getAllClosingAccountsUseCase: sl()));
+  // UseCases
+  sl.registerLazySingleton(
+      () => GetAllClosingAccountsUseCase(closingAccountRepository: sl()));
+  sl.registerLazySingleton(
+      () => CreateClosingAccountUseCase(closingAccountRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdateClosingAccountUseCase(closingAccountRepository: sl()));
+  sl.registerLazySingleton(
+      () => ShowClosingAccountUseCase(closingAccountRepository: sl()));
+  // Repository
+  sl.registerLazySingleton<ClosingAccountRepository>(() =>
+      ClosingAccountRepositoryImpl(
+          closingAccountDataSource: sl(), networkInfo: sl(), apiHelper: sl()));
+  // DataSource
+  sl.registerLazySingleton<ClosingAccountDataSource>(
+      () => ClosingAccountDataSourceImpl(networkConnection: sl()));
+}
 
-  // External
-  final sharedPref = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPref);
+void _accountInformation() {
+  // bloc
+  sl.registerFactory(() => AccountInformationBloc(
+      showAccountInformationUseCase: sl(),
+      updateAccountInformationUseCase: sl()));
 
-  sl.registerLazySingleton(() => http.Client());
-  sl.registerLazySingleton(() => InternetConnectionChecker());
+  // use cases
+  sl.registerLazySingleton(
+      () => ShowAccountInformationUseCase(accountInformationRepository: sl()));
+  sl.registerLazySingleton(() =>
+      UpdateAccountInformationUseCase(accountInformationRepository: sl()));
+
+  // repository
+  sl.registerLazySingleton<AccountInformationRepository>(() =>
+      AccountInformationRepositoryImpl(
+          apiHelper: sl(), accountInformationDataSource: sl()));
+
+  // dataSource
+  sl.registerLazySingleton<AccountInformationDataSource>(
+      () => AccountInformationDataSourceWithHttp(networkConnection: sl()));
 }

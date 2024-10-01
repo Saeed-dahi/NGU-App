@@ -11,6 +11,7 @@ Map<String, String> en = {
   'save': 'Save',
   'required': 'Required Filed',
   'success': 'The operation has completed successfully',
+  'options': 'Options',
 
   // Accounts
   'accounting': 'Accounting',

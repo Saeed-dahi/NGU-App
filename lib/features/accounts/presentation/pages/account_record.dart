@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/accounts/account_information/presentation/bloc/account_information_bloc.dart';
+import 'package:ngu_app/features/accounts/account_information/presentation/pages/account_information.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_toolbar.dart';
@@ -127,9 +130,16 @@ class _AccountRecordState extends State<AccountRecord> {
                 CustomRefreshIndicator(
                     onRefresh: _refresh,
                     content: _accountBasicInfoForm(context, account)),
-                const SizedBox(
-                  child: Text('Account Information'),
-                ),
+                BlocProvider(
+                  create: (context) => sl<AccountInformationBloc>()
+                    ..add(ShowAccountInformationEvent(accountId: account.id!)),
+                  child: CustomRefreshIndicator(
+                      onRefresh: () {
+                        return Future.value();
+                      },
+                      content:
+                          AccountInformation(enableEditing: _enableEditing)),
+                )
                 // all Account information
               ],
             ),
