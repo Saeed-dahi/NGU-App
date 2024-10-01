@@ -27,6 +27,7 @@ class _CreateAccountState extends State<CreateAccount> {
   late TextEditingController _arNameController;
   late TextEditingController _enNameController;
   late TextEditingController _codeController;
+
   late String? _accountType;
 
   late Map<String, dynamic> _errors;
@@ -36,6 +37,7 @@ class _CreateAccountState extends State<CreateAccount> {
     _arNameController = TextEditingController();
     _enNameController = TextEditingController();
     _codeController = TextEditingController();
+
     _accountType = AccountType.main.name;
     _errors = {};
     super.initState();

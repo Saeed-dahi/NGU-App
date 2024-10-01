@@ -19,23 +19,25 @@ class CustomInputField extends StatelessWidget {
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final TextInputType inputType;
+
   TextEditingController? controller = TextEditingController();
 
-  CustomInputField(
-      {super.key,
-      this.label = '',
-      required this.inputType,
-      this.hint = '',
-      this.prefix = '',
-      this.suffix = '',
-      this.helper = '',
-      this.error,
-      this.enabled = true,
-      this.required = true,
-      this.readOnly = false,
-      this.controller,
-      this.onTap,
-      this.onChanged});
+  CustomInputField({
+    super.key,
+    this.label = '',
+    required this.inputType,
+    this.hint = '',
+    this.prefix = '',
+    this.suffix = '',
+    this.helper = '',
+    this.error,
+    this.enabled = true,
+    this.required = true,
+    this.readOnly = false,
+    this.controller,
+    this.onTap,
+    this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,9 @@ class CustomInputField extends StatelessWidget {
             }
           }
           return null;
+        },
+        onEditingComplete: () {
+          FocusScope.of(context).nextFocus();
         },
         onChanged: onChanged,
         decoration: InputDecoration(
