@@ -10,7 +10,6 @@ import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
-import 'package:ngu_app/features/accounts/account_information/presentation/bloc/account_information_bloc.dart';
 import 'package:ngu_app/features/accounts/account_information/presentation/pages/account_information.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
@@ -19,25 +18,28 @@ import 'package:ngu_app/features/accounts/presentation/widgets/closing_account_d
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 
 class AccountRecord extends StatefulWidget {
-  const AccountRecord({super.key});
+  final int accountId;
+  const AccountRecord({super.key, required this.accountId});
 
   @override
   State<AccountRecord> createState() => _AccountRecordState();
 }
 
 class _AccountRecordState extends State<AccountRecord> {
+  late final AccountsBloc _accountsBloc;
+  late final ClosingAccountsBloc _closingAccountsBloc;
+
   final _formKey = GlobalKey<FormState>();
-
+  // help when pass data
   late AccountEntity accountEntity;
-  late TextEditingController _arNameController;
-  late TextEditingController _enNameController;
-  late TextEditingController _codeController;
-  int? _closingAccountId;
-  String? _accountType;
-  String? _accountNature;
-  String? _accountCategory;
 
+  // Form Fields
+  late TextEditingController _arNameController,
+      _enNameController,
+      _codeController;
+  String? _accountType, _accountNature, _accountCategory;
   late bool _enableEditing;
+  int? _closingAccountId;
 
   late Map<String, dynamic> _errors;
   @override
@@ -47,6 +49,11 @@ class _AccountRecordState extends State<AccountRecord> {
     _codeController = TextEditingController();
     _errors = {};
     _enableEditing = false;
+
+    _accountsBloc = sl<AccountsBloc>()
+      ..add(ShowAccountsEvent(accountId: widget.accountId));
+    _closingAccountsBloc = sl<ClosingAccountsBloc>()
+      ..add(GetAllClosingAccountsEvent());
     super.initState();
   }
 
@@ -60,37 +67,47 @@ class _AccountRecordState extends State<AccountRecord> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AccountsBloc, AccountsState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is LoadedAccountsState) {
-          _enableEditing = state.enableEditing;
-          accountEntity = state.accountEntity;
-          _errors = {};
-          return _pageBody(context, state.accountEntity);
-        }
-        if (state is ErrorAccountsState) {
-          return Column(
-            children: [
-              const AccountsToolbar(
-                accountId: 1,
-                enableEditing: false,
-              ),
-              MessageScreen(
-                text: state.message,
-              ),
-            ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => _accountsBloc,
+        ),
+        BlocProvider(
+          create: (_) => _closingAccountsBloc,
+        ),
+      ],
+      child: BlocConsumer<AccountsBloc, AccountsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is LoadedAccountsState) {
+            _enableEditing = state.enableEditing;
+            accountEntity = state.accountEntity;
+            _errors = {};
+            return _pageBody(context, state.accountEntity);
+          }
+          if (state is ErrorAccountsState) {
+            return Column(
+              children: [
+                const AccountsToolbar(
+                  accountId: 1,
+                  enableEditing: false,
+                ),
+                MessageScreen(
+                  text: state.message,
+                ),
+              ],
+            );
+          }
+          if (state is ValidationAccountState) {
+            _errors = state.errors;
+            // with errors
+            return _pageBody(context, _getFormData());
+          }
+          return Center(
+            child: Loaders.loading(),
           );
-        }
-        if (state is ValidationAccountState) {
-          _errors = state.errors;
-          // with errors
-          return _pageBody(context, _getFormData());
-        }
-        return Center(
-          child: Loaders.loading(),
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -128,18 +145,17 @@ class _AccountRecordState extends State<AccountRecord> {
               children: [
                 // General Account info
                 CustomRefreshIndicator(
-                    onRefresh: _refresh,
-                    content: _accountBasicInfoForm(context, account)),
-                BlocProvider(
-                  create: (context) => sl<AccountInformationBloc>()
-                    ..add(ShowAccountInformationEvent(accountId: account.id!)),
-                  child: CustomRefreshIndicator(
-                      onRefresh: () {
-                        return Future.value();
-                      },
-                      content:
-                          AccountInformation(enableEditing: _enableEditing)),
-                )
+                  onRefresh: _refresh,
+                  content: _accountBasicInfoForm(context, account),
+                ),
+                CustomRefreshIndicator(
+                    onRefresh: () {
+                      return Future.value();
+                    },
+                    content: AccountInformation(
+                      enableEditing: _enableEditing,
+                      accountEntity: account,
+                    ))
                 // all Account information
               ],
             ),
@@ -236,9 +252,9 @@ class _AccountRecordState extends State<AccountRecord> {
 
   void _onSave(BuildContext context, AccountEntity account) {
     if (_formKey.currentState!.validate()) {
-      context.read<AccountsBloc>().add(
-            UpdateAccountEvent(accountEntity: _getFormData()),
-          );
+      _accountsBloc.add(
+        UpdateAccountEvent(accountEntity: _getFormData()),
+      );
     }
   }
 
@@ -259,8 +275,6 @@ class _AccountRecordState extends State<AccountRecord> {
   }
 
   Future<void> _refresh() async {
-    context
-        .read<AccountsBloc>()
-        .add(ShowAccountsEvent(accountId: accountEntity.id!));
+    _accountsBloc.add(ShowAccountsEvent(accountId: accountEntity.id!));
   }
 }

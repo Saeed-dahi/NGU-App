@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
@@ -22,12 +23,12 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
+  late final AccountsBloc _accountsBloc;
+  // Form Fields
   final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController _arNameController;
-  late TextEditingController _enNameController;
-  late TextEditingController _codeController;
-
+  late TextEditingController _arNameController,
+      _enNameController,
+      _codeController;
   late String? _accountType;
 
   late Map<String, dynamic> _errors;
@@ -40,6 +41,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
     _accountType = AccountType.main.name;
     _errors = {};
+    _accountsBloc = sl<AccountsBloc>()
+      ..add(GetSuggestionCodeEvent(parentId: widget.parentAccountId!));
     super.initState();
   }
 
@@ -48,30 +51,34 @@ class _CreateAccountState extends State<CreateAccount> {
     _arNameController.dispose();
     _enNameController.dispose();
     _codeController.dispose();
+    _accountsBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AccountsBloc, AccountsState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is LoadingAccountsState) {
-          return Center(
-            child: Loaders.loading(),
-          );
-        }
-        if (state is GetSuggestionCodeState) {
-          _codeController.text = state.code;
-        }
-        if (state is ValidationAccountState) {
-          _errors = state.errors;
-        }
-        if (state is ErrorAccountsState) {
-          return MessageScreen(text: state.message);
-        }
-        return _pageBody(context);
-      },
+    return BlocProvider(
+      create: (context) => _accountsBloc,
+      child: BlocConsumer<AccountsBloc, AccountsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is LoadingAccountsState) {
+            return Center(
+              child: Loaders.loading(),
+            );
+          }
+          if (state is GetSuggestionCodeState) {
+            _codeController.text = state.code;
+          }
+          if (state is ValidationAccountState) {
+            _errors = state.errors;
+          }
+          if (state is ErrorAccountsState) {
+            return MessageScreen(text: state.message);
+          }
+          return _pageBody(context);
+        },
+      ),
     );
   }
 
@@ -133,18 +140,18 @@ class _CreateAccountState extends State<CreateAccount> {
                 text: 'save',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    context.read<AccountsBloc>().add(
-                          CreateAccountEvent(
-                            accountEntity: AccountEntity(
-                              code: _codeController.text,
-                              arName: _arNameController.text,
-                              enName: _enNameController.text,
-                              subAccounts: const [],
-                              accountType: _accountType,
-                              parentId: widget.parentAccountId,
-                            ),
-                          ),
-                        );
+                    _accountsBloc.add(
+                      CreateAccountEvent(
+                        accountEntity: AccountEntity(
+                          code: _codeController.text,
+                          arName: _arNameController.text,
+                          enName: _enNameController.text,
+                          subAccounts: const [],
+                          accountType: _accountType,
+                          parentId: widget.parentAccountId,
+                        ),
+                      ),
+                    );
                   }
                 },
               ),

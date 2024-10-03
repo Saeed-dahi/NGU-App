@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
@@ -20,10 +21,10 @@ class CreateClosingAccount extends StatefulWidget {
 }
 
 class _CreateClosingAccountState extends State<CreateClosingAccount> {
+  late final ClosingAccountsBloc _closingAccountsBloc;
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _arNameController;
-  late TextEditingController _enNameController;
+  late TextEditingController _arNameController, _enNameController;
 
   late Map<String, dynamic> _errors;
 
@@ -32,6 +33,7 @@ class _CreateClosingAccountState extends State<CreateClosingAccount> {
     _enNameController = TextEditingController();
     _arNameController = TextEditingController();
     _errors = {};
+    _closingAccountsBloc = sl<ClosingAccountsBloc>();
     super.initState();
   }
 
@@ -44,24 +46,27 @@ class _CreateClosingAccountState extends State<CreateClosingAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ClosingAccountsBloc, ClosingAccountsState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is LoadingClosingAccountsState) {
-          return Center(
-            child: Loaders.loading(),
+    return BlocProvider(
+      create: (context) => _closingAccountsBloc,
+      child: BlocConsumer<ClosingAccountsBloc, ClosingAccountsState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is LoadingClosingAccountsState) {
+            return Center(
+              child: Loaders.loading(),
+            );
+          }
+          if (state is ValidationClosingAccountState) {
+            _errors = state.errors;
+          }
+          if (state is ErrorClosingAccountsState) {
+            return MessageScreen(text: state.message);
+          }
+          return _pageBody(
+            context,
           );
-        }
-        if (state is ValidationClosingAccountState) {
-          _errors = state.errors;
-        }
-        if (state is ErrorClosingAccountsState) {
-          return MessageScreen(text: state.message);
-        }
-        return _pageBody(
-          context,
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -108,11 +113,10 @@ class _CreateClosingAccountState extends State<CreateClosingAccount> {
                 text: 'save',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    BlocProvider.of<ClosingAccountsBloc>(context).add(
-                        CreateClosingAccountEvent(
-                            closingAccountEntity: ClosingAccountEntity(
-                                arName: _arNameController.text,
-                                enName: _enNameController.text)));
+                    _closingAccountsBloc.add(CreateClosingAccountEvent(
+                        closingAccountEntity: ClosingAccountEntity(
+                            arName: _arNameController.text,
+                            enName: _enNameController.text)));
                   }
                 },
               ),

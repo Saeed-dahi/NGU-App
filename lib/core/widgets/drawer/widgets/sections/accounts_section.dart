@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
-import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_body.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/custom_section_title.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
-import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
-import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
@@ -49,11 +46,7 @@ class AccountsSection extends StatelessWidget {
           icon: Icons.monetization_on_outlined,
           onTap: () => ShowDialog.showCustomDialog(
               context: context,
-              content: BlocProvider(
-                create: (context) => sl<ClosingAccountsBloc>()
-                  ..add(const ShowClosingsAccountsEvent(accountId: 1)),
-                child: const ClosingAccountRecord(),
-              ),
+              content: const ClosingAccountRecord(),
               height: 0.4),
         ),
         BasicListTile(
@@ -88,18 +81,8 @@ class AccountsSection extends StatelessWidget {
           onTap: () => ShowDialog.showCustomDialog(
               context: context,
               height: 0.6,
-              content: MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => sl<AccountsBloc>()
-                      ..add(const ShowAccountsEvent(accountId: 1)),
-                  ),
-                  BlocProvider(
-                    create: (context) => sl<ClosingAccountsBloc>()
-                      ..add(GetAllClosingAccountsEvent()),
-                  ),
-                ],
-                child: const AccountRecord(),
+              content: const AccountRecord(
+                accountId: 1,
               )),
         ),
         BasicListTile(
@@ -107,12 +90,7 @@ class AccountsSection extends StatelessWidget {
           icon: Icons.account_tree_outlined,
           onTap: () {
             context.read<TabCubit>().addNewTab(
-                title: 'accounts_tree'.tr,
-                content: BlocProvider(
-                  create: (context) =>
-                      sl<AccountsBloc>()..add(GetAllAccountsEvent()),
-                  child: AccountsTree(),
-                ));
+                title: 'accounts_tree'.tr, content: const AccountsTree());
           },
         ),
         BasicListTile(
@@ -122,11 +100,7 @@ class AccountsSection extends StatelessWidget {
             ShowDialog.showCustomDialog(
               width: 0.7,
               context: context,
-              content: BlocProvider(
-                create: (context) =>
-                    sl<AccountsBloc>()..add(GetAllAccountsEvent()),
-                child: const AccountsTable(),
-              ),
+              content: const AccountsTable(),
             );
           },
         ),

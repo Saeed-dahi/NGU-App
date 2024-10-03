@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -18,19 +19,22 @@ class ClosingAccountRecord extends StatefulWidget {
 }
 
 class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
+  late final ClosingAccountsBloc _closingAccountsBloc;
   final _formKey = GlobalKey<FormState>();
-  late ClosingAccountEntity _closingAccountEntity;
   late TextEditingController _arNameController;
   late TextEditingController _enNameController;
 
+  late ClosingAccountEntity _closingAccountEntity;
   late Map<String, dynamic> _errors;
 
   @override
   void initState() {
     _enNameController = TextEditingController();
-
     _arNameController = TextEditingController();
     _errors = {};
+
+    _closingAccountsBloc = sl<ClosingAccountsBloc>()
+      ..add(const ShowClosingsAccountsEvent(accountId: 1));
     super.initState();
   }
 
@@ -43,44 +47,47 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
-      builder: (context, state) {
-        if (state is LoadedClosingAccountsState) {
-          _closingAccountEntity = state.closingAccount;
-          _errors = {};
-          return CustomRefreshIndicator(
-            onRefresh: _refresh,
-            content: _pageBody(
-              closingAccount: state.closingAccount,
+    return BlocProvider(
+      create: (context) => _closingAccountsBloc,
+      child: BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
+        builder: (context, state) {
+          if (state is LoadedClosingAccountsState) {
+            _closingAccountEntity = state.closingAccount;
+            _errors = {};
+            return CustomRefreshIndicator(
+              onRefresh: _refresh,
+              content: _pageBody(
+                closingAccount: state.closingAccount,
+                context: context,
+                enableEditing: state.enableEditing,
+              ),
+            );
+          }
+          if (state is ErrorClosingAccountsState) {
+            return Column(
+              children: [
+                const ClosingAccountsToolbar(
+                  accountId: -1,
+                ),
+                MessageScreen(
+                  text: state.message,
+                ),
+              ],
+            );
+          }
+          if (state is ValidationClosingAccountState) {
+            _errors = state.errors;
+            return _pageBody(
+              closingAccount: _getFormData(),
               context: context,
-              enableEditing: state.enableEditing,
-            ),
+              enableEditing: true,
+            );
+          }
+          return Center(
+            child: Loaders.loading(),
           );
-        }
-        if (state is ErrorClosingAccountsState) {
-          return Column(
-            children: [
-              const ClosingAccountsToolbar(
-                accountId: -1,
-              ),
-              MessageScreen(
-                text: state.message,
-              ),
-            ],
-          );
-        }
-        if (state is ValidationClosingAccountState) {
-          _errors = state.errors;
-          return _pageBody(
-            closingAccount: _getFormData(),
-            context: context,
-            enableEditing: true,
-          );
-        }
-        return Center(
-          child: Loaders.loading(),
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -115,9 +122,9 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
 
   void _onSave(BuildContext context, int accountId) {
     if (_formKey.currentState!.validate()) {
-      context.read<ClosingAccountsBloc>().add(
-            UpdateClosingAccountEvent(closingAccountEntity: _getFormData()),
-          );
+      _closingAccountsBloc.add(
+        UpdateClosingAccountEvent(closingAccountEntity: _getFormData()),
+      );
     }
   }
 
@@ -167,8 +174,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
   }
 
   Future<void> _refresh() async {
-    context
-        .read<ClosingAccountsBloc>()
+    _closingAccountsBloc
         .add(ShowClosingsAccountsEvent(accountId: _closingAccountEntity.id!));
   }
 }

@@ -13,7 +13,7 @@ class AccountInformationEntity extends Equatable {
   final String barcode;
   final String file;
 
-  AccountInformationEntity(
+  const AccountInformationEntity(
       {required this.id,
       required this.phone,
       required this.mobile,

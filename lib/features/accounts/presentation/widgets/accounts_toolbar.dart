@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
@@ -128,12 +127,8 @@ class AccountsToolbar extends StatelessWidget {
   void _add(BuildContext context) {
     ShowDialog.showCustomDialog(
         context: context,
-        content: BlocProvider(
-          create: (context) => sl<AccountsBloc>()
-            ..add(GetSuggestionCodeEvent(parentId: accountId)),
-          child: CreateAccount(
-            parentAccountId: accountId,
-          ),
+        content: CreateAccount(
+          parentAccountId: accountId,
         ),
         width: 0.4,
         height: 0.5);

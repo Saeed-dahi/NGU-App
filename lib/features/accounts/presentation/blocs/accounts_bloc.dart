@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
@@ -22,6 +24,14 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   final UpdateAccountUseCase updateAccountUseCase;
   final GetSuggestionCodeUseCase getSuggestionCodeUseCase;
   final SearchInAccountsUseCase searchInAccountsUseCase;
+
+  final List<AccountEntity> _accounts = List.empty(growable: true);
+  TreeNode _tree = TreeNode();
+  final List<AccountEntity> _accountsTable = List.empty(growable: true);
+
+  List<AccountEntity> get accounts => _accounts;
+  TreeNode get tree => _tree;
+  List<AccountEntity> get accountTable => _accountsTable;
 
   AccountsBloc({
     required this.createAccountUseCase,
@@ -99,12 +109,23 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
   _onGetAllAccounts(
       GetAllAccountsEvent event, Emitter<AccountsState> emit) async {
+    tree.clear();
+    accounts.clear();
+    _accountsTable.clear();
     emit(LoadingAccountsState());
     final result = await getAllAccountsUseCase();
+
     result.fold((failure) {
       emit(ErrorAccountsState(message: failure.errors['error']));
     }, (data) {
-      emit(GetAllAccountsState(accounts: data));
+      if (data.isEmpty) {
+        emit(ErrorAccountsState(message: AppStrings.notFound.tr));
+      } else {
+        _accounts.addAll(data);
+        _tree = _buildAccountsTree();
+        _accountsTable.addAll(flattenAccounts(data));
+        emit(GetAllAccountsState());
+      }
     });
   }
 
@@ -114,7 +135,9 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     final result = await searchInAccountsUseCase(event.query);
 
     result.fold((failure) {}, (data) {
-      emit(GetAllAccountsState(accounts: data));
+      accountTable.clear();
+      accountTable.addAll(data);
+      emit(GetAllAccountsState());
     });
   }
 
@@ -126,5 +149,41 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       accountEntity: currentState.accountEntity,
       enableEditing: event.enableEditing,
     ));
+  }
+
+  // Helper Functions
+  List<AccountEntity> flattenAccounts(List<AccountEntity> accounts) {
+    List<AccountEntity> allAccounts = [];
+    for (var account in accounts) {
+      allAccounts.add(account); // Add the main account
+      if (account.subAccounts.isNotEmpty) {
+        allAccounts.addAll(flattenAccounts(
+            account.subAccounts)); // Recursively add sub-accounts
+      }
+    }
+    return allAccounts;
+  }
+
+  // Tree Page
+  TreeNode _buildAccountsTree() {
+    var root = TreeNode(key: 'accounts_tree'.tr);
+
+    root.addAll(_buildAccountNodes(_accounts));
+
+    return root;
+  }
+
+  List<TreeNode> _buildAccountNodes(List<AccountEntity> accounts) {
+    List<TreeNode> nodes = [];
+
+    for (var account in accounts) {
+      var node = TreeNode(key: account.arName, data: account);
+
+      if (account.subAccounts.isNotEmpty) {
+        node.addAll(_buildAccountNodes(account.subAccounts));
+      }
+      nodes.add(node);
+    }
+    return nodes;
   }
 }

@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/entities/account_information_entity.dart';
 import 'package:ngu_app/features/accounts/account_information/presentation/bloc/account_information_bloc.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_toolbar.dart';
 
 class AccountInformation extends StatefulWidget {
   final bool enableEditing;
-  const AccountInformation({super.key, required this.enableEditing});
+  final AccountEntity accountEntity;
+  const AccountInformation(
+      {super.key, required this.enableEditing, required this.accountEntity});
 
   @override
   State<AccountInformation> createState() => _AccountInformationState();
 }
 
 class _AccountInformationState extends State<AccountInformation> {
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
-  late TextEditingController _mobileController;
-  late TextEditingController _faxController;
-  late TextEditingController _personToContactController;
-  late TextEditingController _addressController;
-  late TextEditingController _barcodeController;
-  late TextEditingController _invoiceInformationController;
+  late TextEditingController _phoneController,
+      _emailController,
+      _mobileController,
+      _faxController,
+      _personToContactController,
+      _addressController,
+      _barcodeController,
+      _invoiceInformationController;
 
   late Map<String, dynamic> _errors;
 
@@ -44,36 +48,40 @@ class _AccountInformationState extends State<AccountInformation> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AccountInformationBloc, AccountInformationState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        if (state is LoadedAccountInformationState) {
-          _errors = {};
-          _updateTextEditingController(state.accountInformationEntity);
-          return _pageBody(context, state.accountInformationEntity);
-        }
-        if (state is ErrorAccountInformationState) {
-          return Column(
-            children: [
-              const AccountsToolbar(
-                accountId: 1,
-                enableEditing: false,
-              ),
-              MessageScreen(
-                text: state.message,
-              ),
-            ],
+    return BlocProvider(
+      create: (context) => sl<AccountInformationBloc>()
+        ..add(ShowAccountInformationEvent(accountId: widget.accountEntity.id!)),
+      child: BlocConsumer<AccountInformationBloc, AccountInformationState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is LoadedAccountInformationState) {
+            _errors = {};
+            _updateTextEditingController(state.accountInformationEntity);
+            return _pageBody(context, state.accountInformationEntity);
+          }
+          if (state is ErrorAccountInformationState) {
+            return Column(
+              children: [
+                const AccountsToolbar(
+                  accountId: 1,
+                  enableEditing: false,
+                ),
+                MessageScreen(
+                  text: state.message,
+                ),
+              ],
+            );
+          }
+          if (state is ValidationAccountInformationState) {
+            _errors = state.errors;
+            // with errors
+            // return _pageBody(context, _getFormData());
+          }
+          return Center(
+            child: Loaders.loading(),
           );
-        }
-        if (state is ValidationAccountInformationState) {
-          _errors = state.errors;
-          // with errors
-          // return _pageBody(context, _getFormData());
-        }
-        return Center(
-          child: Loaders.loading(),
-        );
-      },
+        },
+      ),
     );
   }
 

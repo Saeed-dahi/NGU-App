@@ -1,7 +1,7 @@
 import 'package:ngu_app/features/accounts/account_information/domain/entities/account_information_entity.dart';
 
 class AccountInformationModel extends AccountInformationEntity {
-  AccountInformationModel(
+  const AccountInformationModel(
       {required super.id,
       required super.phone,
       required super.mobile,

@@ -30,77 +30,80 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TabCubit, TabState>(
-      listener: (context, state) {
-        _updateTabController(state.tabs.length);
-      },
-      builder: (context, state) {
-        final isTabsEmpty = state.tabs.isEmpty;
-        return Scaffold(
-          key: scaffoldKey,
-          drawer: const AppDrawer(),
-          appBar: AppBar(
-            title: Text('accounting_system'.tr),
-            bottom: PreferredSize(
-              preferredSize:
-                  Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
-              child: isTabsEmpty
-                  ? const SizedBox()
-                  : TabBar(
-                      controller: _tabController,
-                      isScrollable: true,
-                      tabs: List.generate(
-                        state.tabs.length,
-                        (index) {
-                          return Tab(
-                            child: Row(
-                              children: [
-                                Text(state.tabs[index].title),
-                                IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    context.read<TabCubit>().removeTab(index);
-                                  },
-                                  padding: EdgeInsets.zero,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-            ),
-          ),
-          body: isTabsEmpty
-              ? Center(
-                  child: AnimatedTextKit(
-                    animatedTexts: [
-                      ColorizeAnimatedText(
-                        '${'accounting_system'.tr}  ',
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.transparent,
-                        ],
-                        textStyle:
-                            const TextStyle(fontSize: Dimensions.largeTextSize),
-                      ),
-                    ],
-                    repeatForever: false,
-                  ),
-                )
-              : TabBarView(
-                  controller: _tabController,
-                  children: state.tabs
-                      .map(
-                        (tab) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TabContent(content: tab.content),
+    return BlocProvider(
+      create: (context) => TabCubit(),
+      child: BlocConsumer<TabCubit, TabState>(
+        listener: (context, state) {
+          _updateTabController(state.tabs.length);
+        },
+        builder: (context, state) {
+          final isTabsEmpty = state.tabs.isEmpty;
+          return Scaffold(
+            key: scaffoldKey,
+            drawer: const AppDrawer(),
+            appBar: AppBar(
+              title: Text('accounting_system'.tr),
+              bottom: PreferredSize(
+                preferredSize:
+                    Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
+                child: isTabsEmpty
+                    ? const SizedBox()
+                    : TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        tabs: List.generate(
+                          state.tabs.length,
+                          (index) {
+                            return Tab(
+                              child: Row(
+                                children: [
+                                  Text(state.tabs[index].title),
+                                  IconButton(
+                                    icon: const Icon(Icons.close),
+                                    onPressed: () {
+                                      context.read<TabCubit>().removeTab(index);
+                                    },
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      )
-                      .toList(),
-                ),
-        );
-      },
+                      ),
+              ),
+            ),
+            body: isTabsEmpty
+                ? Center(
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        ColorizeAnimatedText(
+                          '${'accounting_system'.tr}  ',
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.transparent,
+                          ],
+                          textStyle: const TextStyle(
+                              fontSize: Dimensions.largeTextSize),
+                        ),
+                      ],
+                      repeatForever: false,
+                    ),
+                  )
+                : TabBarView(
+                    controller: _tabController,
+                    children: state.tabs
+                        .map(
+                          (tab) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TabContent(content: tab.content),
+                          ),
+                        )
+                        .toList(),
+                  ),
+          );
+        },
+      ),
     );
   }
 }

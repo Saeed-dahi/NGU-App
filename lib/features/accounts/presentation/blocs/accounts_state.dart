@@ -43,7 +43,5 @@ class GetSuggestionCodeState extends AccountsState {
 }
 
 class GetAllAccountsState extends AccountsState {
-  final List<AccountEntity> accounts;
 
-  const GetAllAccountsState({required this.accounts});
 }

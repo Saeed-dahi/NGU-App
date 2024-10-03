@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
@@ -58,10 +57,7 @@ class ClosingAccountsToolbar extends StatelessWidget {
           onPressed: () {
             ShowDialog.showCustomDialog(
               context: context,
-              content: BlocProvider(
-                create: (context) => sl<ClosingAccountsBloc>(),
-                child: const CreateClosingAccount(),
-              ),
+              content: const CreateClosingAccount(),
               height: 0.3,
               width: 0.4,
             );
