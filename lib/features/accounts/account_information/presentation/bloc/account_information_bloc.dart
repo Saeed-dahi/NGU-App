@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/entities/account_information_entity.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/use_cases/show_account_information_use_case.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/use_cases/update_account_information_use_case.dart';
+
 part 'account_information_event.dart';
 part 'account_information_state.dart';
 
@@ -10,6 +11,12 @@ class AccountInformationBloc
     extends Bloc<AccountInformationEvent, AccountInformationState> {
   final ShowAccountInformationUseCase showAccountInformationUseCase;
   final UpdateAccountInformationUseCase updateAccountInformationUseCase;
+
+  late AccountInformationEntity _accountInformationEntity;
+
+  AccountInformationEntity get accountInformationEntity =>
+      _accountInformationEntity;
+
   AccountInformationBloc(
       {required this.showAccountInformationUseCase,
       required this.updateAccountInformationUseCase})
@@ -25,6 +32,7 @@ class AccountInformationBloc
     result.fold((failure) {
       emit(ErrorAccountInformationState(message: failure.errors['error']));
     }, (date) {
+      _accountInformationEntity = date;
       emit(LoadedAccountInformationState(accountInformationEntity: date));
     });
   }

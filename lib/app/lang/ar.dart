@@ -64,7 +64,7 @@ Map<String, String> ar = {
   'account_info': 'معلومات الحساب',
   'account_sts': 'كشف الحساب',
   'add_new_account': 'إضافة حساب جديد',
-  'email': 'الايميل',
+  'email': 'البريد الإلكتروني',
   'code': 'رقم الحساب',
   'name': 'الاسم',
   'ar_name': 'الاسم العربي',

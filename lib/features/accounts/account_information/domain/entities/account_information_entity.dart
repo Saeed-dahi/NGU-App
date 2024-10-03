@@ -8,6 +8,7 @@ class AccountInformationEntity extends Equatable {
   final String email;
   final String contactPersonName;
   final String address;
+  final String? closingAccountName;
   final String description;
   final String infoInInvoice;
   final String barcode;
@@ -21,6 +22,7 @@ class AccountInformationEntity extends Equatable {
       required this.email,
       required this.contactPersonName,
       required this.address,
+      this.closingAccountName,
       required this.description,
       required this.infoInInvoice,
       required this.barcode,
@@ -35,6 +37,7 @@ class AccountInformationEntity extends Equatable {
         email,
         contactPersonName,
         address,
+        closingAccountName,
         description,
         infoInInvoice,
         barcode,

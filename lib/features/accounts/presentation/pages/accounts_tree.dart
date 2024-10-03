@@ -8,6 +8,7 @@ import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/accounts/account_information/presentation/bloc/account_information_bloc.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/accounts_information_sidebar.dart';
@@ -22,19 +23,22 @@ class AccountsTree extends StatefulWidget {
 
 class _AccountsTreeState extends State<AccountsTree> {
   late final AccountsBloc _accountsBloc;
-
-  late int selectedNode = 0;
+  late final AccountInformationBloc _accountInformationBloc;
+  late TreeViewController _treeViewController;
+  late AccountEntity _selectedAccount;
 
   @override
   void initState() {
     _accountsBloc = sl<AccountsBloc>()..add(GetAllAccountsEvent());
+    _accountInformationBloc = sl<AccountInformationBloc>();
     super.initState();
   }
 
   @override
-  void dispose() async {
+  void dispose() {
+    _accountsBloc.close();
+    _accountInformationBloc.close();
     super.dispose();
-    await _accountsBloc.close();
   }
 
   Future<void> _refresh(BuildContext context) async {
@@ -47,6 +51,9 @@ class _AccountsTreeState extends State<AccountsTree> {
       providers: [
         BlocProvider(
           create: (context) => _accountsBloc,
+        ),
+        BlocProvider(
+          create: (context) => _accountInformationBloc,
         ),
       ],
       child: Scaffold(
@@ -81,7 +88,9 @@ class _AccountsTreeState extends State<AccountsTree> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _pageTree(context),
-        _pageSidebar(context, _accountsBloc.accounts[0])
+        _pageSidebar(
+          context,
+        )
       ],
     );
   }
@@ -90,28 +99,35 @@ class _AccountsTreeState extends State<AccountsTree> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: TreeView.simpleTyped(
-          tree: _accountsBloc.tree,
-          shrinkWrap: false,
-          showRootNode: false,
-          expansionIndicatorBuilder: (context, node) => ChevronIndicator.upDown(
-                tree: node,
-                color: AppColors.transparent,
-                padding: const EdgeInsets.all(Dimensions.secondaryPadding),
-              ),
-          indentation: const Indentation(
-              style: IndentStyle.squareJoint,
-              color: AppColors.primaryColor,
-              thickness: 1.4),
-          onItemTap: (item) {},
-          onTreeReady: (controller) {
-            controller.expandAllChildren(_accountsBloc.tree);
-            controller.scrollToIndex(selectedNode);
-          },
-          builder: (context, node) {
-            String name = LocalizationService.isArabic
-                ? node.data.arName
-                : node.data.enName;
-            return Card(
+        tree: _accountsBloc.tree,
+        shrinkWrap: false,
+        showRootNode: false,
+        expansionBehavior: ExpansionBehavior.collapseOthers,
+        expansionIndicatorBuilder: (context, node) => ChevronIndicator.upDown(
+          tree: node,
+          color: AppColors.transparent,
+          padding: const EdgeInsets.all(Dimensions.secondaryPadding),
+        ),
+        indentation: const Indentation(
+            style: IndentStyle.squareJoint,
+            color: AppColors.primaryColor,
+            thickness: 1.4),
+        onTreeReady: (controller) {
+          _treeViewController = controller;
+          controller.expandAllChildren(_accountsBloc.tree);
+        },
+        builder: (context, node) {
+          String name = LocalizationService.isArabic
+              ? node.data.arName
+              : node.data.enName;
+          return GestureDetector(
+            excludeFromSemantics: true,
+            onTap: () {
+              _selectedAccount = node.data;
+              _accountInformationBloc
+                  .add(ShowAccountInformationEvent(accountId: node.data.id));
+            },
+            child: Card(
               color: node.level == 1
                   ? AppColors.transparent
                   : node.children.isEmpty
@@ -120,27 +136,58 @@ class _AccountsTreeState extends State<AccountsTree> {
               child: ListTile(
                 title: Text(name),
                 leading: AccountOptionMenu(selectedId: node.data.id),
-                trailing: Icon(
-                  node.children.isEmpty || node.isExpanded
+                trailing: IconButton(
+                  icon: Icon(node.children.isEmpty || node.isExpanded
                       ? Icons.folder_copy_outlined
-                      : Icons.folder,
+                      : Icons.folder),
+                  onPressed: () {
+                    node.isExpanded
+                        ? _treeViewController.collapseNode(node)
+                        : _treeViewController.expandNode(node);
+                  },
                 ),
                 subtitle: Text(node.data.code),
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  SizedBox _pageSidebar(BuildContext context, AccountEntity account) {
+  SizedBox _pageSidebar(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.25,
-      child: Card(
-          elevation: 1,
-          color: AppColors.secondaryColorLow,
-          child: AccountsInformationSidebar(
-            account: account,
-          )),
+      child: BlocBuilder<AccountInformationBloc, AccountInformationState>(
+        builder: (context, state) {
+          if (state is LoadedAccountInformationState) {
+            return Card(
+              elevation: 1,
+              color: AppColors.secondaryColorLow,
+              child: AccountsInformationSidebar(
+                account: _selectedAccount,
+                accountInformation:
+                    _accountInformationBloc.accountInformationEntity,
+              ),
+            );
+          }
+          if (state is ErrorAccountInformationState) {
+            return Center(
+              child: MessageScreen(text: state.message),
+            );
+          }
+          if (state is LoadingAccountInformationState) {
+            return Center(child: Loaders.loading());
+          }
+          return const SizedBox(
+            child: Card(
+              elevation: 1,
+              color: AppColors.secondaryColorLow,
+              child: Column(),
+            ),
+          );
+        },
+      ),
     );
   }
 }
