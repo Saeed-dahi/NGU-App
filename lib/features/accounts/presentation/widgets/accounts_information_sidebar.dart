@@ -45,19 +45,19 @@ class AccountsInformationSidebar extends StatelessWidget {
           const Divider(),
           AccountInformationCard(
             title: 'address'.tr,
-            subtitle: accountInformation.address,
+            subtitle: accountInformation.address!,
           ),
           AccountInformationCard(
             title: 'email'.tr,
-            subtitle: accountInformation.email,
+            subtitle: accountInformation.email!,
           ),
           AccountInformationCard(
             title: 'phone'.tr,
-            subtitle: accountInformation.phone,
+            subtitle: accountInformation.phone!,
           ),
           AccountInformationCard(
             title: 'description'.tr,
-            subtitle: accountInformation.description,
+            subtitle: accountInformation.description!,
           ),
         ],
       ),

@@ -27,8 +27,8 @@ class AccountsToolbar extends StatelessWidget {
         replacement: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CustomIconButton(
-                icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
+            // CustomIconButton(
+            //     icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
             CustomIconButton(
                 icon: Icons.close,
                 tooltip: 'close'.tr,

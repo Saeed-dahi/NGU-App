@@ -16,6 +16,7 @@ class CustomInputField extends StatelessWidget {
   final bool enabled;
   final bool required;
   final bool readOnly;
+  final bool autofocus;
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final TextInputType inputType;
@@ -34,6 +35,7 @@ class CustomInputField extends StatelessWidget {
     this.enabled = true,
     this.required = true,
     this.readOnly = false,
+    this.autofocus = true,
     this.controller,
     this.onTap,
     this.onChanged,
@@ -45,7 +47,7 @@ class CustomInputField extends StatelessWidget {
       padding: const EdgeInsets.all(Dimensions.primaryPadding),
       child: TextFormField(
         maxLines: null,
-        autofocus: true,
+        autofocus: autofocus,
         enabled: enabled,
         controller: controller,
         keyboardType: TextInputType.text,

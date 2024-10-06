@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/entities/account_information_entity.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/use_cases/show_account_information_use_case.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/use_cases/update_account_information_use_case.dart';
@@ -22,6 +25,7 @@ class AccountInformationBloc
       required this.updateAccountInformationUseCase})
       : super(AccountInformationInitial()) {
     on<ShowAccountInformationEvent>(_showAccountInformation);
+    on<UpdateAccountInformationEvent>(_updateAccountInformation);
   }
 
   _showAccountInformation(ShowAccountInformationEvent event,
@@ -34,6 +38,24 @@ class AccountInformationBloc
     }, (date) {
       _accountInformationEntity = date;
       emit(LoadedAccountInformationState(accountInformationEntity: date));
+    });
+  }
+
+  _updateAccountInformation(UpdateAccountInformationEvent event,
+      Emitter<AccountInformationState> emit) async {
+    emit(LoadingAccountInformationState());
+    final result = await updateAccountInformationUseCase(
+        event.accountInformationEntity, event.files, event.filesToDelete);
+
+    result.fold((failure) {
+      if (failure is ValidationFailure) {
+        emit(ValidationAccountInformationState(errors: failure.errors));
+      } else {
+        emit(ErrorAccountInformationState(message: failure.errors['error']));
+      }
+    }, (date) {
+      emit(LoadedAccountInformationState(
+          accountInformationEntity: event.accountInformationEntity));
     });
   }
 }

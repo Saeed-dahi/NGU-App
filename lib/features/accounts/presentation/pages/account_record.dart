@@ -6,6 +6,7 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
+import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -148,15 +149,10 @@ class _AccountRecordState extends State<AccountRecord> {
                   onRefresh: _refresh,
                   content: _accountBasicInfoForm(context, account),
                 ),
-                CustomRefreshIndicator(
-                    onRefresh: () {
-                      return Future.value();
-                    },
-                    content: AccountInformation(
-                      enableEditing: _enableEditing,
-                      accountEntity: account,
-                    ))
-                // all Account information
+                AccountInformation(
+                  enableEditing: _enableEditing,
+                  accountEntity: account,
+                )
               ],
             ),
           ),
@@ -168,77 +164,101 @@ class _AccountRecordState extends State<AccountRecord> {
   Form _accountBasicInfoForm(BuildContext context, AccountEntity account) {
     return Form(
       key: _formKey,
-      child: GridView(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: 4),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomInputField(
-            inputType: TextInputType.name,
-            enabled: _enableEditing,
-            helper: 'en_name'.tr,
-            controller: _enNameController,
-            error: _errors['en_name']?.join('\n'),
-          ),
-          CustomInputField(
-            inputType: TextInputType.name,
-            enabled: _enableEditing,
-            helper: 'ar_name'.tr,
-            controller: _arNameController,
-            error: _errors['ar_name']?.join('\n'),
-          ),
-          CustomInputField(
-            inputType: TextInputType.name,
-            enabled: _enableEditing,
-            controller: _codeController,
-            helper: 'code'.tr,
-            error: _errors['code']?.join('\n'),
-          ),
-          CustomInputField(
-            inputType: TextInputType.name,
-            enabled: _enableEditing,
-            readOnly: true,
-            controller: TextEditingController(text: account.balance.toString()),
-            helper: 'balance'.tr,
-          ),
-          BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
-            builder: (context, state) {
-              if (state is LoadedAllClosingAccountsState) {
-                return ClosingAccountDropDown(
-                  closingAccounts: state.closingAccounts,
-                  enableEditing: _enableEditing,
-                  value: account.closingAccountId!,
-                  onChanged: (closingAccountId) {
-                    _closingAccountId = closingAccountId;
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.4,
+            child: GridView(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, childAspectRatio: 4),
+              children: [
+                CustomInputField(
+                  inputType: TextInputType.name,
+                  enabled: _enableEditing,
+                  helper: 'en_name'.tr,
+                  controller: _enNameController,
+                  error: _errors['en_name']?.join('\n'),
+                ),
+                CustomInputField(
+                  inputType: TextInputType.name,
+                  enabled: _enableEditing,
+                  helper: 'ar_name'.tr,
+                  controller: _arNameController,
+                  error: _errors['ar_name']?.join('\n'),
+                ),
+                CustomInputField(
+                  inputType: TextInputType.name,
+                  enabled: _enableEditing,
+                  controller: _codeController,
+                  helper: 'code'.tr,
+                  error: _errors['code']?.join('\n'),
+                ),
+                CustomInputField(
+                  inputType: TextInputType.name,
+                  enabled: _enableEditing,
+                  readOnly: true,
+                  controller:
+                      TextEditingController(text: account.balance.toString()),
+                  helper: 'balance'.tr,
+                ),
+                BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
+                  builder: (context, state) {
+                    if (state is LoadedAllClosingAccountsState) {
+                      return ClosingAccountDropDown(
+                        closingAccounts: state.closingAccounts,
+                        enableEditing: _enableEditing,
+                        value: account.closingAccountId!,
+                        onChanged: (closingAccountId) {
+                          _closingAccountId = closingAccountId;
+                        },
+                      );
+                    }
+                    return CustomInputField(
+                      inputType: TextInputType.text,
+                      enabled: false,
+                    );
                   },
-                );
-              }
-              return CustomInputField(
-                inputType: TextInputType.text,
-                enabled: false,
-              );
-            },
-          ),
-          CustomDropdown(
-              dropdownValue: getEnumValues(AccountType.values),
-              helper: 'account_type'.tr,
-              value: account.accountType,
-              enabled: _enableEditing,
-              onChanged: (value) => _accountType = value),
-          CustomDropdown(
-              dropdownValue: getEnumValues(AccountNature.values),
-              enabled: _enableEditing,
-              helper: 'account_nature'.tr,
-              value: account.accountNature,
-              onChanged: (value) => _accountNature = value),
-          CustomDropdown(
-              dropdownValue: getEnumValues(AccountCategory.values),
-              enabled: _enableEditing,
-              value: account.accountCategory,
-              helper: 'account_category'.tr,
-              onChanged: (value) => _accountCategory = value
+                ),
+                CustomDropdown(
+                    dropdownValue: getEnumValues(AccountType.values),
+                    helper: 'account_type'.tr,
+                    value: account.accountType,
+                    enabled: _enableEditing,
+                    onChanged: (value) => _accountType = value),
+                CustomDropdown(
+                    dropdownValue: getEnumValues(AccountNature.values),
+                    enabled: _enableEditing,
+                    helper: 'account_nature'.tr,
+                    value: account.accountNature,
+                    onChanged: (value) => _accountNature = value),
+                CustomDropdown(
+                    dropdownValue: getEnumValues(AccountCategory.values),
+                    enabled: _enableEditing,
+                    value: account.accountCategory,
+                    helper: 'account_category'.tr,
+                    onChanged: (value) => _accountCategory = value
 
-              // value: AccountCategory.asset.name,
-              ),
+                    // value: AccountCategory.asset.name,
+                    ),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: _enableEditing,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomElevatedButton(
+                  color: AppColors.primaryColorLow,
+                  text: 'save',
+                  onPressed: () {
+                    _onSave(context, account);
+                  },
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

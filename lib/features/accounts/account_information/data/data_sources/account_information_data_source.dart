@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/app/app_config/api_list.dart';
@@ -8,7 +9,8 @@ import 'package:ngu_app/features/accounts/account_information/data/models/accoun
 
 abstract class AccountInformationDataSource {
   Future<AccountInformationModel> showAccountInformation(int accountId);
-  Future<Unit> updatedAccountInformation(AccountInformationModel accountModel);
+  Future<Unit> updatedAccountInformation(AccountInformationModel accountModel,
+      List<File> file, List<String> filesToDelete);
 }
 
 class AccountInformationDataSourceWithHttp
@@ -32,10 +34,18 @@ class AccountInformationDataSourceWithHttp
 
   @override
   Future<Unit> updatedAccountInformation(
-      AccountInformationModel accountModel) async {
-    final response =
-        await networkConnection.get(APIList.accountInformation, {});
-    var decodedJson = jsonDecode(response.body);
+      AccountInformationModel accountInformationModel,
+      List<File> file,
+      List<String> filesToDelete) async {
+    final response = await networkConnection.httpPostMultipartRequestWithFields(
+        '${APIList.accountInformation}/${accountInformationModel.id}',
+        file,
+        'file[]',
+        accountInformationModel.toJson(),
+        filesToDelete);
+
+    var responseBody = await response.stream.bytesToString();
+    var decodedJson = jsonDecode(responseBody);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 

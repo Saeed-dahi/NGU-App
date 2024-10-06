@@ -6,8 +6,15 @@ class CustomIconButton extends StatelessWidget {
   final IconData icon;
   final String tooltip;
   final VoidCallback? onPressed;
-  const CustomIconButton(
-      {super.key, required this.icon, required this.tooltip, this.onPressed});
+  bool skipTraversal;
+  Color color;
+  CustomIconButton(
+      {super.key,
+      required this.icon,
+      required this.tooltip,
+      this.onPressed,
+      this.skipTraversal = true,
+      this.color = AppColors.primaryColor});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,8 @@ class CustomIconButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         tooltip: tooltip,
-        color: AppColors.primaryColor,
+        color: color,
+        focusNode: FocusNode(skipTraversal: skipTraversal),
       ),
     );
   }

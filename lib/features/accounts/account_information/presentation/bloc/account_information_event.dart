@@ -13,4 +13,13 @@ class ShowAccountInformationEvent extends AccountInformationEvent {
   const ShowAccountInformationEvent({required this.accountId});
 }
 
-class UpdateAccountInformationEvent extends AccountInformationEvent {}
+class UpdateAccountInformationEvent extends AccountInformationEvent {
+  final AccountInformationEntity accountInformationEntity;
+  final List<File> files;
+  final List<String> filesToDelete;
+
+  const UpdateAccountInformationEvent(
+      {required this.accountInformationEntity,
+      required this.files,
+      required this.filesToDelete});
+}

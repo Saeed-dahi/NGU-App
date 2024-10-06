@@ -1,32 +1,32 @@
 import 'package:equatable/equatable.dart';
 
 class AccountInformationEntity extends Equatable {
-  final int id;
-  final String phone;
-  final String mobile;
-  final String fax;
-  final String email;
-  final String contactPersonName;
-  final String address;
+  final int? id;
+  final String? phone;
+  final String? mobile;
+  final String? fax;
+  final String? email;
+  final String? contactPersonName;
+  final String? address;
   final String? closingAccountName;
-  final String description;
-  final String infoInInvoice;
-  final String barcode;
-  final String file;
+  final String? description;
+  final String? infoInInvoice;
+  final String? barcode;
+  final List<String>? files;
 
   const AccountInformationEntity(
-      {required this.id,
-      required this.phone,
-      required this.mobile,
-      required this.fax,
-      required this.email,
-      required this.contactPersonName,
-      required this.address,
+      {this.id,
+      this.phone,
+      this.mobile,
+      this.fax,
+      this.email,
+      this.contactPersonName,
+      this.address,
       this.closingAccountName,
-      required this.description,
-      required this.infoInInvoice,
-      required this.barcode,
-      required this.file});
+      this.description,
+      this.infoInInvoice,
+      this.barcode,
+      this.files});
 
   @override
   List<Object?> get props => [
@@ -41,6 +41,6 @@ class AccountInformationEntity extends Equatable {
         description,
         infoInInvoice,
         barcode,
-        file
+        files
       ];
 }

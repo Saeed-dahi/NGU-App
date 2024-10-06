@@ -1,6 +1,8 @@
 class APIList {
-  static const String baseUrl = "192.168.0.164:8000";
+  static const String baseUrl = "192.168.0.196:8000";
   static const String api = "api/v1/";
+  static const String storageUrl = 'http://$baseUrl/storage/';
+
   static const String login = "login";
   static const String register = "register";
   static const String closingAccounts = "closing-account";

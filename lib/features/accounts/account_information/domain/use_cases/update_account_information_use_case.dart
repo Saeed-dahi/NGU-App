@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/accounts/account_information/domain/entities/account_information_entity.dart';
@@ -8,8 +10,10 @@ class UpdateAccountInformationUseCase {
 
   UpdateAccountInformationUseCase({required this.accountInformationRepository});
   Future<Either<Failure, Unit>> call(
-      AccountInformationEntity accountInformationEntity) async {
-    return await accountInformationRepository
-        .updatedAccountInformation(accountInformationEntity);
+      AccountInformationEntity accountInformationEntity,
+      List<File> files,
+      List<String> filesToDelete) async {
+    return await accountInformationRepository.updatedAccountInformation(
+        accountInformationEntity, files, filesToDelete);
   }
 }

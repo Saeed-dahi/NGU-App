@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
@@ -21,10 +23,14 @@ class AccountInformationRepositoryImpl implements AccountInformationRepository {
 
   @override
   Future<Either<Failure, Unit>> updatedAccountInformation(
-      AccountInformationEntity accountInformationEntity) async {
+      AccountInformationEntity accountInformationEntity,
+      List<File> files,
+      List<String> filesToDelete) async {
     return await apiHelper.safeApiCall(() =>
         accountInformationDataSource.updatedAccountInformation(
-            getAccountInformationModel(accountInformationEntity)));
+            getAccountInformationModel(accountInformationEntity),
+            files,
+            filesToDelete));
   }
 
   AccountInformationModel getAccountInformationModel(
@@ -40,6 +46,6 @@ class AccountInformationRepositoryImpl implements AccountInformationRepository {
         description: account.description,
         infoInInvoice: account.infoInInvoice,
         barcode: account.barcode,
-        file: account.file);
+        files: account.files);
   }
 }

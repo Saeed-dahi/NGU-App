@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart';
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +10,13 @@ abstract class NetworkConnection {
   Future<Response> put(String apiUrl, Map<String, dynamic> body);
   Future<Response> post(String apiUrl, Map<String, dynamic> body);
   Future<Response> delete(String apiUrl, Map<String, dynamic> body);
+  Future<http.StreamedResponse> httpPostMultipartRequestWithFields(
+    String apiURL,
+    List<File?> file,
+    String key,
+    Map data,
+    List<String> filesToDelete,
+  );
 }
 
 class HttpConnection implements NetworkConnection {
@@ -64,5 +73,38 @@ class HttpConnection implements NetworkConnection {
           "Accept-language": await LocalizationService().getCachedLanguage()
         });
     return response;
+  }
+
+  @override
+  Future<http.StreamedResponse> httpPostMultipartRequestWithFields(
+    String apiURL,
+    List<File?> files,
+    String key,
+    Map data,
+    List<String> filesToDelete,
+  ) async {
+    var uri = Uri.http(APIList.baseUrl, APIList.api + apiURL);
+
+    var request = http.MultipartRequest('POST', uri);
+    request.headers["Accept"] = "application/json";
+    request.headers["Accept-Language"] =
+        await LocalizationService().getCachedLanguage();
+
+    if (files.isNotEmpty) {
+      for (var element in files) {
+        request.files
+            .add(await http.MultipartFile.fromPath(key, element!.path));
+      }
+    }
+
+    data.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+    if (filesToDelete.isNotEmpty) {
+      request.fields['files_to_delete'] = filesToDelete.join(',');
+    }
+
+    return request.send();
   }
 }

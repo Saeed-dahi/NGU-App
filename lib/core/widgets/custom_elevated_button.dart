@@ -7,8 +7,13 @@ class CustomElevatedButton extends StatelessWidget {
   final Color color;
   final VoidCallback? onPressed;
   final String text;
-  const CustomElevatedButton(
-      {super.key, required this.color, required this.text, this.onPressed});
+  bool skipTraversal;
+  CustomElevatedButton(
+      {super.key,
+      required this.color,
+      required this.text,
+      this.onPressed,
+      this.skipTraversal = true});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +27,7 @@ class CustomElevatedButton extends StatelessWidget {
           ),
         ),
       ),
+      focusNode: FocusNode(skipTraversal: skipTraversal),
       child: Text(
         text.tr,
         style: const TextStyle(
