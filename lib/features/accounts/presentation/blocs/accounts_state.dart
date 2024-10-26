@@ -42,6 +42,10 @@ class GetSuggestionCodeState extends AccountsState {
   const GetSuggestionCodeState({required this.code});
 }
 
-class GetAllAccountsState extends AccountsState {
+class GetAllAccountsState extends AccountsState {}
 
+class AccountStatementState extends AccountsState {
+  final AccountStatementEntity statement;
+
+  const AccountStatementState({required this.statement});
 }

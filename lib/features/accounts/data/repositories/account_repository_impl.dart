@@ -4,6 +4,7 @@ import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/accounts/data/data_sources/account_data_source.dart';
 import 'package:ngu_app/features/accounts/data/models/account_model.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
 import 'package:ngu_app/features/accounts/domain/repositories/account_repository.dart';
 
 class AccountRepositoryImpl implements AccountRepository {
@@ -51,6 +52,13 @@ class AccountRepositoryImpl implements AccountRepository {
       String query) async {
     return await apiHelper
         .safeApiCall(() => accountDataSource.searchInAccounts(query));
+  }
+
+  @override
+  Future<Either<Failure, AccountStatementEntity>> accountStatement(
+      int accountId) async {
+    return await apiHelper
+        .safeApiCall(() => accountDataSource.accountStatement(accountId));
   }
 
   AccountModel getAccountModel(AccountEntity accountEntity) {

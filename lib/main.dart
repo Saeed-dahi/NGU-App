@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_theme.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:window_manager/window_manager.dart';
 import 'app/dependency_injection/dependency_injection.dart' as di;
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => LanguageCubit()..getSavedLanguage(),
+        ),
+        BlocProvider(
+          create: (context) => TabCubit(),
         ),
       ],
       child: BlocBuilder<LanguageCubit, ChangeLanguageState>(

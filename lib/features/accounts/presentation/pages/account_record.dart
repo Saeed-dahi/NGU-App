@@ -89,10 +89,10 @@ class _AccountRecordState extends State<AccountRecord> {
           if (state is ErrorAccountsState) {
             return Column(
               children: [
-                const AccountsToolbar(
-                  accountId: 1,
-                  enableEditing: false,
-                ),
+                // const AccountsToolbar(
+                //   accountId: 1,
+                //   enableEditing: false,
+                // ),
                 MessageScreen(
                   text: state.message,
                 ),
@@ -129,6 +129,7 @@ class _AccountRecordState extends State<AccountRecord> {
           AccountsToolbar(
             accountId: account.id!,
             enableEditing: _enableEditing,
+            accountEntity: account,
             onSave: () {
               _onSave(context, account);
             },

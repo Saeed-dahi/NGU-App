@@ -12,6 +12,9 @@ Map<String, String> en = {
   'required': 'Required Filed',
   'success': 'The operation has completed successfully',
   'options': 'Options',
+  'created_at': 'Created At',
+  'updated_at': 'Updated At',
+  'are_you_sure':'Are You Sure',
 
   // Accounts
   'accounting': 'Accounting',
@@ -112,6 +115,9 @@ Map<String, String> en = {
   // Account Type
   'main': 'Main',
   'sub': 'Sub',
+
+  // Account statement
+  'document_number': 'Document Number',
 
   // Language
   'en': 'English',

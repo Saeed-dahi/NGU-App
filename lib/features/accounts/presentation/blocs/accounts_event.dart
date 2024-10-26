@@ -50,3 +50,9 @@ class GetSuggestionCodeEvent extends AccountsEvent {
 
   const GetSuggestionCodeEvent({required this.parentId});
 }
+
+class AccountStatementEvent extends AccountsEvent {
+  final int accountId;
+
+  const AccountStatementEvent({required this.accountId});
+}

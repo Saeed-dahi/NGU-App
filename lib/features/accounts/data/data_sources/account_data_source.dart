@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/accounts/data/models/account_model.dart';
+import 'package:ngu_app/features/accounts/data/models/account_statement_model.dart';
 
 abstract class AccountDataSource {
   Future<List<AccountModel>> getAllAccounts();
@@ -13,6 +14,7 @@ abstract class AccountDataSource {
   Future<Unit> createAccount(AccountModel accountModel);
   Future<Unit> updateAccount(AccountModel accountModel);
   Future<String> getSuggestionCode(int parentId);
+  Future<AccountStatementModel> accountStatement(int accountId);
 }
 
 class AccountDataSourceWithHttp implements AccountDataSource {
@@ -97,8 +99,21 @@ class AccountDataSourceWithHttp implements AccountDataSource {
         decodedJson['data'].map<AccountModel>((account) {
       return AccountModel.fromJson(account);
     }).toList();
-    
 
     return allAccounts;
+  }
+
+  @override
+  Future<AccountStatementModel> accountStatement(int accountId) async {
+    final response = await networkConnection
+        .get('${APIList.accountStatement}/$accountId', {});
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    AccountStatementModel accountStatementModel =
+        AccountStatementModel.fromJson(decodedJson['data']);
+
+    return accountStatementModel;
   }
 }

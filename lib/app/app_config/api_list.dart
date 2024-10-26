@@ -1,5 +1,5 @@
 class APIList {
-  static const String baseUrl = "192.168.0.196:8000";
+  static const String baseUrl = "localhost:8000";
   static const String api = "api/v1/";
   static const String storageUrl = 'http://$baseUrl/storage/';
 
@@ -7,6 +7,7 @@ class APIList {
   static const String register = "register";
   static const String closingAccounts = "closing-account";
   static const String account = "account";
+  static const String accountStatement = "account-statement";
 
   static const String searchAccount = "search-account";
   static const String getSuggestionCode = "get-suggestion-code";

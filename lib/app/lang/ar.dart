@@ -12,6 +12,9 @@ Map<String, String> ar = {
   'required': 'حقل مطلوب',
   'success': 'تمت العملية بنجاح',
   'options': 'خيارات',
+  'created_at': 'تاريخ الحفظ',
+  'updated_at': 'تاريخ التعديل',
+  'are_you_sure': 'هل أنت متأكد',
 
   // Accounts
   'accounting': 'المحاسبة',
@@ -112,6 +115,9 @@ Map<String, String> ar = {
   // Account Type
   'main': 'رئيسي',
   'sub': 'فرعي',
+
+  // Account statement
+  'document_number': 'المستند',
 
   // Language
   'en': 'الانجليزية',

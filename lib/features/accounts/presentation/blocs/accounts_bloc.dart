@@ -8,6 +8,8 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
+import 'package:ngu_app/features/accounts/domain/use_cases/account_statement_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/create_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_all_accounts_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_suggestion_code_use_case.dart';
@@ -24,23 +26,27 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   final UpdateAccountUseCase updateAccountUseCase;
   final GetSuggestionCodeUseCase getSuggestionCodeUseCase;
   final SearchInAccountsUseCase searchInAccountsUseCase;
+  final AccountStatementUseCase accountStatementUseCase;
 
   final List<AccountEntity> _accounts = List.empty(growable: true);
   TreeNode _tree = TreeNode();
   final List<AccountEntity> _accountsTable = List.empty(growable: true);
 
+
   List<AccountEntity> get accounts => _accounts;
   TreeNode get tree => _tree;
   List<AccountEntity> get accountTable => _accountsTable;
 
-  AccountsBloc({
-    required this.createAccountUseCase,
-    required this.getAllAccountsUseCase,
-    required this.showAccountUseCase,
-    required this.updateAccountUseCase,
-    required this.getSuggestionCodeUseCase,
-    required this.searchInAccountsUseCase,
-  }) : super(AccountsInitial()) {
+
+  AccountsBloc(
+      {required this.createAccountUseCase,
+      required this.getAllAccountsUseCase,
+      required this.showAccountUseCase,
+      required this.updateAccountUseCase,
+      required this.getSuggestionCodeUseCase,
+      required this.searchInAccountsUseCase,
+      required this.accountStatementUseCase})
+      : super(AccountsInitial()) {
     on<ShowAccountsEvent>(_onShowAccount);
     on<GetSuggestionCodeEvent>(_onGetSuggestionCode);
     on<CreateAccountEvent>(_onCreateAccount);
@@ -48,6 +54,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     on<UpdateAccountEvent>(_onUpdateAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
     on<SearchInAccountsEvent>(_onSearchInAccounts);
+    on<AccountStatementEvent>(_onAccountStatement);
   }
 
   _onShowAccount(ShowAccountsEvent event, Emitter<AccountsState> emit) async {
@@ -138,6 +145,19 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       accountTable.clear();
       accountTable.addAll(data);
       emit(GetAllAccountsState());
+    });
+  }
+
+  _onAccountStatement(
+      AccountStatementEvent event, Emitter<AccountsState> emit) async {
+    emit(LoadingAccountsState());
+
+    final result = await accountStatementUseCase(event.accountId);
+
+    result.fold((failure) {
+      emit(ErrorAccountsState(message: failure.errors['error']));
+    }, (data) {
+      emit(AccountStatementState(statement: data));
     });
   }
 

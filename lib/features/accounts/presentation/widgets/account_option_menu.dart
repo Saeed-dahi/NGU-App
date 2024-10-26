@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/account_statement.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/create_account.dart';
-
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class AccountOptionMenu extends StatelessWidget {
-  final int selectedId;
-  const AccountOptionMenu({super.key, required this.selectedId});
+  final AccountEntity accountEntity;
+  const AccountOptionMenu({super.key, required this.accountEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +45,7 @@ class AccountOptionMenu extends StatelessWidget {
               const Icon(Icons.info_outline_rounded),
             ],
           ),
+          onTap: () => _accountStatement(context),
         ),
       ],
     );
@@ -51,7 +55,7 @@ class AccountOptionMenu extends StatelessWidget {
     ShowDialog.showCustomDialog(
         context: context,
         content: AccountRecord(
-          accountId: selectedId,
+          accountId: accountEntity.id!,
         ),
         height: 0.6);
   }
@@ -60,9 +64,19 @@ class AccountOptionMenu extends StatelessWidget {
     ShowDialog.showCustomDialog(
         context: context,
         content: CreateAccount(
-          parentAccountId: selectedId,
+          parentAccountId: accountEntity.id,
         ),
         width: 0.4,
         height: 0.5);
+  }
+
+  _accountStatement(context) {
+    BlocProvider.of<TabCubit>(context).addNewTab(
+      title:
+          '${'account_sts'.tr} (${accountEntity.enName}-${accountEntity.arName})',
+      content: AccountStatementPage(
+        accountEntity: accountEntity,
+      ),
+    );
   }
 }

@@ -4,10 +4,14 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/account_statement.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/create_account.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class AccountsToolbar extends StatelessWidget {
+  final AccountEntity accountEntity;
   final int accountId;
   final bool enableEditing;
   final VoidCallback? onSave;
@@ -15,6 +19,7 @@ class AccountsToolbar extends StatelessWidget {
     super.key,
     required this.accountId,
     required this.enableEditing,
+    required this.accountEntity,
     this.onSave,
   });
 
@@ -66,7 +71,16 @@ class AccountsToolbar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.info_outline,
           tooltip: 'account_sts'.tr,
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+            context.read<TabCubit>().addNewTab(
+                  title:
+                      '${'account_sts'.tr} (${accountEntity.enName}-${accountEntity.arName})',
+                  content: AccountStatementPage(
+                    accountEntity: accountEntity,
+                  ),
+                );
+          },
         ),
         CustomIconButton(
           icon: Icons.print,

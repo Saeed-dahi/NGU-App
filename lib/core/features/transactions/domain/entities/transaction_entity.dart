@@ -1,0 +1,35 @@
+import 'package:equatable/equatable.dart';
+
+class TransactionEntity extends Equatable {
+  final int id;
+  final String accountName;
+  final String type;
+  final double amount;
+  final String description;
+  final String documentNumber;
+  final String accountNewBalance;
+  final String createdAt;
+  final String updatedAt;
+
+  const TransactionEntity(
+      {required this.id,
+      required this.accountName,
+      required this.type,
+      required this.amount,
+      required this.description,
+      required this.documentNumber,
+      required this.accountNewBalance,
+      required this.createdAt,
+      required this.updatedAt});
+
+  @override
+  List<Object?> get props => [
+        id,
+        accountName,
+        type,
+        amount,
+        description,
+        documentNumber,
+        accountNewBalance
+      ];
+}

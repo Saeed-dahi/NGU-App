@@ -135,7 +135,7 @@ class _AccountsTreeState extends State<AccountsTree> {
                       : AppColors.secondaryColorLow,
               child: ListTile(
                 title: Text(name),
-                leading: AccountOptionMenu(selectedId: node.data.id),
+                leading: AccountOptionMenu(accountEntity: node.data),
                 trailing: IconButton(
                   icon: Icon(node.children.isEmpty || node.isExpanded
                       ? Icons.folder_copy_outlined

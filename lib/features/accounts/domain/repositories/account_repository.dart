@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
 
 abstract class AccountRepository {
   Future<Either<Failure, List<AccountEntity>>> getAllAccounts();
@@ -11,4 +12,7 @@ abstract class AccountRepository {
   Future<Either<Failure, Unit>> updateAccount(AccountEntity accountEntity);
 
   Future<Either<Failure, String>> getSuggestionCode(int parentId);
+
+  Future<Either<Failure, AccountStatementEntity>> accountStatement(
+      int accountId);
 }

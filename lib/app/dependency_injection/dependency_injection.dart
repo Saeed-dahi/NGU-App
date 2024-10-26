@@ -13,6 +13,7 @@ import 'package:ngu_app/features/accounts/account_information/presentation/bloc/
 import 'package:ngu_app/features/accounts/data/data_sources/account_data_source.dart';
 import 'package:ngu_app/features/accounts/data/repositories/account_repository_impl.dart';
 import 'package:ngu_app/features/accounts/domain/repositories/account_repository.dart';
+import 'package:ngu_app/features/accounts/domain/use_cases/account_statement_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/create_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_all_accounts_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/get_suggestion_code_use_case.dart';
@@ -68,13 +69,17 @@ void _core() {
 
 void _account() {
   // bloc
-  sl.registerFactory(() => AccountsBloc(
+  sl.registerFactory(
+    () => AccountsBloc(
       createAccountUseCase: sl(),
       getAllAccountsUseCase: sl(),
       searchInAccountsUseCase: sl(),
       getSuggestionCodeUseCase: sl(),
       showAccountUseCase: sl(),
-      updateAccountUseCase: sl()));
+      updateAccountUseCase: sl(),
+      accountStatementUseCase: sl(),
+    ),
+  );
   // Use Cases
   sl.registerLazySingleton(
       () => GetAllAccountsUseCase(accountRepository: sl()));
@@ -85,6 +90,8 @@ void _account() {
   sl.registerLazySingleton(() => UpdateAccountUseCase(accountRepository: sl()));
   sl.registerLazySingleton(
       () => GetSuggestionCodeUseCase(accountRepository: sl()));
+  sl.registerLazySingleton(
+      () => AccountStatementUseCase(accountRepository: sl()));
   // repository
   sl.registerLazySingleton<AccountRepository>(
       () => AccountRepositoryImpl(accountDataSource: sl(), apiHelper: sl()));

@@ -41,10 +41,12 @@ class CustomAccountPlutoTable extends StatelessWidget {
         // enableRowDrag: true,
         type: PlutoColumnType.text(),
         renderer: (rendererContext) {
+          AccountEntity accountEntity = accounts
+              .firstWhere((account) => account.id == rendererContext.row.data);
           return Row(
             children: [
               // _showMenuOption(rendererContext),
-              AccountOptionMenu(selectedId: rendererContext.row.data),
+              AccountOptionMenu(accountEntity: accountEntity),
               const SizedBox(width: 8),
               Text(rendererContext.cell.value),
             ],
