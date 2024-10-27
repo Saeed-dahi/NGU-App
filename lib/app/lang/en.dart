@@ -14,7 +14,7 @@ Map<String, String> en = {
   'options': 'Options',
   'created_at': 'Created At',
   'updated_at': 'Updated At',
-  'are_you_sure':'Are You Sure',
+  'are_you_sure': 'Are You Sure',
 
   // Accounts
   'accounting': 'Accounting',
@@ -26,6 +26,9 @@ Map<String, String> en = {
   'accounts_family_table': 'Accounts Family Table',
   'opening_voucher': 'Opening Voucher',
   'accounts_setting': 'Accounts Setting',
+  'vouchers': 'Vouchers',
+  'journal_vouchers': 'Journal Vouchers',
+  'journal_vouchers_table': 'Journal Vouchers Table',
 
   // Currencies
   'currencies': 'Currencies',

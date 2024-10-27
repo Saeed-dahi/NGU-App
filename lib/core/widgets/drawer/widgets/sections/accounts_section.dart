@@ -12,6 +12,7 @@ import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
 
 class AccountsSection extends StatelessWidget {
   const AccountsSection({super.key});
@@ -27,6 +28,7 @@ class AccountsSection extends StatelessWidget {
           CustomSectionBody(
             children: [
               _buildAccountsRecord(context),
+              _buildVouchers(context),
               _currencies(),
               _closingVouchers(context)
             ],
@@ -113,5 +115,22 @@ class AccountsSection extends StatelessWidget {
             title: 'accounts_setting'.tr, icon: Icons.settings_outlined),
       ],
     );
+  }
+
+  _buildVouchers(BuildContext context) {
+    return CustomExpansionTile(
+        title: 'vouchers'.tr,
+        icon: Icons.menu_book_outlined,
+        children: [
+          BasicListTile(
+            title: 'journal_vouchers'.tr,
+            icon: Icons.menu_book_outlined,
+            onTap: () => context.read<TabCubit>().addNewTab(
+                title: 'journal_vouchers'.tr, content: const JournalVouchers()),
+          ),
+          BasicListTile(
+              title: 'journal_vouchers_table'.tr,
+              icon: Icons.table_chart_outlined),
+        ]);
   }
 }

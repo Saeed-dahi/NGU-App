@@ -1,10 +1,10 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_analog_clock/flutter_analog_clock.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
 import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
@@ -56,26 +56,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                          width: 200,
-                          child: AnalogClock(
-                            dialBorderColor: AppColors.primaryColor,
-                            markingColor: AppColors.primaryColor,
-                            hourHandColor: AppColors.primaryColor,
-                            hourNumberColor: AppColors.primaryColor,
-                            minuteHandColor: AppColors.primaryColor,
-                            secondHandColor: AppColors.primaryColor,
-                            centerPointColor: AppColors.primaryColor,
-                            child: Align(
-                              alignment: const FractionalOffset(0.5, 0.75),
-                              child: Text(
-                                'accounting_system'.tr,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryColorLow),
+                      Visibility(
+                        visible: false,
+                        child: SizedBox(
+                            width: 200,
+                            child: AnalogClock(
+                              dialBorderColor: AppColors.primaryColor,
+                              markingColor: AppColors.primaryColor,
+                              hourHandColor: AppColors.primaryColor,
+                              hourNumberColor: AppColors.primaryColor,
+                              minuteHandColor: AppColors.primaryColor,
+                              secondHandColor: AppColors.primaryColor,
+                              centerPointColor: AppColors.primaryColor,
+                              child: Align(
+                                alignment: const FractionalOffset(0.5, 0.75),
+                                child: Text(
+                                  'accounting_system'.tr,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryColorLow),
+                                ),
                               ),
-                            ),
-                          )),
+                            )),
+                      ),
                     ],
                   ),
                 )
@@ -115,9 +118,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    // ConfirmDialog.showConfirmDialog(() {}, () {
-                    context.read<TabCubit>().removeTab(index);
-                    // });
+                    ConfirmDialog.showConfirmDialog(() {}, () {
+                      context.read<TabCubit>().removeTab(index);
+                    });
                   },
                   padding: EdgeInsets.zero,
                 ),

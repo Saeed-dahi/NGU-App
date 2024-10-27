@@ -26,6 +26,9 @@ Map<String, String> ar = {
   'accounts_family_table': 'جدول عائلة الحسابات',
   'opening_voucher': 'سند افتتاحي',
   'accounts_setting': 'إعدادات الحسابات',
+  'vouchers': 'القيود',
+  'journal_vouchers': 'سندات القيد',
+  'journal_vouchers_table': 'جدول سندات القيد',
 
   // Currencies
   'currencies': 'العملات',
