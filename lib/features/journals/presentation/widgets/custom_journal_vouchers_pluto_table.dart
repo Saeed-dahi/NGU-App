@@ -12,6 +12,7 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 class CustomJournalVouchersPlutoTable extends StatelessWidget {
   CustomJournalVouchersPlutoTable({super.key});
   List<PlutoRow> rows = [];
+  late final PlutoGridStateManager _stateManger;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,9 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
           height: MediaQuery.sizeOf(context).height * 0.65,
           child: PlutoGrid(
             configuration: _tableConfig(),
+            onLoaded: (event) {
+              _stateManger = event.stateManager;
+            },
             // noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
             columns: _buildColumns(),
             rows: _buildRows(),
@@ -44,16 +48,16 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
   }
 
   List<PlutoRow> _buildRows() {
-    for (var i = 0; i < 100; i++) {
-      rows.add(PlutoRow(cells: {
-        'debit': PlutoCell(value: ''),
-        'credit': PlutoCell(value: ''),
-        'account_code': PlutoCell(value: ''),
-        'account_name': PlutoCell(value: ''),
-        'description': PlutoCell(value: ''),
-        'document_number': PlutoCell(value: ''),
-      }));
-    }
+    rows.add(PlutoRow(
+      sortIdx: 0,
+      cells: {
+      'debit': PlutoCell(value: null),
+      'credit': PlutoCell(value: ''),
+      'account_code': PlutoCell(value: ''),
+      'account_name': PlutoCell(value: ''),
+      'description': PlutoCell(value: ''),
+      'document_number': PlutoCell(value: ''),
+    }));
 
     return rows;
   }
@@ -87,6 +91,10 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
         title: title.tr,
         field: title,
         type: type,
+        enableAutoEditing: true,
+        applyFormatterInEditing: true,
+        textAlign: PlutoColumnTextAlign.center,
+        enableEditingMode: true,
         enableSorting: false,
         enableContextMenu: false,
         enableFilterMenuItem: false);
@@ -103,6 +111,9 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
               child: CustomInputField(
                 inputType: TextInputType.text,
                 label: 'code'.tr,
+                onTap: () {
+                  _stateManger.appendNewRows(count: 10);
+                },
               ),
             ),
             SizedBox(
@@ -120,9 +131,10 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
             ),
             SizedBox(
               width: MediaQuery.sizeOf(context).width * 0.2,
-              child: CustomDatePicker(
-                  dateInput: TextEditingController(),
-                  labelText: 'description'.tr),
+              child: CustomInputField(
+                inputType: TextInputType.text,
+                label: 'description'.tr,
+              ),
             ),
           ],
         ),

@@ -23,9 +23,6 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height * 0.85,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: PlutoGrid(
-        createFooter: (stateManager) {
-          return _customFooter(context);
-        },
         configuration: _tableConfig(),
         mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
@@ -36,54 +33,45 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
     );
   }
 
-  Padding _customFooter(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
-              accountStatement.debitBalance.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
-              accountStatement.creditBalance.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Text(
-              '${'balance'.tr}: ${accountStatement.debitBalance - accountStatement.creditBalance}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
       PlutoColumn(
         title: 'debit'.tr,
         field: 'debit',
         type: PlutoColumnType.text(),
+        footerRenderer: (context) {
+          return Center(
+            child: Text(
+              accountStatement.debitBalance.toString(),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          );
+        },
       ),
       PlutoColumn(
-        title: 'credit'.tr,
-        field: 'credit',
-        type: PlutoColumnType.text(),
-      ),
+          title: 'credit'.tr,
+          field: 'credit',
+          type: PlutoColumnType.text(),
+          footerRenderer: (context) {
+            return Center(
+              child: Text(
+                accountStatement.creditBalance.toString(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            );
+          }),
       PlutoColumn(
-        title: 'balance'.tr,
-        field: 'account_new_balance',
-        type: PlutoColumnType.text(),
-      ),
+          title: 'balance'.tr,
+          field: 'account_new_balance',
+          type: PlutoColumnType.text(),
+          footerRenderer: (context) {
+            return Center(
+              child: Text(
+                '${'balance'.tr}: ${accountStatement.debitBalance - accountStatement.creditBalance}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            );
+          }),
       PlutoColumn(
         title: 'description'.tr,
         field: 'description',
