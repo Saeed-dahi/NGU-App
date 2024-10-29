@@ -35,6 +35,7 @@ class _CustomDatePicker extends State<CustomDatePicker> {
     return CustomInputField(
       controller: widget.dateInput,
       inputType: TextInputType.datetime,
+      autofocus: false,
       label: widget.labelText,
       readOnly: true,
       onTap: () async {

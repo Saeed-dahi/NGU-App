@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
-import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+
 import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_option_menu.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
@@ -20,8 +22,8 @@ class CustomAccountPlutoTable extends StatelessWidget {
     return Container(
       height: MediaQuery.sizeOf(context).height * 0.55,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
-      child: PlutoGrid(
-        configuration: _tableConfig(),
+      child: CustomPlutoTable(
+        controller: PlutoGridController(),
         mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
@@ -89,29 +91,6 @@ class CustomAccountPlutoTable extends StatelessWidget {
           },
         );
       },
-    );
-  }
-
-  PlutoGridConfiguration _tableConfig() {
-    return PlutoGridConfiguration(
-      localeText: LocalizationService.isArabic
-          ? const PlutoGridLocaleText.arabic()
-          : const PlutoGridLocaleText(),
-      columnFilter: const PlutoGridColumnFilterConfig(),
-      scrollbar: const PlutoGridScrollbarConfig(
-          scrollBarColor: AppColors.primaryColor),
-      columnSize: const PlutoGridColumnSizeConfig(
-          autoSizeMode: PlutoAutoSizeMode.scale),
-      tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-      style: PlutoGridStyleConfig(
-        rowCheckedColor: AppColors.primaryColorLow.withOpacity(0.3),
-        gridBorderColor: AppColors.primaryColor,
-        enableGridBorderShadow: true,
-        enableRowHoverColor: true,
-        gridBorderRadius: BorderRadius.circular(
-          Dimensions.borderRadius,
-        ),
-      ),
     );
   }
 }

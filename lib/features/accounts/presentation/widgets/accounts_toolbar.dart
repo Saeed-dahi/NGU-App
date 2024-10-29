@@ -69,7 +69,7 @@ class AccountsToolbar extends StatelessWidget {
           },
         ),
         CustomIconButton(
-          icon: Icons.info_outline,
+          icon: Icons.article_outlined,
           tooltip: 'account_sts'.tr,
           onPressed: () {
             Get.back();
