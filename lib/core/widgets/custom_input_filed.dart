@@ -17,6 +17,7 @@ class CustomInputField extends StatelessWidget {
   final bool required;
   final bool readOnly;
   final bool autofocus;
+  final bool isCenterLabel;
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final TextInputType inputType;
@@ -36,6 +37,7 @@ class CustomInputField extends StatelessWidget {
     this.required = true,
     this.readOnly = false,
     this.autofocus = true,
+    this.isCenterLabel = false,
     this.controller,
     this.onTap,
     this.onChanged,
@@ -69,12 +71,13 @@ class CustomInputField extends StatelessWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusColor: AppColors.primaryColorLow,
             hoverColor: AppColors.primaryColorLow,
-            label: Text(label),
+            label: isCenterLabel ? Center(child: Text(label)) : Text(label),
             hintText: hint,
             prefixText: prefix,
             suffixText: suffix,
             helperText: helper,
             errorText: error,
+
             // icon: Text(helper),
             hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize)),
       ),

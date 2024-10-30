@@ -29,6 +29,14 @@ import 'package:ngu_app/features/closing_accounts/domain/use_cases/get_all_closi
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
+import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
+import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
+import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
+import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
+import 'package:ngu_app/features/journals/domain/use_cases/get_all_journals_use_case.dart';
+import 'package:ngu_app/features/journals/domain/use_cases/show_journal_use_case.dart';
+import 'package:ngu_app/features/journals/domain/use_cases/update_journal_use_case.dart';
+import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -41,6 +49,8 @@ Future<void> init() async {
 
   /// Accounts
   _accountInformation();
+
+  _journal();
 
   // Core
   _core();
@@ -145,4 +155,28 @@ void _accountInformation() {
   // dataSource
   sl.registerLazySingleton<AccountInformationDataSource>(
       () => AccountInformationDataSourceWithHttp(networkConnection: sl()));
+}
+
+void _journal() {
+  // bloc
+  sl.registerFactory(() => JournalBloc(
+      getAllJournalsUseCase: sl(),
+      showJournalUseCase: sl(),
+      createJournalUseCase: sl(),
+      updateJournalUseCase: sl()));
+
+  // use cases
+  sl.registerLazySingleton(
+      () => GetAllJournalsUseCase(journalRepository: sl()));
+  sl.registerLazySingleton(() => ShowJournalUseCase(journalRepository: sl()));
+  sl.registerLazySingleton(() => CreateJournalUseCase(journalRepository: sl()));
+  sl.registerLazySingleton(() => UpdateJournalUseCase(journalRepository: sl()));
+
+  // repository
+  sl.registerLazySingleton<JournalRepository>(
+      () => JournalRepositoryImpl(apiHelper: sl(), journalDataSource: sl()));
+
+  // data sources
+  sl.registerLazySingleton<JournalDataSource>(
+      () => JournalDataSourceImpl(networkConnection: sl()));
 }

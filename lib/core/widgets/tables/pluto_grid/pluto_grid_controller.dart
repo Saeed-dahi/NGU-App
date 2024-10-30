@@ -47,15 +47,23 @@ class CustomEnterKeyAction extends PlutoGridShortcutAction {
 
   // Moves to the first column in the next row
   void _moveToNextRowFirstColumn(PlutoGridStateManager stateManager) async {
-    stateManager.moveCurrentCell(PlutoMoveDirection.down);
+    // Add new Row if we at the end of table
+    _addNewRow(stateManager);
 
+    stateManager.moveCurrentCell(PlutoMoveDirection.down);
     if (stateManager.currentRowIdx != null &&
         stateManager.currentRowIdx! < stateManager.rows.length) {
       stateManager.setCurrentCell(
         stateManager.rows[stateManager.currentRowIdx!]
             .cells[stateManager.columns.first.field],
-        stateManager.currentRowIdx,
+        stateManager.currentRowIdx!,
       );
+    }
+  }
+
+  void _addNewRow(PlutoGridStateManager stateManager) {
+    if (stateManager.currentRow == stateManager.rows.last) {
+      stateManager.appendNewRows(count: 1);
     }
   }
 

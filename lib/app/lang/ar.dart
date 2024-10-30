@@ -9,12 +9,18 @@ Map<String, String> ar = {
   'backup_all_data': 'نسخ كل البيانات',
   'backup_some_data': 'نسخ جزئي للبيانات',
   'save': 'حفظ',
+  'post': 'ترحيل',
+  'insert': 'إضافة',
   'required': 'حقل مطلوب',
   'success': 'تمت العملية بنجاح',
   'options': 'خيارات',
   'created_at': 'تاريخ الحفظ',
   'updated_at': 'تاريخ التعديل',
   'are_you_sure': 'هل أنت متأكد',
+  'yes': 'نعم',
+  'no': 'لا',
+  'row': 'سطر',
+  'column': 'عمود',
 
   // Accounts
   'accounting': 'المحاسبة',
