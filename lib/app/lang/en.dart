@@ -34,6 +34,7 @@ Map<String, String> en = {
   'accounts_setting': 'Accounts Setting',
   'vouchers': 'Vouchers',
   'journal_vouchers': 'Journal Vouchers',
+  'journal_voucher': 'Journal Voucher',
   'journal_vouchers_table': 'Journal Vouchers Table',
 
   // Currencies

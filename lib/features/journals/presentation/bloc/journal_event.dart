@@ -16,10 +16,8 @@ class ShowJournalEvent extends JournalEvent {
 
 class CreateJournalEvent extends JournalEvent {
   final JournalEntity journalEntity;
-  final List<TransactionEntity> transactions;
 
-  const CreateJournalEvent(
-      {required this.journalEntity, required this.transactions});
+  const CreateJournalEvent({required this.journalEntity});
 }
 
 class UpdateJournalEvent extends JournalEvent {

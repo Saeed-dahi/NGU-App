@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInputField extends StatelessWidget {
   final String label;
@@ -21,27 +22,28 @@ class CustomInputField extends StatelessWidget {
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final TextInputType inputType;
+  VoidCallback? onEditingComplete;
 
   TextEditingController? controller = TextEditingController();
 
-  CustomInputField({
-    super.key,
-    this.label = '',
-    required this.inputType,
-    this.hint = '',
-    this.prefix = '',
-    this.suffix = '',
-    this.helper = '',
-    this.error,
-    this.enabled = true,
-    this.required = true,
-    this.readOnly = false,
-    this.autofocus = true,
-    this.isCenterLabel = false,
-    this.controller,
-    this.onTap,
-    this.onChanged,
-  });
+  CustomInputField(
+      {super.key,
+      this.label = '',
+      required this.inputType,
+      this.hint = '',
+      this.prefix = '',
+      this.suffix = '',
+      this.helper = '',
+      this.error,
+      this.enabled = true,
+      this.required = true,
+      this.readOnly = false,
+      this.autofocus = true,
+      this.isCenterLabel = false,
+      this.controller,
+      this.onTap,
+      this.onChanged,
+      this.onEditingComplete});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,9 @@ class CustomInputField extends StatelessWidget {
         },
         onEditingComplete: () {
           FocusScope.of(context).nextFocus();
+          onEditingComplete!();
         },
+        onTapAlwaysCalled: true,
         onChanged: onChanged,
         decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),

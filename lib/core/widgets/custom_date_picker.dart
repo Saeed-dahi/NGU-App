@@ -37,20 +37,21 @@ class _CustomDatePicker extends State<CustomDatePicker> {
       inputType: TextInputType.datetime,
       autofocus: false,
       label: widget.labelText,
-      readOnly: true,
+      readOnly: false,
       onTap: () async {
+        print('object');
         DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(1950),
-            lastDate: DateTime(2100));
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2050));
 
         if (pickedDate != null) {
           String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
 
           setState(() {
             widget.dateInput.text = formattedDate;
-            widget.onPressed!();
+            FocusScope.of(context).nextFocus();
           });
         } else {}
       },

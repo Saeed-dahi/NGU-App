@@ -2,52 +2,80 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
-
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
+import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/journal_vouchers_tool_bar.dart';
-import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class JournalVouchers extends StatefulWidget {
-  final int? journalId;
-  const JournalVouchers({super.key, this.journalId});
+class CreateJournal extends StatefulWidget {
+  const CreateJournal({super.key});
 
   @override
-  State<JournalVouchers> createState() => _JournalVouchersState();
+  State<CreateJournal> createState() => _CreateJournalState();
 }
 
-class _JournalVouchersState extends State<JournalVouchers> {
+class _CreateJournalState extends State<CreateJournal> {
   late final JournalBloc _journalBloc;
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _journalIdController;
   late final TextEditingController _journalDocumentNumberController;
   late final TextEditingController _journalCreatedAtController;
   late final TextEditingController _journalDescriptionController;
-  PlutoGridStateManager? stateManger;
+
+  JournalEntity journalEntity(Enum status) {
+    return JournalEntity(
+      document: _journalDocumentNumberController.text,
+      description: _journalDescriptionController.text,
+      status: status.name,
+      transactions: transactions,
+      createdAt: _journalCreatedAtController.text,
+    );
+  }
+
+  List<TransactionEntity> get transactions {
+    double? amount;
+    return _journalBloc.getStateManger.rows.where((row) {
+      // Check if essential cells are not empty
+      final accountCode = row.cells['account_code']?.value;
+      final debit = double.tryParse(row.cells['debit']?.value);
+      final credit = double.tryParse(row.cells['credit']?.value);
+      amount = debit ?? credit;
+
+      return accountCode != null &&
+          accountCode.toString().isNotEmpty &&
+          amount != null &&
+          amount.toString().isNotEmpty;
+    }).map((row) {
+      return TransactionEntity(
+        accountName: row.cells['account_code']!.value,
+        type: double.tryParse(row.cells['debit']?.value) != null
+            ? AccountNature.debit.name
+            : AccountNature.credit.name,
+        amount: amount!,
+        description: row.cells['description']?.value ?? '',
+        documentNumber: row.cells['document_number']?.value ?? '',
+      );
+    }).toList();
+  }
 
   @override
   void initState() {
-    _journalBloc = sl<JournalBloc>()
-      ..add(ShowJournalEvent(journalId: widget.journalId ?? 1));
+    _journalBloc = sl<JournalBloc>();
 
     _journalIdController = TextEditingController();
     _journalDocumentNumberController = TextEditingController();
     _journalCreatedAtController = TextEditingController();
     _journalDescriptionController = TextEditingController();
     super.initState();
-  }
-
-  _updateTextEditingController(JournalEntity journal) {
-    _journalIdController.text = journal.id.toString();
-    _journalDocumentNumberController.text = journal.document;
-    _journalCreatedAtController.text = journal.createdAt;
-    _journalDescriptionController.text = journal.description;
   }
 
   @override
@@ -58,54 +86,69 @@ class _JournalVouchersState extends State<JournalVouchers> {
     _journalDocumentNumberController.dispose();
     _journalCreatedAtController.dispose();
     _journalDescriptionController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
-      onRefresh: _refresh,
+      onRefresh: () {
+        return Future.value();
+      },
       content: BlocProvider(
         create: (context) => _journalBloc,
-        child: BlocBuilder<JournalBloc, JournalState>(
+        child: BlocConsumer<JournalBloc, JournalState>(
+          listener: (context, state) {
+            context.read<TabCubit>().removeLastTab();
+            context.read<TabCubit>().addNewTab(
+                title: 'journal_vouchers'.tr,
+                content: JournalVouchers(
+                  journalId: _journalBloc.getJournalEntity?.id,
+                ));
+          },
           builder: (context, state) {
-            if (state is LoadedJournalState) {
-              _updateTextEditingController(state.journalEntity);
-
-              return _pageBody(state.journalEntity);
+            if (state is LoadingJournalState) {
+              return Center(child: Loaders.loading());
             }
             if (state is ErrorJournalState) {
-              return Column(
-                children: [
-                  JournalVouchersToolBar(
-                    journalId: _journalBloc.getJournalEntity?.id,
-                  ),
-                  Center(
-                    child: MessageScreen(text: state.message),
-                  ),
-                ],
+              return Center(
+                child: MessageScreen(text: state.message),
               );
             }
-            return Center(child: Loaders.loading());
+
+            return _pageBody();
           },
         ),
       ),
     );
   }
 
-  ListView _pageBody(JournalEntity journalEntity) {
+  ListView _pageBody() {
     return ListView(
       children: [
         JournalVouchersToolBar(
+          onSaveAsDraft: _onSaveAsDraft,
+          onSaveAsSaved: _onSaveAsSaved,
           journalId: _journalBloc.getJournalEntity?.id,
         ),
         const Divider(),
         _buildHeader(context),
-        CustomJournalVouchersPlutoTable(
-          journalEntity: journalEntity,
-        ),
+        const CustomJournalVouchersPlutoTable(),
       ],
     );
+  }
+
+  void _onSaveAsDraft() {
+    _journalBloc.add(CreateJournalEvent(
+      journalEntity: journalEntity(Status.draft),
+    ));
+  }
+
+  void _onSaveAsSaved() {
+    _journalBloc.add(CreateJournalEvent(
+      journalEntity: journalEntity(Status.saved),
+    ));
   }
 
   _buildHeader(BuildContext context) {
@@ -148,7 +191,11 @@ class _JournalVouchersState extends State<JournalVouchers> {
                   controller: _journalDescriptionController,
                   label: 'description'.tr,
                   onEditingComplete: () {
-                    _moveFocusToTable();
+                    _journalBloc.getStateManger.setCurrentCell(
+                        _journalBloc
+                            .getStateManger.rows.first.cells.values.first,
+                        0);
+                    _journalBloc.getStateManger.setKeepFocus(true);
                   },
                 ),
               ),
@@ -157,16 +204,5 @@ class _JournalVouchersState extends State<JournalVouchers> {
         ],
       ),
     );
-  }
-
-  void _moveFocusToTable() {
-    _journalBloc.getStateManger.setCurrentCell(
-        _journalBloc.getStateManger.rows.first.cells.values.first, 0);
-    _journalBloc.getStateManger.setKeepFocus(true);
-  }
-
-  Future<void> _refresh() async {
-    _journalBloc
-        .add(ShowJournalEvent(journalId: _journalBloc.getJournalEntity?.id));
   }
 }

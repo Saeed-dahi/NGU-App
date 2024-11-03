@@ -3,13 +3,13 @@ import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 
 class JournalModel extends JournalEntity {
   const JournalModel(
-      {required super.id,
+      {super.id,
       required super.document,
       required super.description,
       required super.status,
       required super.transactions,
       required super.createdAt,
-      required super.updatedAt});
+      super.updatedAt});
 
   factory JournalModel.fromJson(Map<String, dynamic> json) {
     return JournalModel(
@@ -27,13 +27,12 @@ class JournalModel extends JournalEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'document': document,
       'description': description,
       'status': status,
-      'transactions': transactions,
       'created_at': createdAt,
-      'updated_at': updatedAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     };
   }
 }

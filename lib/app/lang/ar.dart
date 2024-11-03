@@ -34,6 +34,7 @@ Map<String, String> ar = {
   'accounts_setting': 'إعدادات الحسابات',
   'vouchers': 'القيود',
   'journal_vouchers': 'سندات القيد',
+  'journal_voucher': 'سند قيد',
   'journal_vouchers_table': 'جدول سندات القيد',
 
   // Currencies

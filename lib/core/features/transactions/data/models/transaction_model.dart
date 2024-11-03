@@ -2,15 +2,15 @@ import 'package:ngu_app/core/features/transactions/domain/entities/transaction_e
 
 class TransactionModel extends TransactionEntity {
   const TransactionModel(
-      {required super.id,
+      {super.id,
       required super.accountName,
       required super.type,
       required super.amount,
       required super.description,
       required super.documentNumber,
-      required super.accountNewBalance,
-      required super.createdAt,
-      required super.updatedAt});
+      super.accountNewBalance,
+      super.createdAt,
+      super.updatedAt});
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
@@ -28,13 +28,11 @@ class TransactionModel extends TransactionEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id.toString(),
-      'account_name': accountName,
+      'account_id': accountName,
       'type': type,
       'amount': amount.toString(),
       'description': description,
       'document_number': documentNumber,
-      'account_new_balance': accountNewBalance,
     };
   }
 }

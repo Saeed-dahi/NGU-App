@@ -16,10 +16,9 @@ import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomJournalVouchersPlutoTable extends StatefulWidget {
-  final JournalEntity journalEntity;
+  final JournalEntity? journalEntity;
 
-  const CustomJournalVouchersPlutoTable(
-      {super.key, required this.journalEntity});
+  const CustomJournalVouchersPlutoTable({super.key, this.journalEntity});
 
   @override
   State<CustomJournalVouchersPlutoTable> createState() =>
@@ -41,7 +40,9 @@ class _CustomJournalVouchersPlutoTableState
           },
           noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
           columns: _buildColumns(),
-          rows: _buildRows().toList(),
+          rows: widget.journalEntity != null
+              ? _buildFilledRows().toList()
+              : _buildEmptyRows(),
           onChanged: _onChanged),
     );
   }
@@ -53,7 +54,6 @@ class _CustomJournalVouchersPlutoTableState
     if (event.column.field == 'credit' && event.value != null) {
       event.row.cells['debit']!.value = '';
     }
-
     setState(() {});
   }
 
@@ -68,8 +68,8 @@ class _CustomJournalVouchersPlutoTableState
     ];
   }
 
-  Iterable<PlutoRow> _buildRows() {
-    return widget.journalEntity.transactions.map(
+  Iterable<PlutoRow> _buildFilledRows() {
+    return widget.journalEntity!.transactions.map(
       (transaction) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
@@ -93,6 +93,22 @@ class _CustomJournalVouchersPlutoTableState
     );
   }
 
+  List<PlutoRow> _buildEmptyRows() {
+    return [
+      PlutoRow(
+        type: PlutoRowTypeGroup(children: FilteredList()),
+        cells: {
+          'debit': PlutoCell(value: ''),
+          'credit': PlutoCell(value: ''),
+          'account_code': PlutoCell(value: ''),
+          'account_name': PlutoCell(value: ''),
+          'description': PlutoCell(value: ''),
+          'document_number': PlutoCell(value: ''),
+        },
+      )
+    ];
+  }
+
   PlutoColumn _buildCustomColumn(String title, {bool readOnly = false}) {
     return PlutoColumn(
       title: title.tr,
@@ -107,8 +123,14 @@ class _CustomJournalVouchersPlutoTableState
       footerRenderer: (context) {
         if (title == 'debit' || title == 'credit') {
           return Center(
-              child: Text(columnSum(context.column.field, context.stateManager)
-                  .toString()));
+            child: Text(
+              columnSum(
+                context.column.field,
+                context.stateManager,
+              ).toString(),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          );
         }
         return const SizedBox();
       },

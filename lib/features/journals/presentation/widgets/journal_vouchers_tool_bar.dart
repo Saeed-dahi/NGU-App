@@ -4,12 +4,17 @@ import 'package:get/get.dart';
 
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
+import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';
 
 class JournalVouchersToolBar extends StatelessWidget {
-  final JournalEntity journalEntity;
-  const JournalVouchersToolBar({super.key, required this.journalEntity});
+  final int? journalId;
+  void Function()? onSaveAsDraft;
+  void Function()? onSaveAsSaved;
+  JournalVouchersToolBar(
+      {super.key, this.journalId, this.onSaveAsDraft, this.onSaveAsSaved});
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +33,23 @@ class JournalVouchersToolBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _navigateActions(context),
-            SizedBox(
-                width: 100,
-                child: CustomInputField(
-                  inputType: TextInputType.number,
-                  label: journalEntity.id.toString(),
-                  autofocus: false,
-                  isCenterLabel: true,
-                  onChanged: (value) {
-                    int journalId = int.parse(value);
-                    context
-                        .read<JournalBloc>()
-                        .add(ShowJournalEvent(journalId: journalId));
-                  },
-                )),
+            Visibility(
+              visible: journalId != null,
+              child: SizedBox(
+                  width: 100,
+                  child: CustomInputField(
+                    inputType: TextInputType.number,
+                    label: journalId.toString(),
+                    autofocus: false,
+                    isCenterLabel: true,
+                    onChanged: (value) {
+                      int journalId = int.parse(value);
+                      context
+                          .read<JournalBloc>()
+                          .add(ShowJournalEvent(journalId: journalId));
+                    },
+                  )),
+            ),
             _crudActions(context),
           ],
         ),
@@ -55,12 +63,18 @@ class JournalVouchersToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add'.tr,
-          onPressed: () {},
+          onPressed: () {
+            context.read<TabCubit>().addNewTab(
+                title: '${'add'.tr} ${'journal_voucher'.tr}',
+                content: const CreateJournal());
+          },
         ),
         CustomIconButton(
-            icon: Icons.check_outlined, tooltip: 'post'.tr, onPressed: () {}),
+            icon: Icons.check_outlined,
+            tooltip: 'post'.tr,
+            onPressed: onSaveAsSaved),
         CustomIconButton(
-            icon: Icons.save, tooltip: 'save'.tr, onPressed: () {}),
+            icon: Icons.save, tooltip: 'save'.tr, onPressed: onSaveAsDraft),
         CustomIconButton(
           icon: Icons.print,
           tooltip: 'print'.tr,
@@ -91,36 +105,38 @@ class JournalVouchersToolBar extends StatelessWidget {
             icon: Icons.fast_rewind_rounded,
             tooltip: 'first'.tr,
             onPressed: () {
-              _navigate(context, journalEntity.id, 'first');
+              _navigate(context, journalId, 'first');
             }),
         CustomIconButton(
             icon: Icons.arrow_left_rounded,
             tooltip: 'previous'.tr,
             onPressed: () {
-              _navigate(context, journalEntity.id, 'previous');
+              _navigate(context, journalId, 'previous');
             }),
         CustomIconButton(
             icon: Icons.arrow_right_rounded,
             tooltip: 'next'.tr,
             onPressed: () {
-              _navigate(context, journalEntity.id, 'next');
+              _navigate(context, journalId, 'next');
             }),
         CustomIconButton(
             icon: Icons.fast_forward_rounded,
             tooltip: 'last'.tr,
             onPressed: () {
-              _navigate(context, journalEntity.id, 'last');
+              _navigate(context, journalId, 'last');
             }),
       ],
     );
   }
 
-  void _navigate(BuildContext context, int journalId, String direction) {
-    return context.read<JournalBloc>().add(
-          ShowJournalEvent(
-            journalId: journalId,
-            direction: direction,
-          ),
-        );
+  void _navigate(BuildContext context, int? journalId, String direction) {
+    if (journalId != null) {
+      context.read<JournalBloc>().add(
+            ShowJournalEvent(
+              journalId: journalId,
+              direction: direction,
+            ),
+          );
+    }
   }
 }

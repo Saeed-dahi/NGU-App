@@ -6,7 +6,7 @@ enum AccountType { main, sub }
 
 enum DirectionType { next, previous, last, first }
 
-enum Status{draft,finall}
+enum Status { draft, saved }
 
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();

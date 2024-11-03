@@ -1,18 +1,19 @@
 import 'dart:convert';
-
-import 'package:dartz/dartz.dart';
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/features/transactions/data/models/transaction_model.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
+
 import 'package:ngu_app/features/journals/data/models/journal_model.dart';
 
 abstract class JournalDataSource {
   Future<List<JournalModel>> getAllJournals();
   Future<JournalModel> showJournal(int journalId, String? direction);
-  Future<Unit> createJournal(
-      JournalModel journalModel, List<TransactionModel> transactionModel);
-  Future<Unit> updateJournal(
+  Future<JournalModel> createJournal(
+    JournalModel journalModel,
+    List<TransactionModel> transactions,
+  );
+  Future<JournalModel> updateJournal(
       JournalModel journalModel, List<TransactionModel> transactionModel);
 }
 
@@ -49,24 +50,38 @@ class JournalDataSourceImpl implements JournalDataSource {
   }
 
   @override
-  Future<Unit> createJournal(JournalModel journalModel,
-      List<TransactionModel> transactionModel) async {
-    final response = await networkConnection.post(APIList.journal,
-        {'journal': journalModel.toJson(), 'entires[]': transactionModel});
+  Future<JournalModel> createJournal(
+    JournalModel journalModel,
+    List<TransactionModel> transactions,
+  ) async {
+    final body = {
+      'description': journalModel.description,
+      'document': journalModel.document,
+      'status': journalModel.status,
+      'entries':
+          transactions.map((transaction) => transaction.toJson()).toList(),
+    };
+
+    final response = await networkConnection.post(APIList.journal, body);
+
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
-    return unit;
+    JournalModel journal = JournalModel.fromJson(decodedJson['data']);
+
+    return journal;
   }
 
   @override
-  Future<Unit> updateJournal(JournalModel journalModel,
+  Future<JournalModel> updateJournal(JournalModel journalModel,
       List<TransactionModel> transactionModel) async {
     final response = await networkConnection.put(APIList.journal,
         {'journal': journalModel.toJson(), 'entires[]': transactionModel});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
-    return unit;
+    JournalModel journal = JournalModel.fromJson(decodedJson['data']);
+
+    return journal;
   }
 }

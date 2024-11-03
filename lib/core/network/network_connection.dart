@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart';
@@ -55,10 +56,11 @@ class HttpConnection implements NetworkConnection {
   Future<Response> post(String apiUrl, Map<String, dynamic> body) async {
     var response = await http.post(
         Uri.http(APIList.baseUrl, APIList.api + apiUrl),
-        body: body,
+        body: jsonEncode(body),
         headers: {
+          'Content-Type': 'application/json',
           "Accept": "application/json",
-          "Accept-language": await LocalizationService().getCachedLanguage()
+          "Accept-language": await LocalizationService().getCachedLanguage(),
         });
     return response;
   }

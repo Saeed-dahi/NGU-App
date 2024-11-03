@@ -1,8 +1,9 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_all_journals_use_case.dart';
@@ -19,8 +20,8 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   final CreateJournalUseCase createJournalUseCase;
   final UpdateJournalUseCase updateJournalUseCase;
 
-  late final JournalEntity _journalEntity;
-  JournalEntity get getJournalEntity => _journalEntity;
+  JournalEntity? _journalEntity;
+  get getJournalEntity => _journalEntity;
 
   late PlutoGridStateManager _stateManager;
   PlutoGridStateManager get getStateManger => _stateManager;
@@ -45,28 +46,37 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     result.fold((failure) {
       emit(ErrorJournalState(message: failure.errors['error']));
     }, (data) {
-      // _journalEntity = data;
+      _journalEntity = data;
       emit(LoadedJournalState(journalEntity: data));
     });
   }
 
   FutureOr<void> _onCreateJournalEvent(
       CreateJournalEvent event, Emitter<JournalState> emit) async {
-    emit(LoadingJournalState());
-    final result =
-        await createJournalUseCase(event.journalEntity, event.transactions);
+    final result = await createJournalUseCase(event.journalEntity);
 
     result.fold((failure) {
-      emit(ErrorJournalState(message: failure.errors['error']));
-    }, (_) {});
+      if (failure is ValidationFailure) {
+        List<String> errors = failure.errors.entries.map(
+          (error) {
+            return '${error.value.join('\n')}';
+          },
+        ).toList();
+        ShowSnackBar.showValidationSnackbar(messages: errors);
+      } else {
+        emit(ErrorJournalState(message: failure.errors['error']));
+      }
+    }, (data) {
+      _journalEntity = data;
+      emit(LoadedJournalState(journalEntity: event.journalEntity));
+    });
   }
 
   FutureOr<void> _onUpdateJournalEvent(
       UpdateJournalEvent event, Emitter<JournalState> emit) async {
     emit(LoadingJournalState());
 
-    final result =
-        await createJournalUseCase(event.journalEntity, event.transactions);
+    final result = await createJournalUseCase(event.journalEntity);
 
     result.fold((failure) {
       emit(ErrorJournalState(message: failure.errors['error']));
