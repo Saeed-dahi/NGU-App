@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Visibility(
-                        visible: false,
+                        visible: true,
                         child: SizedBox(
                             width: 200,
                             child: AnalogClock(
@@ -103,32 +104,47 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  TabBar _buildTabBar(TabState state, BuildContext context) {
-    return TabBar(
-      controller: _tabController,
-      isScrollable: true,
-      tabs: List.generate(
-        state.tabs.length,
-        (index) {
-          return Tab(
-            key: PageStorageKey(state.tabs[index].title),
-            child: Row(
-              children: [
-                Text(state.tabs[index].title),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    ConfirmDialog.showConfirmDialog(() {}, () {
-                      context.read<TabCubit>().removeTab(index);
-                    });
-                  },
-                  padding: EdgeInsets.zero,
+  Row _buildTabBar(TabState state, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          tabs: List.generate(
+            state.tabs.length,
+            (index) {
+              return Tab(
+                key: PageStorageKey(state.tabs[index].title),
+                child: Row(
+                  children: [
+                    Text(state.tabs[index].title),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        ConfirmDialog.showConfirmDialog(() {}, () {
+                          context.read<TabCubit>().removeTab(index);
+                        });
+                      },
+                      padding: EdgeInsets.zero,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        ),
+        CustomIconButton(
+          icon: Icons.close,
+          tooltip: 'close'.tr,
+          color: AppColors.white,
+          onPressed: () {
+            ConfirmDialog.showConfirmDialog(() {}, () {
+              context.read<TabCubit>().removeAll();
+            });
+          },
+        ),
+      ],
     );
   }
 }

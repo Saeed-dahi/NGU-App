@@ -39,7 +39,6 @@ class _CustomDatePicker extends State<CustomDatePicker> {
       label: widget.labelText,
       readOnly: false,
       onTap: () async {
-        print('object');
         DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate: DateTime.now(),

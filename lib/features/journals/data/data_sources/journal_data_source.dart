@@ -73,10 +73,19 @@ class JournalDataSourceImpl implements JournalDataSource {
   }
 
   @override
-  Future<JournalModel> updateJournal(JournalModel journalModel,
-      List<TransactionModel> transactionModel) async {
-    final response = await networkConnection.put(APIList.journal,
-        {'journal': journalModel.toJson(), 'entires[]': transactionModel});
+  Future<JournalModel> updateJournal(
+      JournalModel journalModel, List<TransactionModel> transactions) async {
+    final body = {
+      'description': journalModel.description,
+      'document': journalModel.document,
+      'status': journalModel.status,
+      'entries':
+          transactions.map((transaction) => transaction.toJson()).toList(),
+    };
+
+    final response = await networkConnection.put(
+        '${APIList.journal}/${journalModel.id}', body);
+
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

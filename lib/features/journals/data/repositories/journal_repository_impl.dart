@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/transactions/data/models/transaction_model.dart';
-import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
 import 'package:ngu_app/features/journals/data/models/journal_model.dart';
@@ -23,28 +23,6 @@ class JournalRepositoryImpl implements JournalRepository {
         _getJournalModel(journalEntity), _getTransactions(journalEntity)));
   }
 
-  JournalModel _getJournalModel(JournalEntity journalEntity) {
-    return JournalModel(
-      document: journalEntity.document,
-      description: journalEntity.description,
-      status: journalEntity.status,
-      transactions: journalEntity.transactions,
-      createdAt: journalEntity.createdAt,
-    );
-  }
-
-  List<TransactionModel> _getTransactions(JournalEntity journalEntity) {
-    return journalEntity.transactions.map((transaction) {
-      return TransactionModel(
-        type: transaction.type,
-        accountName: transaction.accountName,
-        amount: transaction.amount,
-        description: transaction.description,
-        documentNumber: transaction.documentNumber,
-      );
-    }).toList();
-  }
-
   @override
   Future<Either<Failure, List<JournalEntity>>> getAllJournals() async {
     return await apiHelper
@@ -60,8 +38,33 @@ class JournalRepositoryImpl implements JournalRepository {
 
   @override
   Future<Either<Failure, JournalEntity>> updateJournal(
-      JournalEntity journalEntity, List<TransactionEntity> transactions) {
-    // TODO: implement updateJournal
-    throw UnimplementedError();
+    JournalEntity journalEntity,
+  ) async {
+    return await apiHelper.safeApiCall(() => journalDataSource.updateJournal(
+        _getJournalModel(journalEntity), _getTransactions(journalEntity)));
+  }
+
+  JournalModel _getJournalModel(JournalEntity journalEntity) {
+    return JournalModel(
+      id: journalEntity.id,
+      document: journalEntity.document,
+      description: journalEntity.description,
+      status: journalEntity.status,
+      transactions: journalEntity.transactions,
+      createdAt: journalEntity.createdAt,
+    );
+  }
+
+  List<TransactionModel> _getTransactions(JournalEntity journalEntity) {
+    return journalEntity.transactions.map((transaction) {
+      return TransactionModel(
+        type: transaction.type,
+        accountName: transaction.accountName,
+        accountCode: transaction.accountCode,
+        amount: transaction.amount,
+        description: transaction.description,
+        documentNumber: transaction.documentNumber,
+      );
+    }).toList();
   }
 }

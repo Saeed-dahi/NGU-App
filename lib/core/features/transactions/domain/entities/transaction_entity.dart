@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 class TransactionEntity extends Equatable {
   final int? id;
   final String accountName;
+  final String accountCode;
   final String type;
   final double amount;
   final String description;
@@ -14,6 +15,7 @@ class TransactionEntity extends Equatable {
   const TransactionEntity(
       {this.id,
       required this.accountName,
+      required this.accountCode,
       required this.type,
       required this.amount,
       required this.description,

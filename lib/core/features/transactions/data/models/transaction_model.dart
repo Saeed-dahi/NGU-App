@@ -4,6 +4,7 @@ class TransactionModel extends TransactionEntity {
   const TransactionModel(
       {super.id,
       required super.accountName,
+      required super.accountCode,
       required super.type,
       required super.amount,
       required super.description,
@@ -16,6 +17,7 @@ class TransactionModel extends TransactionEntity {
     return TransactionModel(
       id: json['id'],
       accountName: json['account_name'],
+      accountCode: json['account_code'],
       type: json['type'],
       amount: double.parse(json['amount'].toString()),
       description: json['description'] ?? '',
@@ -28,7 +30,7 @@ class TransactionModel extends TransactionEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'account_id': accountName,
+      'account_id': accountCode,
       'type': type,
       'amount': amount.toString(),
       'description': description,

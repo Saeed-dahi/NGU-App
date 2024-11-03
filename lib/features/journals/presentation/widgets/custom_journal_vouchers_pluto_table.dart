@@ -83,7 +83,7 @@ class _CustomJournalVouchersPlutoTableState
                 value: transaction.type == AccountNature.credit.name
                     ? transaction.amount
                     : ''),
-            'account_code': PlutoCell(value: transaction.accountName),
+            'account_code': PlutoCell(value: transaction.accountCode),
             'account_name': PlutoCell(value: transaction.accountName),
             'description': PlutoCell(value: transaction.description),
             'document_number': PlutoCell(value: transaction.documentNumber),

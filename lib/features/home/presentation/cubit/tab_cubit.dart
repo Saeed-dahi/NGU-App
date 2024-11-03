@@ -34,6 +34,13 @@ class TabCubit extends Cubit<TabState> {
     reIndexTabNumber();
   }
 
+  void removeAll() {
+    // final newTabs = List<TabData>.from(state.tabs)..removeAt(index);
+    state.tabs.clear();
+    emit(TabState(tabs: []));
+    reIndexTabNumber();
+  }
+
   void removeLastTab() {
     emit(TabState(tabs: state.tabs..remove(state.tabs.last)));
     reIndexTabNumber();

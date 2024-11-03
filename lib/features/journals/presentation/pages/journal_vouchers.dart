@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
@@ -61,6 +62,29 @@ class _JournalVouchersState extends State<JournalVouchers> {
     super.dispose();
   }
 
+  JournalEntity journalEntity(Enum status) {
+    return JournalEntity(
+      id: _journalBloc.getJournalEntity.id,
+      document: _journalDocumentNumberController.text,
+      description: _journalDescriptionController.text,
+      status: status.name,
+      transactions: _journalBloc.transactions,
+      createdAt: _journalCreatedAtController.text,
+    );
+  }
+
+  void _onSaveAsDraft() {
+    _journalBloc.add(UpdateJournalEvent(
+      journalEntity: journalEntity(Status.draft),
+    ));
+  }
+
+  void _onSaveAsSaved() {
+    _journalBloc.add(UpdateJournalEvent(
+      journalEntity: journalEntity(Status.saved),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
@@ -98,6 +122,8 @@ class _JournalVouchersState extends State<JournalVouchers> {
       children: [
         JournalVouchersToolBar(
           journalId: _journalBloc.getJournalEntity?.id,
+          onSaveAsDraft: _onSaveAsDraft,
+          onSaveAsSaved: _onSaveAsSaved,
         ),
         const Divider(),
         _buildHeader(context),

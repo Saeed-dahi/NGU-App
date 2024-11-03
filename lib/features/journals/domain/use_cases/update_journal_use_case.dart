@@ -11,6 +11,6 @@ class UpdateJournalUseCase {
 
   Future<Either<Failure, JournalEntity>> call(
       JournalEntity journalEntity) async {
-    return await journalRepository.createJournal(journalEntity);
+    return await journalRepository.updateJournal(journalEntity);
   }
 }

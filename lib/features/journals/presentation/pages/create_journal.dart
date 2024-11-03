@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
-import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
@@ -36,35 +36,9 @@ class _CreateJournalState extends State<CreateJournal> {
       document: _journalDocumentNumberController.text,
       description: _journalDescriptionController.text,
       status: status.name,
-      transactions: transactions,
+      transactions: _journalBloc.transactions,
       createdAt: _journalCreatedAtController.text,
     );
-  }
-
-  List<TransactionEntity> get transactions {
-    double? amount;
-    return _journalBloc.getStateManger.rows.where((row) {
-      // Check if essential cells are not empty
-      final accountCode = row.cells['account_code']?.value;
-      final debit = double.tryParse(row.cells['debit']?.value);
-      final credit = double.tryParse(row.cells['credit']?.value);
-      amount = debit ?? credit;
-
-      return accountCode != null &&
-          accountCode.toString().isNotEmpty &&
-          amount != null &&
-          amount.toString().isNotEmpty;
-    }).map((row) {
-      return TransactionEntity(
-        accountName: row.cells['account_code']!.value,
-        type: double.tryParse(row.cells['debit']?.value) != null
-            ? AccountNature.debit.name
-            : AccountNature.credit.name,
-        amount: amount!,
-        description: row.cells['description']?.value ?? '',
-        documentNumber: row.cells['document_number']?.value ?? '',
-      );
-    }).toList();
   }
 
   @override
@@ -88,6 +62,18 @@ class _CreateJournalState extends State<CreateJournal> {
     _journalDescriptionController.dispose();
 
     super.dispose();
+  }
+
+  void _onSaveAsDraft() {
+    _journalBloc.add(CreateJournalEvent(
+      journalEntity: journalEntity(Status.draft),
+    ));
+  }
+
+  void _onSaveAsSaved() {
+    _journalBloc.add(CreateJournalEvent(
+      journalEntity: journalEntity(Status.saved),
+    ));
   }
 
   @override
@@ -137,18 +123,6 @@ class _CreateJournalState extends State<CreateJournal> {
         const CustomJournalVouchersPlutoTable(),
       ],
     );
-  }
-
-  void _onSaveAsDraft() {
-    _journalBloc.add(CreateJournalEvent(
-      journalEntity: journalEntity(Status.draft),
-    ));
-  }
-
-  void _onSaveAsSaved() {
-    _journalBloc.add(CreateJournalEvent(
-      journalEntity: journalEntity(Status.saved),
-    ));
   }
 
   _buildHeader(BuildContext context) {

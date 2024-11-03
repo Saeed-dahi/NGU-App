@@ -69,8 +69,9 @@ class HttpConnection implements NetworkConnection {
   Future<Response> put(String apiUrl, Map<String, dynamic> body) async {
     var response = await http.put(
         Uri.http(APIList.baseUrl, APIList.api + apiUrl),
-        body: body,
+        body: jsonEncode(body),
         headers: {
+          'Content-Type': 'application/json',
           "Accept": "application/json",
           "Accept-language": await LocalizationService().getCachedLanguage()
         });
