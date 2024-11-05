@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';

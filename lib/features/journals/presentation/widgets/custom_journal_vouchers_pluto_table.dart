@@ -17,19 +17,13 @@ import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomJournalVouchersPlutoTable extends StatefulWidget {
+class CustomJournalVouchersPlutoTable extends StatelessWidget {
   final JournalEntity? journalEntity;
 
-  const CustomJournalVouchersPlutoTable({super.key, this.journalEntity});
+  CustomJournalVouchersPlutoTable({super.key, this.journalEntity});
 
-  @override
-  State<CustomJournalVouchersPlutoTable> createState() =>
-      _CustomJournalVouchersPlutoTableState();
-}
-
-class _CustomJournalVouchersPlutoTableState
-    extends State<CustomJournalVouchersPlutoTable> {
   late PlutoGridController _plutoGridController = PlutoGridController();
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -45,7 +39,7 @@ class _CustomJournalVouchersPlutoTableState
         },
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(),
-        rows: widget.journalEntity != null
+        rows: journalEntity != null
             ? _buildFilledRows().toList()
             : _buildEmptyRows(),
         onChanged: (p0) {
@@ -104,7 +98,7 @@ class _CustomJournalVouchersPlutoTableState
   }
 
   Iterable<PlutoRow> _buildFilledRows() {
-    return widget.journalEntity!.transactions.map(
+    return journalEntity!.transactions.map(
       (transaction) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),

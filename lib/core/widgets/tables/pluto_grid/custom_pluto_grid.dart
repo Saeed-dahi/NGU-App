@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/cubit/pluto_grid_cubit.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -34,15 +36,25 @@ class CustomPlutoTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlutoGrid(
-      onLoaded: onLoaded,
-      columns: columns,
-      rows: rows,
-      mode: mode,
-      configuration: configuration ?? _tableConfig(),
-      onChanged: onChanged,
-      noRowsWidget: noRowsWidget,
-      createHeader: showDefaultHeader ? _createHeader : null,
+    return BlocProvider(
+      create: (context) => PlutoGridCubit(),
+      child: BlocBuilder<PlutoGridCubit, OnChangeState>(
+        builder: (context, state) {
+          return PlutoGrid(
+            onLoaded: onLoaded,
+            columns: columns,
+            rows: rows,
+            mode: mode,
+            configuration: configuration ?? _tableConfig(),
+            onChanged: (event) {
+              onChanged!(event);
+              context.read<PlutoGridCubit>().onChangeFunction();
+            },
+            noRowsWidget: noRowsWidget,
+            createHeader: showDefaultHeader ? _createHeader : null,
+          );
+        },
+      ),
     );
   }
 

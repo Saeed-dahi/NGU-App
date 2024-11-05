@@ -120,7 +120,7 @@ class _CreateJournalState extends State<CreateJournal> {
         ),
         const Divider(),
         _buildHeader(context),
-        const CustomJournalVouchersPlutoTable(),
+        CustomJournalVouchersPlutoTable(),
       ],
     );
   }
