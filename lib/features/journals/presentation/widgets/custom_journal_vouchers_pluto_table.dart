@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import 'package:ngu_app/app/app_management/app_strings.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
@@ -46,20 +48,48 @@ class _CustomJournalVouchersPlutoTableState
         rows: widget.journalEntity != null
             ? _buildFilledRows().toList()
             : _buildEmptyRows(),
-        onChanged: _onChanged,
-        showHeader: true,
+        onChanged: (p0) {
+          _plutoGridController.onChanged(p0);
+        },
+        showDefaultHeader: true,
+        customHeader: _buildCustomHeader(),
       ),
     );
   }
 
-  _onChanged(PlutoGridOnChangedEvent event) {
-    if (event.column.field == 'debit' && event.value != null) {
-      event.row.cells['credit']!.value = '';
+  Widget _buildCustomHeader() {
+    return Row(
+      children: [
+        CustomIconButton(
+          icon: Icons.balance,
+          tooltip: 'balance'.tr,
+          onPressed: () {
+            _makeTableBalanced();
+          },
+        ),
+      ],
+    );
+  }
+
+  void _makeTableBalanced() {
+    double debitSum = _plutoGridController.columnSum(
+        'debit', _plutoGridController.stateManager!);
+    double creditSum = _plutoGridController.columnSum(
+        'credit', _plutoGridController.stateManager!);
+    String cellToFixed = debitSum > creditSum ? 'credit' : 'debit';
+    double balanceValue = (debitSum - creditSum).abs();
+
+    if (balanceValue > 0) {
+      final newRow = PlutoRow(
+        cells: {
+          for (final entry
+              in _plutoGridController.stateManager!.rows.first.cells.entries)
+            entry.key:
+                PlutoCell(value: entry.key == cellToFixed ? balanceValue : '')
+        },
+      );
+      _plutoGridController.stateManager!.appendRows([newRow]);
     }
-    if (event.column.field == 'credit' && event.value != null) {
-      event.row.cells['debit']!.value = '';
-    }
-    setState(() {});
   }
 
   List<PlutoColumn> _buildColumns() {
@@ -82,11 +112,13 @@ class _CustomJournalVouchersPlutoTableState
           cells: {
             'debit': PlutoCell(
                 value: transaction.type == AccountNature.debit.name
-                    ? transaction.amount
+                    ? FormatterClass.numberFormatter(
+                        transaction.amount.toString())
                     : ''),
             'credit': PlutoCell(
                 value: transaction.type == AccountNature.credit.name
-                    ? transaction.amount
+                    ? FormatterClass.numberFormatter(
+                        transaction.amount.toString())
                     : ''),
             'account_code': PlutoCell(value: transaction.accountCode),
             'account_name': PlutoCell(value: transaction.accountName),
@@ -129,10 +161,12 @@ class _CustomJournalVouchersPlutoTableState
         if (title == 'debit' || title == 'credit') {
           return Center(
             child: Text(
-              columnSum(
-                context.column.field,
-                context.stateManager,
-              ).toString(),
+              _plutoGridController
+                  .columnSum(
+                    context.column.field,
+                    context.stateManager,
+                  )
+                  .toString(),
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           );
@@ -140,16 +174,5 @@ class _CustomJournalVouchersPlutoTableState
         return const SizedBox();
       },
     );
-  }
-
-  double columnSum(String columnName, PlutoGridStateManager stateManager) {
-    var rows = stateManager.rows;
-    double debitSum = 0;
-
-    for (var transaction in rows) {
-      debitSum +=
-          double.tryParse(transaction.cells[columnName]!.value.toString()) ?? 0;
-    }
-    return debitSum;
   }
 }

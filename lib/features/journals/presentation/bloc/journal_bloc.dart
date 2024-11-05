@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
@@ -34,8 +35,8 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       // Check if essential cells are not empty
       final accountCode = row.cells['account_code']?.value;
 
-      final debit = _getDoubleValue(row.cells['debit']?.value);
-      final credit = _getDoubleValue(row.cells['credit']?.value);
+      final debit = FormatterClass.doubleFormatter(row.cells['debit']?.value);
+      final credit = FormatterClass.doubleFormatter(row.cells['credit']?.value);
       amount = debit ?? credit;
 
       return accountCode != null &&
@@ -46,7 +47,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
       return TransactionEntity(
         accountCode: row.cells['account_code']!.value,
         accountName: row.cells['account_name']!.value,
-        type: _getDoubleValue(row.cells['debit']?.value) != null
+        type: FormatterClass.doubleFormatter(row.cells['debit']?.value) != null
             ? AccountNature.debit.name
             : AccountNature.credit.name,
         amount: amount!,
@@ -56,9 +57,9 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     }).toList();
   }
 
-  _getDoubleValue(var value) {
-    return value.runtimeType == double ? value : double.tryParse(value);
-  }
+  // _getDoubleValue(var value) {
+  //   return value.runtimeType == double ? value : double.tryParse(value);
+  // }
 
   JournalBloc(
       {required this.getAllJournalsUseCase,

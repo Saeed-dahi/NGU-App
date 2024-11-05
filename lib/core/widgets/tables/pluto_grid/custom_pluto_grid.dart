@@ -16,9 +16,10 @@ class CustomPlutoTable extends StatelessWidget {
   final List<PlutoRow> rows;
   final Widget? noRowsWidget;
   final PlutoGridController controller;
-  bool showHeader;
+  final bool showDefaultHeader;
+  final Widget customHeader;
 
-  CustomPlutoTable(
+  const CustomPlutoTable(
       {super.key,
       required this.columns,
       required this.rows,
@@ -28,7 +29,8 @@ class CustomPlutoTable extends StatelessWidget {
       this.noRowsWidget,
       required this.controller,
       this.onChanged,
-      this.showHeader = false});
+      this.customHeader = const SizedBox(),
+      this.showDefaultHeader = false});
 
   @override
   Widget build(BuildContext context) {
@@ -40,45 +42,50 @@ class CustomPlutoTable extends StatelessWidget {
       configuration: configuration ?? _tableConfig(),
       onChanged: onChanged,
       noRowsWidget: noRowsWidget,
-      createHeader: showHeader ? _createHeader : null,
+      createHeader: showDefaultHeader ? _createHeader : null,
     );
   }
 
   Widget _createHeader(stateManager) {
     controller.setStateManager = stateManager;
-    return Visibility(
-      child: Row(
-        children: [
-          CustomIconButton(
-            icon: Icons.repeat,
-            tooltip: '${'repeat'.tr} ${'row'.tr} ${'previous'.tr} ',
-            onPressed: () {
-              controller.repeatPreviousRow(controller.stateManager!);
-            },
+    return Row(
+      children: [
+        customHeader,
+        Visibility(
+          child: Row(
+            children: [
+              CustomIconButton(
+                icon: Icons.repeat,
+                tooltip: '${'repeat'.tr} ${'row'.tr} ${'previous'.tr} ',
+                onPressed: () {
+                  controller.repeatPreviousRow(controller.stateManager!);
+                },
+              ),
+              CustomIconButton(
+                icon: Icons.repeat_one,
+                tooltip: '${'repeat'.tr} ${'column'.tr} ${'previous'.tr} ',
+                onPressed: () {
+                  controller.repeatPreviousColumn(controller.stateManager!);
+                },
+              ),
+              CustomIconButton(
+                icon: Icons.insert_drive_file_outlined,
+                tooltip: '${'insert'.tr} ${'row'.tr}',
+                onPressed: () {
+                  controller.appendNewRow(controller.stateManager!);
+                },
+              ),
+              CustomIconButton(
+                icon: Icons.delete_forever,
+                tooltip: '${'delete'.tr} ${'row'.tr}',
+                onPressed: () {
+                  controller.removeCurrentRow(controller.stateManager!);
+                },
+              ),
+            ],
           ),
-          CustomIconButton(
-            icon: Icons.repeat_one,
-            tooltip: '${'repeat'.tr} ${'column'.tr} ${'previous'.tr} ',
-            onPressed: () {
-              controller.repeatPreviousColumn(controller.stateManager!);
-            },
-          ),
-          CustomIconButton(
-            icon: Icons.insert_drive_file_outlined,
-            tooltip: '${'insert'.tr} ${'row'.tr}',
-            onPressed: () {
-              controller.appendNewRow(controller.stateManager!);
-            },
-          ),
-          CustomIconButton(
-            icon: Icons.delete_forever,
-            tooltip: '${'delete'.tr} ${'row'.tr}',
-            onPressed: () {
-              controller.removeCurrentRow(controller.stateManager!);
-            },
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

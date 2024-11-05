@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class PlutoGridController {
@@ -131,6 +133,31 @@ class PlutoGridController {
     stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
     if (stateManager.currentCell!.column.readOnly == true) {
       stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
+    }
+  }
+
+  double columnSum(String columnName, PlutoGridStateManager stateManager) {
+    var rows = stateManager.rows;
+    double sum = 0;
+
+    for (var transaction in rows) {
+      sum += FormatterClass.doubleFormatter(
+              transaction.cells[columnName]!.value.toString()) ??
+          0;
+    }
+    return sum;
+  }
+
+  onChanged(PlutoGridOnChangedEvent event) {
+    if (event.column.field == 'debit' && event.value != null) {
+      event.row.cells['credit']!.value = '';
+      event.row.cells['debit']!.value =
+          FormatterClass.numberFormatter(event.value);
+    }
+    if (event.column.field == 'credit' && event.value != null) {
+      event.row.cells['debit']!.value = '';
+      event.row.cells['credit']!.value =
+          FormatterClass.numberFormatter(event.value);
     }
   }
 }
