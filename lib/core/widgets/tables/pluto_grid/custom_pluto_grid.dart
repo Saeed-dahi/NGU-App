@@ -51,14 +51,18 @@ class CustomPlutoTable extends StatelessWidget {
               context.read<PlutoGridCubit>().onChangeFunction();
             },
             noRowsWidget: noRowsWidget,
-            createHeader: showDefaultHeader ? _createHeader : null,
+            createHeader: (stateManager) {
+              return showDefaultHeader
+                  ? _createHeader(stateManager, context)
+                  : const SizedBox();
+            },
           );
         },
       ),
     );
   }
 
-  Widget _createHeader(stateManager) {
+  Widget _createHeader(stateManager, BuildContext context) {
     controller.setStateManager = stateManager;
     return Row(
       children: [
@@ -92,6 +96,7 @@ class CustomPlutoTable extends StatelessWidget {
                 tooltip: '${'delete'.tr} ${'row'.tr}',
                 onPressed: () {
                   controller.removeCurrentRow(controller.stateManager!);
+                  context.read<PlutoGridCubit>().onChangeFunction();
                 },
               ),
             ],
