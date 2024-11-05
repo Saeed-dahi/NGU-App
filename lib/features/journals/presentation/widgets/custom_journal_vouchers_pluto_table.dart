@@ -27,23 +27,28 @@ class CustomJournalVouchersPlutoTable extends StatefulWidget {
 
 class _CustomJournalVouchersPlutoTableState
     extends State<CustomJournalVouchersPlutoTable> {
+  late PlutoGridController _plutoGridController = PlutoGridController();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.65,
+      height: MediaQuery.sizeOf(context).height * 0.6,
       child: CustomPlutoTable(
-          controller: PlutoGridController(),
-          mode: PlutoGridMode.normal,
-          onLoaded: (event) {
-            BlocProvider.of<JournalBloc>(context).setStateManager =
-                event.stateManager;
-          },
-          noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
-          columns: _buildColumns(),
-          rows: widget.journalEntity != null
-              ? _buildFilledRows().toList()
-              : _buildEmptyRows(),
-          onChanged: _onChanged),
+        controller: _plutoGridController,
+        mode: PlutoGridMode.normal,
+        onLoaded: (event) {
+          BlocProvider.of<JournalBloc>(context).setStateManager =
+              event.stateManager;
+          _plutoGridController =
+              PlutoGridController(stateManager: event.stateManager);
+        },
+        noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
+        columns: _buildColumns(),
+        rows: widget.journalEntity != null
+            ? _buildFilledRows().toList()
+            : _buildEmptyRows(),
+        onChanged: _onChanged,
+        showHeader: true,
+      ),
     );
   }
 

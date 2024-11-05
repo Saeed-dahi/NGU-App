@@ -80,20 +80,6 @@ class JournalVouchersToolBar extends StatelessWidget {
           tooltip: 'print'.tr,
           onPressed: () {},
         ),
-        CustomIconButton(
-          icon: Icons.insert_drive_file_outlined,
-          tooltip: '${'insert'.tr} ${'row'.tr}',
-          onPressed: () {
-            context.read<JournalBloc>().getStateManger.appendNewRows(count: 1);
-          },
-        ),
-        CustomIconButton(
-          icon: Icons.delete_forever,
-          tooltip: '${'delete'.tr} ${'row'.tr}',
-          onPressed: () {
-            context.read<JournalBloc>().getStateManger.removeCurrentRow();
-          },
-        ),
       ],
     );
   }

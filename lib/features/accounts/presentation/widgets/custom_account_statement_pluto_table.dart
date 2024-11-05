@@ -12,8 +12,9 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomAccountStatementPlutoTable extends StatelessWidget {
   final AccountStatementEntity accountStatement;
+  late PlutoGridController _plutoGridController = PlutoGridController();
 
-  const CustomAccountStatementPlutoTable({
+  CustomAccountStatementPlutoTable({
     super.key,
     required this.accountStatement,
   });
@@ -24,12 +25,15 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height * 0.85,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
-        controller: PlutoGridController(),
+        controller: _plutoGridController,
         mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
-        onLoaded: (PlutoGridOnLoadedEvent event) {},
+        onLoaded: (PlutoGridOnLoadedEvent event) {
+          _plutoGridController =
+              PlutoGridController(stateManager: event.stateManager);
+        },
       ),
     );
   }

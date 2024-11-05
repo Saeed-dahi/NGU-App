@@ -21,6 +21,9 @@ Map<String, String> en = {
   'no': 'No',
   'row': 'Row',
   'column': 'Column',
+  'repeat': 'Repeat',
+  'saved': 'Saved and Posted',
+  'draft': 'Saved not Posted',
 
   // Accounts
   'accounting': 'Accounting',

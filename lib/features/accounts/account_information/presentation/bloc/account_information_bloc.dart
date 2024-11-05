@@ -31,6 +31,7 @@ class AccountInformationBloc
   _showAccountInformation(ShowAccountInformationEvent event,
       Emitter<AccountInformationState> emit) async {
     emit(LoadingAccountInformationState());
+
     final result = await showAccountInformationUseCase(event.accountId);
 
     result.fold((failure) {

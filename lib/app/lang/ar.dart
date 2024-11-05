@@ -21,6 +21,9 @@ Map<String, String> ar = {
   'no': 'لا',
   'row': 'سطر',
   'column': 'عمود',
+  'repeat': 'تكرار',
+  'saved': 'محفوظ ومرحل',
+  'draft': 'محفوظ وغير مرحل',
 
   // Accounts
   'accounting': 'المحاسبة',

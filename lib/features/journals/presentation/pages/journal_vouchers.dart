@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
@@ -122,7 +124,9 @@ class _JournalVouchersState extends State<JournalVouchers> {
       children: [
         JournalVouchersToolBar(
           journalId: _journalBloc.getJournalEntity?.id,
-          onSaveAsDraft: _onSaveAsDraft,
+          onSaveAsDraft: _journalBloc.getJournalEntity?.status != Status.saved
+              ? _onSaveAsDraft
+              : () {},
           onSaveAsSaved: _onSaveAsSaved,
         ),
         const Divider(),
@@ -138,7 +142,10 @@ class _JournalVouchersState extends State<JournalVouchers> {
     return Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          _statusHint(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -181,6 +188,26 @@ class _JournalVouchersState extends State<JournalVouchers> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Visibility _statusHint() {
+    return Visibility(
+      visible: _journalBloc.getJournalEntity.status == Status.saved.name,
+      replacement: Text(
+        'draft'.tr,
+        style: const TextStyle(
+          color: AppColors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      child: Text(
+        'saved'.tr,
+        style: const TextStyle(
+          color: AppColors.green,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
