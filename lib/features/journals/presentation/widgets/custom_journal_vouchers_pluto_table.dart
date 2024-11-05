@@ -19,8 +19,10 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomJournalVouchersPlutoTable extends StatelessWidget {
   final JournalEntity? journalEntity;
+  final Map<String, dynamic> accountsName;
 
-  CustomJournalVouchersPlutoTable({super.key, this.journalEntity});
+  CustomJournalVouchersPlutoTable(
+      {super.key, this.journalEntity, required this.accountsName});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
@@ -44,11 +46,30 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
             : _buildEmptyRows(),
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
+
+          _getAccountName();
         },
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(),
       ),
     );
+  }
+
+  void _getAccountName() {
+    if (_plutoGridController.stateManager!.currentColumn!.field ==
+        'account_code') {
+      final currentRow = _plutoGridController.stateManager!.currentRow!;
+
+      for (final entry
+          in _plutoGridController.stateManager!.currentRow!.cells.entries) {
+        final currentCellValue = currentRow.cells[entry.key]?.value;
+        currentRow.cells[entry.key]?.value = entry.key == 'account_name'
+            ? accountsName[
+                    currentRow.cells['account_code']!.value.toString()] ??
+                'not_found'.tr
+            : currentCellValue;
+      }
+    }
   }
 
   Widget _buildCustomHeader() {

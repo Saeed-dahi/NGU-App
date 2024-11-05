@@ -26,7 +26,7 @@ class JournalVouchers extends StatefulWidget {
 }
 
 class _JournalVouchersState extends State<JournalVouchers> {
-  late final JournalBloc _journalBloc;
+  late JournalBloc _journalBloc;
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _journalIdController;
   late final TextEditingController _journalDocumentNumberController;
@@ -37,7 +37,8 @@ class _JournalVouchersState extends State<JournalVouchers> {
   @override
   void initState() {
     _journalBloc = sl<JournalBloc>()
-      ..add(ShowJournalEvent(journalId: widget.journalId ?? 1));
+      ..add(ShowJournalEvent(journalId: widget.journalId ?? 1))
+      ..add(GetAccountNameEvent());
 
     _journalIdController = TextEditingController();
     _journalDocumentNumberController = TextEditingController();
@@ -133,6 +134,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
         _buildHeader(context),
         CustomJournalVouchersPlutoTable(
           journalEntity: journalEntity,
+          accountsName: _journalBloc.accountsName,
         ),
       ],
     );
@@ -221,5 +223,6 @@ class _JournalVouchersState extends State<JournalVouchers> {
   Future<void> _refresh() async {
     _journalBloc
         .add(ShowJournalEvent(journalId: _journalBloc.getJournalEntity?.id));
+    _journalBloc.add(GetAccountNameEvent());
   }
 }

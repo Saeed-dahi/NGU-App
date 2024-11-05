@@ -120,7 +120,7 @@ class _CreateJournalState extends State<CreateJournal> {
         ),
         const Divider(),
         _buildHeader(context),
-        CustomJournalVouchersPlutoTable(),
+        CustomJournalVouchersPlutoTable(accountsName: _journalBloc.accountsName,),
       ],
     );
   }

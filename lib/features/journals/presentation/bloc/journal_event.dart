@@ -27,3 +27,5 @@ class UpdateJournalEvent extends JournalEvent {
     required this.journalEntity,
   });
 }
+
+class GetAccountNameEvent extends JournalEvent {}

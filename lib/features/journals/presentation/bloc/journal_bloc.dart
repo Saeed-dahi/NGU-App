@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/error/failures.dart';
@@ -8,6 +9,7 @@ import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
+import 'package:ngu_app/features/journals/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_all_journals_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/show_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/update_journal_use_case.dart';
@@ -21,6 +23,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   final ShowJournalUseCase showJournalUseCase;
   final CreateJournalUseCase createJournalUseCase;
   final UpdateJournalUseCase updateJournalUseCase;
+  final GetAccountsNameUseCase getAccountNameUseCase;
 
   JournalEntity? _journalEntity;
   get getJournalEntity => _journalEntity;
@@ -28,6 +31,9 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   late PlutoGridStateManager _stateManager;
   PlutoGridStateManager get getStateManger => _stateManager;
   set setStateManager(PlutoGridStateManager sts) => _stateManager = sts;
+
+  Map<String, dynamic> _accountsName = {};
+  Map<String, dynamic> get accountsName => _accountsName;
 
   List<TransactionEntity> get transactions {
     double? amount;
@@ -57,19 +63,17 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     }).toList();
   }
 
-  // _getDoubleValue(var value) {
-  //   return value.runtimeType == double ? value : double.tryParse(value);
-  // }
-
   JournalBloc(
       {required this.getAllJournalsUseCase,
       required this.showJournalUseCase,
       required this.createJournalUseCase,
-      required this.updateJournalUseCase})
+      required this.updateJournalUseCase,
+      required this.getAccountNameUseCase})
       : super(JournalInitial()) {
     on<ShowJournalEvent>(_onShowJournalEvent);
     on<CreateJournalEvent>(_onCreateJournalEvent);
     on<UpdateJournalEvent>(_onUpdateJournalEvent);
+    on<GetAccountNameEvent>(_getAccountNameEvent);
   }
 
   FutureOr<void> _onShowJournalEvent(
@@ -116,6 +120,15 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
     }, (data) {
       _journalEntity = data;
       emit(LoadedJournalState(journalEntity: event.journalEntity));
+    });
+  }
+
+  FutureOr<void> _getAccountNameEvent(
+      GetAccountNameEvent event, Emitter<JournalState> emit) async {
+    final result = await getAccountNameUseCase();
+
+    result.fold((failure) {}, (data) {
+      _accountsName = data;
     });
   }
 

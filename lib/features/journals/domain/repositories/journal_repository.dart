@@ -11,4 +11,5 @@ abstract class JournalRepository {
       JournalEntity journalEntity);
   Future<Either<Failure, JournalEntity>> updateJournal(
       JournalEntity journalEntity);
+  Future<Either<Failure, Map<String, dynamic>>> getAccountsName();
 }

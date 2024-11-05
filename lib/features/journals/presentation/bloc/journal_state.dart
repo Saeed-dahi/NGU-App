@@ -26,3 +26,9 @@ class ErrorJournalState extends JournalState {
   @override
   List<Object> get props => [message];
 }
+
+class GetAccountNameState extends JournalState {
+  final Map<String, dynamic> accountName;
+
+  const GetAccountNameState({required this.accountName});
+}
