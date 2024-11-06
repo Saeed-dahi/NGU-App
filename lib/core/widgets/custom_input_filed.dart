@@ -66,7 +66,7 @@ class CustomInputField extends StatelessWidget {
         },
         onEditingComplete: () {
           FocusScope.of(context).nextFocus();
-          onEditingComplete!();
+          onEditingComplete?.call();
         },
         onTapAlwaysCalled: true,
         onChanged: onChanged,

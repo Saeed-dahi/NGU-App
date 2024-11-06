@@ -14,6 +14,7 @@ class CustomPlutoTable extends StatelessWidget {
   final PlutoGridConfiguration? configuration;
   final void Function(PlutoGridOnLoadedEvent)? onLoaded;
   final void Function(PlutoGridOnChangedEvent)? onChanged;
+  void Function(PlutoGridOnRowDoubleTapEvent)? onRowDoubleTap;
   final List<PlutoColumn> columns;
   final List<PlutoRow> rows;
   final Widget? noRowsWidget;
@@ -21,15 +22,16 @@ class CustomPlutoTable extends StatelessWidget {
   final bool showDefaultHeader;
   final Widget customHeader;
 
-  const CustomPlutoTable(
+  CustomPlutoTable(
       {super.key,
       required this.columns,
       required this.rows,
       required this.mode,
       required this.onLoaded,
+      required this.controller,
+      this.onRowDoubleTap,
       this.configuration,
       this.noRowsWidget,
-      required this.controller,
       this.onChanged,
       this.customHeader = const SizedBox(),
       this.showDefaultHeader = false});
@@ -50,6 +52,7 @@ class CustomPlutoTable extends StatelessWidget {
               onChanged!(event);
               context.read<PlutoGridCubit>().onChangeFunction();
             },
+            onRowDoubleTap: onRowDoubleTap,
             noRowsWidget: noRowsWidget,
             createHeader: (stateManager) {
               return showDefaultHeader

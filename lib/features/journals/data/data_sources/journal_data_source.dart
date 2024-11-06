@@ -105,7 +105,7 @@ class JournalDataSourceImpl implements JournalDataSource {
 
     Map<String, String> formattedData = {
       for (var item in decodedJson['data'])
-        item["code"]!: "${item["ar_name"]}-${item["en_name"]}"
+        item["code"]!: "${item["ar_name"]} - ${item["en_name"]}"
     };
 
     return formattedData;

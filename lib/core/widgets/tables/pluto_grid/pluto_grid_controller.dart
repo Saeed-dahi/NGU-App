@@ -130,8 +130,11 @@ class PlutoGridController {
   // Moves horizontally to the right within the same row
   void moveRight(PlutoGridStateManager stateManager) {
     stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
-    if (stateManager.currentCell!.column.readOnly == true) {
-      stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
+    final currentCell = stateManager.currentCell;
+    if (currentCell != null) {
+      if (currentCell.column.readOnly == true) {
+        stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
+      }
     }
   }
 

@@ -68,6 +68,7 @@ class _AccountsTableState extends State<AccountsTable> {
                     label: 'search'.tr,
                     controller: searchController,
                     onTap: () {},
+                    
                     onChanged: (value) {
                       _onSearchQuery(context, value);
                     },

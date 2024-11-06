@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 
-import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
@@ -30,6 +29,13 @@ class CustomAccountPlutoTable extends StatelessWidget {
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
+        showDefaultHeader: false,
+        onRowDoubleTap: (event) {
+          Get.back(result: {
+            'account_code': event.row.cells['code']!.value,
+            'account_name': event.row.cells['name']!.value,
+          });
+        },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
@@ -78,19 +84,18 @@ class CustomAccountPlutoTable extends StatelessWidget {
     ];
   }
 
-  Iterable<PlutoRow> _buildRows() {
+  _buildRows() {
     return accounts.map(
       (account) {
         bool isMainAccount = account.accountType == AccountType.main.name;
-        String name =
-            LocalizationService.isArabic ? account.arName : account.enName;
+
         return PlutoRow(
           checked: isMainAccount,
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: account.id,
           cells: {
             'code': PlutoCell(value: account.code),
-            'name': PlutoCell(value: name),
+            'name': PlutoCell(value: '${account.arName} - ${account.enName}'),
             'balance': PlutoCell(
                 value: isMainAccount ? account.balance.toString() : ''),
           },

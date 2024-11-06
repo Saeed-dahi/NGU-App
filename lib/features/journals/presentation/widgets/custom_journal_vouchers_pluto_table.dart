@@ -8,10 +8,12 @@ import 'package:ngu_app/core/helper/formatter_class.dart';
 
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 
@@ -25,6 +27,70 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       {super.key, this.journalEntity, required this.accountsName});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
+
+  Future<void> _getAccountName(BuildContext context) async {
+    if (_plutoGridController.stateManager!.currentColumn!.field ==
+        'account_code') {
+      final currentRow = _plutoGridController.stateManager!.currentRow!;
+
+      for (final entry in currentRow.cells.entries) {
+        final currentCellValue = currentRow.cells[entry.key]?.value;
+
+        // Check if we're setting the account name
+        if (entry.key == 'account_name') {
+          final accountCode =
+              currentRow.cells['account_code']!.value.toString();
+          final accountName = accountsName[accountCode];
+
+          // Check if the account name exists in the map
+          if (accountName != null) {
+            currentRow.cells[entry.key]?.value = accountName;
+          } else {
+            // If not found, open dialog and await result
+            final result = await _openAccountDialog(context, accountCode);
+            if (result.isNotEmpty) {
+              // Set account name and code based on dialog result
+              currentRow.cells['account_code']?.value = result['account_code'];
+              currentRow.cells['account_name']?.value = result['account_name'];
+            }
+          }
+        } else {
+          // For other fields, keep their current value
+          currentRow.cells[entry.key]?.value = currentCellValue;
+        }
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>> _openAccountDialog(
+      BuildContext context, String acc) async {
+    final result = await ShowDialog.showCustomDialog(
+      context: context,
+      content: const AccountsTable(),
+    );
+    return result ?? {};
+  }
+
+  void _makeTableBalanced() {
+    double debitSum = _plutoGridController.columnSum(
+        'debit', _plutoGridController.stateManager!);
+    double creditSum = _plutoGridController.columnSum(
+        'credit', _plutoGridController.stateManager!);
+    String cellToFixed = debitSum > creditSum ? 'credit' : 'debit';
+    double balanceValue = (debitSum - creditSum).abs();
+
+    if (balanceValue > 0) {
+      final newRow = PlutoRow(
+        cells: {
+          for (final entry
+              in _plutoGridController.stateManager!.rows.first.cells.entries)
+            entry.key:
+                PlutoCell(value: entry.key == cellToFixed ? balanceValue : '')
+        },
+      );
+      _plutoGridController.stateManager!.appendRows([newRow]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,29 +113,12 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
 
-          _getAccountName();
+          _getAccountName(context);
         },
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(),
       ),
     );
-  }
-
-  void _getAccountName() {
-    if (_plutoGridController.stateManager!.currentColumn!.field ==
-        'account_code') {
-      final currentRow = _plutoGridController.stateManager!.currentRow!;
-
-      for (final entry
-          in _plutoGridController.stateManager!.currentRow!.cells.entries) {
-        final currentCellValue = currentRow.cells[entry.key]?.value;
-        currentRow.cells[entry.key]?.value = entry.key == 'account_name'
-            ? accountsName[
-                    currentRow.cells['account_code']!.value.toString()] ??
-                'not_found'.tr
-            : currentCellValue;
-      }
-    }
   }
 
   Widget _buildCustomHeader() {
@@ -84,27 +133,6 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  void _makeTableBalanced() {
-    double debitSum = _plutoGridController.columnSum(
-        'debit', _plutoGridController.stateManager!);
-    double creditSum = _plutoGridController.columnSum(
-        'credit', _plutoGridController.stateManager!);
-    String cellToFixed = debitSum > creditSum ? 'credit' : 'debit';
-    double balanceValue = (debitSum - creditSum).abs();
-
-    if (balanceValue > 0) {
-      final newRow = PlutoRow(
-        cells: {
-          for (final entry
-              in _plutoGridController.stateManager!.rows.first.cells.entries)
-            entry.key:
-                PlutoCell(value: entry.key == cellToFixed ? balanceValue : '')
-        },
-      );
-      _plutoGridController.stateManager!.appendRows([newRow]);
-    }
   }
 
   List<PlutoColumn> _buildColumns() {
