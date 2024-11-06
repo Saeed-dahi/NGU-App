@@ -1,6 +1,11 @@
 part of 'language_cubit.dart';
 
-class ChangeLanguageState {
+@immutable
+sealed class LanguageState {}
+
+final class LanguageInit extends LanguageState {}
+
+class ChangeLanguageState extends LanguageState {
   final Locale locale;
 
   ChangeLanguageState({required this.locale});

@@ -29,7 +29,10 @@ class PlutoGridController {
               LogicalKeySet(LogicalKeyboardKey.enter): CustomEnterKeyAction(),
             },
           )
-        : const PlutoGridShortcut();
+        : PlutoGridShortcut(actions: {
+            ...PlutoGridShortcut.defaultActions,
+            LogicalKeySet(LogicalKeyboardKey.enter): CustomEnterKeyAction(),
+          });
   }
 
   // add new row

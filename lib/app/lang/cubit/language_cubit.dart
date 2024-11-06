@@ -7,8 +7,8 @@ import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart'
 
 part 'language_state.dart';
 
-class LanguageCubit extends Cubit<ChangeLanguageState> {
-  LanguageCubit() : super(ChangeLanguageState(locale: const Locale('ar')));
+class LanguageCubit extends Cubit<LanguageState> {
+  LanguageCubit() : super(LanguageInit());
 
   Future<void> getSavedLanguage() async {
     final String code = await LocalizationService().getCachedLanguage();

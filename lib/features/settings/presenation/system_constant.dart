@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
+import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 
 class SystemConstant extends StatelessWidget {
   const SystemConstant({super.key});
@@ -22,21 +24,32 @@ class SystemConstant extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LanguageCubit()..getSavedLanguage(),
-          child: BlocBuilder<LanguageCubit, ChangeLanguageState>(
+          child: BlocBuilder<LanguageCubit, LanguageState>(
             builder: (context, state) {
-              return CustomDropdown(
-                dropdownValue: const ['en', 'ar'],
-                onChanged: (value) {
-                  BlocProvider.of<LanguageCubit>(context)
-                      .changeLanguage(value!);
-                },
-                helper: 'language'.tr,
-                value: state.locale.toString(),
-              );
+              if (state is ChangeLanguageState) {
+                return CustomDropdown(
+                  dropdownValue: const ['en', 'ar'],
+                  onChanged: (value) {
+                    _onChangeLanguage(context, value);
+                  },
+                  helper: 'language'.tr,
+                  value: state.locale.toString(),
+                );
+              }
+              return const SizedBox();
             },
           ),
         ),
       ],
     );
+  }
+
+  void _onChangeLanguage(BuildContext context, String? value) {
+    ConfirmDialog.showConfirmDialog(() {
+      Get.back();
+    }, () {
+      BlocProvider.of<LanguageCubit>(context).changeLanguage(value!);
+      context.read<TabCubit>().removeAll();
+    });
   }
 }

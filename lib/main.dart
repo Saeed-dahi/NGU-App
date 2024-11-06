@@ -37,17 +37,20 @@ class MyApp extends StatelessWidget {
           create: (context) => TabCubit(),
         ),
       ],
-      child: BlocBuilder<LanguageCubit, ChangeLanguageState>(
+      child: BlocBuilder<LanguageCubit, LanguageState>(
         builder: (context, state) {
-          return GetMaterialApp(
-            title: 'accounting_system'.tr,
-            debugShowCheckedModeBanner: false,
-            locale: state.locale,
-            fallbackLocale: state.locale,
-            translations: LocalizationService(),
-            theme: CustomTheme.lightTheme,
-            home: const SplashScreen(),
-          );
+          if (state is ChangeLanguageState) {
+            return GetMaterialApp(
+              title: 'accounting_system'.tr,
+              debugShowCheckedModeBanner: false,
+              locale: state.locale,
+              fallbackLocale: state.locale,
+              translations: LocalizationService(),
+              theme: CustomTheme.lightTheme,
+              home: const SplashScreen(),
+            );
+          }
+          return const SizedBox();
         },
       ),
     );
