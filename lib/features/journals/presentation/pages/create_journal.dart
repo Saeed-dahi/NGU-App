@@ -17,7 +17,8 @@ import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_vo
 import 'package:ngu_app/features/journals/presentation/widgets/journal_vouchers_tool_bar.dart';
 
 class CreateJournal extends StatefulWidget {
-  const CreateJournal({super.key});
+  final Map<String, dynamic> accountsName ;
+  const CreateJournal({super.key,required this.accountsName});
 
   @override
   State<CreateJournal> createState() => _CreateJournalState();
@@ -120,7 +121,9 @@ class _CreateJournalState extends State<CreateJournal> {
         ),
         const Divider(),
         _buildHeader(context),
-        CustomJournalVouchersPlutoTable(accountsName: _journalBloc.accountsName,),
+        CustomJournalVouchersPlutoTable(
+          accountsName: widget.accountsName,
+        ),
       ],
     );
   }

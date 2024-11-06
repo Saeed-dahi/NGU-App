@@ -13,8 +13,13 @@ class JournalVouchersToolBar extends StatelessWidget {
   final int? journalId;
   void Function()? onSaveAsDraft;
   void Function()? onSaveAsSaved;
+  Map<String, dynamic> accountsName;
   JournalVouchersToolBar(
-      {super.key, this.journalId, this.onSaveAsDraft, this.onSaveAsSaved});
+      {super.key,
+      this.journalId,
+      this.onSaveAsDraft,
+      this.onSaveAsSaved,
+      this.accountsName = const {}});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,9 @@ class JournalVouchersToolBar extends StatelessWidget {
           onPressed: () {
             context.read<TabCubit>().addNewTab(
                 title: '${'add'.tr} ${'journal_voucher'.tr}',
-                content: const CreateJournal());
+                content: CreateJournal(
+                  accountsName: accountsName,
+                ));
           },
         ),
         CustomIconButton(

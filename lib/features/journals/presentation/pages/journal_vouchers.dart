@@ -129,6 +129,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
               ? _onSaveAsDraft
               : () {},
           onSaveAsSaved: _onSaveAsSaved,
+          accountsName: _journalBloc.accountsName,
         ),
         const Divider(),
         _buildHeader(context),
