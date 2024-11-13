@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class FormatterClass {
   static String numberFormatter(dynamic value) {
-    return NumberFormat('#,###').format(double.parse(value));
+    return NumberFormat('#,###.#####').format(double.parse(value));
   }
 
   static double? doubleFormatter(dynamic value) {

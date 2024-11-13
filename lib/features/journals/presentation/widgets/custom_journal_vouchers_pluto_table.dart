@@ -71,27 +71,6 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
     return result ?? {};
   }
 
-  void _makeTableBalanced() {
-    double debitSum = _plutoGridController.columnSum(
-        'debit', _plutoGridController.stateManager!);
-    double creditSum = _plutoGridController.columnSum(
-        'credit', _plutoGridController.stateManager!);
-    String cellToFixed = debitSum > creditSum ? 'credit' : 'debit';
-    double balanceValue = (debitSum - creditSum).abs();
-
-    if (balanceValue > 0) {
-      final newRow = PlutoRow(
-        cells: {
-          for (final entry
-              in _plutoGridController.stateManager!.rows.first.cells.entries)
-            entry.key:
-                PlutoCell(value: entry.key == cellToFixed ? balanceValue : '')
-        },
-      );
-      _plutoGridController.stateManager!.appendRows([newRow]);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -126,9 +105,9 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       children: [
         CustomIconButton(
           icon: Icons.balance,
-          tooltip: 'balance'.tr,
+          tooltip: '${'balance'.tr} (F3)',
           onPressed: () {
-            _makeTableBalanced();
+            _plutoGridController.makeTableBalanced();
           },
         ),
       ],
@@ -194,7 +173,7 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       title: title.tr,
       field: title,
       type: PlutoColumnType.text(),
-      enableAutoEditing: true,
+      // enableAutoEditing: true,
       textAlign: PlutoColumnTextAlign.center,
       enableSorting: false,
       enableContextMenu: false,

@@ -22,7 +22,7 @@ class TransactionModel extends TransactionEntity {
       amount: double.parse(json['amount'].toString()),
       description: json['description'] ?? '',
       documentNumber: json['document_number'] ?? '',
-      accountNewBalance: json['account_new_balance'],
+      accountNewBalance: double.parse(json['account_new_balance'].toString()),
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );

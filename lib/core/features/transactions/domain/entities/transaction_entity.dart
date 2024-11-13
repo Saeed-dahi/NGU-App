@@ -8,7 +8,7 @@ class TransactionEntity extends Equatable {
   final double amount;
   final String description;
   final String documentNumber;
-  final String? accountNewBalance;
+  final double? accountNewBalance;
   final String? createdAt;
   final String? updatedAt;
 

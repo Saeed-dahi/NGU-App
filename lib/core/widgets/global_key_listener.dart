@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 
 class GlobalKeyListener extends StatefulWidget {
   final Widget child;
@@ -38,9 +35,7 @@ class _GlobalKeyListenerState extends State<GlobalKeyListener> {
             // print(event);
             // HardwareKeyboard.instance
             //         .isLogicalKeyPressed(LogicalKeyboardKey.altLeft)
-            if (event.logicalKey == LogicalKeyboardKey.f1) {
-              
-            }
+            if (event.logicalKey == LogicalKeyboardKey.f2) {}
           }
         },
         child: widget.child);
