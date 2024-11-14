@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/app_strings.dart';
 
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
@@ -11,8 +12,10 @@ import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
+import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/journal_vouchers_tool_bar.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
@@ -102,6 +105,14 @@ class _JournalVouchersState extends State<JournalVouchers> {
               return _pageBody(state.journalEntity);
             }
             if (state is ErrorJournalState) {
+              if (state.message == AppStrings.notFound.tr) {
+                context.read<TabCubit>().removeLastTab();
+                context.read<TabCubit>().addNewTab(
+                    title: '${'add'.tr} ${'journal_voucher'.tr}',
+                    content: CreateJournal(
+                      accountsName: _journalBloc.accountsName,
+                    ));
+              }
               return Column(
                 children: [
                   JournalVouchersToolBar(

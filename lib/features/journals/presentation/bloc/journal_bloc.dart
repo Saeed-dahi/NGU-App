@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_accounts_name_use_case.dart';
