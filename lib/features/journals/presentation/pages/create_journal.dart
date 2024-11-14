@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 
 import 'package:ngu_app/core/utils/enums.dart';
-import 'package:ngu_app/core/widgets/custom_date_picker.dart';
-import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
@@ -13,12 +11,15 @@ import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
+import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_fields.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/journal_vouchers_tool_bar.dart';
 
 class CreateJournal extends StatefulWidget {
-  final Map<String, dynamic> accountsName ;
-  const CreateJournal({super.key,required this.accountsName});
+  final Map<String, dynamic> accountsName;
+  final JournalEntity? journalEntity;
+  const CreateJournal(
+      {super.key, required this.accountsName, this.journalEntity});
 
   @override
   State<CreateJournal> createState() => _CreateJournalState();
@@ -123,63 +124,19 @@ class _CreateJournalState extends State<CreateJournal> {
         _buildHeader(context),
         CustomJournalVouchersPlutoTable(
           accountsName: widget.accountsName,
+          journalEntity: widget.journalEntity,
         ),
       ],
     );
   }
 
   _buildHeader(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalIdController,
-                  label: 'code'.tr,
-                  readOnly: true,
-                  enabled: false,
-                  onTap: () {},
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalDocumentNumberController,
-                  label: 'document_number'.tr,
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomDatePicker(
-                    dateInput: _journalCreatedAtController,
-                    labelText: 'created_at'.tr),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalDescriptionController,
-                  label: 'description'.tr,
-                  onEditingComplete: () {
-                    _journalBloc.getStateManger.setCurrentCell(
-                        _journalBloc
-                            .getStateManger.rows.first.cells.values.first,
-                        0);
-                    _journalBloc.getStateManger.setKeepFocus(true);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+    return CustomJournalFields(
+        formKey: _formKey,
+        journalIdController: _journalIdController,
+        journalDocumentNumberController: _journalDocumentNumberController,
+        journalCreatedAtController: _journalCreatedAtController,
+        journalDescriptionController: _journalDescriptionController,
+        journalBloc: _journalBloc);
   }
 }

@@ -9,7 +9,6 @@ import 'package:ngu_app/core/features/transactions/domain/entities/transaction_e
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_accounts_name_use_case.dart';
@@ -127,11 +126,14 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
   }
 
   FutureOr<void> _getAccountNameEvent(
-      GetAccountNameEvent event, Emitter<JournalState> emit) async {
+      GetAccountNameEvent event, Emitter emit) async {
     final result = await getAccountNameUseCase();
 
-    result.fold((failure) {}, (data) {
+    result.fold((failure) {
+      emit(ErrorJournalState(message: AppStrings.unKnown.tr));
+    }, (data) {
       _accountsName = data;
+      emit(GetAccountNameState(accountName: data));
     });
   }
 

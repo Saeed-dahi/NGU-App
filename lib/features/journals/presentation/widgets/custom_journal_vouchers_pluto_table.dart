@@ -14,8 +14,10 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
+import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
+import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -60,6 +62,7 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
         }
       }
     }
+    _plutoGridController.stateManager!.notifyListeners();
   }
 
   Future<Map<String, dynamic>> _openAccountDialog(
@@ -95,12 +98,12 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
           _getAccountName(context);
         },
         showDefaultHeader: true,
-        customHeader: _buildCustomHeader(),
+        customHeader: _buildCustomHeader(context),
       ),
     );
   }
 
-  Widget _buildCustomHeader() {
+  Widget _buildCustomHeader(BuildContext context) {
     return Row(
       children: [
         CustomIconButton(
@@ -108,6 +111,18 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
           tooltip: '${'balance'.tr} (F3)',
           onPressed: () {
             _plutoGridController.makeTableBalanced();
+          },
+        ),
+        CustomIconButton(
+          icon: Icons.copy,
+          tooltip: '${'copy'.tr} ${'table'.tr} ',
+          onPressed: () {
+            context.read<TabCubit>().addNewTab(
+                title: '${'add'.tr} ${'journal_voucher'.tr}',
+                content: CreateJournal(
+                  accountsName: accountsName,
+                  journalEntity: journalEntity,
+                ));
           },
         ),
       ],

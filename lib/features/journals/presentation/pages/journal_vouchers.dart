@@ -6,8 +6,6 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
-import 'package:ngu_app/core/widgets/custom_date_picker.dart';
-import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -16,6 +14,7 @@ import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';
+import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_fields.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
 import 'package:ngu_app/features/journals/presentation/widgets/journal_vouchers_tool_bar.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
@@ -39,9 +38,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
 
   @override
   void initState() {
-    _journalBloc = sl<JournalBloc>()
-      ..add(ShowJournalEvent(journalId: widget.journalId ?? 1))
-      ..add(GetAccountNameEvent());
+    _journalBloc = sl<JournalBloc>()..add(GetAccountNameEvent());
 
     _journalIdController = TextEditingController();
     _journalDocumentNumberController = TextEditingController();
@@ -97,13 +94,19 @@ class _JournalVouchersState extends State<JournalVouchers> {
       onRefresh: _refresh,
       content: BlocProvider(
         create: (context) => _journalBloc,
-        child: BlocBuilder<JournalBloc, JournalState>(
+        child: BlocConsumer<JournalBloc, JournalState>(
+          listener: (context, state) {
+            if (state is GetAccountNameState) {
+              _journalBloc
+                  .add(ShowJournalEvent(journalId: widget.journalId ?? 1));
+            }
+          },
           builder: (context, state) {
             if (state is LoadedJournalState) {
               _updateTextEditingController(state.journalEntity);
-
               return _pageBody(state.journalEntity);
             }
+
             if (state is ErrorJournalState) {
               if (state.message == AppStrings.notFound.tr) {
                 context.read<TabCubit>().removeLastTab();
@@ -113,6 +116,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
                       accountsName: _journalBloc.accountsName,
                     ));
               }
+
               return Column(
                 children: [
                   JournalVouchersToolBar(
@@ -153,56 +157,18 @@ class _JournalVouchersState extends State<JournalVouchers> {
   }
 
   _buildHeader(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _statusHint(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalIdController,
-                  label: 'code'.tr,
-                  readOnly: true,
-                  enabled: false,
-                  onTap: () {},
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalDocumentNumberController,
-                  label: 'document_number'.tr,
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomDatePicker(
-                    dateInput: _journalCreatedAtController,
-                    labelText: 'created_at'.tr),
-              ),
-              SizedBox(
-                width: MediaQuery.sizeOf(context).width * 0.2,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  controller: _journalDescriptionController,
-                  label: 'description'.tr,
-                  onEditingComplete: () {
-                    _moveFocusToTable();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        CustomJournalFields(
+            formKey: _formKey,
+            journalIdController: _journalIdController,
+            journalDocumentNumberController: _journalDocumentNumberController,
+            journalCreatedAtController: _journalCreatedAtController,
+            journalDescriptionController: _journalDescriptionController,
+            journalBloc: _journalBloc),
+        _statusHint()
+      ],
     );
   }
 
@@ -224,12 +190,6 @@ class _JournalVouchersState extends State<JournalVouchers> {
         ),
       ),
     );
-  }
-
-  void _moveFocusToTable() {
-    _journalBloc.getStateManger.setCurrentCell(
-        _journalBloc.getStateManger.rows.first.cells.values.first, 0);
-    _journalBloc.getStateManger.setKeepFocus(true);
   }
 
   Future<void> _refresh() async {
