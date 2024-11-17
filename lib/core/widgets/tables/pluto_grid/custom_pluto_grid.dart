@@ -77,28 +77,28 @@ class CustomPlutoTable extends StatelessWidget {
                 icon: Icons.repeat,
                 tooltip: '${'repeat'.tr} ${'row'.tr} ${'previous'.tr} (F5)',
                 onPressed: () {
-                  controller.repeatPreviousRow(controller.stateManager!);
+                  controller.repeatPreviousRow();
                 },
               ),
               CustomIconButton(
                 icon: Icons.repeat_one,
                 tooltip: '${'repeat'.tr} ${'column'.tr} ${'previous'.tr} (F4)',
                 onPressed: () {
-                  controller.repeatPreviousColumn(controller.stateManager!);
+                  controller.repeatPreviousColumn();
                 },
               ),
               CustomIconButton(
                 icon: Icons.insert_drive_file_outlined,
                 tooltip: '${'insert'.tr} ${'row'.tr} (F1)',
                 onPressed: () {
-                  controller.appendNewRow(controller.stateManager!);
+                  controller.appendNewRow();
                 },
               ),
               CustomIconButton(
                 icon: Icons.delete_forever,
                 tooltip: '${'delete'.tr} ${'row'.tr} (F9)',
                 onPressed: () {
-                  controller.removeCurrentRow(controller.stateManager!);
+                  controller.removeCurrentRow();
                   context.read<PlutoGridCubit>().onChangeFunction();
                 },
               ),

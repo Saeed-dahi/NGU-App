@@ -14,7 +14,6 @@ class PlutoGridController {
     LogicalKeySet(LogicalKeyboardKey.f3): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f4): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f5): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.numpad0): CustomPlutoKeyAction(),
   };
 
   // Add all numpad keys
@@ -29,12 +28,6 @@ class PlutoGridController {
         LogicalKeyboardKey.numpad7,
         LogicalKeyboardKey.numpad8,
         LogicalKeyboardKey.numpad9,
-        LogicalKeyboardKey.numpadAdd,
-        LogicalKeyboardKey.numpadSubtract,
-        LogicalKeyboardKey.numpadMultiply,
-        LogicalKeyboardKey.numpadDivide,
-        LogicalKeyboardKey.numpadEnter,
-        LogicalKeyboardKey.numpadDecimal,
       ];
 
   PlutoGridController({this.stateManager});
@@ -71,46 +64,46 @@ class PlutoGridController {
   }
 
   // add new row
-  void appendNewRow(PlutoGridStateManager stateManager) {
-    stateManager.appendNewRows(count: 1);
+  void appendNewRow() {
+    stateManager!.appendNewRows(count: 1);
   }
 
   // remove current row
-  void removeCurrentRow(PlutoGridStateManager stateManager) {
-    stateManager.removeCurrentRow();
-    _moveFocusToLastRow(stateManager);
+  void removeCurrentRow() {
+    stateManager!.removeCurrentRow();
+    _moveFocusToLastRow();
   }
 
   // repeat previous row but do not change current values if it is not empty
-  void repeatPreviousRow(PlutoGridStateManager stateManager) {
-    final currentRow = stateManager.currentRow;
+  void repeatPreviousRow() {
+    final currentRow = stateManager!.currentRow;
 
     if (currentRow != null) {
-      final currentIndex = stateManager.rows.indexOf(currentRow);
+      final currentIndex = stateManager!.rows.indexOf(currentRow);
 
       if (currentIndex > 0) {
-        final previousRow = stateManager.rows[currentIndex - 1];
+        final previousRow = stateManager!.rows[currentIndex - 1];
 
         for (final entry in previousRow.cells.entries) {
           currentRow.cells[entry.key]?.value = entry.value.value;
         }
-        stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
+        stateManager!.moveCurrentCell(PlutoMoveDirection.right, force: true);
       }
     }
 
-    moveToNextRowFirstColumn(stateManager);
+    moveToNextRowFirstColumn();
   }
 
   // repeat previous column but do not change current values if it is not empty
-  void repeatPreviousColumn(PlutoGridStateManager stateManager) {
-    final currentRow = stateManager.currentRow;
-    final currentCell = stateManager.currentCell;
+  void repeatPreviousColumn() {
+    final currentRow = stateManager!.currentRow;
+    final currentCell = stateManager!.currentCell;
 
     if (currentRow != null && currentCell != null) {
-      final currentIndex = stateManager.rows.indexOf(currentRow);
+      final currentIndex = stateManager!.rows.indexOf(currentRow);
 
       if (currentIndex > 0) {
-        final previousRow = stateManager.rows[currentIndex - 1];
+        final previousRow = stateManager!.rows[currentIndex - 1];
         final targetColumn = currentCell.column.field;
 
         for (final entry in previousRow.cells.entries) {
@@ -121,21 +114,21 @@ class PlutoGridController {
       }
     }
 
-    bestMove(stateManager);
+    bestMove();
   }
 
   // move the focus to the last row of the table
-  void _moveFocusToLastRow(PlutoGridStateManager stateManager) {
-    stateManager.setCurrentCell(stateManager.rows.last.cells.values.first,
-        stateManager.rows.length - 1);
+  void _moveFocusToLastRow() {
+    stateManager!.setCurrentCell(stateManager!.rows.last.cells.values.first,
+        stateManager!.rows.length - 1);
   }
 
   // Move to the best place (horizontal or vertical)
-  void bestMove(PlutoGridStateManager stateManager) {
-    if (isAtLastColumn(stateManager)) {
-      moveToNextRowFirstColumn(stateManager);
+  void bestMove() {
+    if (isAtLastColumn(stateManager!)) {
+      moveToNextRowFirstColumn();
     } else {
-      moveRight(stateManager);
+      moveRight();
     }
   }
 
@@ -145,41 +138,41 @@ class PlutoGridController {
   }
 
   // Moves to the first column in the next row
-  void moveToNextRowFirstColumn(PlutoGridStateManager stateManager) async {
+  void moveToNextRowFirstColumn() async {
     // Add new Row if we at the end of table
-    addNewRow(stateManager);
+    addNewRow();
 
-    stateManager.moveCurrentCell(PlutoMoveDirection.down);
-    if (stateManager.currentRowIdx != null &&
-        stateManager.currentRowIdx! < stateManager.rows.length) {
-      stateManager.setCurrentCell(
-        stateManager.rows[stateManager.currentRowIdx!]
-            .cells[stateManager.columns.first.field],
-        stateManager.currentRowIdx!,
+    stateManager!.moveCurrentCell(PlutoMoveDirection.down);
+    if (stateManager!.currentRowIdx != null &&
+        stateManager!.currentRowIdx! < stateManager!.rows.length) {
+      stateManager!.setCurrentCell(
+        stateManager!.rows[stateManager!.currentRowIdx!]
+            .cells[stateManager!.columns.first.field],
+        stateManager!.currentRowIdx!,
       );
     }
   }
 
   // add new Row if we are in the last row
-  void addNewRow(PlutoGridStateManager stateManager) {
-    if (stateManager.currentRow == stateManager.rows.last) {
-      stateManager.appendNewRows(count: 1);
+  void addNewRow() {
+    if (stateManager!.currentRow == stateManager!.rows.last) {
+      stateManager!.appendNewRows(count: 1);
     }
   }
 
   // Moves horizontally to the right within the same row
-  void moveRight(PlutoGridStateManager stateManager) {
-    stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
-    final currentCell = stateManager.currentCell;
+  void moveRight() {
+    stateManager!.moveCurrentCell(PlutoMoveDirection.right, force: true);
+    final currentCell = stateManager!.currentCell;
     if (currentCell != null) {
       if (currentCell.column.readOnly == true) {
-        stateManager.moveCurrentCell(PlutoMoveDirection.right, force: true);
+        stateManager!.moveCurrentCell(PlutoMoveDirection.right, force: true);
       }
     }
   }
 
-  double columnSum(String columnName, PlutoGridStateManager stateManager) {
-    var rows = stateManager.rows;
+  double columnSum(String columnName) {
+    var rows = stateManager!.rows;
     double sum = 0;
 
     for (var transaction in rows) {
@@ -207,8 +200,8 @@ class PlutoGridController {
   }
 
   void makeTableBalanced() {
-    double debitSum = columnSum('debit', stateManager!);
-    double creditSum = columnSum('credit', stateManager!);
+    double debitSum = columnSum('debit');
+    double creditSum = columnSum('credit');
     String cellToFixed = debitSum > creditSum ? 'credit' : 'debit';
     String cellToRemove = debitSum < creditSum ? 'credit' : 'debit';
     double balanceValue = (debitSum - creditSum).abs();
@@ -235,6 +228,15 @@ class PlutoGridController {
       }
     }
   }
+
+  handleNumberPadKeyEvent(PlutoKeyManagerEvent keyEvent) {
+    if (numpadKeys.contains(keyEvent.event.logicalKey)) {
+      final newValue = keyEvent.event.logicalKey.keyLabel.characters.last;
+      stateManager!.currentCell!.value = newValue;
+      stateManager!.setEditing(true);
+      stateManager!.notifyListeners();
+    }
+  }
 }
 
 class CustomPlutoKeyAction extends PlutoGridShortcutAction {
@@ -245,33 +247,27 @@ class CustomPlutoKeyAction extends PlutoGridShortcutAction {
     required PlutoGridStateManager stateManager,
   }) {
     _plutoGridController = PlutoGridController(stateManager: stateManager);
-    if (_plutoGridController.numpadKeys.contains(keyEvent.event.logicalKey)) {
-      final newValue = keyEvent.event.logicalKey.keyLabel.characters.last;
-      stateManager.currentCell!.value = newValue;
-      stateManager.setEditing(true);
-      stateManager.notifyListeners();
-    }
+    _plutoGridController.handleNumberPadKeyEvent(keyEvent);
 
     // If at the last column, move to the next row's first column
     switch (keyEvent.event.logicalKey) {
       case LogicalKeyboardKey.enter:
-        _plutoGridController.bestMove(stateManager);
-
+        _plutoGridController.bestMove();
         break;
       case LogicalKeyboardKey.f12:
-        _plutoGridController.appendNewRow(stateManager);
+        _plutoGridController.appendNewRow();
         break;
       case LogicalKeyboardKey.f9:
-        _plutoGridController.removeCurrentRow(stateManager);
+        _plutoGridController.removeCurrentRow();
         break;
       case LogicalKeyboardKey.f3:
         _plutoGridController.makeTableBalanced();
         break;
       case LogicalKeyboardKey.f4:
-        _plutoGridController.repeatPreviousColumn(stateManager);
+        _plutoGridController.repeatPreviousColumn();
         break;
       case LogicalKeyboardKey.f5:
-        _plutoGridController.repeatPreviousRow(stateManager);
+        _plutoGridController.repeatPreviousRow();
         break;
     }
   }

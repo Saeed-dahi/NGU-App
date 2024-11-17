@@ -201,7 +201,6 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
               _plutoGridController
                   .columnSum(
                     context.column.field,
-                    context.stateManager,
                   )
                   .toString(),
               style: const TextStyle(fontWeight: FontWeight.bold),
