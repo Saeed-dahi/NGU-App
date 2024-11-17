@@ -14,7 +14,28 @@ class PlutoGridController {
     LogicalKeySet(LogicalKeyboardKey.f3): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f4): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f5): CustomPlutoKeyAction(),
+    LogicalKeySet(LogicalKeyboardKey.numpad0): CustomPlutoKeyAction(),
   };
+
+  // Add all numpad keys
+  List<LogicalKeyboardKey> get numpadKeys => [
+        LogicalKeyboardKey.numpad0,
+        LogicalKeyboardKey.numpad1,
+        LogicalKeyboardKey.numpad2,
+        LogicalKeyboardKey.numpad3,
+        LogicalKeyboardKey.numpad4,
+        LogicalKeyboardKey.numpad5,
+        LogicalKeyboardKey.numpad6,
+        LogicalKeyboardKey.numpad7,
+        LogicalKeyboardKey.numpad8,
+        LogicalKeyboardKey.numpad9,
+        LogicalKeyboardKey.numpadAdd,
+        LogicalKeyboardKey.numpadSubtract,
+        LogicalKeyboardKey.numpadMultiply,
+        LogicalKeyboardKey.numpadDivide,
+        LogicalKeyboardKey.numpadEnter,
+        LogicalKeyboardKey.numpadDecimal,
+      ];
 
   PlutoGridController({this.stateManager});
 
@@ -27,6 +48,10 @@ class PlutoGridController {
   }
 
   PlutoGridShortcut customArabicGridShortcut() {
+    for (final key in numpadKeys) {
+      _customKeysMap[LogicalKeySet(key)] = CustomPlutoKeyAction();
+    }
+
     return LocalizationService.isArabic
         ? PlutoGridShortcut(
             actions: {
@@ -168,7 +193,7 @@ class PlutoGridController {
     return sum;
   }
 
-  onChanged(PlutoGridOnChangedEvent event) {
+  onChanged(event) {
     if (event.column.field == 'debit' && event.value != null) {
       event.row.cells['credit']!.value = '';
       event.row.cells['debit']!.value =
@@ -220,11 +245,18 @@ class CustomPlutoKeyAction extends PlutoGridShortcutAction {
     required PlutoGridStateManager stateManager,
   }) {
     _plutoGridController = PlutoGridController(stateManager: stateManager);
+    if (_plutoGridController.numpadKeys.contains(keyEvent.event.logicalKey)) {
+      final newValue = keyEvent.event.logicalKey.keyLabel.characters.last;
+      stateManager.currentCell!.value = newValue;
+      stateManager.setEditing(true);
+      stateManager.notifyListeners();
+    }
 
     // If at the last column, move to the next row's first column
     switch (keyEvent.event.logicalKey) {
       case LogicalKeyboardKey.enter:
         _plutoGridController.bestMove(stateManager);
+
         break;
       case LogicalKeyboardKey.f12:
         _plutoGridController.appendNewRow(stateManager);
