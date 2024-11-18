@@ -10,6 +10,7 @@ class TransactionModel extends TransactionEntity {
       required super.description,
       required super.documentNumber,
       super.accountNewBalance,
+      super.date,
       super.createdAt,
       super.updatedAt});
 
@@ -23,6 +24,7 @@ class TransactionModel extends TransactionEntity {
       description: json['description'] ?? '',
       documentNumber: json['document_number'] ?? '',
       accountNewBalance: double.parse(json['account_new_balance'].toString()),
+      date: json['date'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );

@@ -8,7 +8,8 @@ class JournalModel extends JournalEntity {
       required super.description,
       required super.status,
       required super.transactions,
-      required super.createdAt,
+      required super.date,
+      super.createdAt,
       super.updatedAt});
 
   factory JournalModel.fromJson(Map<String, dynamic> json) {
@@ -21,6 +22,7 @@ class JournalModel extends JournalEntity {
             json['transactions'].map<TransactionModel>((transactions) {
           return TransactionModel.fromJson(transactions);
         }).toList(),
+        date: json['date'],
         createdAt: json['created_at'],
         updatedAt: json['updated_at']);
   }
@@ -31,7 +33,8 @@ class JournalModel extends JournalEntity {
       'document': document,
       'description': description,
       'status': status,
-      'created_at': createdAt,
+      'date': date,
+      if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     };
   }

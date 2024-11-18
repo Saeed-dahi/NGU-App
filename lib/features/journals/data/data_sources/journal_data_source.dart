@@ -59,6 +59,7 @@ class JournalDataSourceImpl implements JournalDataSource {
       'description': journalModel.description,
       'document': journalModel.document,
       'status': journalModel.status,
+      'date': journalModel.date,
       'entries':
           transactions.map((transaction) => transaction.toJson()).toList(),
     };
@@ -80,6 +81,7 @@ class JournalDataSourceImpl implements JournalDataSource {
       'description': journalModel.description,
       'document': journalModel.document,
       'status': journalModel.status,
+      'date': journalModel.date,
       'entries':
           transactions.map((transaction) => transaction.toJson()).toList(),
     };

@@ -30,7 +30,7 @@ class _CreateJournalState extends State<CreateJournal> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _journalIdController;
   late final TextEditingController _journalDocumentNumberController;
-  late final TextEditingController _journalCreatedAtController;
+  late final TextEditingController _journalDateController;
   late final TextEditingController _journalDescriptionController;
 
   JournalEntity journalEntity(Enum status) {
@@ -39,7 +39,7 @@ class _CreateJournalState extends State<CreateJournal> {
       description: _journalDescriptionController.text,
       status: status.name,
       transactions: _journalBloc.transactions,
-      createdAt: _journalCreatedAtController.text,
+      date: _journalDateController.text,
     );
   }
 
@@ -49,7 +49,7 @@ class _CreateJournalState extends State<CreateJournal> {
 
     _journalIdController = TextEditingController();
     _journalDocumentNumberController = TextEditingController();
-    _journalCreatedAtController = TextEditingController();
+    _journalDateController = TextEditingController();
     _journalDescriptionController = TextEditingController();
     super.initState();
   }
@@ -60,7 +60,7 @@ class _CreateJournalState extends State<CreateJournal> {
 
     _journalIdController.dispose();
     _journalDocumentNumberController.dispose();
-    _journalCreatedAtController.dispose();
+    _journalDateController.dispose();
     _journalDescriptionController.dispose();
 
     super.dispose();
@@ -135,7 +135,7 @@ class _CreateJournalState extends State<CreateJournal> {
         formKey: _formKey,
         journalIdController: _journalIdController,
         journalDocumentNumberController: _journalDocumentNumberController,
-        journalCreatedAtController: _journalCreatedAtController,
+        journalCreatedAtController: _journalDateController,
         journalDescriptionController: _journalDescriptionController,
         journalBloc: _journalBloc);
   }

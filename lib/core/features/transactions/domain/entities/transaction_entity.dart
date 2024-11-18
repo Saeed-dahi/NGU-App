@@ -8,6 +8,7 @@ class TransactionEntity extends Equatable {
   final double amount;
   final String description;
   final String documentNumber;
+  final String? date;
   final double? accountNewBalance;
   final String? createdAt;
   final String? updatedAt;
@@ -20,6 +21,7 @@ class TransactionEntity extends Equatable {
       required this.amount,
       required this.description,
       required this.documentNumber,
+      this.date,
       this.accountNewBalance,
       this.createdAt,
       this.updatedAt});
@@ -30,8 +32,11 @@ class TransactionEntity extends Equatable {
         accountName,
         type,
         amount,
+        date,
         description,
         documentNumber,
-        accountNewBalance
+        accountNewBalance,
+        createdAt,
+        updatedAt
       ];
 }

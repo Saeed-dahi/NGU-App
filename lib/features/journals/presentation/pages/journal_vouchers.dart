@@ -32,7 +32,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _journalIdController;
   late final TextEditingController _journalDocumentNumberController;
-  late final TextEditingController _journalCreatedAtController;
+  late final TextEditingController _journalDateController;
   late final TextEditingController _journalDescriptionController;
   PlutoGridStateManager? stateManger;
 
@@ -42,7 +42,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
 
     _journalIdController = TextEditingController();
     _journalDocumentNumberController = TextEditingController();
-    _journalCreatedAtController = TextEditingController();
+    _journalDateController = TextEditingController();
     _journalDescriptionController = TextEditingController();
     super.initState();
   }
@@ -50,7 +50,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
   _updateTextEditingController(JournalEntity journal) {
     _journalIdController.text = journal.id.toString();
     _journalDocumentNumberController.text = journal.document;
-    _journalCreatedAtController.text = journal.createdAt;
+    _journalDateController.text = journal.date;
     _journalDescriptionController.text = journal.description;
   }
 
@@ -60,7 +60,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
 
     _journalIdController.dispose();
     _journalDocumentNumberController.dispose();
-    _journalCreatedAtController.dispose();
+    _journalDateController.dispose();
     _journalDescriptionController.dispose();
     super.dispose();
   }
@@ -72,7 +72,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
       description: _journalDescriptionController.text,
       status: status.name,
       transactions: _journalBloc.transactions,
-      createdAt: _journalCreatedAtController.text,
+      date: _journalDateController.text,
     );
   }
 
@@ -164,7 +164,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
             formKey: _formKey,
             journalIdController: _journalIdController,
             journalDocumentNumberController: _journalDocumentNumberController,
-            journalCreatedAtController: _journalCreatedAtController,
+            journalCreatedAtController: _journalDateController,
             journalDescriptionController: _journalDescriptionController,
             journalBloc: _journalBloc),
         _statusHint()

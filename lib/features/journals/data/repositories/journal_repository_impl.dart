@@ -51,7 +51,7 @@ class JournalRepositoryImpl implements JournalRepository {
       description: journalEntity.description,
       status: journalEntity.status,
       transactions: journalEntity.transactions,
-      createdAt: journalEntity.createdAt,
+      date: journalEntity.date,
     );
   }
 

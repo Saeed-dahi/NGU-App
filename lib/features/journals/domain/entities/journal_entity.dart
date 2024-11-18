@@ -6,7 +6,8 @@ class JournalEntity extends Equatable {
   final String document;
   final String description;
   final String status;
-  final String createdAt;
+  final String date;
+  final String? createdAt;
   final String? updatedAt;
   final List<TransactionEntity> transactions;
 
@@ -16,10 +17,19 @@ class JournalEntity extends Equatable {
       required this.description,
       required this.status,
       required this.transactions,
-      required this.createdAt,
+      required this.date,
+      this.createdAt,
       this.updatedAt});
 
   @override
-  List<Object?> get props =>
-      [id, document, description, status, createdAt, updatedAt, transactions];
+  List<Object?> get props => [
+        id,
+        document,
+        description,
+        status,
+        date,
+        createdAt,
+        updatedAt,
+        transactions
+      ];
 }
