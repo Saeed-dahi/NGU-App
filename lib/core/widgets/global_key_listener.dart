@@ -35,7 +35,10 @@ class _GlobalKeyListenerState extends State<GlobalKeyListener> {
             // print(event);
             // HardwareKeyboard.instance
             //         .isLogicalKeyPressed(LogicalKeyboardKey.altLeft)
-            if (event.logicalKey == LogicalKeyboardKey.f2) {}
+            if (event.logicalKey == LogicalKeyboardKey.f1) {
+              widget.f1Action!();
+            }
+            if (event.logicalKey == LogicalKeyboardKey.escape) {}
           }
         },
         child: widget.child);

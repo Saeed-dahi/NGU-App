@@ -13,9 +13,9 @@ import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_acc
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
 
-class AccountsSection extends StatelessWidget {
+class AccountingSection extends StatelessWidget {
   final bool initiallyExpanded;
-  const AccountsSection({super.key, this.initiallyExpanded = false});
+  const AccountingSection({super.key, this.initiallyExpanded = false});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +32,8 @@ class AccountsSection extends StatelessWidget {
             children: [
               _buildAccountsRecord(context),
               _buildVouchers(context),
+              _detailedReports(context),
+              _totalReports(context),
               _currencies(),
               _closingVouchers(context)
             ],
@@ -120,7 +122,7 @@ class AccountsSection extends StatelessWidget {
     );
   }
 
-  _buildVouchers(BuildContext context) {
+  CustomExpansionTile _buildVouchers(BuildContext context) {
     return CustomExpansionTile(
         title: 'vouchers'.tr,
         icon: Icons.menu_book_outlined,
@@ -135,5 +137,34 @@ class AccountsSection extends StatelessWidget {
               title: 'journal_vouchers_table'.tr,
               icon: Icons.table_chart_outlined),
         ]);
+  }
+
+  CustomExpansionTile _detailedReports(BuildContext context) {
+    return CustomExpansionTile(
+      title: '${'reports'.tr} ${'detailed'.tr} ',
+      icon: Icons.library_books,
+      children: [
+        BasicListTile(
+          title: 'account_sts'.tr,
+          icon: Icons.article,
+        ),
+        BasicListTile(
+            title: '${'reports'.tr} ${'journals'.tr}',
+            icon: Icons.payment_outlined),
+      ],
+    );
+  }
+
+  CustomExpansionTile _totalReports(BuildContext context) {
+    return CustomExpansionTile(
+      title: '${'reports'.tr} ${'total'.tr} ',
+      icon: Icons.library_books,
+      children: [
+        BasicListTile(
+          title: 'trail_balance'.tr,
+          icon: Icons.balance_outlined,
+        ),
+      ],
+    );
   }
 }

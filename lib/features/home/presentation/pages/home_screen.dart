@@ -44,29 +44,33 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       builder: (context, state) {
         final isTabsEmpty = state.tabs.isEmpty;
         return GlobalKeyListener(
+            f1Action: () {
+              context.read<HomeCubit>().showBigSideBar('');
+            },
             child: Scaffold(
-          key: scaffoldKey,
-          drawer: const AppDrawer(),
-          appBar: AppBar(
-            title: Text('accounting_system'.tr),
-            bottom: PreferredSize(
-              preferredSize:
-                  Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
-              child:
-                  isTabsEmpty ? const SizedBox() : _buildTabBar(state, context),
-            ),
-          ),
-          body: GestureDetector(
-            onTap: context.read<HomeCubit>().hideBigSideBar,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildSideBar(context),
-                isTabsEmpty ? _buildPageBody() : _buildTabBarView(state),
-              ],
-            ),
-          ),
-        ));
+              key: scaffoldKey,
+              // drawer: const AppDrawer(),
+              appBar: AppBar(
+                title: Text('accounting_system'.tr),
+                bottom: PreferredSize(
+                  preferredSize:
+                      Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
+                  child: isTabsEmpty
+                      ? const SizedBox()
+                      : _buildTabBar(state, context),
+                ),
+              ),
+              body: GestureDetector(
+                onTap: context.read<HomeCubit>().hideBigSideBar,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSideBar(context),
+                    isTabsEmpty ? _buildPageBody() : _buildTabBarView(state),
+                  ],
+                ),
+              ),
+            ));
       },
     );
   }
@@ -82,7 +86,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 opacity: state.showSideBar ? 0 : 1,
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
-                child: const AppIconDrawer(),
+                child: Visibility(
+                    visible: !state.showSideBar, child: const AppIconDrawer()),
               ),
               AnimatedOpacity(
                 opacity: state.showSideBar ? 1 : 0,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
-import 'package:ngu_app/core/widgets/drawer/widgets/sections/accounts_section.dart';
+import 'package:ngu_app/core/widgets/drawer/widgets/sections/accounting_section.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/sections/data_section.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/sections/settings_section.dart';
 import 'package:ngu_app/core/widgets/drawer/widgets/sections/stock_control_section.dart';
@@ -46,7 +46,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   endIndent: 10,
                   indent: 10,
                 ),
-                AccountsSection(
+                AccountingSection(
                   initiallyExpanded: state.pressedButton == 'accounting',
                 ),
                 const Divider(

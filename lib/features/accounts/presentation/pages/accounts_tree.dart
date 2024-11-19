@@ -62,15 +62,7 @@ class _AccountsTreeState extends State<AccountsTree> {
           content: BlocBuilder<AccountsBloc, AccountsState>(
             builder: (context, state) {
               if (state is GetAllAccountsState) {
-                return ListView(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.85,
-                      child: _pageBody(context),
-                    ),
-                  ],
-                );
+                return _pageBody(context);
               }
               if (state is ErrorAccountsState) {
                 return MessageScreen(text: state.message);
@@ -83,22 +75,23 @@ class _AccountsTreeState extends State<AccountsTree> {
     );
   }
 
-  Row _pageBody(BuildContext context) {
+  Widget _pageBody(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _pageTree(context),
+        SizedBox(
+            width: MediaQuery.sizeOf(context).width * 0.45,
+            child: _pageTree(context)),
         _pageSidebar(
           context,
-        )
+        ),
       ],
     );
   }
 
-  SizedBox _pageTree(BuildContext context) {
+  Widget _pageTree(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.6,
-      child: TreeView.simpleTyped(
+      child: TreeView.simple(
         tree: _accountsBloc.tree,
         shrinkWrap: false,
         showRootNode: false,
@@ -155,7 +148,7 @@ class _AccountsTreeState extends State<AccountsTree> {
     );
   }
 
-  SizedBox _pageSidebar(BuildContext context) {
+  Widget _pageSidebar(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.25,
       child: BlocBuilder<AccountInformationBloc, AccountInformationState>(

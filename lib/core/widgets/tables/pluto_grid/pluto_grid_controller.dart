@@ -9,7 +9,7 @@ class PlutoGridController {
 
   final Map<ShortcutActivator, PlutoGridShortcutAction> _customKeysMap = {
     LogicalKeySet(LogicalKeyboardKey.enter): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f12): CustomPlutoKeyAction(),
+    LogicalKeySet(LogicalKeyboardKey.f10): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f9): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f3): CustomPlutoKeyAction(),
     LogicalKeySet(LogicalKeyboardKey.f4): CustomPlutoKeyAction(),
@@ -254,7 +254,7 @@ class CustomPlutoKeyAction extends PlutoGridShortcutAction {
       case LogicalKeyboardKey.enter:
         _plutoGridController.bestMove();
         break;
-      case LogicalKeyboardKey.f12:
+      case LogicalKeyboardKey.f10:
         _plutoGridController.appendNewRow();
         break;
       case LogicalKeyboardKey.f9:

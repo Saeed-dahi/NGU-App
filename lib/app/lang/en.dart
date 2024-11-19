@@ -36,9 +36,14 @@ Map<String, String> en = {
   'opening_voucher': 'Opening Voucher',
   'accounts_setting': 'Accounts Setting',
   'vouchers': 'Vouchers',
+  'journals': 'Journals',
   'journal_vouchers': 'Journal Vouchers',
   'journal_voucher': 'Journal Voucher',
   'journal_vouchers_table': 'Journal Vouchers Table',
+  'reports': 'Reports',
+  'detailed': 'Detailed',
+  'total': 'Total',
+  'trail_balance': 'Trail Balance',
 
   // Currencies
   'currencies': 'Currencies',

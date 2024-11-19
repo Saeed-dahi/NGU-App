@@ -36,9 +36,14 @@ Map<String, String> ar = {
   'opening_voucher': 'سند افتتاحي',
   'accounts_setting': 'إعدادات الحسابات',
   'vouchers': 'القيود',
+  'journals': 'اليومية',
   'journal_vouchers': 'سندات القيد',
   'journal_voucher': 'سند قيد',
   'journal_vouchers_table': 'جدول سندات القيد',
+  'reports': 'التقارير',
+  'detailed': 'التفصيلية',
+  'total': 'الإجمالية',
+  'trail_balance': 'ميزان المراجعة',
 
   // Currencies
   'currencies': 'العملات',

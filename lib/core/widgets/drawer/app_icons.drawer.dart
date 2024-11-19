@@ -28,8 +28,8 @@ class _AppIconDrawerState extends State<AppIconDrawer> {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               CustomIconButton(
                 icon: Icons.folder,
