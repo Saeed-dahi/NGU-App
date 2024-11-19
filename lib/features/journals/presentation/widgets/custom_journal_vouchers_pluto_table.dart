@@ -14,7 +14,7 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';

@@ -5,7 +5,7 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 
 class SystemConstant extends StatelessWidget {
   const SystemConstant({super.key});

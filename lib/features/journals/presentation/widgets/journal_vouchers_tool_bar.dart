@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:ngu_app/features/journals/presentation/pages/create_journal.dart';

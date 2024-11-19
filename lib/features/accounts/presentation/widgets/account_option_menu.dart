@@ -6,7 +6,7 @@ import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/account_statement.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/create_account.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 
 class AccountOptionMenu extends StatelessWidget {
   final AccountEntity accountEntity;

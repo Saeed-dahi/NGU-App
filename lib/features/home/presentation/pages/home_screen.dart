@@ -6,10 +6,11 @@ import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
-
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
+import 'package:ngu_app/core/widgets/drawer/app_icons.drawer.dart';
 import 'package:ngu_app/core/widgets/global_key_listener.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/home/presentation/widgets/tab_content.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,73 +39,114 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return BlocConsumer<TabCubit, TabState>(
       listener: (context, state) {
         _updateTabController(state.tabs.length);
+        context.read<HomeCubit>().hideBigSideBar();
       },
       builder: (context, state) {
         final isTabsEmpty = state.tabs.isEmpty;
         return GlobalKeyListener(
-          child: Scaffold(
-            key: scaffoldKey,
-            drawer: const AppDrawer(),
-            appBar: AppBar(
-              title: Text('accounting_system'.tr),
-              bottom: PreferredSize(
-                preferredSize:
-                    Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
-                child: isTabsEmpty
-                    ? const SizedBox()
-                    : _buildTabBar(state, context),
-              ),
+            child: Scaffold(
+          key: scaffoldKey,
+          drawer: const AppDrawer(),
+          appBar: AppBar(
+            title: Text('accounting_system'.tr),
+            bottom: PreferredSize(
+              preferredSize:
+                  Size.fromHeight(!isTabsEmpty ? Dimensions.appBarSize : 0),
+              child:
+                  isTabsEmpty ? const SizedBox() : _buildTabBar(state, context),
             ),
-            body: isTabsEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Visibility(
-                          visible: true,
-                          child: SizedBox(
-                              width: 200,
-                              child: AnalogClock(
-                                dialBorderColor: AppColors.primaryColor,
-                                markingColor: AppColors.primaryColor,
-                                hourHandColor: AppColors.primaryColor,
-                                hourNumberColor: AppColors.primaryColor,
-                                minuteHandColor: AppColors.primaryColor,
-                                secondHandColor: AppColors.primaryColor,
-                                centerPointColor: AppColors.primaryColor,
-                                child: Align(
-                                  alignment: const FractionalOffset(0.5, 0.75),
-                                  child: Text(
-                                    'accounting_system'.tr,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primaryColorLow),
-                                  ),
-                                ),
-                              )),
-                        ),
-                      ],
-                    ),
-                  )
-                : _buildTabBarView(state),
+          ),
+          body: GestureDetector(
+            onTap: context.read<HomeCubit>().hideBigSideBar,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildSideBar(context),
+                isTabsEmpty ? _buildPageBody() : _buildTabBarView(state),
+              ],
+            ),
+          ),
+        ));
+      },
+    );
+  }
+
+  Widget _buildSideBar(BuildContext context) {
+    return BlocBuilder<HomeCubit, ChangeSideBarState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: MediaQuery.sizeOf(context).height,
+          child: Row(
+            children: [
+              AnimatedOpacity(
+                opacity: state.showSideBar ? 0 : 1,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                child: const AppIconDrawer(),
+              ),
+              AnimatedOpacity(
+                opacity: state.showSideBar ? 1 : 0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                child: Visibility(
+                  visible: state.showSideBar,
+                  child: const AppDrawer(),
+                ),
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  TabBarView _buildTabBarView(TabState state) {
-    return TabBarView(
-      controller: _tabController,
-      children: state.tabs
-          .map(
-            (tab) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TabContent(
-                  key: PageStorageKey(tab.title), content: tab.content),
-            ),
-          )
-          .toList(),
+  Widget _buildPageBody() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Visibility(
+            visible: true,
+            child: SizedBox(
+                width: 200,
+                child: AnalogClock(
+                  dialBorderColor: AppColors.primaryColor,
+                  markingColor: AppColors.primaryColor,
+                  hourHandColor: AppColors.primaryColor,
+                  hourNumberColor: AppColors.primaryColor,
+                  minuteHandColor: AppColors.primaryColor,
+                  secondHandColor: AppColors.primaryColor,
+                  centerPointColor: AppColors.primaryColor,
+                  child: Align(
+                    alignment: const FractionalOffset(0.5, 0.75),
+                    child: Text(
+                      'accounting_system'.tr,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColorLow),
+                    ),
+                  ),
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTabBarView(TabState state) {
+    return Expanded(
+      child: TabBarView(
+        controller: _tabController,
+        children: state.tabs
+            .map(
+              (tab) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TabContent(
+                    key: PageStorageKey(tab.title), content: tab.content),
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 

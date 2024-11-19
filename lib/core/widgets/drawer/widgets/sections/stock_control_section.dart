@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 
 class StockControlSection extends StatelessWidget {
-  const StockControlSection({super.key});
+  final bool initiallyExpanded;
+  const StockControlSection({super.key, this.initiallyExpanded = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +16,12 @@ class StockControlSection extends StatelessWidget {
       padding: const EdgeInsets.all(Dimensions.primaryPadding),
       child: Column(
         children: [
-          ListTile(
-            title: Text(
-              'stock_control'.tr,
-              style: const TextStyle(color: AppColors.secondaryColorLow),
-            ),
-            leading: const Icon(
-              Icons.store,
-              color: AppColors.secondaryColorLow,
-            ),
-            onTap: () {},
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: Dimensions.primaryPadding,
-                right: Dimensions.primaryPadding),
-            child: Column(
+          CustomExpansionTile(
+              title: 'stock_control'.tr,
+              icon: Icons.store,
+              backgroundColor: const Color.fromARGB(90, 0, 0, 0),
+              activeColor: AppColors.white,
+              initiallyExpanded: initiallyExpanded,
               children: [
                 CustomExpansionTile(
                   title: 'products'.tr,
@@ -64,9 +56,7 @@ class StockControlSection extends StatelessWidget {
                     ),
                   ],
                 )
-              ],
-            ),
-          )
+              ]),
         ],
       ),
     );

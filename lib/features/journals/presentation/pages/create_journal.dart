@@ -7,7 +7,7 @@ import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
-import 'package:ngu_app/features/home/presentation/cubit/tab_cubit.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
