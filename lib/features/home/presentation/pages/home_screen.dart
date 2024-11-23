@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             },
             child: Scaffold(
               key: scaffoldKey,
-              // drawer: const AppDrawer(),
+              drawer: const AppDrawer(),
               appBar: AppBar(
                 title: Text('accounting_system'.tr),
                 bottom: PreferredSize(

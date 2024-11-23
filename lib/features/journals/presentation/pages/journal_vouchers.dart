@@ -136,21 +136,22 @@ class _JournalVouchersState extends State<JournalVouchers> {
   }
 
   ListView _pageBody(JournalEntity journalEntity) {
+    final bool isSavedJournal =
+        _journalBloc.getJournalEntity?.status == Status.saved.name;
     return ListView(
       children: [
         JournalVouchersToolBar(
           journalId: _journalBloc.getJournalEntity?.id,
-          onSaveAsDraft: _journalBloc.getJournalEntity?.status != Status.saved
-              ? _onSaveAsDraft
-              : () {},
-          onSaveAsSaved: _onSaveAsSaved,
           accountsName: _journalBloc.accountsName,
+          onSaveAsDraft: isSavedJournal ? _onSaveAsDraft : null,
+          onSaveAsSaved: isSavedJournal ? null : _onSaveAsSaved,
         ),
         const Divider(),
         _buildHeader(context),
         CustomJournalVouchersPlutoTable(
           journalEntity: journalEntity,
           accountsName: _journalBloc.accountsName,
+          readOnly: isSavedJournal,
         ),
       ],
     );

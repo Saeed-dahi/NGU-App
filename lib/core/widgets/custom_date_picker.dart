@@ -25,8 +25,9 @@ class _CustomDatePicker extends State<CustomDatePicker> {
   void initState() {
     DateTime currentDate = DateTime.now();
     widget.dateInput.text = widget.dateInput.text.isEmpty
-        ? DateFormat('yyyy-MM-dd ').format(currentDate)
-        : widget.dateInput.text;
+        ? DateFormat('yyyy-MM-dd').format(currentDate)
+        : DateFormat('yyyy-MM-dd')
+            .format(DateTime.parse(widget.dateInput.text));
     super.initState();
   }
 

@@ -76,12 +76,23 @@ class JournalVouchersToolBar extends StatelessWidget {
                 ));
           },
         ),
-        CustomIconButton(
-            icon: Icons.check_outlined,
-            tooltip: 'post'.tr,
-            onPressed: onSaveAsSaved),
-        CustomIconButton(
-            icon: Icons.save, tooltip: 'save'.tr, onPressed: onSaveAsDraft),
+        Visibility(
+          visible: onSaveAsSaved != null,
+          replacement: CustomIconButton(
+              icon: Icons.unarchive,
+              tooltip: 'un_post'.tr,
+              onPressed: onSaveAsDraft),
+          child: CustomIconButton(
+              icon: Icons.check_outlined,
+              tooltip: 'post'.tr,
+              onPressed: onSaveAsSaved),
+        ),
+        Visibility(
+            visible: onSaveAsDraft != null && onSaveAsSaved != null,
+            child: CustomIconButton(
+                icon: Icons.save,
+                tooltip: 'save'.tr,
+                onPressed: onSaveAsDraft)),
         CustomIconButton(
           icon: Icons.print,
           tooltip: 'print'.tr,

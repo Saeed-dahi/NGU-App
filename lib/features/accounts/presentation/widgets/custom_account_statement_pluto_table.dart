@@ -90,7 +90,7 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
       PlutoColumn(
         title: 'created_at'.tr,
         field: 'created_at',
-        type: PlutoColumnType.text(),
+        type: PlutoColumnType.date(),
       ),
     ];
   }
@@ -109,7 +109,7 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
             'account_new_balance': PlutoCell(value: sts.accountNewBalance),
             'description': PlutoCell(value: sts.description),
             'document_number': PlutoCell(value: sts.documentNumber),
-            'created_at': PlutoCell(value: sts.createdAt),
+            'created_at': PlutoCell(value: sts.date),
           },
         );
       },

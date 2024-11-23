@@ -24,9 +24,13 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 class CustomJournalVouchersPlutoTable extends StatelessWidget {
   final JournalEntity? journalEntity;
   final Map<String, dynamic> accountsName;
+  final bool readOnly;
 
   CustomJournalVouchersPlutoTable(
-      {super.key, this.journalEntity, required this.accountsName});
+      {super.key,
+      this.journalEntity,
+      required this.accountsName,
+      this.readOnly = false});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
@@ -80,7 +84,7 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       height: MediaQuery.sizeOf(context).height * 0.6,
       child: CustomPlutoTable(
         controller: _plutoGridController,
-        mode: PlutoGridMode.normal,
+        mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
         onLoaded: (event) {
           BlocProvider.of<JournalBloc>(context).setStateManager =
               event.stateManager;
