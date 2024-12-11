@@ -15,4 +15,6 @@ abstract class AccountRepository {
 
   Future<Either<Failure, AccountStatementEntity>> accountStatement(
       int accountId);
+
+  Future<Either<Failure, Map<String, dynamic>>> getAccountsName();
 }

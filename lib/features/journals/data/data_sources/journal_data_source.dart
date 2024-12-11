@@ -15,7 +15,7 @@ abstract class JournalDataSource {
   );
   Future<JournalModel> updateJournal(
       JournalModel journalModel, List<TransactionModel> transactionModel);
-  Future<Map<String, dynamic>> getAccountsName();
+  
 }
 
 class JournalDataSourceImpl implements JournalDataSource {
@@ -97,19 +97,4 @@ class JournalDataSourceImpl implements JournalDataSource {
     return journal;
   }
 
-  @override
-  Future<Map<String, dynamic>> getAccountsName() async {
-    final response = await networkConnection.get('accounts-name', {});
-
-    var decodedJson = jsonDecode(response.body);
-
-    ErrorHandler.handleResponse(response.statusCode, decodedJson);
-
-    Map<String, String> formattedData = {
-      for (var item in decodedJson['data'])
-        item["code"]!: "${item["ar_name"]} - ${item["en_name"]}"
-    };
-
-    return formattedData;
-  }
 }

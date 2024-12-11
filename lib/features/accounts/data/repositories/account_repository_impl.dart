@@ -61,6 +61,12 @@ class AccountRepositoryImpl implements AccountRepository {
         .safeApiCall(() => accountDataSource.accountStatement(accountId));
   }
 
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> getAccountsName() async {
+    return await apiHelper
+        .safeApiCall(() => accountDataSource.getAccountsName());
+  }
+
   AccountModel getAccountModel(AccountEntity accountEntity) {
     return AccountModel(
         id: accountEntity.id,

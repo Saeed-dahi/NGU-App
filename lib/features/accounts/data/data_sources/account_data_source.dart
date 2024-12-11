@@ -15,6 +15,7 @@ abstract class AccountDataSource {
   Future<Unit> updateAccount(AccountModel accountModel);
   Future<String> getSuggestionCode(int parentId);
   Future<AccountStatementModel> accountStatement(int accountId);
+  Future<Map<String, dynamic>> getAccountsName();
 }
 
 class AccountDataSourceWithHttp implements AccountDataSource {
@@ -115,5 +116,21 @@ class AccountDataSourceWithHttp implements AccountDataSource {
         AccountStatementModel.fromJson(decodedJson['data']);
 
     return accountStatementModel;
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAccountsName() async {
+    final response = await networkConnection.get('accounts-name', {});
+
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    Map<String, String> formattedData = {
+      for (var item in decodedJson['data'])
+        item["code"]!: "${item["ar_name"]} - ${item["en_name"]}"
+    };
+
+    return formattedData;
   }
 }

@@ -68,9 +68,5 @@ class JournalRepositoryImpl implements JournalRepository {
     }).toList();
   }
 
-  @override
-  Future<Either<Failure, Map<String, dynamic>>> getAccountsName() async {
-    return await apiHelper
-        .safeApiCall(() => journalDataSource.getAccountsName());
-  }
+
 }

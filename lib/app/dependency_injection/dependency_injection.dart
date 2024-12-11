@@ -33,7 +33,7 @@ import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
-import 'package:ngu_app/features/journals/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/features/transactions/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_all_journals_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/show_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/update_journal_use_case.dart';
@@ -103,6 +103,9 @@ void _account() {
       () => GetSuggestionCodeUseCase(accountRepository: sl()));
   sl.registerLazySingleton(
       () => AccountStatementUseCase(accountRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetAccountsNameUseCase(accountRepository: sl()));
+  
   // repository
   sl.registerLazySingleton<AccountRepository>(
       () => AccountRepositoryImpl(accountDataSource: sl(), apiHelper: sl()));
@@ -176,8 +179,6 @@ void _journal() {
   sl.registerLazySingleton(() => ShowJournalUseCase(journalRepository: sl()));
   sl.registerLazySingleton(() => CreateJournalUseCase(journalRepository: sl()));
   sl.registerLazySingleton(() => UpdateJournalUseCase(journalRepository: sl()));
-  sl.registerLazySingleton(
-      () => GetAccountsNameUseCase(journalRepository: sl()));
 
   // repository
   sl.registerLazySingleton<JournalRepository>(
