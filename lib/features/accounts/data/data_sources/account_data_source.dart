@@ -126,10 +126,11 @@ class AccountDataSourceWithHttp implements AccountDataSource {
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    Map<String, String> formattedData = {
-      for (var item in decodedJson['data'])
-        item["code"]!: "${item["ar_name"]} - ${item["en_name"]}"
-    };
+    Map<String, String> formattedData = {};
+    for (var item in decodedJson['data']) {
+      formattedData[item["code"]] = "${item["ar_name"]} - ${item["en_name"]}";
+      formattedData['id_${item["code"]}'] = "${item["id"]}";
+    }
 
     return formattedData;
   }

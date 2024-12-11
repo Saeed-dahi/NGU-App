@@ -119,6 +119,7 @@ class _CreateJournalState extends State<CreateJournal> {
           onSaveAsDraft: _onSaveAsDraft,
           onSaveAsSaved: _onSaveAsSaved,
           journalId: _journalBloc.getJournalEntity?.id,
+          accountsName: widget.accountsName,
         ),
         const Divider(),
         _buildHeader(context),

@@ -34,6 +34,7 @@ class CustomAccountPlutoTable extends StatelessWidget {
           Get.back(result: {
             'account_code': event.row.cells['code']!.value,
             'account_name': event.row.cells['name']!.value,
+            'account_id': event.row.data
           });
         },
         onLoaded: (PlutoGridOnLoadedEvent event) {

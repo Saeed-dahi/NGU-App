@@ -61,6 +61,7 @@ class JournalRepositoryImpl implements JournalRepository {
         type: transaction.type,
         accountName: transaction.accountName,
         accountCode: transaction.accountCode,
+        accountId: transaction.accountId,
         amount: transaction.amount,
         description: transaction.description,
         documentNumber: transaction.documentNumber,

@@ -32,7 +32,6 @@ class CustomJournalFields extends StatelessWidget {
     return Form(
       key: _formKey,
       child: Wrap(
-        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.2,

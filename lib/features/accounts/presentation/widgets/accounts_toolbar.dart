@@ -77,7 +77,7 @@ class AccountsToolbar extends StatelessWidget {
                   title:
                       '${'account_sts'.tr} (${accountEntity.enName}-${accountEntity.arName})',
                   content: AccountStatementPage(
-                    accountEntity: accountEntity,
+                    accountId: accountEntity.id!,
                   ),
                 );
           },

@@ -13,6 +13,7 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/account_statement.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
@@ -47,10 +48,12 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
           final accountCode =
               currentRow.cells['account_code']!.value.toString();
           final accountName = accountsName[accountCode];
+          final accountId = accountsName['id_$accountCode'];
 
           // Check if the account name exists in the map
           if (accountName != null) {
             currentRow.cells[entry.key]?.value = accountName;
+            currentRow.data = int.parse(accountId);
           } else {
             // If not found, open dialog and await result
             final result = await _openAccountDialog(context, accountCode);
@@ -58,6 +61,7 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
               // Set account name and code based on dialog result
               currentRow.cells['account_code']?.value = result['account_code'];
               currentRow.cells['account_name']?.value = result['account_name'];
+              currentRow.data = result['account_id'];
             }
           }
         } else {
@@ -129,6 +133,19 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
                 ));
           },
         ),
+        CustomIconButton(
+          icon: Icons.article_outlined,
+          tooltip: '${'account_sts'.tr} ',
+          onPressed: () {
+            context.read<TabCubit>().addNewTab(
+                title:
+                    '${'account_sts'.tr} (${_plutoGridController.stateManager!.currentRow!.cells['account_name']!.value})',
+                content: AccountStatementPage(
+                  accountId:
+                      _plutoGridController.stateManager!.currentRow!.data,
+                ));
+          },
+        ),
       ],
     );
   }
@@ -149,7 +166,7 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       (transaction) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: transaction.id,
+          data: transaction.accountId,
           cells: {
             'debit': PlutoCell(
                 value: transaction.type == AccountNature.debit.name

@@ -4,13 +4,13 @@ import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
-import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/custom_account_statement_pluto_table.dart';
 
 class AccountStatementPage extends StatefulWidget {
-  final AccountEntity accountEntity;
-  const AccountStatementPage({super.key, required this.accountEntity});
+  final int accountId;
+  const AccountStatementPage({super.key, required this.accountId});
 
   @override
   State<AccountStatementPage> createState() => _AccountStatementPageState();
@@ -22,7 +22,7 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
   @override
   void initState() {
     _accountsBloc = sl<AccountsBloc>()
-      ..add(AccountStatementEvent(accountId: widget.accountEntity.id!));
+      ..add(AccountStatementEvent(accountId: widget.accountId));
     super.initState();
   }
 
@@ -33,8 +33,7 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
   }
 
   Future<void> _refresh() async {
-    _accountsBloc
-        .add(AccountStatementEvent(accountId: widget.accountEntity.id!));
+    _accountsBloc.add(AccountStatementEvent(accountId: widget.accountId));
   }
 
   @override

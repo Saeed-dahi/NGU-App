@@ -33,7 +33,7 @@ import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/create_journal_use_case.dart';
-import 'package:ngu_app/core/features/transactions/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/get_all_journals_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/show_journal_use_case.dart';
 import 'package:ngu_app/features/journals/domain/use_cases/update_journal_use_case.dart';
