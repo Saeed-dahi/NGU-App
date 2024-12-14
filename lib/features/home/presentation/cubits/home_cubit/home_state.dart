@@ -7,3 +7,5 @@ class ChangeSideBarState {
   const ChangeSideBarState(
       {required this.showSideBar, this.pressedButton = ''});
 }
+
+

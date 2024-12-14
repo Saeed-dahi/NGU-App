@@ -25,8 +25,6 @@ class TabCubit extends Cubit<TabState> {
       state.tabs.add(newTab);
     }
 
-    
-
     emit(TabState(tabs: state.tabs));
   }
 

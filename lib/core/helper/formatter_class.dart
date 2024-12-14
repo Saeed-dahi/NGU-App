@@ -12,4 +12,12 @@ class FormatterClass {
         ? value
         : double.tryParse(value.replaceAll(",", ""));
   }
+
+  static String normalizeArabic(String query) {
+    return query
+        .replaceAll(RegExp(r'[أإآ]'), 'ا')
+        .replaceAll(RegExp(r'[يى]'), 'ي')
+        .replaceAll(RegExp(r'[ةه]'), 'ه')
+        .replaceAll(RegExp(r'ء'), '');
+  }
 }

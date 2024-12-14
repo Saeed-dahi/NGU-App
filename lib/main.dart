@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_theme.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
+import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:window_manager/window_manager.dart';
@@ -38,7 +40,8 @@ class MyApp extends StatelessWidget {
           create: (context) => TabCubit(),
         ),
         BlocProvider(
-          create: (_) => HomeCubit()..hideBigSideBar(),
+          create: (_) =>
+              HomeCubit(sl<GetAccountsNameUseCase>())..hideBigSideBar(),
         ),
       ],
       child: BlocBuilder<LanguageCubit, LanguageState>(

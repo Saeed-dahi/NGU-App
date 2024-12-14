@@ -29,6 +29,7 @@ import 'package:ngu_app/features/closing_accounts/domain/use_cases/get_all_closi
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
+import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
@@ -76,6 +77,7 @@ void _core() {
   sl.registerLazySingleton<NetworkConnection>(
       () => HttpConnection(client: sl()));
   sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
+  sl.registerFactory(() => HomeCubit(sl<GetAccountsNameUseCase>()));
 }
 
 void _account() {
@@ -105,7 +107,7 @@ void _account() {
       () => AccountStatementUseCase(accountRepository: sl()));
   sl.registerLazySingleton(
       () => GetAccountsNameUseCase(accountRepository: sl()));
-  
+
   // repository
   sl.registerLazySingleton<AccountRepository>(
       () => AccountRepositoryImpl(accountDataSource: sl(), apiHelper: sl()));
