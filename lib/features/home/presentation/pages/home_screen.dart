@@ -155,34 +155,47 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Row _buildTabBar(TabState state, BuildContext context) {
+  Widget _buildTabBar(TabState state, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          tabs: List.generate(
-            state.tabs.length,
-            (index) {
-              return Tab(
-                key: PageStorageKey(state.tabs[index].title),
-                child: Row(
-                  children: [
-                    Text(state.tabs[index].title),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        ConfirmDialog.showConfirmDialog(() {}, () {
-                          context.read<TabCubit>().removeTab(index);
-                        });
-                      },
-                      padding: EdgeInsets.zero,
+        SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.9,
+          child: TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            tabs: List.generate(
+              state.tabs.length,
+              (index) {
+                return Tooltip(
+                  message: state.tabs[index].title,
+                  child: Tab(
+                    key: PageStorageKey(state.tabs[index].title),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                            width: 200,
+                            child: Text(
+                              state.tabs[index].title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                        IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () {
+                            ConfirmDialog.showConfirmDialog(() {}, () {
+                              context.read<TabCubit>().removeTab(index);
+                            });
+                          },
+                          padding: EdgeInsets.zero,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            },
+                  ),
+                );
+              },
+            ),
           ),
         ),
         CustomIconButton(
