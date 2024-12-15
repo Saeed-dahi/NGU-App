@@ -56,3 +56,5 @@ class AccountStatementEvent extends AccountsEvent {
 
   const AccountStatementEvent({required this.accountId});
 }
+
+class GetAccountsNameEvent extends AccountsEvent {}

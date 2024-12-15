@@ -77,21 +77,21 @@ void _core() {
   sl.registerLazySingleton<NetworkConnection>(
       () => HttpConnection(client: sl()));
   sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
-  sl.registerFactory(() => HomeCubit(sl<GetAccountsNameUseCase>()));
+  sl.registerFactory(() => HomeCubit());
 }
 
 void _account() {
   // bloc
   sl.registerFactory(
     () => AccountsBloc(
-      createAccountUseCase: sl(),
-      getAllAccountsUseCase: sl(),
-      searchInAccountsUseCase: sl(),
-      getSuggestionCodeUseCase: sl(),
-      showAccountUseCase: sl(),
-      updateAccountUseCase: sl(),
-      accountStatementUseCase: sl(),
-    ),
+        createAccountUseCase: sl(),
+        getAllAccountsUseCase: sl(),
+        searchInAccountsUseCase: sl(),
+        getSuggestionCodeUseCase: sl(),
+        showAccountUseCase: sl(),
+        updateAccountUseCase: sl(),
+        accountStatementUseCase: sl(),
+        getAccountsNameUseCase: sl()),
   );
   // Use Cases
   sl.registerLazySingleton(
