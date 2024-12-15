@@ -18,6 +18,8 @@ class CustomInputField extends StatelessWidget {
   final bool readOnly;
   final bool autofocus;
   final bool isCenterLabel;
+  final FocusNode? focusNode;
+  final Widget? prefixIcon;
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final TextInputType inputType;
@@ -42,6 +44,8 @@ class CustomInputField extends StatelessWidget {
       this.controller,
       this.onTap,
       this.onChanged,
+      this.focusNode,
+      this.prefixIcon,
       this.onEditingComplete});
 
   @override
@@ -51,6 +55,7 @@ class CustomInputField extends StatelessWidget {
       child: TextFormField(
         maxLines: null,
         autofocus: autofocus,
+        focusNode: focusNode,
         enabled: enabled,
         controller: controller,
         keyboardType: TextInputType.text,
@@ -80,8 +85,7 @@ class CustomInputField extends StatelessWidget {
             suffixText: suffix,
             helperText: helper,
             errorText: error,
-
-            // icon: Text(helper),
+            prefixIcon: prefixIcon,
             hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize)),
       ),
     );
