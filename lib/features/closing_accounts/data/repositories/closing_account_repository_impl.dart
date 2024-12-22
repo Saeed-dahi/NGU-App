@@ -8,6 +8,7 @@ import 'package:ngu_app/core/network/network_info.dart';
 import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_account_data_source.dart';
 import 'package:ngu_app/features/closing_accounts/data/models/closing_account_model.dart';
 import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_entity.dart';
+import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_statement_entity.dart';
 import 'package:ngu_app/features/closing_accounts/domain/repositories/closing_account_repository.dart';
 
 class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
@@ -53,6 +54,12 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
 
     return apiHelper.safeApiCall(() =>
         closingAccountDataSource.updateClosingAccounts(closingAccountModel));
+  }
+
+  @override
+  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> closingAccountStatement() {
+    return apiHelper
+        .safeApiCall(() => closingAccountDataSource.closingAccountStatement());
   }
 
   ClosingAccountModel getClosingAccountModel(

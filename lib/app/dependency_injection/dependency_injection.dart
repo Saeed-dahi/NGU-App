@@ -25,6 +25,7 @@ import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_acco
 import 'package:ngu_app/features/closing_accounts/data/repositories/closing_account_repository_impl.dart';
 import 'package:ngu_app/features/closing_accounts/domain/repositories/closing_account_repository.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/add_new_closing_account_use_case.dart';
+import 'package:ngu_app/features/closing_accounts/domain/use_cases/closing_account_statement_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/get_all_closing_accounts_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
@@ -122,7 +123,8 @@ void _closingAccount() {
       showClosingAccountUseCase: sl(),
       createClosingAccountUseCase: sl(),
       updateClosingAccountUseCase: sl(),
-      getAllClosingAccountsUseCase: sl()));
+      getAllClosingAccountsUseCase: sl(),
+      closingAccountStatementUseCase: sl()));
   // UseCases
   sl.registerLazySingleton(
       () => GetAllClosingAccountsUseCase(closingAccountRepository: sl()));
@@ -132,6 +134,8 @@ void _closingAccount() {
       () => UpdateClosingAccountUseCase(closingAccountRepository: sl()));
   sl.registerLazySingleton(
       () => ShowClosingAccountUseCase(closingAccountRepository: sl()));
+  sl.registerLazySingleton(
+      () => ClosingAccountStatementUseCase(closingAccountRepository: sl()));
   // Repository
   sl.registerLazySingleton<ClosingAccountRepository>(() =>
       ClosingAccountRepositoryImpl(

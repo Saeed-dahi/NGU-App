@@ -6,10 +6,13 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 
 import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_entity.dart';
+import 'package:ngu_app/features/closing_accounts/domain/entities/closing_account_statement_entity.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/add_new_closing_account_use_case.dart';
+import 'package:ngu_app/features/closing_accounts/domain/use_cases/closing_account_statement_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/get_all_closing_accounts_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
+
 part 'closing_accounts_event.dart';
 part 'closing_accounts_state.dart';
 
@@ -19,18 +22,21 @@ class ClosingAccountsBloc
   final CreateClosingAccountUseCase createClosingAccountUseCase;
   final UpdateClosingAccountUseCase updateClosingAccountUseCase;
   final GetAllClosingAccountsUseCase getAllClosingAccountsUseCase;
+  final ClosingAccountStatementUseCase closingAccountStatementUseCase;
 
   ClosingAccountsBloc(
       {required this.showClosingAccountUseCase,
       required this.createClosingAccountUseCase,
       required this.updateClosingAccountUseCase,
-      required this.getAllClosingAccountsUseCase})
+      required this.getAllClosingAccountsUseCase,
+      required this.closingAccountStatementUseCase})
       : super(ClosingAccountsInitial()) {
     on<ShowClosingsAccountsEvent>(_onShowClosingAccount);
     on<CreateClosingAccountEvent>(_onCreateClosingAccount);
     on<UpdateClosingAccountEvent>(_onUpdateClosingAccount);
     on<GetAllClosingAccountsEvent>(_onGetAllClosingAccount);
     on<ToggleEditingEvent>(_onToggleEditing);
+    on<ClosingAccountStatementEvent>(_onClosingAccountStatement);
   }
 
   Future<void> _onShowClosingAccount(
@@ -124,5 +130,17 @@ class ClosingAccountsBloc
       closingAccount: currentState.closingAccount,
       enableEditing: event.enableEditing,
     ));
+  }
+
+  Future<void> _onClosingAccountStatement(ClosingAccountStatementEvent event,
+      Emitter<ClosingAccountsState> emit) async {
+    emit(LoadingClosingAccountsState());
+    final result = await closingAccountStatementUseCase();
+
+    result.fold((failure) {
+      emit(ErrorClosingAccountsState(message: failure.errors['error']));
+    }, (data) {
+      emit(ClosingAccountStatementState(statement: data));
+    });
   }
 }

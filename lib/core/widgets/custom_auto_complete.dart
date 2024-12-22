@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
 
 class CustomAutoComplete extends StatelessWidget {
   final List<String> data;

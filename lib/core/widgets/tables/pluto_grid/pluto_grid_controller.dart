@@ -155,7 +155,8 @@ class PlutoGridController {
 
   // add new Row if we are in the last row
   void addNewRow() {
-    if (stateManager!.currentRow == stateManager!.rows.last) {
+    if (stateManager!.currentRow == stateManager!.rows.last &&
+        stateManager!.mode != PlutoGridMode.readOnly) {
       stateManager!.appendNewRows(count: 1);
     }
   }

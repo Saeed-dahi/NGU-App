@@ -54,7 +54,10 @@ Map<String, String> en = {
   // Closing Vouchers
   'closing_vouchers': 'Closing Vouchers',
   'closing_accounts': 'Closing Accounts',
+  'trading': 'Trading',
   'profit_and_loss': 'Profit and loss',
+  'budget': 'Budget',
+  'process': 'Processing',
 
   // Stock
   'stock_control': 'ٍStock Control',

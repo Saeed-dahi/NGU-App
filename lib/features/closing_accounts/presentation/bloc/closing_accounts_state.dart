@@ -45,3 +45,9 @@ class ValidationClosingAccountState extends ClosingAccountsState {
 
   const ValidationClosingAccountState({required this.errors});
 }
+
+class ClosingAccountStatementState extends ClosingAccountsState {
+  final Map<String, ClosingAccountStatementEntity> statement;
+
+  const ClosingAccountStatementState({required this.statement});
+}

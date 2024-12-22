@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/closing_accounts/data/models/closing_account_model.dart';
+import 'package:ngu_app/features/closing_accounts/data/models/closing_account_statement_model.dart';
 
 abstract class ClosingAccountDataSource {
   Future<List<ClosingAccountModel>> getAllClosingAccounts();
@@ -12,6 +13,7 @@ abstract class ClosingAccountDataSource {
       int accountId, String? direction);
   Future<Unit> createClosingAccount(ClosingAccountModel closingAccountModel);
   Future<Unit> updateClosingAccounts(ClosingAccountModel closingAccountModel);
+  Future<Map<String, ClosingAccountStatementModel>> closingAccountStatement();
 }
 
 class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
@@ -72,5 +74,26 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
     return unit;
+  }
+
+  @override
+  Future<Map<String, ClosingAccountStatementModel>>
+      closingAccountStatement() async {
+    var response =
+        await networkConnection.get(APIList.closingAccountsStatement, {});
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    Map<String, ClosingAccountStatementModel> data = {
+      'trading':
+          ClosingAccountStatementModel.fromJson(decodedJson['data']['trading']),
+      'profit_loss': ClosingAccountStatementModel.fromJson(
+          decodedJson['data']['profit_loss']),
+      'budget':
+          ClosingAccountStatementModel.fromJson(decodedJson['data']['budget'])
+    };
+
+    return data;
   }
 }

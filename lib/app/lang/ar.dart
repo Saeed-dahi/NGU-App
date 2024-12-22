@@ -54,7 +54,10 @@ Map<String, String> ar = {
   // Closing Vouchers
   'closing_vouchers': 'القيود الختامية',
   'closing_accounts': 'الحسابات الختامية',
+  'trading': 'المتاجرة',
   'profit_and_loss': 'الأرباح والخسائر',
+  'budget': 'الميزانية',
+  'process': 'معالجة',
 
   // Stock
   'stock_control': 'إدارة المخزون',
