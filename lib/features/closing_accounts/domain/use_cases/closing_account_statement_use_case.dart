@@ -8,7 +8,7 @@ class ClosingAccountStatementUseCase {
 
   ClosingAccountStatementUseCase({required this.closingAccountRepository});
 
-  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> call() async {
-    return await closingAccountRepository.closingAccountStatement();
+  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> call(double? completedProductsValue) async {
+    return await closingAccountRepository.closingAccountStatement(completedProductsValue);
   }
 }

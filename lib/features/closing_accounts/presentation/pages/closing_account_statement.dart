@@ -13,7 +13,8 @@ import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_acco
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/custom_closing_account_pluto_table_statement.dart';
 
 class ClosingAccountStatement extends StatefulWidget {
-  const ClosingAccountStatement({super.key});
+  double? completedProductValue;
+  ClosingAccountStatement({super.key, this.completedProductValue = 0});
 
   @override
   State<ClosingAccountStatement> createState() =>
@@ -26,7 +27,8 @@ class _ClosingAccountStatementState extends State<ClosingAccountStatement> {
   @override
   void initState() {
     _closingAccountsBloc = sl<ClosingAccountsBloc>()
-      ..add(ClosingAccountStatementEvent());
+      ..add(ClosingAccountStatementEvent(
+          completedProductValue: widget.completedProductValue));
     super.initState();
   }
 
@@ -37,7 +39,8 @@ class _ClosingAccountStatementState extends State<ClosingAccountStatement> {
   }
 
   Future<void> _refresh() async {
-    _closingAccountsBloc.add(ClosingAccountStatementEvent());
+    _closingAccountsBloc.add(ClosingAccountStatementEvent(
+        completedProductValue: widget.completedProductValue));
   }
 
   @override

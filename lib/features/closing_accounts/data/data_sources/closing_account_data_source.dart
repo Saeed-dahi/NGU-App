@@ -13,7 +13,8 @@ abstract class ClosingAccountDataSource {
       int accountId, String? direction);
   Future<Unit> createClosingAccount(ClosingAccountModel closingAccountModel);
   Future<Unit> updateClosingAccounts(ClosingAccountModel closingAccountModel);
-  Future<Map<String, ClosingAccountStatementModel>> closingAccountStatement();
+  Future<Map<String, ClosingAccountStatementModel>> closingAccountStatement(
+      double? completedProductsValue);
 }
 
 class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
@@ -77,10 +78,10 @@ class ClosingAccountDataSourceImpl implements ClosingAccountDataSource {
   }
 
   @override
-  Future<Map<String, ClosingAccountStatementModel>>
-      closingAccountStatement() async {
-    var response =
-        await networkConnection.get(APIList.closingAccountsStatement, {});
+  Future<Map<String, ClosingAccountStatementModel>> closingAccountStatement(
+      double? completedProductValue) async {
+    var response = await networkConnection.get(APIList.closingAccountsStatement,
+        {'completed_product_value': completedProductValue?.toString()});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

@@ -10,7 +10,9 @@ Map<String, String> en = {
   'backup_some_data': 'Backup Some Data',
   'save': 'Save',
   'post': 'Post',
+  'un_post': 'Un post',
   'insert': 'Insert',
+  'copy': 'Copy',
   'required': 'Required Filed',
   'success': 'The operation has completed successfully',
   'options': 'Options',
@@ -19,11 +21,13 @@ Map<String, String> en = {
   'are_you_sure': 'Are You Sure',
   'yes': 'Yes',
   'no': 'No',
+  'table': 'Table',
   'row': 'Row',
   'column': 'Column',
   'repeat': 'Repeat',
   'saved': 'Saved and Posted',
   'draft': 'Saved not Posted',
+  'alert': 'Alert',
 
   // Accounts
   'accounting': 'Accounting',
@@ -58,6 +62,7 @@ Map<String, String> en = {
   'profit_and_loss': 'Profit and loss',
   'budget': 'Budget',
   'process': 'Processing',
+  'completed_product_value': 'Completed Product Value',
 
   // Stock
   'stock_control': 'ٍStock Control',

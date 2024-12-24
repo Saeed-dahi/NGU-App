@@ -13,6 +13,7 @@ class ConfirmDialog {
         autofocus: true,
         child: Text('yes'.tr),
       ),
+      title: 'alert'.tr,
       cancel: TextButton(
         onPressed: () {
           Get.back();

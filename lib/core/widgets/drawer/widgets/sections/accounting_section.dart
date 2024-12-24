@@ -12,7 +12,8 @@ import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
-import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_statement.dart';
+
+import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_account_statement_dialog.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
 
@@ -55,9 +56,11 @@ class AccountingSection extends StatelessWidget {
         BasicListTile(
           title: '${'process'.tr} ${'closing_vouchers'.tr}',
           icon: Icons.payment_outlined,
-          onTap: () => context.read<TabCubit>().addNewTab(
-              title: '${'process'.tr} ${'closing_vouchers'.tr}',
-              content: const ClosingAccountStatement()),
+          onTap: () => ShowDialog.showCustomDialog(
+              width: 0.2,
+              height: 0.2,
+              content: ClosingAccountStatementDialog(),
+              context: context),
         ),
         BasicListTile(
           title: 'closing_accounts'.tr,

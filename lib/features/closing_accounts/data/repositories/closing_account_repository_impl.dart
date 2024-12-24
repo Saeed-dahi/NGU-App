@@ -57,9 +57,10 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> closingAccountStatement() {
-    return apiHelper
-        .safeApiCall(() => closingAccountDataSource.closingAccountStatement());
+  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>>
+      closingAccountStatement(double? completedProductsValue) {
+    return apiHelper.safeApiCall(() => closingAccountDataSource
+        .closingAccountStatement(completedProductsValue));
   }
 
   ClosingAccountModel getClosingAccountModel(

@@ -10,7 +10,9 @@ Map<String, String> ar = {
   'backup_some_data': 'نسخ جزئي للبيانات',
   'save': 'حفظ',
   'post': 'ترحيل',
+  'un_post': 'إلغاء ترحيل',
   'insert': 'إضافة',
+  'copy': 'نسخ',
   'required': 'حقل مطلوب',
   'success': 'تمت العملية بنجاح',
   'options': 'خيارات',
@@ -19,11 +21,13 @@ Map<String, String> ar = {
   'are_you_sure': 'هل أنت متأكد',
   'yes': 'نعم',
   'no': 'لا',
+  'table': 'جدول',
   'row': 'سطر',
   'column': 'عمود',
   'repeat': 'تكرار',
   'saved': 'محفوظ ومرحل',
   'draft': 'محفوظ وغير مرحل',
+  'alert': 'تنبيه',
 
   // Accounts
   'accounting': 'المحاسبة',
@@ -58,6 +62,7 @@ Map<String, String> ar = {
   'profit_and_loss': 'الأرباح والخسائر',
   'budget': 'الميزانية',
   'process': 'معالجة',
+  'completed_product_value': 'بضاعة آخر المدة',
 
   // Stock
   'stock_control': 'إدارة المخزون',

@@ -23,7 +23,7 @@ class CustomClosingAccountPlutoTableStatement extends StatelessWidget {
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
         controller: _plutoGridController,
-        mode: PlutoGridMode.readOnly,
+        mode: PlutoGridMode.normal,
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         onLoaded: (PlutoGridOnLoadedEvent event) {
@@ -37,19 +37,29 @@ class CustomClosingAccountPlutoTableStatement extends StatelessWidget {
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
       PlutoColumn(
-        title: 'code'.tr,
-        field: 'code',
-        type: PlutoColumnType.text(),
-      ),
+          title: 'code'.tr,
+          field: 'code',
+          type: PlutoColumnType.text(),
+          enableSorting: false,
+          enableFilterMenuItem: false,
+          enableContextMenu: false,
+          readOnly: true),
       PlutoColumn(
-        title: 'name'.tr,
-        field: 'name',
-        type: PlutoColumnType.text(),
-      ),
+          title: 'name'.tr,
+          field: 'name',
+          type: PlutoColumnType.text(),
+          enableSorting: false,
+          enableContextMenu: false,
+          enableFilterMenuItem: false,
+          readOnly: true),
       PlutoColumn(
           title: 'balance'.tr,
           field: 'balance',
           type: PlutoColumnType.text(),
+          enableSorting: false,
+          enableContextMenu: false,
+          enableFilterMenuItem: false,
+          readOnly: true,
           footerRenderer: (context) {
             return Center(
               child: Text(
@@ -61,7 +71,7 @@ class CustomClosingAccountPlutoTableStatement extends StatelessWidget {
     ];
   }
 
-  _buildRows() {
+  Iterable<PlutoRow> _buildRows() {
     return accounts.map(
       (account) {
         return PlutoRow(

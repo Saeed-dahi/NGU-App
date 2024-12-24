@@ -12,5 +12,5 @@ abstract class ClosingAccountRepository {
   Future<Either<Failure, Unit>> updateClosingAccount(
       ClosingAccountEntity closingAccountEntity);
 
-  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> closingAccountStatement();
+  Future<Either<Failure, Map<String, ClosingAccountStatementEntity>>> closingAccountStatement(double? completedProductsValue);
 }

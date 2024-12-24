@@ -37,4 +37,8 @@ class UpdateClosingAccountEvent extends ClosingAccountsEvent {
   const UpdateClosingAccountEvent({required this.closingAccountEntity});
 }
 
-class ClosingAccountStatementEvent extends ClosingAccountsEvent {}
+class ClosingAccountStatementEvent extends ClosingAccountsEvent {
+  final double? completedProductValue;
+
+  const ClosingAccountStatementEvent({required this.completedProductValue});
+}

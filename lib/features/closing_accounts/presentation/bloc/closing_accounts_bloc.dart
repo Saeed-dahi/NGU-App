@@ -135,7 +135,8 @@ class ClosingAccountsBloc
   Future<void> _onClosingAccountStatement(ClosingAccountStatementEvent event,
       Emitter<ClosingAccountsState> emit) async {
     emit(LoadingClosingAccountsState());
-    final result = await closingAccountStatementUseCase();
+    final result =
+        await closingAccountStatementUseCase(event.completedProductValue);
 
     result.fold((failure) {
       emit(ErrorClosingAccountsState(message: failure.errors['error']));
