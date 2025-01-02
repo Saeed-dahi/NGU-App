@@ -9,7 +9,7 @@ import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
 import 'package:ngu_app/core/widgets/drawer/app_icons.drawer.dart';
-import 'package:ngu_app/core/widgets/global_key_listener.dart';
+import 'package:ngu_app/core/widgets/short_cut/global_key_listener.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
