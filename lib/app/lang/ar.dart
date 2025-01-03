@@ -70,6 +70,12 @@ Map<String, String> ar = {
   'product_card': 'بطاقة مادة',
   'search': 'بحث',
   'products_table': 'جدول المواد',
+  'category': 'الفئة',
+  'categories': 'الفئات',
+  'store': 'المستودع',
+  'stores': 'المستودعات',
+  'unit': 'الوحدة',
+  'units': 'الوحدات',
 
   // Settings
   'settings': 'الإعدادات',

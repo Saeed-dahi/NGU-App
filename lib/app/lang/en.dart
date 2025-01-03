@@ -70,6 +70,12 @@ Map<String, String> en = {
   'product_card': 'Product Card',
   'search': 'Search',
   'products_table': 'Products Table',
+  'category': 'Category',
+  'categories': 'Categories',
+  'store': 'Store',
+  'stores': 'Stores',
+  'unit': 'Unit',
+  'units': 'Units',
 
   // Settings
   'settings': 'Settings',

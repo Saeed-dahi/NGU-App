@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
+import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
 
 class StockControlSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -55,7 +56,25 @@ class StockControlSection extends StatelessWidget {
                       onTap: () {},
                     ),
                   ],
-                )
+                ),
+                CustomListTile(
+                  title: 'stores'.tr,
+                  onTap: () {},
+                  isTrailing: false,
+                  icon: Icons.store_outlined,
+                ),
+                CustomListTile(
+                  title: 'categories'.tr,
+                  onTap: () {},
+                  isTrailing: false,
+                  icon: Icons.category_outlined,
+                ),
+                CustomListTile(
+                  title: 'units'.tr,
+                  onTap: () {},
+                  isTrailing: false,
+                  icon: Icons.pivot_table_chart_outlined,
+                ),
               ]),
         ],
       ),
