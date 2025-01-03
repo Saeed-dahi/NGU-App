@@ -68,7 +68,6 @@ class _AccountsTableState extends State<AccountsTable> {
                     label: 'search'.tr,
                     controller: searchController,
                     onTap: () {},
-                    
                     onChanged: (value) {
                       _onSearchQuery(context, value);
                     },
@@ -79,7 +78,7 @@ class _AccountsTableState extends State<AccountsTable> {
             BlocBuilder<AccountsBloc, AccountsState>(
               builder: (context, state) {
                 if (state is GetAllAccountsState) {
-                  return CustomAccountPlutoTable(
+                  return CustomAccountsPlutoTable(
                     accounts: _accountsBloc.accountTable,
                   );
                 }

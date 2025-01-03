@@ -5,7 +5,13 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
+import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
+import 'package:ngu_app/features/inventory/products/perssentation/pages/product_record.dart';
+import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
+import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 
 class StockControlSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -28,50 +34,54 @@ class StockControlSection extends StatelessWidget {
                   title: 'products'.tr,
                   icon: Icons.inventory_2_outlined,
                   children: [
-                    ListTile(
-                      title: Text(
-                        'product_card'.tr,
-                      ),
-                      leading: const Icon(
-                        Icons.padding_outlined,
-                      ),
+                    BasicListTile(
+                      title: 'product_record'.tr,
+                      icon: Icons.padding_outlined,
+                      onTap: () => ShowDialog.showCustomDialog(
+                          context: context,
+                          content: const ProductRecord(),
+                          width: 0.5,
+                          height: 0.6),
+                    ),
+                    BasicListTile(
+                      title: 'search'.tr,
+                      icon: Icons.search,
                       onTap: () {},
                     ),
-                    ListTile(
-                      title: Text(
-                        'search'.tr,
-                      ),
-                      leading: const Icon(
-                        Icons.search,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      title: Text(
-                        'products_table'.tr,
-                      ),
-                      leading: const Icon(
-                        Icons.table_chart_outlined,
-                      ),
+                    BasicListTile(
+                      title: 'products_table'.tr,
+                      icon: Icons.search,
                       onTap: () {},
                     ),
                   ],
                 ),
                 CustomListTile(
                   title: 'stores'.tr,
-                  onTap: () {},
+                  onTap: () => ShowDialog.showCustomDialog(
+                      context: context,
+                      content: const StoresTable(),
+                      width: 0.5,
+                      height: 0.6),
                   isTrailing: false,
                   icon: Icons.store_outlined,
                 ),
                 CustomListTile(
                   title: 'categories'.tr,
-                  onTap: () {},
+                  onTap: () => ShowDialog.showCustomDialog(
+                      context: context,
+                      content: const CategoriesTable(),
+                      width: 0.5,
+                      height: 0.6),
                   isTrailing: false,
                   icon: Icons.category_outlined,
                 ),
                 CustomListTile(
                   title: 'units'.tr,
-                  onTap: () {},
+                  onTap: () => ShowDialog.showCustomDialog(
+                      context: context,
+                      content: const UnitsTable(),
+                      width: 0.5,
+                      height: 0.6),
                   isTrailing: false,
                   icon: Icons.pivot_table_chart_outlined,
                 ),

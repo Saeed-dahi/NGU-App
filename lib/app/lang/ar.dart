@@ -67,7 +67,7 @@ Map<String, String> ar = {
   // Stock
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',
-  'product_card': 'بطاقة مادة',
+  'product_record': 'بطاقة مادة',
   'search': 'بحث',
   'products_table': 'جدول المواد',
   'category': 'الفئة',

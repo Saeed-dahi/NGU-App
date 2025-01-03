@@ -2,21 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
-
-import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
-import 'package:ngu_app/features/accounts/presentation/widgets/account_option_menu.dart';
+
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomAccountsPlutoTable extends StatelessWidget {
-  final List<AccountEntity> accounts;
-
+class CustomStoresPlutoTable extends StatelessWidget {
+  final List<Map<String, dynamic>> data = [
+    {
+      'id': 1,
+      'description': '',
+      'ar_name': 'المستودع ١',
+      'en_name': 'Store 1',
+    },
+    {
+      'id': 2,
+      'description': '',
+      'ar_name': 'المستودع ٢',
+      'en_name': 'Store 2',
+    },
+    {
+      'id': 3,
+      'description': '',
+      'ar_name': 'المستودع ٣',
+      'en_name': 'Store 3',
+    },
+    {
+      'id': 4,
+      'description': '',
+      'ar_name': 'المستودع ٤',
+      'en_name': 'Store 4',
+    },
+    {
+      'id': 5,
+      'description': '',
+      'ar_name': 'المستودع ٥',
+      'en_name': 'Store 5',
+    },
+  ];
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  CustomAccountsPlutoTable({super.key, required this.accounts});
+  CustomStoresPlutoTable({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +59,6 @@ class CustomAccountsPlutoTable extends StatelessWidget {
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         showDefaultHeader: false,
-        onRowDoubleTap: (event) {
-          Get.back(result: {
-            'account_code': event.row.cells['code']!.value,
-            'account_name': event.row.cells['name']!.value,
-            'account_id': event.row.data
-          });
-        },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
@@ -48,36 +70,23 @@ class CustomAccountsPlutoTable extends StatelessWidget {
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
       PlutoColumn(
-        title: 'code'.tr,
-        field: 'code',
+        title: 'ar_name'.tr,
+        field: 'ar_name',
         enableFilterMenuItem: true,
         enableContextMenu: false,
-        // enableRowDrag: true,
         type: PlutoColumnType.text(),
-        renderer: (rendererContext) {
-          AccountEntity accountEntity = accounts
-              .firstWhere((account) => account.id == rendererContext.row.data);
-          return Row(
-            children: [
-              // _showMenuOption(rendererContext),
-              AccountOptionMenu(accountEntity: accountEntity),
-              const SizedBox(width: 8),
-              Text(rendererContext.cell.value),
-            ],
-          );
-        },
       ),
       PlutoColumn(
-        title: 'name'.tr,
-        field: 'name',
+        title: 'en_name'.tr,
+        field: 'en_name',
         enableFilterMenuItem: true,
         enableContextMenu: false,
         width: MediaQuery.sizeOf(context).width * 0.4,
         type: PlutoColumnType.text(),
       ),
       PlutoColumn(
-        title: 'balance'.tr,
-        field: 'balance',
+        title: 'description'.tr,
+        field: 'description',
         enableFilterMenuItem: false,
         enableContextMenu: false,
         type: PlutoColumnType.text(),
@@ -86,19 +95,15 @@ class CustomAccountsPlutoTable extends StatelessWidget {
   }
 
   _buildRows() {
-    return accounts.map(
+    return data.map(
       (account) {
-        bool isMainAccount = account.accountType == AccountType.main.name;
-
         return PlutoRow(
-          checked: isMainAccount,
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: account.id,
+          data: account['id'],
           cells: {
-            'code': PlutoCell(value: account.code),
-            'name': PlutoCell(value: '${account.arName} - ${account.enName}'),
-            'balance': PlutoCell(
-                value: isMainAccount ? account.balance.toString() : ''),
+            'ar_name': PlutoCell(value: account['ar_name']),
+            'en_name': PlutoCell(value: account['en_name']),
+            'description': PlutoCell(value: account['description']),
           },
         );
       },
