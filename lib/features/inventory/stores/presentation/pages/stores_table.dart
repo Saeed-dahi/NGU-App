@@ -7,6 +7,7 @@ import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/widgets/custom_stores_pluto_table.dart';
+import 'package:ngu_app/features/inventory/stores/presentation/widgets/stores_toolbar.dart';
 
 class StoresTable extends StatefulWidget {
   const StoresTable({super.key});
@@ -43,8 +44,14 @@ class _StoresTableState extends State<StoresTable> {
             BlocBuilder<StoreBloc, StoreState>(
               builder: (context, state) {
                 if (state is LoadedStoresState) {
-                  return CustomStoresPlutoTable(
-                    stores: state.storeEntity,
+                  return Column(
+                    children: [
+                      StoresToolbar(enableEditing: state.enableEditing),
+                      CustomStoresPlutoTable(
+                        stores: state.storeEntity,
+                        enableEditing: state.enableEditing,
+                      ),
+                    ],
                   );
                 }
                 if (state is ErrorStoresState) {

@@ -34,9 +34,9 @@ import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.
 import 'package:ngu_app/features/inventory/stores/data/data_sources/store_data_source.dart';
 import 'package:ngu_app/features/inventory/stores/data/repositories/store_repository_impl.dart';
 import 'package:ngu_app/features/inventory/stores/domain/repositories/store_repository.dart';
-import 'package:ngu_app/features/inventory/stores/domain/usecases/create_store_use_case.dart';
-import 'package:ngu_app/features/inventory/stores/domain/usecases/get_stores_use_case.dart';
-import 'package:ngu_app/features/inventory/stores/domain/usecases/update_store_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/domain/use_cases/create_store_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/domain/use_cases/get_stores_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/domain/use_cases/update_store_use_case.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
@@ -206,7 +206,13 @@ void _journal() {
 }
 
 void _store() {
-  sl.registerFactory(() => StoreBloc(storesUseCase: sl()));
+  sl.registerFactory(
+    () => StoreBloc(
+      storesUseCase: sl(),
+      createStoreUseCase: sl(),
+      updateStoreUseCase: sl(),
+    ),
+  );
 
   sl.registerLazySingleton(() => GetStoresUseCase(storeRepository: sl()));
   sl.registerLazySingleton(() => CreateStoreUseCase(storeRepository: sl()));

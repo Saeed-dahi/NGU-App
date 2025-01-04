@@ -44,20 +44,23 @@ class CustomStoresPlutoTable extends StatelessWidget {
   ];
   late PlutoGridController _plutoGridController = PlutoGridController();
   final List<StoreEntity> stores;
+  final bool enableEditing;
 
-  CustomStoresPlutoTable({super.key, required this.stores});
+  CustomStoresPlutoTable(
+      {super.key, required this.stores, required this.enableEditing});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.55,
+      height: MediaQuery.sizeOf(context).height * 0.5,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
         controller: _plutoGridController,
-        mode: PlutoGridMode.readOnly,
+        mode: enableEditing ? PlutoGridMode.normal : PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
+        onChanged: (p0) {},
         showDefaultHeader: false,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
@@ -94,7 +97,7 @@ class CustomStoresPlutoTable extends StatelessWidget {
     ];
   }
 
-  _buildRows() {
+  Iterable<PlutoRow> _buildRows() {
     return stores.map(
       (account) {
         return PlutoRow(

@@ -35,3 +35,9 @@ class ValidationStoreState extends StoreState {
 }
 
 class LoadingStoresState extends StoreState {}
+
+class ToggleEditingEvent extends StoreEvent {
+  final bool enableEditing;
+
+  const ToggleEditingEvent({required this.enableEditing});
+}

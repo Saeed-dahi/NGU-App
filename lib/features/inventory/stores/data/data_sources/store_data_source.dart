@@ -43,7 +43,8 @@ class StoreDataSourceWithHttp implements StoreDataSource {
 
   @override
   Future<Unit> updateStore(StoreModel store) async {
-    final response = await networkConnection.put(APIList.store, store.toJson());
+    final response = await networkConnection.put(
+        '${APIList.store}/${store.id}', store.toJson());
     var decodedJson = jsonDecode(response.body);
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 

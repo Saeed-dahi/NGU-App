@@ -9,3 +9,14 @@ sealed class StoreEvent extends Equatable {
 
 class GetStoresEvent extends StoreEvent {}
 
+class CreateStoreEvent extends StoreEvent {
+  final StoreEntity storeEntity;
+
+  const CreateStoreEvent({required this.storeEntity});
+}
+
+class UpdateStoreEvent extends StoreEvent {
+  final StoreEntity storeEntity;
+
+  const UpdateStoreEvent({required this.storeEntity});
+}
