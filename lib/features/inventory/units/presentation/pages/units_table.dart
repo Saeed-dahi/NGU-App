@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
-import 'package:ngu_app/features/inventory/categories/presentation/widgets/custom_categories_pluto_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/widgets/custom_units_pluto_table.dart';
 
 class UnitsTable extends StatefulWidget {

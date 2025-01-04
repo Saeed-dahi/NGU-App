@@ -31,6 +31,13 @@ import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:ngu_app/features/inventory/stores/data/data_sources/store_data_source.dart';
+import 'package:ngu_app/features/inventory/stores/data/repositories/store_repository_impl.dart';
+import 'package:ngu_app/features/inventory/stores/domain/repositories/store_repository.dart';
+import 'package:ngu_app/features/inventory/stores/domain/usecases/create_store_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/domain/usecases/get_stores_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/domain/usecases/update_store_use_case.dart';
+import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
@@ -57,6 +64,9 @@ Future<void> init() async {
 
   // Core
   _core();
+
+  //
+  _store();
 
   // External
   await _external();
@@ -193,4 +203,18 @@ void _journal() {
   // data sources
   sl.registerLazySingleton<JournalDataSource>(
       () => JournalDataSourceImpl(networkConnection: sl()));
+}
+
+void _store() {
+  sl.registerFactory(() => StoreBloc(storesUseCase: sl()));
+
+  sl.registerLazySingleton(() => GetStoresUseCase(storeRepository: sl()));
+  sl.registerLazySingleton(() => CreateStoreUseCase(storeRepository: sl()));
+  sl.registerLazySingleton(() => UpdateStoreUseCase(storeRepository: sl()));
+
+  sl.registerLazySingleton<StoreRepository>(
+      () => StoreRepositoryImpl(storeDataSource: sl(), apiHelper: sl()));
+
+  sl.registerLazySingleton<StoreDataSource>(
+      () => StoreDataSourceWithHttp(networkConnection: sl()));
 }

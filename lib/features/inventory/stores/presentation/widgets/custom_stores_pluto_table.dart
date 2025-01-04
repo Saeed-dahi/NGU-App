@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/inventory/stores/domain/entities/store_entity.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -42,10 +43,9 @@ class CustomStoresPlutoTable extends StatelessWidget {
     },
   ];
   late PlutoGridController _plutoGridController = PlutoGridController();
+  final List<StoreEntity> stores;
 
-  CustomStoresPlutoTable({
-    super.key,
-  });
+  CustomStoresPlutoTable({super.key, required this.stores});
 
   @override
   Widget build(BuildContext context) {
@@ -95,15 +95,15 @@ class CustomStoresPlutoTable extends StatelessWidget {
   }
 
   _buildRows() {
-    return data.map(
+    return stores.map(
       (account) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: account['id'],
+          data: account.id,
           cells: {
-            'ar_name': PlutoCell(value: account['ar_name']),
-            'en_name': PlutoCell(value: account['en_name']),
-            'description': PlutoCell(value: account['description']),
+            'ar_name': PlutoCell(value: account.arName),
+            'en_name': PlutoCell(value: account.enName),
+            'description': PlutoCell(value: account.description),
           },
         );
       },
