@@ -12,7 +12,7 @@ class StoreModel extends StoreEntity {
         id: json['id'],
         arName: json['ar_name'],
         enName: json['en_name'],
-        description: json['description']);
+        description: json['description'] ?? '');
   }
 
   Map<String, dynamic> toJson() {

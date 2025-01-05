@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
+import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
 
 class StockControlSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -53,7 +55,10 @@ class StockControlSection extends StatelessWidget {
                 ),
                 CustomListTile(
                   title: 'stores'.tr,
-                  onTap: () {},
+                  onTap: () {
+                    ShowDialog.showCustomDialog(
+                        context: context, content: const StoresTable());
+                  },
                   isTrailing: false,
                   icon: Icons.store_outlined,
                 ),
