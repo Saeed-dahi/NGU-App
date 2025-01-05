@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
+import 'package:ngu_app/features/inventory/stores/presentation/pages/store_form.dart';
+import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class StoresToolbar extends StatelessWidget {
-  final bool enableEditing;
   final VoidCallback? onSave;
+
   const StoresToolbar({
     super.key,
-    required this.enableEditing,
     this.onSave,
   });
 
@@ -17,28 +19,7 @@ class StoresToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: Visibility(
-        visible: !enableEditing,
-        replacement: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomIconButton(
-              icon: Icons.close,
-              tooltip: 'close'.tr,
-              onPressed: () => _close(context),
-            ),
-            CustomIconButton(
-              icon: Icons.save,
-              tooltip: 'save'.tr,
-              onPressed: () {
-                context.read<StoreBloc>().add(GetStoresEvent());
-                onSave;
-              },
-            ),
-          ],
-        ),
-        child: _crudActions(context),
-      ),
+      child: _crudActions(context),
     );
   }
 
@@ -47,9 +28,14 @@ class StoresToolbar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomIconButton(
+          icon: Icons.add,
+          tooltip: 'add'.tr,
+          onPressed: () => _onOpenForm(context, false),
+        ),
+        CustomIconButton(
           icon: Icons.edit,
           tooltip: 'edit'.tr,
-          onPressed: () => _enableEditing(context),
+          onPressed: () => _onOpenForm(context, true),
         ),
         CustomIconButton(
           icon: Icons.print,
@@ -60,15 +46,35 @@ class StoresToolbar extends StatelessWidget {
     );
   }
 
-  void _close(BuildContext context) {
-    context
-        .read<StoreBloc>()
-        .add(const ToggleEditingEvent(enableEditing: false));
+  _onOpenForm(BuildContext context, bool editingMode) {
+    if (editingMode) {
+      var currentRow = context
+          .read<StoreBloc>()
+          .plutoGridController
+          .stateManager!
+          .currentRow;
+      if (currentRow != null) {
+        _showStoreForm(
+            context: context, editingMode: editingMode, currentRow: currentRow);
+      }
+    } else {
+      _showStoreForm(context: context, editingMode: editingMode);
+    }
   }
 
-  void _enableEditing(BuildContext context) {
-    context
-        .read<StoreBloc>()
-        .add(const ToggleEditingEvent(enableEditing: true));
+  void _showStoreForm(
+      {required BuildContext context,
+      required bool editingMode,
+      PlutoRow? currentRow}) {
+    ShowDialog.showCustomDialog(
+        content: BlocProvider.value(
+          value: context.read<StoreBloc>(),
+          child: StoreForm(
+            currentRow: currentRow,
+          ),
+        ),
+        context: context,
+        width: 0.4,
+        height: 0.4);
   }
 }

@@ -46,7 +46,7 @@ class _StoresTableState extends State<StoresTable> {
                 if (state is LoadedStoresState) {
                   return Column(
                     children: [
-                      StoresToolbar(enableEditing: state.enableEditing),
+                      const StoresToolbar(),
                       CustomStoresPlutoTable(
                         stores: state.storeEntity,
                         enableEditing: state.enableEditing,

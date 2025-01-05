@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
@@ -6,7 +7,7 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/stores/domain/entities/store_entity.dart';
-
+import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomStoresPlutoTable extends StatelessWidget {
@@ -65,6 +66,7 @@ class CustomStoresPlutoTable extends StatelessWidget {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
+          context.read<StoreBloc>().plutoGridController = _plutoGridController;
         },
       ),
     );
