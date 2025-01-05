@@ -4,15 +4,15 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/exception.dart';
 
 class ErrorHandler extends Equatable {
-  static handleResponse(int statusCode, dynamic responseBody) {
+  static handleResponse(int statusCode, dynamic decodedJson) {
     switch (statusCode) {
       case ResponseCode.success:
         break;
       case ResponseCode.errorValidation:
-        throw ValidationException(errors: responseBody['errors']);
+        throw ValidationException(errors: decodedJson['errors']);
       case ResponseCode.badRequest:
         throw ServerException(
-            error: responseBody['message'] ?? AppStrings.badRequest.tr);
+            error: decodedJson['message'] ?? AppStrings.badRequest.tr);
       case ResponseCode.unAuthorized:
         throw ServerException(error: AppStrings.unAuthorized.tr);
       case ResponseCode.forbidden:

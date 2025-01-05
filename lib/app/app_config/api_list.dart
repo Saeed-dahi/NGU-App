@@ -17,4 +17,5 @@ class APIList {
   static const String journal = "journal";
 
   static const String store = "store";
+  static const String category = "category";
 }
