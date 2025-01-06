@@ -30,13 +30,16 @@ class CustomAccountsPlutoTable extends StatelessWidget {
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         showDefaultHeader: false,
-        onRowDoubleTap: (event) {
+        customEnterKeyAction: () {
           Get.back(result: {
-            'account_code': event.row.cells['code']!.value,
-            'account_name': event.row.cells['name']!.value,
-            'account_id': event.row.data
+            'account_code': _plutoGridController
+                .stateManager!.currentRow!.cells['code']!.value,
+            'account_name': _plutoGridController
+                .stateManager!.currentRow!.cells['name']!.value,
+            'account_id': _plutoGridController.stateManager!.currentRow!.data
           });
         },
+        onRowDoubleTap: (event) {},
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);

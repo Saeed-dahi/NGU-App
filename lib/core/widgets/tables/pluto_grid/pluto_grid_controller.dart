@@ -6,33 +6,44 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class PlutoGridController {
   PlutoGridStateManager? stateManager;
-
-  final Map<ShortcutActivator, PlutoGridShortcutAction> _customKeysMap = {
-    LogicalKeySet(LogicalKeyboardKey.enter): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f10): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f9): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f3): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f4): CustomPlutoKeyAction(),
-    LogicalKeySet(LogicalKeyboardKey.f5): CustomPlutoKeyAction(),
-  };
-
-  // Add all numpad keys
-  List<LogicalKeyboardKey> get numpadKeys => [
-        LogicalKeyboardKey.numpad0,
-        LogicalKeyboardKey.numpad1,
-        LogicalKeyboardKey.numpad2,
-        LogicalKeyboardKey.numpad3,
-        LogicalKeyboardKey.numpad4,
-        LogicalKeyboardKey.numpad5,
-        LogicalKeyboardKey.numpad6,
-        LogicalKeyboardKey.numpad7,
-        LogicalKeyboardKey.numpad8,
-        LogicalKeyboardKey.numpad9,
-      ];
-
-  PlutoGridController({this.stateManager});
-
   set setStateManager(PlutoGridStateManager sts) => stateManager = sts;
+
+  VoidCallback? enterKeyAction;
+  set setEnterKeyAction(VoidCallback? action) => enterKeyAction = action;
+
+  final Map<ShortcutActivator, PlutoGridShortcutAction> _customKeysMap = {};
+  final List<LogicalKeyboardKey> numpadKeys = [];
+
+  PlutoGridController({this.stateManager}) {
+    _initializeShortcuts();
+  }
+
+  // Initialize shortcuts
+  void _initializeShortcuts() {
+    final customAction = CustomPlutoKeyAction(plutoGridController: this);
+
+    _customKeysMap.addAll({
+      LogicalKeySet(LogicalKeyboardKey.enter): customAction,
+      LogicalKeySet(LogicalKeyboardKey.f10): customAction,
+      LogicalKeySet(LogicalKeyboardKey.f9): customAction,
+      LogicalKeySet(LogicalKeyboardKey.f3): customAction,
+      LogicalKeySet(LogicalKeyboardKey.f4): customAction,
+      LogicalKeySet(LogicalKeyboardKey.f5): customAction,
+    });
+
+    numpadKeys.addAll([
+      LogicalKeyboardKey.numpad0,
+      LogicalKeyboardKey.numpad1,
+      LogicalKeyboardKey.numpad2,
+      LogicalKeyboardKey.numpad3,
+      LogicalKeyboardKey.numpad4,
+      LogicalKeyboardKey.numpad5,
+      LogicalKeyboardKey.numpad6,
+      LogicalKeyboardKey.numpad7,
+      LogicalKeyboardKey.numpad8,
+      LogicalKeyboardKey.numpad9,
+    ]);
+  }
 
   PlutoGridLocaleText getLocaleText() {
     return LocalizationService.isArabic
@@ -42,7 +53,8 @@ class PlutoGridController {
 
   PlutoGridShortcut customArabicGridShortcut() {
     for (final key in numpadKeys) {
-      _customKeysMap[LogicalKeySet(key)] = CustomPlutoKeyAction();
+      _customKeysMap[LogicalKeySet(key)] =
+          CustomPlutoKeyAction(plutoGridController: this);
     }
 
     return LocalizationService.isArabic
@@ -59,7 +71,8 @@ class PlutoGridController {
         : PlutoGridShortcut(actions: {
             ...PlutoGridShortcut.defaultActions,
             ..._customKeysMap,
-            LogicalKeySet(LogicalKeyboardKey.enter): CustomPlutoKeyAction(),
+            LogicalKeySet(LogicalKeyboardKey.enter):
+                CustomPlutoKeyAction(plutoGridController: this),
           });
   }
 
@@ -125,7 +138,9 @@ class PlutoGridController {
 
   // Move to the best place (horizontal or vertical)
   void bestMove() {
-    if (isAtLastColumn(stateManager!)) {
+    if (enterKeyAction != null) {
+      enterKeyAction!();
+    } else if (isAtLastColumn(stateManager!)) {
       moveToNextRowFirstColumn();
     } else {
       moveRight();
@@ -241,34 +256,35 @@ class PlutoGridController {
 }
 
 class CustomPlutoKeyAction extends PlutoGridShortcutAction {
-  late PlutoGridController _plutoGridController;
+  PlutoGridController plutoGridController;
+
+  CustomPlutoKeyAction({required this.plutoGridController});
   @override
   void execute({
     required PlutoKeyManagerEvent keyEvent,
     required PlutoGridStateManager stateManager,
   }) {
-    _plutoGridController = PlutoGridController(stateManager: stateManager);
-    _plutoGridController.handleNumberPadKeyEvent(keyEvent);
+    plutoGridController.handleNumberPadKeyEvent(keyEvent);
 
     // If at the last column, move to the next row's first column
     switch (keyEvent.event.logicalKey) {
       case LogicalKeyboardKey.enter:
-        _plutoGridController.bestMove();
+        plutoGridController.bestMove();
         break;
       case LogicalKeyboardKey.f10:
-        _plutoGridController.appendNewRow();
+        plutoGridController.appendNewRow();
         break;
       case LogicalKeyboardKey.f9:
-        _plutoGridController.removeCurrentRow();
+        plutoGridController.removeCurrentRow();
         break;
       case LogicalKeyboardKey.f3:
-        _plutoGridController.makeTableBalanced();
+        plutoGridController.makeTableBalanced();
         break;
       case LogicalKeyboardKey.f4:
-        _plutoGridController.repeatPreviousColumn();
+        plutoGridController.repeatPreviousColumn();
         break;
       case LogicalKeyboardKey.f5:
-        _plutoGridController.repeatPreviousRow();
+        plutoGridController.repeatPreviousRow();
         break;
     }
   }

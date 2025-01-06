@@ -21,6 +21,7 @@ class CustomPlutoTable extends StatelessWidget {
   final PlutoGridController controller;
   final bool showDefaultHeader;
   final Widget customHeader;
+  final VoidCallback? customEnterKeyAction;
 
   CustomPlutoTable(
       {super.key,
@@ -33,6 +34,7 @@ class CustomPlutoTable extends StatelessWidget {
       this.configuration,
       this.noRowsWidget,
       this.onChanged,
+      this.customEnterKeyAction,
       this.customHeader = const SizedBox(),
       this.showDefaultHeader = false});
 
@@ -55,6 +57,8 @@ class CustomPlutoTable extends StatelessWidget {
             onRowDoubleTap: onRowDoubleTap,
             noRowsWidget: noRowsWidget,
             createHeader: (stateManager) {
+              controller.setStateManager = stateManager;
+              controller.setEnterKeyAction = customEnterKeyAction;
               return showDefaultHeader
                   ? _createHeader(stateManager, context)
                   : const SizedBox();
@@ -66,7 +70,6 @@ class CustomPlutoTable extends StatelessWidget {
   }
 
   Widget _createHeader(stateManager, BuildContext context) {
-    controller.setStateManager = stateManager;
     return Row(
       children: [
         customHeader,
