@@ -26,6 +26,7 @@ class _StoresTableState extends State<StoresTable> {
 
   @override
   void dispose() async {
+    _storeBloc.close();
     super.dispose();
   }
 

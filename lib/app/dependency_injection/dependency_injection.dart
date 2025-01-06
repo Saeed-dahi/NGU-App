@@ -31,6 +31,13 @@ import 'package:ngu_app/features/closing_accounts/domain/use_cases/show_closing_
 import 'package:ngu_app/features/closing_accounts/domain/use_cases/update_closing_account_use_case.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/bloc/closing_accounts_bloc.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
+import 'package:ngu_app/features/inventory/categories/data/data_sources/category_data_source.dart';
+import 'package:ngu_app/features/inventory/categories/data/repositories/category_repository_impl.dart';
+import 'package:ngu_app/features/inventory/categories/domain/repositories/category_repository.dart';
+import 'package:ngu_app/features/inventory/categories/domain/use_cases/create_category_use_case.dart';
+import 'package:ngu_app/features/inventory/categories/domain/use_cases/get_categories_use_case.dart';
+import 'package:ngu_app/features/inventory/categories/domain/use_cases/update_category_use_case.dart';
+import 'package:ngu_app/features/inventory/categories/presentation/bloc/category_bloc.dart';
 import 'package:ngu_app/features/inventory/stores/data/data_sources/store_data_source.dart';
 import 'package:ngu_app/features/inventory/stores/data/repositories/store_repository_impl.dart';
 import 'package:ngu_app/features/inventory/stores/domain/repositories/store_repository.dart';
@@ -65,7 +72,10 @@ Future<void> init() async {
   // Core
   _core();
 
-  //
+  // Category
+  _category();
+
+  // Store
   _store();
 
   // External
@@ -203,6 +213,29 @@ void _journal() {
   // data sources
   sl.registerLazySingleton<JournalDataSource>(
       () => JournalDataSourceImpl(networkConnection: sl()));
+}
+
+void _category() {
+  sl.registerFactory(
+    () => CategoryBloc(
+      getCategoriesUseCase: sl(),
+      createCategoryUseCase: sl(),
+      updateCategoryUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(
+      () => GetCategoriesUseCase(categoryRepository: sl()));
+  sl.registerLazySingleton(
+      () => CreateCategoryUseCase(categoryRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdateCategoryUseCase(categoryRepository: sl()));
+
+  sl.registerLazySingleton<CategoryRepository>(
+      () => CategoryRepositoryImpl(categoryDataSource: sl(), apiHelper: sl()));
+
+  sl.registerLazySingleton<CategoryDataSource>(
+      () => CategoryDataSourceImpl(networkConnection: sl()));
 }
 
 void _store() {

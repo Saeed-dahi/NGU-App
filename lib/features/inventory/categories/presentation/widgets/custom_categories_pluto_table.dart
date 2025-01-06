@@ -1,71 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-
+import 'package:ngu_app/features/inventory/categories/domain/entities/category_entity.dart';
+import 'package:ngu_app/features/inventory/categories/presentation/bloc/category_bloc.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomCategoriesPlutoTable extends StatelessWidget {
-  final List<Map<String, dynamic>> data = [
-    {
-      'ar_name': 'المنتجات السورية',
-      'en_name': 'Syrian Products',
-      'description': 'منتجات سورية طبيعية',
-    },
-    {
-      'ar_name': 'المنتجات اللبنانية',
-      'en_name': 'Lebanese Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات العراقية',
-      'en_name': 'Iraqi Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات الأردنية',
-      'en_name': 'Jordanian Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات الفلسطينية',
-      'en_name': 'Palestinian Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات السورية',
-      'en_name': 'Syrian Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات اللبنانية',
-      'en_name': 'Lebanese Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات العراقية',
-      'en_name': 'Iraqi Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات الأردنية',
-      'en_name': 'Jordanian Products',
-      'description': '',
-    },
-    {
-      'ar_name': 'المنتجات الفلسطينية',
-      'en_name': 'Palestinian Products',
-      'description': '',
-    },
-  ];
   late PlutoGridController _plutoGridController = PlutoGridController();
+  final List<CategoryEntity> stores;
 
-  CustomCategoriesPlutoTable({
-    super.key,
-  });
+  CustomCategoriesPlutoTable({super.key, required this.stores});
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +31,8 @@ class CustomCategoriesPlutoTable extends StatelessWidget {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
+          context.read<CategoryBloc>().plutoGridController =
+              _plutoGridController;
         },
       ),
     );
@@ -114,16 +65,16 @@ class CustomCategoriesPlutoTable extends StatelessWidget {
     ];
   }
 
-  _buildRows() {
-    return data.map(
+  Iterable<PlutoRow> _buildRows() {
+    return stores.map(
       (account) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: account['id'],
+          data: account.id,
           cells: {
-            'ar_name': PlutoCell(value: account['ar_name']),
-            'en_name': PlutoCell(value: account['en_name']),
-            'description': PlutoCell(value: account['description']),
+            'ar_name': PlutoCell(value: account.arName),
+            'en_name': PlutoCell(value: account.enName),
+            'description': PlutoCell(value: account.description),
           },
         );
       },

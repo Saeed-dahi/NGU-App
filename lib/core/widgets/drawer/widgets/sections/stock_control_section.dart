@@ -8,7 +8,9 @@ import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
+import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
+import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 
 class StockControlSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -57,20 +59,32 @@ class StockControlSection extends StatelessWidget {
                   title: 'stores'.tr,
                   onTap: () {
                     ShowDialog.showCustomDialog(
-                        context: context, content: const StoresTable());
+                        context: context,
+                        content: const StoresTable(),
+                        height: 0.6);
                   },
                   isTrailing: false,
                   icon: Icons.store_outlined,
                 ),
                 CustomListTile(
                   title: 'categories'.tr,
-                  onTap: () {},
+                  onTap: () {
+                    ShowDialog.showCustomDialog(
+                        context: context,
+                        content: const CategoriesTable(),
+                        height: 0.6);
+                  },
                   isTrailing: false,
                   icon: Icons.category_outlined,
                 ),
                 CustomListTile(
                   title: 'units'.tr,
-                  onTap: () {},
+                  onTap: () {
+                    ShowDialog.showCustomDialog(
+                        context: context,
+                        content: const UnitsTable(),
+                        height: 0.6);
+                  },
                   isTrailing: false,
                   icon: Icons.pivot_table_chart_outlined,
                 ),

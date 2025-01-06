@@ -11,38 +11,6 @@ import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.d
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomStoresPlutoTable extends StatelessWidget {
-  final List<Map<String, dynamic>> data = [
-    {
-      'id': 1,
-      'description': '',
-      'ar_name': 'المستودع ١',
-      'en_name': 'Store 1',
-    },
-    {
-      'id': 2,
-      'description': '',
-      'ar_name': 'المستودع ٢',
-      'en_name': 'Store 2',
-    },
-    {
-      'id': 3,
-      'description': '',
-      'ar_name': 'المستودع ٣',
-      'en_name': 'Store 3',
-    },
-    {
-      'id': 4,
-      'description': '',
-      'ar_name': 'المستودع ٤',
-      'en_name': 'Store 4',
-    },
-    {
-      'id': 5,
-      'description': '',
-      'ar_name': 'المستودع ٥',
-      'en_name': 'Store 5',
-    },
-  ];
   late PlutoGridController _plutoGridController = PlutoGridController();
   final List<StoreEntity> stores;
   final bool enableEditing;
