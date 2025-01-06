@@ -1,106 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/inventory/units/domain/entities/unit_entity.dart';
+import 'package:ngu_app/features/inventory/units/presentation/bloc/unit_bloc.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomUnitsPlutoTable extends StatelessWidget {
-  final List<Map<String, dynamic>> data = [
-    {
-      'ar_name': 'قطعة',
-      'en_name': 'Pcs',
-    },
-    {
-      'ar_name': 'كيلو',
-      'en_name': 'Kg',
-    },
-    {
-      'ar_name': 'لتر',
-      'en_name': 'Ltr',
-    },
-    {
-      'ar_name': 'متر',
-      'en_name': 'Mtr',
-    },
-    {
-      'ar_name': 'متر مربع',
-      'en_name': 'Mtr2',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'كيلو واط',
-      'en_name': 'Kw',
-    },
-    {
-      'ar_name': 'واط',
-      'en_name': 'W',
-    },
-    {
-      'ar_name': 'فولت',
-      'en_name': 'V',
-    },
-    {
-      'ar_name': 'أمبير',
-      'en_name': 'A',
-    },
-    {
-      'ar_name': 'جرام',
-      'en_name': 'Gm',
-    },
-    {
-      'ar_name': 'مللي',
-      'en_name': 'Ml',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-    {
-      'ar_name': 'متر مكعب',
-      'en_name': 'Mtr3',
-    },
-  ];
+  List<UnitEntity> units;
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  CustomUnitsPlutoTable({
-    super.key,
-  });
+  CustomUnitsPlutoTable({super.key, required this.units});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.55,
+      height: MediaQuery.sizeOf(context).height * 0.5,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
         controller: _plutoGridController,
@@ -112,6 +32,7 @@ class CustomUnitsPlutoTable extends StatelessWidget {
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
+          context.read<UnitBloc>().plutoGridController = _plutoGridController;
         },
       ),
     );
@@ -137,15 +58,15 @@ class CustomUnitsPlutoTable extends StatelessWidget {
     ];
   }
 
-  _buildRows() {
-    return data.map(
+  Iterable<PlutoRow> _buildRows() {
+    return units.map(
       (account) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: account['id'],
+          data: account.id,
           cells: {
-            'ar_name': PlutoCell(value: account['ar_name']),
-            'en_name': PlutoCell(value: account['en_name']),
+            'ar_name': PlutoCell(value: account.arName),
+            'en_name': PlutoCell(value: account.enName),
           },
         );
       },

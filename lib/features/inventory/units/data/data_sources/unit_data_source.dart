@@ -24,7 +24,7 @@ class UnitDataSourceImpl implements UnitDataSource {
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    List<UnitModel> units = decodedJson['body'].map<UnitModel>((unit) {
+    List<UnitModel> units = decodedJson['data'].map<UnitModel>((unit) {
       return UnitModel.fromJson(unit);
     }).toList();
 
@@ -34,7 +34,7 @@ class UnitDataSourceImpl implements UnitDataSource {
   @override
   Future<Unit> createUnit(UnitModel unitModel) async {
     final response =
-        await networkConnection.get(APIList.unit, unitModel.toJson());
+        await networkConnection.post(APIList.unit, unitModel.toJson());
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -44,7 +44,7 @@ class UnitDataSourceImpl implements UnitDataSource {
 
   @override
   Future<Unit> updateUnit(UnitModel unitModel) async {
-    final response = await networkConnection.get(
+    final response = await networkConnection.put(
         '${APIList.unit}/${unitModel.id}', unitModel.toJson());
     var decodedJson = jsonDecode(response.body);
 

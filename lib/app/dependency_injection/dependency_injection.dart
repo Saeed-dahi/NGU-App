@@ -45,6 +45,13 @@ import 'package:ngu_app/features/inventory/stores/domain/use_cases/create_store_
 import 'package:ngu_app/features/inventory/stores/domain/use_cases/get_stores_use_case.dart';
 import 'package:ngu_app/features/inventory/stores/domain/use_cases/update_store_use_case.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/bloc/store_bloc.dart';
+import 'package:ngu_app/features/inventory/units/data/data_sources/unit_data_source.dart';
+import 'package:ngu_app/features/inventory/units/data/repositories/unit_repository_impl.dart';
+import 'package:ngu_app/features/inventory/units/domain/repositories/unit_repository.dart';
+import 'package:ngu_app/features/inventory/units/domain/use_cases/create_unit_use_case.dart';
+import 'package:ngu_app/features/inventory/units/domain/use_cases/get_units_use_case.dart';
+import 'package:ngu_app/features/inventory/units/domain/use_cases/update_unit_use_case.dart';
+import 'package:ngu_app/features/inventory/units/presentation/bloc/unit_bloc.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
 import 'package:ngu_app/features/journals/data/repositories/journal_repository_impl.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
@@ -77,6 +84,9 @@ Future<void> init() async {
 
   // Store
   _store();
+
+  // Unit
+  _unit();
 
   // External
   await _external();
@@ -256,4 +266,24 @@ void _store() {
 
   sl.registerLazySingleton<StoreDataSource>(
       () => StoreDataSourceWithHttp(networkConnection: sl()));
+}
+
+void _unit() {
+  sl.registerFactory(
+    () => UnitBloc(
+      getUnitsUseCase: sl(),
+      createUnitUseCase: sl(),
+      updateUnitUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetUnitsUseCase(unitRepository: sl()));
+  sl.registerLazySingleton(() => CreateUnitUseCase(unitRepository: sl()));
+  sl.registerLazySingleton(() => UpdateUnitUseCase(unitRepository: sl()));
+
+  sl.registerLazySingleton<UnitRepository>(
+      () => UnitRepositoryImpl(unitDataSource: sl(), apiHelper: sl()));
+
+  sl.registerLazySingleton<UnitDataSource>(
+      () => UnitDataSourceImpl(networkConnection: sl()));
 }
