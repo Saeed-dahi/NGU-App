@@ -33,4 +33,6 @@ class ValidationCategoryState extends CategoryState {
   final Map<String, dynamic> errors;
 
   const ValidationCategoryState({required this.errors});
+  @override
+  List<Object> get props => [errors];
 }

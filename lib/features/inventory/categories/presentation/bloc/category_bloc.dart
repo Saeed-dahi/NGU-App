@@ -9,7 +9,6 @@ import 'package:ngu_app/features/inventory/categories/domain/entities/category_e
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/create_category_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/get_categories_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/update_category_use_case.dart';
-
 part 'category_event.dart';
 part 'category_state.dart';
 
@@ -43,18 +42,18 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   }
 
   FutureOr<void> _onCreateCategory(
-      CreateCategoryEvent event, Emitter<CategoryState> emit) {
-    _createOrUpdateStore(event, emit, createCategoryUseCase);
+      CreateCategoryEvent event, Emitter<CategoryState> emit) async {
+    await _createOrUpdateCategory(event, emit, createCategoryUseCase);
   }
 
   FutureOr<void> _onUpdateCategory(
-      UpdateCategoryEvent event, Emitter<CategoryState> emit) {
-    _createOrUpdateStore(event, emit, updateCategoryUseCase);
+      UpdateCategoryEvent event, Emitter<CategoryState> emit) async {
+    await _createOrUpdateCategory(event, emit, updateCategoryUseCase);
   }
 
-  FutureOr<void> _createOrUpdateStore(
+  FutureOr<void> _createOrUpdateCategory(
       dynamic event, Emitter<CategoryState> emit, dynamic useCase) async {
-    final result = await useCase(event.storeEntity);
+    final result = await useCase(event.categoryEntity);
     result.fold((failure) {
       if (failure is ValidationFailure) {
         emit(ValidationCategoryState(errors: failure.errors));

@@ -47,7 +47,7 @@ class CategoryDataSourceImpl implements CategoryDataSource {
   @override
   Future<Unit> updateCategory(CategoryModel category) async {
     final response = await networkConnection.put(
-        '${APIList.category} ${category.id}', category.toJson());
+        '${APIList.category}/${category.id}', category.toJson());
 
     var decodedJson = jsonDecode(response.body);
 

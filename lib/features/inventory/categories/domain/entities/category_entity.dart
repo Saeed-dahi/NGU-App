@@ -7,7 +7,7 @@ class CategoryEntity extends Equatable {
   final String description;
 
   const CategoryEntity(
-      {required this.id,
+      {this.id,
       required this.arName,
       required this.enName,
       required this.description});

@@ -33,6 +33,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 
   CategoryModel getCategoryModel(CategoryEntity category) {
     return CategoryModel(
+        id: category.id,
         arName: category.arName,
         enName: category.enName,
         description: category.description);

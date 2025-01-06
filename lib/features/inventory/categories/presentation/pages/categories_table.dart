@@ -6,6 +6,7 @@ import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/bloc/category_bloc.dart';
+import 'package:ngu_app/features/inventory/categories/presentation/widgets/categories_toolbar.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/widgets/custom_categories_pluto_table.dart';
 
 class CategoriesTable extends StatefulWidget {
@@ -45,8 +46,13 @@ class _CategoriesTableState extends State<CategoriesTable> {
             BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {
                 if (state is LoadedCategoriesState) {
-                  return CustomCategoriesPlutoTable(
-                    stores: state.categories,
+                  return Column(
+                    children: [
+                      const CategoriesToolbar(),
+                      CustomCategoriesPlutoTable(
+                        stores: state.categories,
+                      ),
+                    ],
                   );
                 }
                 if (state is ErrorCategoriesState) {
