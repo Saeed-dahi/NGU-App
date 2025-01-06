@@ -10,13 +10,12 @@ sealed class StoreState extends Equatable {
 final class StoreInitial extends StoreState {}
 
 class LoadedStoresState extends StoreState {
-  final bool enableEditing;
   final List<StoreEntity> storeEntity;
 
   const LoadedStoresState(
-      {required this.enableEditing, required this.storeEntity});
+      { required this.storeEntity});
   @override
-  List<Object> get props => [storeEntity, enableEditing];
+  List<Object> get props => [storeEntity];
 }
 
 class ErrorStoresState extends StoreState {
@@ -35,9 +34,3 @@ class ValidationStoreState extends StoreState {
 }
 
 class LoadingStoresState extends StoreState {}
-
-class ToggleEditingEvent extends StoreEvent {
-  final bool enableEditing;
-
-  const ToggleEditingEvent({required this.enableEditing});
-}

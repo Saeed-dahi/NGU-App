@@ -85,7 +85,6 @@ class _CategoryFormState extends State<CategoryForm> {
             label: 'ar_name'.tr,
             controller: _arNameController,
             error: _errors['ar_name']?.join('\n'),
-            required: false,
           ),
           CustomInputField(
             inputType: TextInputType.name,

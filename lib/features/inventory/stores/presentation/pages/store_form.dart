@@ -69,12 +69,12 @@ class _StoreFormState extends State<StoreForm> {
         const SizedBox(
           height: 10,
         ),
-        createAccountForm(context),
+        createStoreForm(context),
       ],
     );
   }
 
-  Form createAccountForm(BuildContext context) {
+  Form createStoreForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: ListView(

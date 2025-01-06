@@ -24,7 +24,6 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       required this.updateStoreUseCase})
       : super(StoreInitial()) {
     on<GetStoresEvent>(_onGetStores);
-    on<ToggleEditingEvent>(_onToggleEditing);
     on<CreateStoreEvent>(_onCreateStore);
     on<UpdateStoreEvent>(_onUpdateStore);
   }
@@ -37,17 +36,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     result.fold((failure) {
       emit(ErrorStoresState(message: failure.errors['error']));
     }, (data) {
-      emit(LoadedStoresState(enableEditing: false, storeEntity: data));
+      emit(LoadedStoresState(storeEntity: data));
     });
-  }
-
-  FutureOr<void> _onToggleEditing(
-      ToggleEditingEvent event, Emitter<StoreState> emit) {
-    var currentState = state as LoadedStoresState;
-
-    emit(LoadedStoresState(
-        enableEditing: event.enableEditing,
-        storeEntity: currentState.storeEntity));
   }
 
   FutureOr<void> _onCreateStore(

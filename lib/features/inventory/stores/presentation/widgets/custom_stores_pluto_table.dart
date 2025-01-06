@@ -13,10 +13,9 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 class CustomStoresPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
   final List<StoreEntity> stores;
-  final bool enableEditing;
 
   CustomStoresPlutoTable(
-      {super.key, required this.stores, required this.enableEditing});
+      {super.key, required this.stores});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class CustomStoresPlutoTable extends StatelessWidget {
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
         controller: _plutoGridController,
-        mode: enableEditing ? PlutoGridMode.normal : PlutoGridMode.readOnly,
+        mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),

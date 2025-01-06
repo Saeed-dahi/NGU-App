@@ -50,7 +50,6 @@ class _StoresTableState extends State<StoresTable> {
                       const StoresToolbar(),
                       CustomStoresPlutoTable(
                         stores: state.storeEntity,
-                        enableEditing: state.enableEditing,
                       ),
                     ],
                   );
