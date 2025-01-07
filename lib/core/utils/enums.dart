@@ -8,6 +8,18 @@ enum DirectionType { next, previous, last, first }
 
 enum Status { draft, saved }
 
+enum ProductType {
+  commercial,
+  finished,
+  raw,
+  assembly,
+  running,
+  semi_finished,
+  spare_parts,
+  production_requirements,
+  service
+}
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

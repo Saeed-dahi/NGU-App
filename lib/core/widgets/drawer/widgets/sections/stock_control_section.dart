@@ -9,6 +9,7 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
+import 'package:ngu_app/features/inventory/products/perssentation/pages/product_record.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 
@@ -34,15 +35,14 @@ class StockControlSection extends StatelessWidget {
                   icon: Icons.inventory_2_outlined,
                   children: [
                     BasicListTile(
-                        title: 'product_record'.tr,
-                        icon: Icons.padding_outlined,
-                        onTap: () {}
-                        // => ShowDialog.showCustomDialog(
-                        //     context: context,
-                        //     content: const ProductRecord(),
-                        //     width: 0.5,
-                        //     height: 0.6),
-                        ),
+                      title: 'product_record'.tr,
+                      icon: Icons.padding_outlined,
+                      onTap: () => ShowDialog.showCustomDialog(
+                          context: context,
+                          content: const ProductRecord(),
+                          width: 0.5,
+                          height: 0.6),
+                    ),
                     BasicListTile(
                       title: 'search'.tr,
                       icon: Icons.search,

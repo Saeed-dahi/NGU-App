@@ -14,8 +14,7 @@ class CustomStoresPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
   final List<StoreEntity> stores;
 
-  CustomStoresPlutoTable(
-      {super.key, required this.stores});
+  CustomStoresPlutoTable({super.key, required this.stores});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +29,15 @@ class CustomStoresPlutoTable extends StatelessWidget {
         rows: _buildRows().toList(),
         onChanged: (p0) {},
         showDefaultHeader: false,
+        customEnterKeyAction: () {
+          Get.back(result: {
+            'ar_name': _plutoGridController
+                .stateManager!.currentRow!.cells['ar_name']!.value,
+            'en_name': _plutoGridController
+                .stateManager!.currentRow!.cells['en_name']!.value,
+            'store_id': _plutoGridController.stateManager!.currentRow!.data
+          });
+        },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);

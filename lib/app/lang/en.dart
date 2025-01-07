@@ -67,6 +67,7 @@ Map<String, String> en = {
   // Stock
   'stock_control': 'ٍStock Control',
   'products': 'Products',
+  'product': 'Product',
   'product_record': 'Product Card',
   'search': 'Search',
   'products_table': 'Products Table',
@@ -76,6 +77,18 @@ Map<String, String> en = {
   'stores': 'Stores',
   'unit': 'Unit',
   'units': 'Units',
+
+  // Product Type
+  'product_type': 'Product Type',
+  'commercial': 'Commercial',
+  'finished': 'Finished',
+  'raw': 'Raw',
+  'assembly': 'Assembly',
+  'running': 'Running',
+  'semi_finished': 'Semi Finished',
+  'spare_parts': 'Spare Parts',
+  'production_requirements': 'Production Requirements',
+  'service': 'Service',
 
   // Settings
   'settings': 'Settings',

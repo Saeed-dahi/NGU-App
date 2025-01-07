@@ -30,7 +30,7 @@ class CustomInputField extends StatelessWidget {
   CustomInputField(
       {super.key,
       this.label = '',
-      required this.inputType,
+      this.inputType = TextInputType.name,
       this.hint = '',
       this.prefix = '',
       this.suffix = '',

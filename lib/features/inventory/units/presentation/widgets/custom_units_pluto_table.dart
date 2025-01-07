@@ -29,6 +29,15 @@ class CustomUnitsPlutoTable extends StatelessWidget {
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         showDefaultHeader: false,
+        customEnterKeyAction: () {
+          Get.back(result: {
+            'ar_name': _plutoGridController
+                .stateManager!.currentRow!.cells['ar_name']!.value,
+            'en_name': _plutoGridController
+                .stateManager!.currentRow!.cells['en_name']!.value,
+            'unit_id': _plutoGridController.stateManager!.currentRow!.data
+          });
+        },
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);

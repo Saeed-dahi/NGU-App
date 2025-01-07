@@ -67,6 +67,7 @@ Map<String, String> ar = {
   // Stock
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',
+  'product': 'مادة',
   'product_record': 'بطاقة مادة',
   'search': 'بحث',
   'products_table': 'جدول المواد',
@@ -76,6 +77,18 @@ Map<String, String> ar = {
   'stores': 'المستودعات',
   'unit': 'الوحدة',
   'units': 'الوحدات',
+
+  // Product Type
+  'product_type': 'نوع المادة',
+  'commercial': 'تجاري',
+  'finished': 'نهائي',
+  'raw': 'خام',
+  'assembly': 'تجميع',
+  'running': 'جاري',
+  'semi_finished': 'نصف نهائي',
+  'spare_parts': 'قطع غيار',
+  'production_requirements': 'متطلبات الإنتاج',
+  'service': 'خدمة',
 
   // Settings
   'settings': 'الإعدادات',
