@@ -19,4 +19,5 @@ class APIList {
   static const String store = "store";
   static const String category = "category";
   static const String unit = "unit";
+  static const String product = "product";
 }
