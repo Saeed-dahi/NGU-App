@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 enum AccountCategory { asset, liability, equity, revenue, expense }
 
 enum AccountNature { debit, credit }

@@ -68,6 +68,8 @@ Map<String, String> en = {
   'stock_control': 'ٍStock Control',
   'products': 'Products',
   'product': 'Product',
+  'add_new_product': 'Add New Product',
+  'product_sts': 'Product Statement',
   'product_record': 'Product Card',
   'search': 'Search',
   'products_table': 'Products Table',

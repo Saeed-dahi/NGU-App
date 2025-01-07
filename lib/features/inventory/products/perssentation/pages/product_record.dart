@@ -13,6 +13,7 @@ import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
+import 'package:ngu_app/features/inventory/products/perssentation/widgets/products_toolbar.dart';
 
 class ProductRecord extends StatefulWidget {
   const ProductRecord({
@@ -44,7 +45,7 @@ class _ProductRecordState extends State<ProductRecord> {
     _codeController = TextEditingController();
     _errors = {};
     _categoryController = {};
-    _enableEditing = true;
+    _enableEditing = false;
 
     _fileController = FilePickerController(initialFiles: []);
 
@@ -76,6 +77,7 @@ class _ProductRecordState extends State<ProductRecord> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: Dimensions.primaryTextSize),
           ),
+          const ProductsToolbar(enableEditing: false),
           const SizedBox(
             height: 10,
           ),
