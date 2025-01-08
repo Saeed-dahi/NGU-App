@@ -38,6 +38,14 @@ import 'package:ngu_app/features/inventory/categories/domain/use_cases/create_ca
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/get_categories_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/update_category_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/bloc/category_bloc.dart';
+import 'package:ngu_app/features/inventory/products/data/data_sources/product_data_source.dart';
+import 'package:ngu_app/features/inventory/products/data/repositories/product_repository_impl.dart';
+import 'package:ngu_app/features/inventory/products/domain/repositories/product_repository.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/create_product_use_case.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/get_products_use_case.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/show_product_use_case.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/update_product_use_case.dart';
+import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
 import 'package:ngu_app/features/inventory/stores/data/data_sources/store_data_source.dart';
 import 'package:ngu_app/features/inventory/stores/data/repositories/store_repository_impl.dart';
 import 'package:ngu_app/features/inventory/stores/domain/repositories/store_repository.dart';
@@ -87,6 +95,8 @@ Future<void> init() async {
 
   // Unit
   _unit();
+
+  _product();
 
   // External
   await _external();
@@ -286,4 +296,23 @@ void _unit() {
 
   sl.registerLazySingleton<UnitDataSource>(
       () => UnitDataSourceImpl(networkConnection: sl()));
+}
+
+void _product() {
+  sl.registerFactory(() => ProductBloc(
+      getProductsUseCase: sl(),
+      showProductUseCase: sl(),
+      createProductUseCase: sl(),
+      updateProductUseCase: sl()));
+
+  sl.registerLazySingleton(() => GetProductsUseCase(productRepository: sl()));
+  sl.registerLazySingleton(() => ShowProductUseCase(productRepository: sl()));
+  sl.registerLazySingleton(() => CreateProductUseCase(productRepository: sl()));
+  sl.registerLazySingleton(() => UpdateProductUseCase(productRepository: sl()));
+
+  sl.registerLazySingleton<ProductRepository>(
+      () => ProductRepositoryImpl(productDataSource: sl(), apiHelper: sl()));
+
+  sl.registerLazySingleton<ProductDataSource>(
+      () => ProductDataSourceImpl(networkConnection: sl()));
 }

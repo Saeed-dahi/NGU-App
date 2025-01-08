@@ -56,7 +56,7 @@ class _AccountsTableState extends State<AccountsTable> {
       create: (context) => _accountsBloc,
       child: CustomRefreshIndicator(
         onRefresh: _refresh,
-        content: ListView(
+        child: ListView(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

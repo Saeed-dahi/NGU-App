@@ -90,7 +90,7 @@ class _AccountInformationState extends State<AccountInformation> {
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
       onRefresh: _refresh,
-      content: BlocProvider(
+      child: BlocProvider(
         create: (context) => _accountInformationBloc,
         child: BlocConsumer<AccountInformationBloc, AccountInformationState>(
           listener: (context, state) {

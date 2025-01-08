@@ -59,7 +59,7 @@ class _AccountsTreeState extends State<AccountsTree> {
       child: Scaffold(
         body: CustomRefreshIndicator(
           onRefresh: () => _refresh(context),
-          content: BlocBuilder<AccountsBloc, AccountsState>(
+          child: BlocBuilder<AccountsBloc, AccountsState>(
             builder: (context, state) {
               if (state is GetAllAccountsState) {
                 return _pageBody(context);

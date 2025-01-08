@@ -40,7 +40,7 @@ class _StoresTableState extends State<StoresTable> {
       create: (context) => _storeBloc,
       child: CustomRefreshIndicator(
         onRefresh: _refresh,
-        content: ListView(
+        child: ListView(
           children: [
             BlocBuilder<StoreBloc, StoreState>(
               builder: (context, state) {

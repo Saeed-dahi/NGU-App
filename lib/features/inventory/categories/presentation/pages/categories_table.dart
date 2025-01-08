@@ -41,7 +41,7 @@ class _CategoriesTableState extends State<CategoriesTable> {
       create: (context) => _categoryBloc,
       child: CustomRefreshIndicator(
         onRefresh: _refresh,
-        content: ListView(
+        child: ListView(
           children: [
             BlocBuilder<CategoryBloc, CategoryState>(
               builder: (context, state) {

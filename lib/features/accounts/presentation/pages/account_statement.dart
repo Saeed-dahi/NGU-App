@@ -41,7 +41,7 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
     return BlocProvider(
       create: (context) => _accountsBloc,
       child: CustomRefreshIndicator(
-        content: ListView(
+        child: ListView(
           children: [
             BlocBuilder<AccountsBloc, AccountsState>(
               builder: (context, state) {

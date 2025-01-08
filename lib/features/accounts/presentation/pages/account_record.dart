@@ -148,7 +148,7 @@ class _AccountRecordState extends State<AccountRecord> {
                 // General Account info
                 CustomRefreshIndicator(
                   onRefresh: _refresh,
-                  content: _accountBasicInfoForm(context, account),
+                  child: _accountBasicInfoForm(context, account),
                 ),
                 AccountInformation(
                   enableEditing: _enableEditing,

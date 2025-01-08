@@ -84,7 +84,7 @@ class _CreateJournalState extends State<CreateJournal> {
       onRefresh: () {
         return Future.value();
       },
-      content: BlocProvider(
+      child: BlocProvider(
         create: (context) => _journalBloc,
         child: BlocConsumer<JournalBloc, JournalState>(
           listener: (context, state) {

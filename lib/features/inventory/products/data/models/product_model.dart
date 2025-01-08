@@ -1,3 +1,4 @@
+import 'package:ngu_app/features/inventory/categories/data/models/category_model.dart';
 import 'package:ngu_app/features/inventory/products/data/models/product_unit_model.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 
@@ -21,12 +22,12 @@ class ProductModel extends ProductEntity {
         enName: json['en_name'],
         code: json['code'],
         barcode: json['barcode'] ?? '',
-        category: json['category'] ?? '',
+        category: CategoryModel.fromJson(json['category']),
         description: json['description'] ?? '',
         files: json['file'] != null ? List<String>.from(json['file']) : null,
-        type: json['type'] ?? '',
+        type: json['type'],
         units: json['units']
-            .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(json))
+            .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(unit))
             .toList());
   }
 

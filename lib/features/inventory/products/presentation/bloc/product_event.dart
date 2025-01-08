@@ -17,7 +17,7 @@ class ShowProductEvent extends ProductEvent {
   final int id;
   final String? direction;
 
-  const ShowProductEvent({required this.id, required this.direction});
+  const ShowProductEvent({required this.id, this.direction});
 }
 
 class CreateProductEvent extends ProductEvent {

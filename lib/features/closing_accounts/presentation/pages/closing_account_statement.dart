@@ -49,7 +49,7 @@ class _ClosingAccountStatementState extends State<ClosingAccountStatement> {
       create: (context) => _closingAccountsBloc,
       child: CustomRefreshIndicator(
         onRefresh: _refresh,
-        content: ListView(
+        child: ListView(
           children: [
             BlocBuilder<ClosingAccountsBloc, ClosingAccountsState>(
               builder: (context, state) {

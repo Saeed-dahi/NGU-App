@@ -3,10 +3,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CustomRefreshIndicator extends StatelessWidget {
-  final Widget content;
+  final Widget child;
   final Future<void> Function() onRefresh;
   const CustomRefreshIndicator(
-      {super.key, required this.content, required this.onRefresh});
+      {super.key, required this.child, required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CustomRefreshIndicator extends StatelessWidget {
         ),
         child: RefreshIndicator(
           onRefresh: onRefresh,
-          child: content,
+          child: child,
         ));
   }
 }

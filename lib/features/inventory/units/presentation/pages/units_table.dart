@@ -40,7 +40,7 @@ class _CategoriesTableState extends State<UnitsTable> {
       create: (context) => _unitBloc,
       child: CustomRefreshIndicator(
         onRefresh: _refresh,
-        content: ListView(
+        child: ListView(
           children: [
             BlocBuilder<UnitBloc, UnitState>(
               builder: (context, state) {

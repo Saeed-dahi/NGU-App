@@ -9,7 +9,7 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
-import 'package:ngu_app/features/inventory/products/perssentation/pages/product_record.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/product_record.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 

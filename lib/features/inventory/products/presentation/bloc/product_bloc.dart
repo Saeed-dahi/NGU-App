@@ -16,6 +16,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ShowProductUseCase showProductUseCase;
   final CreateProductUseCase createProductUseCase;
   final UpdateProductUseCase updateProductUseCase;
+
+  late final ProductEntity product;
   ProductBloc(
       {required this.getProductsUseCase,
       required this.showProductUseCase,
@@ -47,8 +49,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     result.fold((failure) {
       emit(ErrorProductsState(message: failure.errors['error']));
-    }, (product) {
-      emit(LoadedProductState(enableEditing: false, productEntity: product));
+    }, (data) {
+      product = data;
+
+      emit(LoadedProductState(enableEditing: false, productEntity: data));
     });
   }
 

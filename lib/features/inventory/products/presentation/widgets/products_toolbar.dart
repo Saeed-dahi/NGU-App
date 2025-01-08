@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
-import 'package:ngu_app/features/inventory/products/perssentation/pages/create_product.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/create_product.dart';
 
 class ProductsToolbar extends StatelessWidget {
   final bool enableEditing;

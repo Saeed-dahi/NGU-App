@@ -56,7 +56,7 @@ class _ClosingAccountRecordState extends State<ClosingAccountRecord> {
             _errors = {};
             return CustomRefreshIndicator(
               onRefresh: _refresh,
-              content: _pageBody(
+              child: _pageBody(
                 closingAccount: state.closingAccount,
                 context: context,
                 enableEditing: state.enableEditing,

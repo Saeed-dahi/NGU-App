@@ -92,7 +92,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
       onRefresh: _refresh,
-      content: BlocProvider(
+      child: BlocProvider(
         create: (context) => _journalBloc,
         child: BlocConsumer<JournalBloc, JournalState>(
           listener: (context, state) {
