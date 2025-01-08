@@ -102,7 +102,6 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
             : _buildEmptyRows(),
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
-
           _getAccountName(context);
         },
         showDefaultHeader: true,
