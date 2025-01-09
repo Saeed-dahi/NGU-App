@@ -26,7 +26,9 @@ class _ProductsTableState extends State<ProductsTable> {
     super.initState();
   }
 
-  Future<void> _refresh() async {}
+  Future<void> _refresh() async {
+    _productBloc.add(GetProductsEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,7 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
+import 'package:ngu_app/features/inventory/products/presentation/widgets/product_option_menu.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomProductPlutoTable extends StatelessWidget {
@@ -27,7 +28,6 @@ class CustomProductPlutoTable extends StatelessWidget {
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         showDefaultHeader: false,
-        onRowDoubleTap: (event) {},
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
@@ -45,20 +45,20 @@ class CustomProductPlutoTable extends StatelessWidget {
         field: 'code',
         enableFilterMenuItem: true,
         enableContextMenu: false,
-        // enableRowDrag: true,
         type: PlutoColumnType.text(),
-        // renderer: (rendererContext) {
-        // AccountEntity accountEntity = accounts
-        //     .firstWhere((account) => account.id == rendererContext.row.data);
-        // return Row(
-        //   children: [
-        //     // _showMenuOption(rendererContext),
-        //     AccountOptionMenu(accountEntity: accountEntity),
-        //     const SizedBox(width: 8),
-        //     Text(rendererContext.cell.value),
-        //   ],
-        // );
-        // },
+        renderer: (rendererContext) {
+          ProductEntity productEntity = products
+              .firstWhere((product) => product.id == rendererContext.row.data);
+          return Row(
+            children: [
+              ProductOptionMenu(
+                productEntity: productEntity,
+              ),
+              const SizedBox(width: 8),
+              Text(rendererContext.cell.value),
+            ],
+          );
+        },
       ),
       PlutoColumn(
         title: 'ar_name'.tr,

@@ -20,9 +20,8 @@ import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bl
 import 'package:ngu_app/features/inventory/products/presentation/widgets/products_toolbar.dart';
 
 class ProductRecord extends StatefulWidget {
-  const ProductRecord({
-    super.key,
-  });
+  final int productId;
+  const ProductRecord({super.key, this.productId = 1});
 
   @override
   State<ProductRecord> createState() => _ProductRecordState();
@@ -48,7 +47,8 @@ class _ProductRecordState extends State<ProductRecord> {
 
   @override
   void initState() {
-    _productBloc = sl<ProductBloc>()..add(const ShowProductEvent(id: 1));
+    _productBloc = sl<ProductBloc>()
+      ..add(ShowProductEvent(id: widget.productId));
     _initControllers();
     _errors = {};
 
