@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/create_product.dart';
 
 class ProductsToolbar extends StatelessWidget {
   final bool enableEditing;
   final VoidCallback? onSave;
+  final ProductBloc productBloc;
+
   const ProductsToolbar({
     super.key,
     required this.enableEditing,
+    required this.productBloc,
     this.onSave,
   });
 
@@ -50,7 +55,8 @@ class ProductsToolbar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.edit,
           tooltip: 'edit'.tr,
-          onPressed: () {},
+          onPressed: () =>
+              productBloc.add(const ToggleEditingEvent(enableEditing: true)),
         ),
         CustomIconButton(
           icon: Icons.article_outlined,
@@ -77,26 +83,31 @@ class ProductsToolbar extends StatelessWidget {
         CustomIconButton(
             icon: Icons.fast_rewind_rounded,
             tooltip: 'first'.tr,
-            onPressed: () {}),
+            onPressed: () => _navigate(DirectionType.first.name)),
         CustomIconButton(
             icon: Icons.arrow_left_rounded,
             tooltip: 'previous'.tr,
-            onPressed: () {}),
+            onPressed: () => _navigate(DirectionType.previous.name)),
         CustomIconButton(
             icon: Icons.arrow_right_rounded,
             tooltip: 'next'.tr,
-            onPressed: () {}),
+            onPressed: () => _navigate(DirectionType.next.name)),
         CustomIconButton(
             icon: Icons.fast_forward_rounded,
             tooltip: 'last'.tr,
-            onPressed: () {}),
+            onPressed: () => _navigate(DirectionType.last.name)),
       ],
     );
   }
 
-  void _navigate(BuildContext context, String direction) {}
+  void _navigate(String direction) {
+    productBloc.add(
+        ShowProductEvent(id: productBloc.product.id!, direction: direction));
+  }
 
-  void _close(BuildContext context) {}
+  void _close(BuildContext context) {
+    productBloc.add(const ToggleEditingEvent(enableEditing: false));
+  }
 
   void _add(BuildContext context) {
     ShowDialog.showCustomDialog(

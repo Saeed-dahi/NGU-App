@@ -4,7 +4,7 @@ import 'package:ngu_app/features/inventory/products/domain/entities/product_enti
 
 abstract class ProductRepository {
   Future<Either<Failure, List<ProductEntity>>> getProducts();
-  Future<Either<Failure, ProductEntity>> showProduct(int id);
+  Future<Either<Failure, ProductEntity>> showProduct(int id, String? direction);
   Future<Either<Failure, Unit>> createProduct(ProductEntity product);
   Future<Either<Failure, Unit>> updateProducts(ProductEntity product);
 }

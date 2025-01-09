@@ -17,7 +17,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final CreateProductUseCase createProductUseCase;
   final UpdateProductUseCase updateProductUseCase;
 
-  late final ProductEntity product;
+  late ProductEntity product;
+
   ProductBloc(
       {required this.getProductsUseCase,
       required this.showProductUseCase,
@@ -28,6 +29,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<ShowProductEvent>(_onShowProduct);
     on<CreateProductEvent>(_onCreateProduct);
     on<UpdateProductEvent>(_onUpdateProduct);
+    on<ToggleEditingEvent>(_onToggleEditing);
   }
 
   FutureOr<void> _onGetProducts(
@@ -45,7 +47,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   FutureOr<void> _onShowProduct(
       ShowProductEvent event, Emitter<ProductState> emit) async {
     emit(LoadingProductsState());
-    final result = await showProductUseCase(event.id);
+    final result = await showProductUseCase(event.id, event.direction);
 
     result.fold((failure) {
       emit(ErrorProductsState(message: failure.errors['error']));
@@ -74,5 +76,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     result.fold((failure) {
       emit(ErrorProductsState(message: failure.errors['error']));
     }, (_) {});
+  }
+
+  FutureOr<void> _onToggleEditing(
+      ToggleEditingEvent event, Emitter<ProductState> emit) {
+    final currentState = state as LoadedProductState;
+    emit(LoadingProductsState());
+
+    emit(LoadedProductState(
+      productEntity: currentState.productEntity,
+      enableEditing: event.enableEditing,
+    ));
   }
 }

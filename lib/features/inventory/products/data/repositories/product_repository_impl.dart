@@ -19,8 +19,8 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> showProduct(int id) async {
-    return await apiHelper.safeApiCall(() => productDataSource.showProduct(id));
+  Future<Either<Failure, ProductEntity>> showProduct(int id,String? direction) async {
+    return await apiHelper.safeApiCall(() => productDataSource.showProduct(id,direction));
   }
 
   @override

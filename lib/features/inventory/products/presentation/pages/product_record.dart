@@ -42,16 +42,16 @@ class _ProductRecordState extends State<ProductRecord> {
   late Map<String, dynamic> _categoryController;
   late FilePickerController _fileController;
 
-  late bool _enableEditing;
+  bool _enableEditing = false;
 
   late Map<String, dynamic> _errors;
 
   @override
   void initState() {
-    _productBloc = sl<ProductBloc>()..add(const ShowProductEvent(id: 4));
+    _productBloc = sl<ProductBloc>()..add(const ShowProductEvent(id: 1));
     _initControllers();
     _errors = {};
-    _enableEditing = false;
+
     super.initState();
   }
 
@@ -60,6 +60,8 @@ class _ProductRecordState extends State<ProductRecord> {
     _arNameController.dispose();
     _enNameController.dispose();
     _codeController.dispose();
+
+    _productBloc.close();
     super.dispose();
   }
 
@@ -96,7 +98,9 @@ class _ProductRecordState extends State<ProductRecord> {
 
   _getFormData() {}
 
-  Future<void> _refresh() async {}
+  Future<void> _refresh() async {
+    _productBloc.add(ShowProductEvent(id: _productBloc.product.id!));
+  }
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
@@ -114,6 +118,7 @@ class _ProductRecordState extends State<ProductRecord> {
         child: BlocBuilder<ProductBloc, ProductState>(
           builder: (context, state) {
             if (state is LoadedProductState) {
+              _enableEditing = state.enableEditing;
               return _pageBody(
                 context,
               );
@@ -139,7 +144,10 @@ class _ProductRecordState extends State<ProductRecord> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: Dimensions.primaryTextSize),
           ),
-          const ProductsToolbar(enableEditing: false),
+          ProductsToolbar(
+            enableEditing: _enableEditing,
+            productBloc: _productBloc,
+          ),
           const SizedBox(
             height: 10,
           ),

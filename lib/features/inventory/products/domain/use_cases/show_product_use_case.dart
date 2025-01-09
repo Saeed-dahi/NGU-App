@@ -8,7 +8,7 @@ class ShowProductUseCase {
 
   ShowProductUseCase({required this.productRepository});
 
-  Future<Either<Failure, ProductEntity>> call(int id) async {
-    return await productRepository.showProduct(id);
+  Future<Either<Failure, ProductEntity>> call(int id,String? direction) async {
+    return await productRepository.showProduct(id,direction);
   }
 }
