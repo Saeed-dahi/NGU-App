@@ -95,14 +95,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   void searchProduct(String query) {
     plutoGridController.stateManager!.setFilter(
       (row) {
-        final name = FormatterClass.normalizeArabic(
+        final arName = FormatterClass.normalizeArabic(
             row.cells['ar_name']!.value.toString().toLowerCase());
-        final code =
-            FormatterClass.normalizeArabic(row.cells['code']!.value.toString());
+        final enName = row.cells['en_name']!.value.toString().toLowerCase();
+        final code = row.cells['code']!.value.toString();
 
-        var result = name.contains(
+        var result = arName.contains(
                 FormatterClass.normalizeArabic(query.toLowerCase())) ||
-            code.contains(FormatterClass.normalizeArabic(query.toLowerCase()));
+            code.contains(query.toLowerCase()) ||
+            enName.contains(query.toLowerCase());
         return result;
       },
     );
