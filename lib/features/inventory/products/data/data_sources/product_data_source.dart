@@ -9,7 +9,7 @@ import 'package:ngu_app/features/inventory/products/data/models/product_model.da
 abstract class ProductDataSource {
   Future<List<ProductModel>> getProducts();
   Future<ProductModel> showProduct(int id, String? direction);
-  Future<Unit> createProduct(ProductModel product);
+  Future<ProductModel> createProduct(ProductModel product);
   Future<Unit> updateProduct(ProductModel product);
 }
 
@@ -46,14 +46,14 @@ class ProductDataSourceImpl implements ProductDataSource {
   }
 
   @override
-  Future<Unit> createProduct(ProductModel product) async {
+  Future<ProductModel> createProduct(ProductModel product) async {
     final response =
         await networkConnection.post(APIList.product, product.toJson());
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    return unit;
+    return ProductModel.fromJson(decodedJson['data']);
   }
 
   @override

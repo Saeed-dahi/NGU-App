@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
@@ -68,8 +70,15 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     final result = await createProductUseCase(event.productEntity);
 
     result.fold((failure) {
-      emit(ErrorProductsState(message: failure.errors['error']));
-    }, (_) {});
+      if (failure is ValidationFailure) {
+        emit(ValidationProductState(errors: failure.errors));
+      } else {
+        emit(ErrorProductsState(message: failure.errors['error']));
+      }
+    }, (data) {
+      Get.back();
+      add(ShowProductEvent(id: data.id!));
+    });
   }
 
   FutureOr<void> _onUpdateProduct(

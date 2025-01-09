@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
@@ -112,7 +113,10 @@ class ProductsToolbar extends StatelessWidget {
   void _add(BuildContext context) {
     ShowDialog.showCustomDialog(
         context: context,
-        content: const CreateProduct(),
+        content: BlocProvider.value(
+          value: productBloc,
+          child: const CreateProduct(),
+        ),
         width: 0.4,
         height: 0.4);
   }
