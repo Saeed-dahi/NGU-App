@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/create_product_use_case.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/get_products_use_case.dart';
@@ -18,6 +20,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final UpdateProductUseCase updateProductUseCase;
 
   late ProductEntity product;
+  late PlutoGridController plutoGridController;
 
   ProductBloc(
       {required this.getProductsUseCase,
@@ -87,5 +90,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       productEntity: currentState.productEntity,
       enableEditing: event.enableEditing,
     ));
+  }
+
+  void searchProduct(String query) {
+    plutoGridController.stateManager!.setFilter(
+      (row) {
+        final name = FormatterClass.normalizeArabic(
+            row.cells['ar_name']!.value.toString().toLowerCase());
+        final code =
+            FormatterClass.normalizeArabic(row.cells['code']!.value.toString());
+
+        var result = name.contains(
+                FormatterClass.normalizeArabic(query.toLowerCase())) ||
+            code.contains(FormatterClass.normalizeArabic(query.toLowerCase()));
+        return result;
+      },
+    );
   }
 }

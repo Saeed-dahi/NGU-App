@@ -1,0 +1,79 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/widgets/custom_input_filed.dart';
+import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
+import 'package:ngu_app/core/widgets/loaders.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
+
+import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
+import 'package:ngu_app/features/inventory/products/presentation/widgets/custom_product_pluto_table.dart';
+
+class ProductsTable extends StatefulWidget {
+  const ProductsTable({super.key});
+
+  @override
+  State<ProductsTable> createState() => _ProductsTableState();
+}
+
+class _ProductsTableState extends State<ProductsTable> {
+  late final ProductBloc _productBloc;
+
+  @override
+  void initState() {
+    _productBloc = sl<ProductBloc>()..add(GetProductsEvent());
+    super.initState();
+  }
+
+  Future<void> _refresh() async {}
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => _productBloc,
+      child: CustomRefreshIndicator(
+        onRefresh: _refresh,
+        child: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.sizeOf(context).width * 0.3,
+                  child: CustomInputField(
+                      inputType: TextInputType.text,
+                      label: 'search'.tr,
+                      onTap: () {},
+                      onChanged: (query) {
+                        _productBloc.searchProduct(query);
+                      }),
+                ),
+              ],
+            ),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is LoadedAllProductsState) {
+                  return CustomProductPlutoTable(
+                    products: state.products,
+                  );
+                }
+                if (state is ErrorProductsState) {
+                  return Center(
+                    child: MessageScreen(text: state.message),
+                  );
+                }
+                return SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.5,
+                  child: Center(
+                    child: Loaders.loading(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
