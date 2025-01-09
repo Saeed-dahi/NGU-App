@@ -33,6 +33,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<CreateProductEvent>(_onCreateProduct);
     on<UpdateProductEvent>(_onUpdateProduct);
     on<ToggleEditingEvent>(_onToggleEditing);
+    on<UpdateProductCategoryEvent>(_onUpdateCategory);
   }
 
   FutureOr<void> _onGetProducts(
@@ -107,5 +108,16 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         return result;
       },
     );
+  }
+
+  FutureOr<void> _onUpdateCategory(
+      UpdateProductCategoryEvent event, Emitter<ProductState> emit) {
+    var currentState = state as LoadedProductState;
+    emit(LoadingProductsState());
+
+    emit(LoadedProductState(
+        productEntity: currentState.productEntity,
+        enableEditing: currentState.enableEditing,
+        category: event.category));
   }
 }

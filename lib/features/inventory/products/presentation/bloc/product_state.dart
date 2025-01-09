@@ -14,9 +14,12 @@ class LoadingProductsState extends ProductState {}
 class LoadedProductState extends ProductState {
   final ProductEntity productEntity;
   final bool enableEditing;
+  final Map<String, dynamic> category;
 
   const LoadedProductState(
-      {required this.productEntity, required this.enableEditing});
+      {required this.productEntity,
+      required this.enableEditing,
+      this.category = const {}});
 }
 
 class ErrorProductsState extends ProductState {

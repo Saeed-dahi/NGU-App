@@ -88,10 +88,12 @@ class _ProductRecordState extends State<ProductRecord> {
     _fileController =
         FilePickerController(initialFiles: _productBloc.product.files);
     _productType = _productBloc.product.type;
-    _categoryController = {
-      'ar_name': _productBloc.product.category!.arName,
-      'en_name': _productBloc.product.category!.enName,
-    };
+    if (_categoryController.isEmpty) {
+      _categoryController = {
+        'ar_name': _productBloc.product.category!.arName,
+        'en_name': _productBloc.product.category!.enName,
+      };
+    }
   }
 
   void _onSave(BuildContext context, AccountEntity account) {}
@@ -105,8 +107,7 @@ class _ProductRecordState extends State<ProductRecord> {
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
         context: context, content: const CategoriesTable());
-    _categoryController = result ?? {};
-    setState(() {});
+    _productBloc.add(UpdateProductCategoryEvent(category: result ?? {}));
   }
 
   @override
@@ -119,6 +120,7 @@ class _ProductRecordState extends State<ProductRecord> {
           builder: (context, state) {
             if (state is LoadedProductState) {
               _enableEditing = state.enableEditing;
+              _categoryController = state.category;
               return _pageBody(
                 context,
               );

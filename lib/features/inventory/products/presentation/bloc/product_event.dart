@@ -33,3 +33,9 @@ class ToggleEditingEvent extends ProductEvent {
 
   const ToggleEditingEvent({required this.enableEditing});
 }
+
+class UpdateProductCategoryEvent extends ProductEvent {
+  final Map<String, dynamic> category;
+
+  const UpdateProductCategoryEvent({required this.category});
+}
