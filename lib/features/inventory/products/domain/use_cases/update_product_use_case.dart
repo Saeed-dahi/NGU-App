@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
@@ -8,7 +10,8 @@ class UpdateProductUseCase {
 
   UpdateProductUseCase({required this.productRepository});
 
-  Future<Either<Failure, Unit>> call(ProductEntity product) async {
-    return await productRepository.updateProducts(product);
+  Future<Either<Failure, Unit>> call(ProductEntity product, List<File> file,
+      List<String> filesToDelete) async {
+    return await productRepository.updateProducts(product, file, filesToDelete);
   }
 }

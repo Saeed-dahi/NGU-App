@@ -14,8 +14,9 @@ import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
-import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/features/inventory/categories/domain/entities/category_entity.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
+import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
 import 'package:ngu_app/features/inventory/products/presentation/widgets/products_toolbar.dart';
 
@@ -88,17 +89,46 @@ class _ProductRecordState extends State<ProductRecord> {
     _fileController =
         FilePickerController(initialFiles: _productBloc.product.files);
     _productType = _productBloc.product.type;
-    if (_categoryController.isEmpty) {
+    if (_categoryController.isEmpty && _productBloc.product.category != null) {
       _categoryController = {
         'ar_name': _productBloc.product.category!.arName,
         'en_name': _productBloc.product.category!.enName,
+        'category_id': _productBloc.product.category!.id,
       };
     }
   }
 
-  void _onSave(BuildContext context, AccountEntity account) {}
+  void _onSave() {
+    _productBloc.add(UpdateProductEvent(
+        productEntity: _getFormData(),
+        files: _fileController.files,
+        filesToDelete: _fileController.filesToDelete));
+  }
 
-  _getFormData() {}
+  ProductEntity _getFormData() {
+    return ProductEntity(
+      id: _productBloc.product.id,
+      arName: _arNameController.text,
+      enName: _enNameController.text,
+      code: _codeController.text,
+      barcode: _barcodeController.text,
+      description: _descriptionController.text,
+      category: _getCategoryEntity(),
+      type: _productType ?? _productBloc.product.type,
+    );
+  }
+
+  CategoryEntity? _getCategoryEntity() {
+    if (_categoryController['category_id'] != null) {
+      return CategoryEntity(
+        id: _categoryController['category_id'],
+        arName: _categoryController['ar_name'],
+        enName: _categoryController['en_name'],
+        description: '',
+      );
+    }
+    return null;
+  }
 
   Future<void> _refresh() async {
     _productBloc.add(ShowProductEvent(id: _productBloc.product.id!));
@@ -106,7 +136,7 @@ class _ProductRecordState extends State<ProductRecord> {
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
-        context: context, content: const CategoriesTable());
+        context: context, content: const CategoriesTable(), height: 0.6);
     _productBloc.add(UpdateProductCategoryEvent(category: result ?? {}));
   }
 
@@ -121,12 +151,17 @@ class _ProductRecordState extends State<ProductRecord> {
             if (state is LoadedProductState) {
               _enableEditing = state.enableEditing;
               _categoryController = state.category;
+              _errors = {};
               return _pageBody(
                 context,
               );
             }
             if (state is ErrorProductsState) {
               return MessageScreen(text: state.message);
+            }
+            if (state is ValidationProductState) {
+              _errors = state.errors;
+              return _pageBody(context);
             }
             return Loaders.loading();
           },
@@ -238,10 +273,10 @@ class _ProductRecordState extends State<ProductRecord> {
                       CustomInputField(
                         enabled: _enableEditing,
                         helper: 'category'.tr,
-                        error: _errors['category']?.join('\n'),
+                        error: _errors['category_id']?.join('\n'),
                         controller: TextEditingController(
                             text:
-                                '${_categoryController['ar_name']} - ${_categoryController['en_name']}'),
+                                '${_categoryController['ar_name'] ?? ''} - ${_categoryController['en_name'] ?? ''}'),
                         onTap: () => _openCategoryDialog(context),
                         onEditingComplete: () => _openCategoryDialog(context),
                       ),
@@ -261,7 +296,7 @@ class _ProductRecordState extends State<ProductRecord> {
                 CustomElevatedButton(
                   color: AppColors.primaryColorLow,
                   text: 'save',
-                  onPressed: () {},
+                  onPressed: () => _onSave(),
                 ),
               ],
             ),

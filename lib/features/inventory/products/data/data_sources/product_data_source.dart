@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/app/app_config/api_list.dart';
@@ -10,7 +11,8 @@ abstract class ProductDataSource {
   Future<List<ProductModel>> getProducts();
   Future<ProductModel> showProduct(int id, String? direction);
   Future<ProductModel> createProduct(ProductModel product);
-  Future<Unit> updateProduct(ProductModel product);
+  Future<Unit> updateProduct(
+      ProductModel product, List<File> file, List<String> filesToDelete);
 }
 
 class ProductDataSourceImpl implements ProductDataSource {
@@ -57,10 +59,18 @@ class ProductDataSourceImpl implements ProductDataSource {
   }
 
   @override
-  Future<Unit> updateProduct(ProductModel product) async {
-    final response = await networkConnection.post(
-        '${APIList.product}/${product.id}', product.toJson());
-    var decodedJson = jsonDecode(response.body);
+  Future<Unit> updateProduct(
+      ProductModel product, List<File> file, List<String> filesToDelete) async {
+    final response = await networkConnection.httpPostMultipartRequestWithFields(
+        '${APIList.product}/${product.id}',
+        file,
+        'file[]',
+        product.toJson(),
+        filesToDelete);
+
+    var responseBody = await response.stream.bytesToString();
+
+    var decodedJson = jsonDecode(responseBody);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 

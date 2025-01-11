@@ -22,7 +22,9 @@ class ProductModel extends ProductEntity {
         enName: json['en_name'],
         code: json['code'],
         barcode: json['barcode'] ?? '',
-        category: CategoryModel.fromJson(json['category'] ?? {}),
+        category: json['category'] != null
+            ? CategoryModel.fromJson(json['category'])
+            : null,
         description: json['description'] ?? '',
         files: json['file'] != null ? List<String>.from(json['file']) : null,
         type: json['type'],
@@ -34,12 +36,11 @@ class ProductModel extends ProductEntity {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id.toString(),
-      'id': arName,
       'ar_name': arName,
       'en_name': enName,
       'code': code,
       if (barcode != null) 'barcode': barcode,
-      if (category != null) 'category_id': category!.id,
+      if (category != null) 'category_id': category!.id.toString(),
       if (description != null) 'description': description,
       if (files != null) 'file': files,
       if (type != null) 'type': type,

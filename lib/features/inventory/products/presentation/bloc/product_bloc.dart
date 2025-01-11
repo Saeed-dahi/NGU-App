@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
+
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/create_product_use_case.dart';
@@ -84,11 +86,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   FutureOr<void> _onUpdateProduct(
       UpdateProductEvent event, Emitter<ProductState> emit) async {
     emit(LoadingProductsState());
-    final result = await updateProductUseCase(event.productEntity);
+    final result = await updateProductUseCase(
+        event.productEntity, event.files, event.filesToDelete);
+    product = event.productEntity;
 
     result.fold((failure) {
-      emit(ErrorProductsState(message: failure.errors['error']));
-    }, (_) {});
+      if (failure is ValidationFailure) {
+        emit(ValidationProductState(errors: failure.errors));
+      } else {
+        emit(ErrorProductsState(message: failure.errors['error']));
+      }
+    }, (_) {
+      add(ShowProductEvent(id: product.id!));
+    });
   }
 
   FutureOr<void> _onToggleEditing(
@@ -121,12 +131,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> _onUpdateCategory(
       UpdateProductCategoryEvent event, Emitter<ProductState> emit) {
-    var currentState = state as LoadedProductState;
     emit(LoadingProductsState());
 
     emit(LoadedProductState(
-        productEntity: currentState.productEntity,
-        enableEditing: currentState.enableEditing,
-        category: event.category));
+        productEntity: product, enableEditing: true, category: event.category));
   }
 }

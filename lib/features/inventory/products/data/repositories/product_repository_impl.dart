@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
@@ -19,24 +21,35 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> showProduct(int id,String? direction) async {
-    return await apiHelper.safeApiCall(() => productDataSource.showProduct(id,direction));
+  Future<Either<Failure, ProductEntity>> showProduct(
+      int id, String? direction) async {
+    return await apiHelper
+        .safeApiCall(() => productDataSource.showProduct(id, direction));
   }
 
   @override
-  Future<Either<Failure, ProductEntity>> createProduct(ProductEntity product) async {
+  Future<Either<Failure, ProductEntity>> createProduct(
+      ProductEntity product) async {
     return await apiHelper.safeApiCall(
         () => productDataSource.createProduct(getProductModel(product)));
   }
 
   @override
-  Future<Either<Failure, Unit>> updateProducts(ProductEntity product) async {
-    return await apiHelper.safeApiCall(
-        () => productDataSource.updateProduct(getProductModel(product)));
+  Future<Either<Failure, Unit>> updateProducts(ProductEntity product,
+      List<File> file, List<String> filesToDelete) async {
+    return await apiHelper.safeApiCall(() => productDataSource.updateProduct(
+        getProductModel(product), file, filesToDelete));
   }
 
   ProductModel getProductModel(ProductEntity product) {
     return ProductModel(
-        arName: product.arName, enName: product.enName, code: product.code);
+        id: product.id,
+        arName: product.arName,
+        enName: product.enName,
+        code: product.code,
+        type: product.type,
+        barcode: product.barcode,
+        description: product.description,
+        category: product.category);
   }
 }

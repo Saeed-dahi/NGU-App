@@ -24,8 +24,10 @@ class CreateProductEvent extends ProductEvent {
 
 class UpdateProductEvent extends ProductEvent {
   final ProductEntity productEntity;
+  final List<File> files;
+  final List<String> filesToDelete;
 
-  const UpdateProductEvent({required this.productEntity});
+  const UpdateProductEvent({required this.productEntity,required this.files,required this.filesToDelete});
 }
 
 class ToggleEditingEvent extends ProductEvent {
