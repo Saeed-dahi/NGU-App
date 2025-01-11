@@ -19,8 +19,8 @@ class UnitRepositoryImpl implements UnitRepository {
   }
 
   @override
-  Future<Either<Failure, List<UnitEntity>>> getUnits() async {
-    return await apiHelper.safeApiCall(() => unitDataSource.getUnits());
+  Future<Either<Failure, List<UnitEntity>>> getUnits(int? productId) async {
+    return await apiHelper.safeApiCall(() => unitDataSource.getUnits(productId));
   }
 
   @override

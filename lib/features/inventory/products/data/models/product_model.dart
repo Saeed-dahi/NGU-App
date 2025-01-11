@@ -17,20 +17,21 @@ class ProductModel extends ProductEntity {
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-        id: json['id'],
-        arName: json['ar_name'],
-        enName: json['en_name'],
-        code: json['code'],
-        barcode: json['barcode'] ?? '',
-        category: json['category'] != null
-            ? CategoryModel.fromJson(json['category'])
-            : null,
-        description: json['description'] ?? '',
-        files: json['file'] != null ? List<String>.from(json['file']) : null,
-        type: json['type'],
-        units: json['units']
-            .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(unit))
-            .toList());
+      id: json['id'],
+      arName: json['ar_name'],
+      enName: json['en_name'],
+      code: json['code'],
+      barcode: json['barcode'] ?? '',
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'])
+          : null,
+      description: json['description'] ?? '',
+      files: json['file'] != null ? List<String>.from(json['file']) : null,
+      type: json['type'],
+      units: json['units']
+          .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(unit))
+          .toList(),
+    );
   }
 
   Map<String, dynamic> toJson() {

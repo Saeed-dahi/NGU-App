@@ -7,7 +7,7 @@ import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/inventory/units/data/models/unit_model.dart';
 
 abstract class UnitDataSource {
-  Future<List<UnitModel>> getUnits();
+  Future<List<UnitModel>> getUnits(int? productId);
   Future<Unit> createUnit(UnitModel unitModel);
   Future<Unit> updateUnit(UnitModel unitModel);
 }
@@ -18,8 +18,9 @@ class UnitDataSourceImpl implements UnitDataSource {
   UnitDataSourceImpl({required this.networkConnection});
 
   @override
-  Future<List<UnitModel>> getUnits() async {
-    final response = await networkConnection.get(APIList.unit, {});
+  Future<List<UnitModel>> getUnits(int? productId) async {
+    final response =
+        await networkConnection.get(APIList.unit, {'product_id': '2'});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

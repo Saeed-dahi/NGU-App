@@ -8,7 +8,7 @@ class GetUnitsUseCase {
 
   GetUnitsUseCase({required this.unitRepository});
 
-  Future<Either<Failure, List<UnitEntity>>> call() async {
-    return await unitRepository.getUnits();
+  Future<Either<Failure, List<UnitEntity>>> call({int? productId}) async {
+    return await unitRepository.getUnits(productId);
   }
 }

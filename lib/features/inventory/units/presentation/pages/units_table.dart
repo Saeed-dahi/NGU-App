@@ -20,7 +20,7 @@ class _CategoriesTableState extends State<UnitsTable> {
   late final UnitBloc _unitBloc;
   @override
   void initState() {
-    _unitBloc = sl<UnitBloc>()..add(GetUnitsEvent());
+    _unitBloc = sl<UnitBloc>()..add(const GetUnitsEvent());
     super.initState();
   }
 
@@ -31,7 +31,7 @@ class _CategoriesTableState extends State<UnitsTable> {
   }
 
   Future<void> _refresh() async {
-    _unitBloc.add(GetUnitsEvent());
+    _unitBloc.add(const GetUnitsEvent());
   }
 
   @override
