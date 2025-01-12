@@ -7,11 +7,15 @@ import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
+import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
+import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 
 class ProductUnit extends StatelessWidget {
   final bool enableEditing;
-  const ProductUnit({super.key, this.enableEditing = false});
+  final ProductBloc productBloc;
+  const ProductUnit(
+      {super.key, this.enableEditing = false, required this.productBloc});
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
@@ -24,12 +28,12 @@ class ProductUnit extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            child: ListView(
-          children: [
-            _buildUnitCard(context, true),
-            _buildUnitCard(context, false),
-            _buildUnitCard(context, true),
-          ],
+            child: ListView.builder(
+          itemCount: productBloc.product.units!.length,
+          itemBuilder: (context, index) {
+            return _buildUnitCard(context, productBloc.product.units![index],
+                productBloc.product.units![index].subUnit);
+          },
         )),
         CustomIconButton(
           icon: Icons.add,
@@ -40,30 +44,29 @@ class ProductUnit extends StatelessWidget {
     );
   }
 
-  Widget _buildUnitCard(BuildContext context, subUnit) {
+  Widget _buildUnitCard(BuildContext context, ProductUnitEntity unit,
+      ProductUnitEntity? subUnit) {
     return CustomContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Text(
-              'كرتونة',
-              style: TextStyle(
+              unit.arName!,
+              style: const TextStyle(
                   color: AppColors.primaryColor, fontWeight: FontWeight.bold),
             ),
           ),
-          Visibility(
-            visible: subUnit,
-            replacement: _buildWithSubUnit(context),
-            child: _buildWithoutSubUnit('كرتونة', 'كيلو'),
-          ),
+          if (subUnit != null) _buildWithSubUnit(unit, subUnit),
+          if (subUnit == null) _buildWithoutSubUnit(context, unit),
         ],
       ),
     );
   }
 
-  Padding _buildWithoutSubUnit(unit, subUnit) {
+  Padding _buildWithSubUnit(
+      ProductUnitEntity unit, ProductUnitEntity? subUnit) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -75,7 +78,7 @@ class ProductUnit extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            unit,
+            unit.arName!,
             style: const TextStyle(
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),
@@ -87,7 +90,7 @@ class ProductUnit extends StatelessWidget {
                 ShowSnackBar.showSuccessSnackbar(message: 'success'.tr),
           ),
           Text(
-            subUnit,
+            subUnit!.arName!,
             style: const TextStyle(
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),
@@ -96,13 +99,13 @@ class ProductUnit extends StatelessWidget {
     );
   }
 
-  Row _buildWithSubUnit(BuildContext context) {
+  Row _buildWithoutSubUnit(BuildContext context, ProductUnitEntity unit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text('لا يوجد وحدة مترابطة'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text('no_sub_unit'.tr),
         ),
         CustomIconButton(
           icon: Icons.add,

@@ -82,6 +82,7 @@ Map<String, String> en = {
   'units': 'Units',
   'add_new_unit': 'Add New Unit',
   'add_sub_unit': 'Add Sub Unit',
+  'no_sub_unit': 'No Sub Unit',
   'prices': 'Prices',
 
   // Product Type

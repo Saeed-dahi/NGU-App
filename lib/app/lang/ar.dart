@@ -82,6 +82,7 @@ Map<String, String> ar = {
   'units': 'الوحدات',
   'add_new_unit': 'إضافة وحدة جديدة',
   'add_sub_unit': 'إضافة وحدة فرعية',
+  'no_sub_unit': 'لا يوجد وحدة فرعية',
   'prices': 'الأسعار',
 
   // Product Type

@@ -207,11 +207,19 @@ class _ProductRecordState extends State<ProductRecord> {
                   onRefresh: _refresh,
                   child: _productBasicInfoForm(context),
                 ),
-                ProductUnit(
-                  enableEditing: _enableEditing,
+                CustomRefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ProductUnit(
+                    enableEditing: _enableEditing,
+                    productBloc: _productBloc,
+                  ),
                 ),
-                ProductUnitsPrices(
-                  enableEditing: _enableEditing,
+                CustomRefreshIndicator(
+                  onRefresh: _refresh,
+                  child: ProductUnitsPrices(
+                    enableEditing: _enableEditing,
+                    productBloc: _productBloc,
+                  ),
                 ),
               ],
             ),
