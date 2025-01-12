@@ -28,6 +28,7 @@ Map<String, String> en = {
   'saved': 'Saved and Posted',
   'draft': 'Saved not Posted',
   'alert': 'Alert',
+  'each': 'Each',
 
   // Accounts
   'accounting': 'Accounting',
@@ -79,6 +80,7 @@ Map<String, String> en = {
   'stores': 'Stores',
   'unit': 'Unit',
   'units': 'Units',
+  'prices': 'Prices',
 
   // Product Type
   'product_type': 'Product Type',

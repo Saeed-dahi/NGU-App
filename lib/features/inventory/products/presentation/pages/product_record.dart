@@ -18,6 +18,8 @@ import 'package:ngu_app/features/inventory/categories/domain/entities/category_e
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/product_units.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/product_units_prices.dart';
 import 'package:ngu_app/features/inventory/products/presentation/widgets/products_toolbar.dart';
 
 class ProductRecord extends StatefulWidget {
@@ -173,7 +175,7 @@ class _ProductRecordState extends State<ProductRecord> {
   DefaultTabController _pageBody(BuildContext context) {
     _updateControllersValue();
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         children: [
           Text(
@@ -194,6 +196,7 @@ class _ProductRecordState extends State<ProductRecord> {
             tabs: [
               Tab(text: 'product'.tr),
               Tab(text: 'units'.tr),
+              Tab(text: 'prices'.tr),
             ],
           ),
           Expanded(
@@ -204,7 +207,8 @@ class _ProductRecordState extends State<ProductRecord> {
                   onRefresh: _refresh,
                   child: _productBasicInfoForm(context),
                 ),
-                const SizedBox(),
+                const ProductUnit(),
+                const ProductUnitsPrices(),
               ],
             ),
           ),

@@ -28,6 +28,7 @@ Map<String, String> ar = {
   'saved': 'محفوظ ومرحل',
   'draft': 'محفوظ وغير مرحل',
   'alert': 'تنبيه',
+  'each': 'كل',
 
   // Accounts
   'accounting': 'المحاسبة',
@@ -79,6 +80,7 @@ Map<String, String> ar = {
   'stores': 'المستودعات',
   'unit': 'الوحدة',
   'units': 'الوحدات',
+  'prices': 'الأسعار',
 
   // Product Type
   'product_type': 'نوع المادة',
