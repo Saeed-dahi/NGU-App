@@ -80,6 +80,8 @@ Map<String, String> en = {
   'stores': 'Stores',
   'unit': 'Unit',
   'units': 'Units',
+  'add_new_unit': 'Add New Unit',
+  'add_sub_unit': 'Add Sub Unit',
   'prices': 'Prices',
 
   // Product Type
@@ -93,6 +95,12 @@ Map<String, String> en = {
   'spare_parts': 'Spare Parts',
   'production_requirements': 'Production Requirements',
   'service': 'Service',
+
+  // Prices
+  'end_price': 'End Price',
+  'export_price': 'Export Price',
+  'import_price': 'Import Price',
+  'whole_sale_price': 'Whole Sale Price',
 
   // Settings
   'settings': 'Settings',

@@ -10,7 +10,8 @@ import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 
 class ProductUnit extends StatelessWidget {
-  const ProductUnit({super.key});
+  final bool enableEditing;
+  const ProductUnit({super.key, this.enableEditing = false});
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
@@ -80,6 +81,8 @@ class ProductUnit extends StatelessWidget {
           ),
           CustomEditableText(
             controller: TextEditingController(text: '10000'),
+            enable: enableEditing,
+            width: 0.04,
             onEditingComplete: () =>
                 ShowSnackBar.showSuccessSnackbar(message: 'success'.tr),
           ),
@@ -103,7 +106,7 @@ class ProductUnit extends StatelessWidget {
         ),
         CustomIconButton(
           icon: Icons.add,
-          tooltip: 'add_new_sub_unit'.tr,
+          tooltip: 'add_sub_unit'.tr,
           onPressed: () => _openCategoryDialog(context),
         ),
       ],

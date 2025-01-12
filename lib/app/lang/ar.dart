@@ -80,6 +80,8 @@ Map<String, String> ar = {
   'stores': 'المستودعات',
   'unit': 'الوحدة',
   'units': 'الوحدات',
+  'add_new_unit': 'إضافة وحدة جديدة',
+  'add_sub_unit': 'إضافة وحدة فرعية',
   'prices': 'الأسعار',
 
   // Product Type
@@ -93,6 +95,12 @@ Map<String, String> ar = {
   'spare_parts': 'قطع غيار',
   'production_requirements': 'متطلبات الإنتاج',
   'service': 'خدمة',
+
+  // Prices
+  'end_price': 'السعر النهائي',
+  'export_price': 'سعر التصدير',
+  'import_price': 'سعر الاستيراد',
+  'whole_sale_price': 'سعر الجملة',
 
   // Settings
   'settings': 'الإعدادات',
