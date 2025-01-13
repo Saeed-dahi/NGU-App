@@ -4,8 +4,7 @@ class ProductUnitEntity extends Equatable {
   final int? id;
   final int productId;
   final int unitId;
-  final String? arName;
-  final String? enName;
+  final String? name;
   final double? conversionFactor;
   final double? exportPrice;
   final double? importPrice;
@@ -18,8 +17,7 @@ class ProductUnitEntity extends Equatable {
       {this.id,
       required this.productId,
       required this.unitId,
-      this.arName,
-      this.enName,
+      this.name,
       this.conversionFactor,
       this.exportPrice,
       this.importPrice,
@@ -33,8 +31,7 @@ class ProductUnitEntity extends Equatable {
         id,
         productId,
         unitId,
-        arName,
-        enName,
+        name,
         conversionFactor,
         exportPrice,
         importPrice,

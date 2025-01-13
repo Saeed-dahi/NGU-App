@@ -19,7 +19,11 @@ class ProductUnit extends StatelessWidget {
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
-        context: context, content:  UnitsTable(productId:productBloc.product.id ,), height: 0.6);
+        context: context,
+        content: UnitsTable(
+          productId: productBloc.product.id,
+        ),
+        height: 0.6);
   }
 
   @override
@@ -53,7 +57,7 @@ class ProductUnit extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              unit.arName!,
+              unit.name!,
               style: const TextStyle(
                   color: AppColors.primaryColor, fontWeight: FontWeight.bold),
             ),
@@ -78,7 +82,7 @@ class ProductUnit extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            unit.arName!,
+            unit.name!,
             style: const TextStyle(
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),
@@ -90,7 +94,7 @@ class ProductUnit extends StatelessWidget {
                 ShowSnackBar.showSuccessSnackbar(message: 'success'.tr),
           ),
           Text(
-            subUnit!.arName!,
+            subUnit!.name!,
             style: const TextStyle(
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),

@@ -28,7 +28,7 @@ class ProductUnitsPrices extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(Dimensions.primaryPadding),
           child: Text(
-            unit.arName!,
+            unit.name!,
             style: const TextStyle(
                 color: AppColors.primaryColor, fontWeight: FontWeight.bold),
           ),
