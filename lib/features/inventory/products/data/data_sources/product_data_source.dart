@@ -6,6 +6,7 @@ import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/inventory/products/data/models/product_model.dart';
+import 'package:ngu_app/features/inventory/products/data/models/product_unit_model.dart';
 
 abstract class ProductDataSource {
   Future<List<ProductModel>> getProducts();
@@ -13,6 +14,8 @@ abstract class ProductDataSource {
   Future<ProductModel> createProduct(ProductModel product);
   Future<Unit> updateProduct(
       ProductModel product, List<File> file, List<String> filesToDelete);
+  Future<Unit> createProductUnit(ProductUnitModel productUnit, int? baseUnitId);
+  Future<Unit> updateProductUnit(ProductUnitModel productUnit);
 }
 
 class ProductDataSourceImpl implements ProductDataSource {
@@ -71,6 +74,33 @@ class ProductDataSourceImpl implements ProductDataSource {
     var responseBody = await response.stream.bytesToString();
 
     var decodedJson = jsonDecode(responseBody);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    return unit;
+  }
+
+  @override
+  Future<Unit> createProductUnit(
+      ProductUnitModel productUnit, int? baseUnitId) async {
+    final response = await networkConnection.post(APIList.account, {
+      ...productUnit.toJson(),
+      'base_product_unit_id': baseUnitId?.toString()
+    });
+
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    return unit;
+  }
+
+  @override
+  Future<Unit> updateProductUnit(ProductUnitModel productUnit) async {
+    final response =
+        await networkConnection.put(APIList.account, productUnit.toJson());
+
+    var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 

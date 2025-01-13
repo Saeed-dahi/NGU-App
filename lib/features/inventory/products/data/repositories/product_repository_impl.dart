@@ -5,7 +5,9 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/inventory/products/data/data_sources/product_data_source.dart';
 import 'package:ngu_app/features/inventory/products/data/models/product_model.dart';
+import 'package:ngu_app/features/inventory/products/data/models/product_unit_model.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
+import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
 import 'package:ngu_app/features/inventory/products/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -51,5 +53,24 @@ class ProductRepositoryImpl implements ProductRepository {
         barcode: product.barcode,
         description: product.description,
         category: product.category);
+  }
+
+  @override
+  Future<Either<Failure, Unit>> createProductUnit(
+      ProductUnitEntity productUnitEntity, int? baseUnitId) async {
+    return await apiHelper.safeApiCall(() => productDataSource
+        .createProductUnit(getProductUnitModel(productUnitEntity), baseUnitId));
+  }
+
+  @override
+  Future<Either<Failure, Unit>> updateProductUnit(
+      ProductUnitEntity productUnitEntity) async {
+    return await apiHelper.safeApiCall(() => productDataSource
+        .updateProductUnit(getProductUnitModel(productUnitEntity)));
+  }
+
+  ProductUnitModel getProductUnitModel(ProductUnitEntity productUnit) {
+    return ProductUnitModel(
+        productId: productUnit.productId, unitId: productUnit.unitId);
   }
 }
