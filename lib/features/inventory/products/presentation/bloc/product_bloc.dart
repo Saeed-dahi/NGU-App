@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
-
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
+import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/create_product_unit_use_case.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/create_product_use_case.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/get_products_use_case.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/show_product_use_case.dart';
+import 'package:ngu_app/features/inventory/products/domain/use_cases/update_product_unit_use_case.dart';
 import 'package:ngu_app/features/inventory/products/domain/use_cases/update_product_use_case.dart';
-
 part 'product_event.dart';
 part 'product_state.dart';
 
@@ -22,6 +22,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ShowProductUseCase showProductUseCase;
   final CreateProductUseCase createProductUseCase;
   final UpdateProductUseCase updateProductUseCase;
+  final CreateProductUnitUseCase createProductUnitUseCase;
+  final UpdateProductUnitUseCase updateProductUnitUseCase;
 
   late ProductEntity product;
   late PlutoGridController plutoGridController;
@@ -30,7 +32,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       {required this.getProductsUseCase,
       required this.showProductUseCase,
       required this.createProductUseCase,
-      required this.updateProductUseCase})
+      required this.updateProductUseCase,
+      required this.createProductUnitUseCase,
+      required this.updateProductUnitUseCase})
       : super(ProductInitial()) {
     on<GetProductsEvent>(_onGetProducts);
     on<ShowProductEvent>(_onShowProduct);
@@ -38,6 +42,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<UpdateProductEvent>(_onUpdateProduct);
     on<ToggleEditingEvent>(_onToggleEditing);
     on<UpdateProductCategoryEvent>(_onUpdateCategory);
+    on<CreateProductUnitEvent>(_onCreateProductUnit);
+    on<UpdateProductUnitEvent>(_onUpdateProductUnit);
   }
 
   FutureOr<void> _onGetProducts(
@@ -135,5 +141,36 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     emit(LoadedProductState(
         productEntity: product, enableEditing: true, category: event.category));
+  }
+
+  FutureOr<void> _onCreateProductUnit(
+      CreateProductUnitEvent event, Emitter<ProductState> emit) async {
+    emit(LoadingProductsState());
+    final result = await createProductUnitUseCase(
+        event.productUnitEntity, event.baseUnitId);
+    result.fold((failure) {
+      if (failure is ValidationFailure) {
+        emit(ValidationProductState(errors: failure.errors));
+      } else {
+        emit(ErrorProductsState(message: failure.errors['error']));
+      }
+    }, (_) {
+      add(ShowProductEvent(id: product.id!));
+    });
+  }
+
+  FutureOr<void> _onUpdateProductUnit(
+      UpdateProductUnitEvent event, Emitter<ProductState> emit) async {
+    emit(LoadingProductsState());
+    final result = await updateProductUnitUseCase(event.productUnitEntity);
+    result.fold((failure) {
+      if (failure is ValidationFailure) {
+        emit(ValidationProductState(errors: failure.errors));
+      } else {
+        emit(ErrorProductsState(message: failure.errors['error']));
+      }
+    }, (_) {
+      add(ShowProductEvent(id: product.id!));
+    });
   }
 }

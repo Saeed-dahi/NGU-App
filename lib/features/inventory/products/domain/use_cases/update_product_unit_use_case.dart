@@ -9,7 +9,7 @@ class UpdateProductUnitUseCase {
   UpdateProductUnitUseCase({required this.productRepository});
 
   Future<Either<Failure, Unit>> call(
-      ProductUnitEntity productUnitEntity, int? baseUnitId) async {
+      ProductUnitEntity productUnitEntity) async {
     return await productRepository.updateProductUnit(productUnitEntity);
   }
 }

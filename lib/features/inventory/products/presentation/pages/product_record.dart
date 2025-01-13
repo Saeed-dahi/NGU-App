@@ -30,7 +30,8 @@ class ProductRecord extends StatefulWidget {
   State<ProductRecord> createState() => _ProductRecordState();
 }
 
-class _ProductRecordState extends State<ProductRecord> {
+class _ProductRecordState extends State<ProductRecord>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late final ProductBloc _productBloc;
 
@@ -48,12 +49,15 @@ class _ProductRecordState extends State<ProductRecord> {
 
   late Map<String, dynamic> _errors;
 
+  late TabController _tabController;
+
   @override
   void initState() {
     _productBloc = sl<ProductBloc>()
       ..add(ShowProductEvent(id: widget.productId));
     _initControllers();
     _errors = {};
+    _tabController = TabController(length: 3, vsync: this);
 
     super.initState();
   }
@@ -65,6 +69,7 @@ class _ProductRecordState extends State<ProductRecord> {
     _codeController.dispose();
 
     _productBloc.close();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -193,6 +198,7 @@ class _ProductRecordState extends State<ProductRecord> {
           TabBar(
             labelColor: Colors.black,
             indicatorColor: AppColors.primaryColor,
+            controller: _tabController,
             tabs: [
               Tab(text: 'product'.tr),
               Tab(text: 'units'.tr),
@@ -201,6 +207,7 @@ class _ProductRecordState extends State<ProductRecord> {
           ),
           Expanded(
             child: TabBarView(
+              controller: _tabController,
               children: [
                 // General Account info
                 CustomRefreshIndicator(

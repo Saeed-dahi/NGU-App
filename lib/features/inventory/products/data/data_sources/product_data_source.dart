@@ -83,9 +83,9 @@ class ProductDataSourceImpl implements ProductDataSource {
   @override
   Future<Unit> createProductUnit(
       ProductUnitModel productUnit, int? baseUnitId) async {
-    final response = await networkConnection.post(APIList.account, {
+    final response = await networkConnection.post(APIList.productUnit, {
       ...productUnit.toJson(),
-      'base_product_unit_id': baseUnitId?.toString()
+      if (baseUnitId != null) 'base_product_unit_id': baseUnitId.toString()
     });
 
     var decodedJson = jsonDecode(response.body);
@@ -98,7 +98,7 @@ class ProductDataSourceImpl implements ProductDataSource {
   @override
   Future<Unit> updateProductUnit(ProductUnitModel productUnit) async {
     final response =
-        await networkConnection.put(APIList.account, productUnit.toJson());
+        await networkConnection.put(APIList.productUnit, productUnit.toJson());
 
     var decodedJson = jsonDecode(response.body);
 

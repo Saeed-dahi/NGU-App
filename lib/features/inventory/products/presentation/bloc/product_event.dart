@@ -27,7 +27,10 @@ class UpdateProductEvent extends ProductEvent {
   final List<File> files;
   final List<String> filesToDelete;
 
-  const UpdateProductEvent({required this.productEntity,required this.files,required this.filesToDelete});
+  const UpdateProductEvent(
+      {required this.productEntity,
+      required this.files,
+      required this.filesToDelete});
 }
 
 class ToggleEditingEvent extends ProductEvent {
@@ -40,4 +43,17 @@ class UpdateProductCategoryEvent extends ProductEvent {
   final Map<String, dynamic> category;
 
   const UpdateProductCategoryEvent({required this.category});
+}
+
+class CreateProductUnitEvent extends ProductEvent {
+  final ProductUnitEntity productUnitEntity;
+  int? baseUnitId;
+
+  CreateProductUnitEvent({required this.productUnitEntity, this.baseUnitId});
+}
+
+class UpdateProductUnitEvent extends ProductEvent {
+  final ProductUnitEntity productUnitEntity;
+
+  const UpdateProductUnitEvent({required this.productUnitEntity});
 }

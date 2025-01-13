@@ -17,13 +17,14 @@ class ProductUnit extends StatelessWidget {
   const ProductUnit(
       {super.key, this.enableEditing = false, required this.productBloc});
 
-  _openCategoryDialog(BuildContext context) async {
+  Future<int> _openUnitsDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
         context: context,
         content: UnitsTable(
           productId: productBloc.product.id,
         ),
         height: 0.6);
+    return result != null ? result['unit_id'] : -1;
   }
 
   @override
@@ -42,10 +43,21 @@ class ProductUnit extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add_new_unit'.tr,
-          onPressed: () => _openCategoryDialog(context),
+          onPressed: () async {
+            int unitId = await _openUnitsDialog(context);
+            if (unitId != -1) {
+              productBloc.add(CreateProductUnitEvent(
+                  productUnitEntity:
+                      getProductUnitEntity(productBloc.product.id!, unitId)));
+            }
+          },
         ),
       ],
     );
+  }
+
+  ProductUnitEntity getProductUnitEntity(int productId, int unitId) {
+    return ProductUnitEntity(productId: productId, unitId: unitId);
   }
 
   Widget _buildUnitCard(BuildContext context, ProductUnitEntity unit,
@@ -114,7 +126,15 @@ class ProductUnit extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add_sub_unit'.tr,
-          onPressed: () => _openCategoryDialog(context),
+          onPressed: () async {
+            int unitId = await _openUnitsDialog(context);
+            if (unitId != -1) {
+              productBloc.add(CreateProductUnitEvent(
+                  productUnitEntity:
+                      getProductUnitEntity(productBloc.product.id!, unitId),
+                  baseUnitId: unit.id));
+            }
+          },
         ),
       ],
     );
