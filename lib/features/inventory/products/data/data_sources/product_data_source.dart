@@ -97,8 +97,8 @@ class ProductDataSourceImpl implements ProductDataSource {
 
   @override
   Future<Unit> updateProductUnit(ProductUnitModel productUnit) async {
-    final response =
-        await networkConnection.put(APIList.productUnit, productUnit.toJson());
+    final response = await networkConnection.put(
+        '${APIList.productUnit}/${productUnit.id}', productUnit.toJson());
 
     var decodedJson = jsonDecode(response.body);
 

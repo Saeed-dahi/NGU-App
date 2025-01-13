@@ -22,6 +22,7 @@ class CustomInputField extends StatelessWidget {
   final Widget? prefixIcon;
   VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
   final TextInputType inputType;
   VoidCallback? onEditingComplete;
 
@@ -46,7 +47,8 @@ class CustomInputField extends StatelessWidget {
       this.onChanged,
       this.focusNode,
       this.prefixIcon,
-      this.onEditingComplete});
+      this.onEditingComplete,
+      this.onFieldSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +77,7 @@ class CustomInputField extends StatelessWidget {
         },
         onTapAlwaysCalled: true,
         onChanged: onChanged,
+        onFieldSubmitted: onFieldSubmitted,
         decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusColor: AppColors.primaryColorLow,

@@ -111,7 +111,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ToggleEditingEvent event, Emitter<ProductState> emit) {
     final currentState = state as LoadedProductState;
     emit(LoadingProductsState());
-
     emit(LoadedProductState(
       productEntity: currentState.productEntity,
       enableEditing: event.enableEditing,
@@ -161,7 +160,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   FutureOr<void> _onUpdateProductUnit(
       UpdateProductUnitEvent event, Emitter<ProductState> emit) async {
-    emit(LoadingProductsState());
     final result = await updateProductUnitUseCase(event.productUnitEntity);
     result.fold((failure) {
       if (failure is ValidationFailure) {
@@ -169,8 +167,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       } else {
         emit(ErrorProductsState(message: failure.errors['error']));
       }
-    }, (_) {
-      add(ShowProductEvent(id: product.id!));
-    });
+    }, (_) {});
   }
 }

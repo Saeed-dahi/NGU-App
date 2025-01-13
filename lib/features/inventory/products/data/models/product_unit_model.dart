@@ -36,14 +36,15 @@ class ProductUnitModel extends ProductUnitEntity {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id.toString(),
-      'product_id': productId.toString(),
-      'unit_id': unitId.toString(),
+      if (productId != null) 'product_id': productId.toString(),
+      if (unitId != null) 'unit_id': unitId.toString(),
       if (conversionFactor != null)
-        'conversion_factor': conversionFactor.toString(),
+        if (conversionFactor != null)
+          'conversion_factor': conversionFactor.toString(),
       if (endPrice != null) 'end_price': endPrice.toString(),
       if (exportPrice != null) 'export_price': exportPrice.toString(),
       if (importPrice != null) 'import_price': importPrice.toString(),
-      if (wholeSalePrice != null) 'whole_sale_price': wholeSalePrice.toString(),
+      if (wholeSalePrice != null) 'wholesale_price': wholeSalePrice.toString(),
       if (quantity != null) 'quantity': quantity.toString(),
     };
   }

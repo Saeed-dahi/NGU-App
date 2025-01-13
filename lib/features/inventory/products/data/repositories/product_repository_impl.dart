@@ -71,6 +71,12 @@ class ProductRepositoryImpl implements ProductRepository {
 
   ProductUnitModel getProductUnitModel(ProductUnitEntity productUnit) {
     return ProductUnitModel(
-        productId: productUnit.productId, unitId: productUnit.unitId);
+        id: productUnit.id,
+        productId: productUnit.productId,
+        unitId: productUnit.unitId,
+        endPrice: productUnit.endPrice,
+        exportPrice: productUnit.exportPrice,
+        importPrice: productUnit.importPrice,
+        wholeSalePrice: productUnit.wholeSalePrice);
   }
 }
