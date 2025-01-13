@@ -77,6 +77,7 @@ class ProductRepositoryImpl implements ProductRepository {
         endPrice: productUnit.endPrice,
         exportPrice: productUnit.exportPrice,
         importPrice: productUnit.importPrice,
+        conversionFactor: productUnit.conversionFactor,
         wholeSalePrice: productUnit.wholeSalePrice);
   }
 }

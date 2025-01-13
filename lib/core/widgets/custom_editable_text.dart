@@ -6,10 +6,12 @@ class CustomEditableText extends StatelessWidget {
   final TextEditingController controller;
   final double width;
   void Function()? onEditingComplete;
+  void Function(String)? onChanged;
   final bool enable;
   CustomEditableText(
       {super.key,
       this.onEditingComplete,
+      this.onChanged,
       required this.controller,
       this.width = 0.05,
       this.enable = false});
@@ -38,6 +40,7 @@ class CustomEditableText extends StatelessWidget {
           cursorColor: AppColors.primaryColor,
           selectionColor: AppColors.primaryColorLow,
           onEditingComplete: onEditingComplete,
+          onChanged: onChanged,
           backgroundCursorColor: AppColors.primaryColor),
     );
   }

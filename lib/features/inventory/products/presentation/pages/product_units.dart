@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
-import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
 import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
@@ -99,11 +98,13 @@ class ProductUnit extends StatelessWidget {
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),
           CustomEditableText(
-            controller: TextEditingController(text: '10000'),
+            controller:
+                TextEditingController(text: unit.conversionFactor.toString()),
             enable: enableEditing,
             width: 0.04,
-            onEditingComplete: () =>
-                ShowSnackBar.showSuccessSnackbar(message: 'success'.tr),
+            onChanged: (value) {
+              _onChange(unit, value);
+            },
           ),
           Text(
             subUnit!.name!,
@@ -111,6 +112,17 @@ class ProductUnit extends StatelessWidget {
                 color: AppColors.primaryColorLow, fontWeight: FontWeight.w700),
           ),
         ],
+      ),
+    );
+  }
+
+  void _onChange(ProductUnitEntity unit, String value) {
+    productBloc.add(
+      UpdateProductUnitEvent(
+        productUnitEntity: ProductUnitEntity(
+          id: unit.id,
+          conversionFactor: FormatterClass.doubleFormatter(value),
+        ),
       ),
     );
   }
