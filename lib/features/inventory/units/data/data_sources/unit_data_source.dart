@@ -19,8 +19,8 @@ class UnitDataSourceImpl implements UnitDataSource {
 
   @override
   Future<List<UnitModel>> getUnits(int? productId) async {
-    final response =
-        await networkConnection.get(APIList.unit, {'product_id': productId});
+    final response = await networkConnection
+        .get(APIList.unit, {'product_id': productId?.toString()});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

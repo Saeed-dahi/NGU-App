@@ -10,7 +10,8 @@ import 'package:ngu_app/features/inventory/units/presentation/widgets/custom_uni
 import 'package:ngu_app/features/inventory/units/presentation/widgets/unit_toolbar.dart';
 
 class UnitsTable extends StatefulWidget {
-  const UnitsTable({super.key});
+  final int? productId;
+  const UnitsTable({super.key, this.productId});
 
   @override
   State<UnitsTable> createState() => _CategoriesTableState();
@@ -20,7 +21,7 @@ class _CategoriesTableState extends State<UnitsTable> {
   late final UnitBloc _unitBloc;
   @override
   void initState() {
-    _unitBloc = sl<UnitBloc>()..add(const GetUnitsEvent());
+    _unitBloc = sl<UnitBloc>()..add(GetUnitsEvent(productId: widget.productId));
     super.initState();
   }
 
@@ -31,7 +32,7 @@ class _CategoriesTableState extends State<UnitsTable> {
   }
 
   Future<void> _refresh() async {
-    _unitBloc.add(const GetUnitsEvent());
+    _unitBloc.add(GetUnitsEvent(productId: widget.productId));
   }
 
   @override

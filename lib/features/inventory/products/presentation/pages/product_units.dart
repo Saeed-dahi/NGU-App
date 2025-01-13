@@ -19,7 +19,7 @@ class ProductUnit extends StatelessWidget {
 
   _openCategoryDialog(BuildContext context) async {
     final result = await ShowDialog.showCustomDialog(
-        context: context, content: const UnitsTable(), height: 0.6);
+        context: context, content:  UnitsTable(productId:productBloc.product.id ,), height: 0.6);
   }
 
   @override
