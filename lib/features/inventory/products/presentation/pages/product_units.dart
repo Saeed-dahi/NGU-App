@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
@@ -13,7 +15,8 @@ import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.
 class ProductUnit extends StatelessWidget {
   final bool enableEditing;
   final ProductBloc productBloc;
-  const ProductUnit(
+  Timer? _debounce;
+  ProductUnit(
       {super.key, this.enableEditing = false, required this.productBloc});
 
   Future<int> _openUnitsDialog(BuildContext context) async {
@@ -117,13 +120,19 @@ class ProductUnit extends StatelessWidget {
   }
 
   void _onChange(ProductUnitEntity unit, String value) {
-    productBloc.add(
-      UpdateProductUnitEvent(
-        productUnitEntity: ProductUnitEntity(
-          id: unit.id,
-          conversionFactor: FormatterClass.doubleFormatter(value),
-        ),
-      ),
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(
+      const Duration(milliseconds: 400),
+      () {
+        productBloc.add(
+          UpdateProductUnitEvent(
+            productUnitEntity: ProductUnitEntity(
+              id: unit.id,
+              conversionFactor: FormatterClass.doubleFormatter(value),
+            ),
+          ),
+        );
+      },
     );
   }
 
