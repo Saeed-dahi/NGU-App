@@ -28,9 +28,11 @@ class ProductModel extends ProductEntity {
       description: json['description'] ?? '',
       files: json['file'] != null ? List<String>.from(json['file']) : null,
       type: json['type'],
-      units: json['units']
-          .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(unit))
-          .toList(),
+      units: json['units'] != null
+          ? json['units']
+              .map<ProductUnitModel>((unit) => ProductUnitModel.fromJson(unit))
+              .toList()
+          : [],
     );
   }
 
