@@ -13,6 +13,6 @@ abstract class ProductRepository {
       ProductEntity product, List<File> file, List<String> filesToDelete);
   Future<Either<Failure, Unit>> createProductUnit(
       ProductUnitEntity productUnitEntity, int? baseUnitId);
-  Future<Either<Failure, Unit>> updateProductUnit(
+  Future<Either<Failure, ProductEntity>> updateProductUnit(
       ProductUnitEntity productUnitEntity);
 }

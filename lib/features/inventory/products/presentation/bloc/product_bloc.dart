@@ -167,6 +167,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       } else {
         emit(ErrorProductsState(message: failure.errors['error']));
       }
-    }, (_) {});
+    }, (data) {
+      product = data;
+      emit(LoadedProductState(productEntity: product, enableEditing: true));
+    });
   }
 }

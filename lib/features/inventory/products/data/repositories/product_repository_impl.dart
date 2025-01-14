@@ -63,7 +63,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> updateProductUnit(
+  Future<Either<Failure, ProductEntity>> updateProductUnit(
       ProductUnitEntity productUnitEntity) async {
     return await apiHelper.safeApiCall(() => productDataSource
         .updateProductUnit(getProductUnitModel(productUnitEntity)));

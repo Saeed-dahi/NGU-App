@@ -15,7 +15,7 @@ abstract class ProductDataSource {
   Future<Unit> updateProduct(
       ProductModel product, List<File> file, List<String> filesToDelete);
   Future<Unit> createProductUnit(ProductUnitModel productUnit, int? baseUnitId);
-  Future<Unit> updateProductUnit(ProductUnitModel productUnit);
+  Future<ProductModel> updateProductUnit(ProductUnitModel productUnit);
 }
 
 class ProductDataSourceImpl implements ProductDataSource {
@@ -96,7 +96,7 @@ class ProductDataSourceImpl implements ProductDataSource {
   }
 
   @override
-  Future<Unit> updateProductUnit(ProductUnitModel productUnit) async {
+  Future<ProductModel> updateProductUnit(ProductUnitModel productUnit) async {
     final response = await networkConnection.put(
         '${APIList.productUnit}/${productUnit.id}', productUnit.toJson());
 
@@ -104,6 +104,8 @@ class ProductDataSourceImpl implements ProductDataSource {
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    return unit;
+    ProductModel product = ProductModel.fromJson(decodedJson['data']);
+
+    return product;
   }
 }
