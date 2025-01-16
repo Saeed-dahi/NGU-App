@@ -245,6 +245,28 @@ class PlutoGridController {
     }
   }
 
+  void searchFunction(String query) {
+    stateManager!.setFilter(
+      (row) {
+        Map<String, dynamic> fields = {};
+        for (var column in stateManager!.columns) {
+          fields[column.field] = FormatterClass.normalizeArabic(
+            row.cells[column.field]!.value.toString().toLowerCase(),
+          );
+        }
+        var result = false;
+        for (var field in fields.values) {
+          if (field
+              .contains(FormatterClass.normalizeArabic(query.toLowerCase()))) {
+            result = true;
+            break;
+          }
+        }
+        return result;
+      },
+    );
+  }
+
   handleNumberPadKeyEvent(PlutoKeyManagerEvent keyEvent) {
     if (numpadKeys.contains(keyEvent.event.logicalKey)) {
       final newValue = keyEvent.event.logicalKey.keyLabel.characters.last;

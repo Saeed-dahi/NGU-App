@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
-import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
@@ -115,23 +114,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       productEntity: currentState.productEntity,
       enableEditing: event.enableEditing,
     ));
-  }
-
-  void searchProduct(String query) {
-    plutoGridController.stateManager!.setFilter(
-      (row) {
-        final arName = FormatterClass.normalizeArabic(
-            row.cells['ar_name']!.value.toString().toLowerCase());
-        final enName = row.cells['en_name']!.value.toString().toLowerCase();
-        final code = row.cells['code']!.value.toString();
-
-        var result = arName.contains(
-                FormatterClass.normalizeArabic(query.toLowerCase())) ||
-            code.contains(query.toLowerCase()) ||
-            enName.contains(query.toLowerCase());
-        return result;
-      },
-    );
   }
 
   FutureOr<void> _onUpdateCategory(

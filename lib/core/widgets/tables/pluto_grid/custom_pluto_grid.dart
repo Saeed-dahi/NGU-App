@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/cubit/pluto_grid_cubit.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
@@ -22,6 +23,7 @@ class CustomPlutoTable extends StatelessWidget {
   final bool showDefaultHeader;
   final Widget customHeader;
   final VoidCallback? customEnterKeyAction;
+  final bool localeSearch;
 
   CustomPlutoTable(
       {super.key,
@@ -36,7 +38,8 @@ class CustomPlutoTable extends StatelessWidget {
       this.onChanged,
       this.customEnterKeyAction,
       this.customHeader = const SizedBox(),
-      this.showDefaultHeader = false});
+      this.showDefaultHeader = false,
+      this.localeSearch = false});
 
   @override
   Widget build(BuildContext context) {
@@ -44,25 +47,42 @@ class CustomPlutoTable extends StatelessWidget {
       create: (context) => PlutoGridCubit(),
       child: BlocBuilder<PlutoGridCubit, OnChangeState>(
         builder: (context, state) {
-          return PlutoGrid(
-            onLoaded: onLoaded,
-            columns: columns,
-            rows: rows,
-            mode: mode,
-            configuration: configuration ?? _tableConfig(),
-            onChanged: (event) {
-              onChanged!(event);
-              context.read<PlutoGridCubit>().onChangeFunction();
-            },
-            onRowDoubleTap: onRowDoubleTap,
-            noRowsWidget: noRowsWidget,
-            createHeader: (stateManager) {
-              controller.setStateManager = stateManager;
-              controller.setEnterKeyAction = customEnterKeyAction;
-              return showDefaultHeader
-                  ? _createHeader(stateManager, context)
-                  : const SizedBox();
-            },
+          return Column(
+            children: [
+              Visibility(
+                visible: localeSearch,
+                child: CustomInputField(
+                  inputType: TextInputType.text,
+                  label: 'search'.tr,
+                  onTap: () {},
+                  onChanged: (query) {
+                    controller.searchFunction(query);
+                  },
+                ),
+              ),
+              Expanded(
+                child: PlutoGrid(
+                  onLoaded: onLoaded,
+                  columns: columns,
+                  rows: rows,
+                  mode: mode,
+                  configuration: configuration ?? _tableConfig(),
+                  onChanged: (event) {
+                    onChanged!(event);
+                    context.read<PlutoGridCubit>().onChangeFunction();
+                  },
+                  onRowDoubleTap: onRowDoubleTap,
+                  noRowsWidget: noRowsWidget,
+                  createHeader: (stateManager) {
+                    controller.setStateManager = stateManager;
+                    controller.setEnterKeyAction = customEnterKeyAction;
+                    return showDefaultHeader
+                        ? _createHeader(stateManager, context)
+                        : const SizedBox();
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),

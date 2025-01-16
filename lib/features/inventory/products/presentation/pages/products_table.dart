@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
-import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
@@ -38,21 +36,6 @@ class _ProductsTableState extends State<ProductsTable> {
         onRefresh: _refresh,
         child: ListView(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.3,
-                  child: CustomInputField(
-                      inputType: TextInputType.text,
-                      label: 'search'.tr,
-                      onTap: () {},
-                      onChanged: (query) {
-                        _productBloc.searchProduct(query);
-                      }),
-                ),
-              ],
-            ),
             BlocBuilder<ProductBloc, ProductState>(
               builder: (context, state) {
                 if (state is LoadedAllProductsState) {
