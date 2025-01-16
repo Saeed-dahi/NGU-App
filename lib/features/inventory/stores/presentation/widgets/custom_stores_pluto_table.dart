@@ -26,6 +26,7 @@ class CustomStoresPlutoTable extends StatelessWidget {
         mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
+        showRowNumbers: false,
         rows: _buildRows().toList(),
         onChanged: (p0) {},
         showDefaultHeader: false,
@@ -61,7 +62,6 @@ class CustomStoresPlutoTable extends StatelessWidget {
         field: 'en_name',
         enableFilterMenuItem: true,
         enableContextMenu: false,
-        width: MediaQuery.sizeOf(context).width * 0.4,
         type: PlutoColumnType.text(),
       ),
       PlutoColumn(

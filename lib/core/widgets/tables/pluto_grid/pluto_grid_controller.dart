@@ -267,6 +267,34 @@ class PlutoGridController {
     );
   }
 
+  List<PlutoColumn> initNumbersForColumns(List<PlutoColumn> columns) {
+    columns.insert(
+        0,
+        PlutoColumn(
+          title: 'No',
+          field: 'number',
+          type: PlutoColumnType.number(),
+          readOnly: true,
+          enableFilterMenuItem: false,
+          enableContextMenu: false,
+          width: 60,
+        ));
+    return columns;
+  }
+
+  List<PlutoRow> initNumbersForRows(List<PlutoRow> rows) {
+    return rows.asMap().entries.map((entry) {
+      final index = entry.key;
+      final row = entry.value;
+
+      // Add the row number to the first column
+      final updatedCells = Map<String, PlutoCell>.from(row.cells);
+      updatedCells['number'] = PlutoCell(value: index + 1);
+
+      return PlutoRow(cells: updatedCells);
+    }).toList();
+  }
+
   handleNumberPadKeyEvent(PlutoKeyManagerEvent keyEvent) {
     if (numpadKeys.contains(keyEvent.event.logicalKey)) {
       final newValue = keyEvent.event.logicalKey.keyLabel.characters.last;

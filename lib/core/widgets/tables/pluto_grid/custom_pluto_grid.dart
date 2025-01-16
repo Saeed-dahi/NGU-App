@@ -24,6 +24,7 @@ class CustomPlutoTable extends StatelessWidget {
   final Widget customHeader;
   final VoidCallback? customEnterKeyAction;
   final bool localeSearch;
+  final bool showRowNumbers;
 
   CustomPlutoTable(
       {super.key,
@@ -39,7 +40,8 @@ class CustomPlutoTable extends StatelessWidget {
       this.customEnterKeyAction,
       this.customHeader = const SizedBox(),
       this.showDefaultHeader = false,
-      this.localeSearch = false});
+      this.localeSearch = false,
+      this.showRowNumbers = false});
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +65,12 @@ class CustomPlutoTable extends StatelessWidget {
               Expanded(
                 child: PlutoGrid(
                   onLoaded: onLoaded,
-                  columns: columns,
-                  rows: rows,
+                  columns: showRowNumbers
+                      ? controller.initNumbersForColumns(columns)
+                      : columns,
+                  rows: showRowNumbers
+                      ? controller.initNumbersForRows(rows)
+                      : rows,
                   mode: mode,
                   configuration: configuration ?? _tableConfig(),
                   onChanged: (event) {
