@@ -6,8 +6,10 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
 import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/product_history.dart';
 import 'package:ngu_app/features/inventory/products/presentation/widgets/product_option_menu.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -28,6 +30,11 @@ class CustomProductPlutoTable extends StatelessWidget {
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
+        customEnterKeyAction: () {
+          Get.back();
+          context.read<TabCubit>().addNewTab(
+              title: 'product_sts'.tr, content: const ProductHistory());
+        },
         showDefaultHeader: false,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =

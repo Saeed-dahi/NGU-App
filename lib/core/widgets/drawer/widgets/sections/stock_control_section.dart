@@ -50,11 +50,6 @@ class StockControlSection extends StatelessWidget {
                       onTap: () => ShowDialog.showCustomDialog(
                           context: context, content: const ProductsTable()),
                     ),
-                    BasicListTile(
-                      title: 'search'.tr,
-                      icon: Icons.search,
-                      onTap: () {},
-                    ),
                   ],
                 ),
                 CustomListTile(
