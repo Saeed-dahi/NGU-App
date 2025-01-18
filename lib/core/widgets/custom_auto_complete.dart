@@ -19,11 +19,16 @@ class CustomAutoComplete extends StatelessWidget {
         if (textEditingValue.text.isEmpty) {
           return const Iterable<String>.empty();
         } else {
-          return data.where((word) {
-            return FormatterClass.normalizeArabic(word).toLowerCase().contains(
-                  textEditingValue.text.toLowerCase(),
-                );
-          });
+          return data.where(
+            (word) {
+              return FormatterClass.normalizeArabic(word)
+                  .toLowerCase()
+                  .contains(
+                    FormatterClass.normalizeArabic(
+                        textEditingValue.text.toLowerCase()),
+                  );
+            },
+          );
         }
       },
       onSelected: onSelected,
