@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/accounts/data/data_sources/account_data_source.dart';
-import 'package:ngu_app/features/accounts/data/models/account_model.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
 import 'package:ngu_app/features/accounts/domain/repositories/account_repository.dart';
@@ -31,14 +30,14 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<Either<Failure, Unit>> createAccount(
       AccountEntity accountEntity) async {
     return apiHelper.safeApiCall(
-        () => accountDataSource.createAccount(getAccountModel(accountEntity)));
+        () => accountDataSource.createAccount(accountEntity.toModel()));
   }
 
   @override
   Future<Either<Failure, Unit>> updateAccount(
       AccountEntity accountEntity) async {
     return await apiHelper.safeApiCall(
-        () => accountDataSource.updateAccount(getAccountModel(accountEntity)));
+        () => accountDataSource.updateAccount(accountEntity.toModel()));
   }
 
   @override
@@ -65,22 +64,5 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<Either<Failure, Map<String, dynamic>>> getAccountsName() async {
     return await apiHelper
         .safeApiCall(() => accountDataSource.getAccountsName());
-  }
-
-  AccountModel getAccountModel(AccountEntity accountEntity) {
-    return AccountModel(
-        id: accountEntity.id,
-        code: accountEntity.code,
-        arName: accountEntity.arName,
-        enName: accountEntity.enName,
-        accountType: accountEntity.accountType,
-        accountNature: accountEntity.accountNature,
-        accountCategory: accountEntity.accountCategory,
-        balance: accountEntity.balance,
-        closingAccountId: accountEntity.closingAccountId,
-        parentId: accountEntity.parentId,
-        subAccounts: const [],
-        createdAt: accountEntity.createdAt,
-        updatedAt: accountEntity.updatedAt);
   }
 }

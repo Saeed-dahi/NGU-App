@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:ngu_app/core/features/transactions/domain/entities/transaction_entity.dart';
+import 'package:ngu_app/features/journals/data/models/journal_model.dart';
 
 class JournalEntity extends Equatable {
   final int? id;
@@ -20,6 +21,16 @@ class JournalEntity extends Equatable {
       required this.date,
       this.createdAt,
       this.updatedAt});
+
+  JournalModel toModel() {
+    return JournalModel(
+        id: id,
+        document: document,
+        description: description,
+        status: status,
+        transactions: transactions,
+        date: date);
+  }
 
   @override
   List<Object?> get props => [

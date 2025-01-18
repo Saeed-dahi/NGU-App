@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:equatable/equatable.dart';
 import 'package:ngu_app/features/inventory/categories/domain/entities/category_entity.dart';
+import 'package:ngu_app/features/inventory/products/data/models/product_model.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_unit_entity.dart';
 
 class ProductEntity extends Equatable {
@@ -26,6 +27,18 @@ class ProductEntity extends Equatable {
       this.category,
       this.files,
       this.units});
+
+  ProductModel toModel() {
+    return ProductModel(
+        id: id,
+        arName: arName,
+        enName: enName,
+        code: code,
+        type: type,
+        barcode: barcode,
+        description: description,
+        category: category);
+  }
 
   @override
   List<Object?> get props => [

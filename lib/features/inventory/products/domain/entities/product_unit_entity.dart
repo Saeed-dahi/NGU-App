@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ngu_app/features/inventory/products/data/models/product_unit_model.dart';
 
 class ProductUnitEntity extends Equatable {
   final int? id;
@@ -25,6 +26,19 @@ class ProductUnitEntity extends Equatable {
       this.endPrice,
       this.quantity,
       this.subUnit});
+
+  ProductUnitModel toModel() {
+    return ProductUnitModel(
+      id: id,
+      productId: productId,
+      unitId: unitId,
+      endPrice: endPrice,
+      exportPrice: exportPrice,
+      importPrice: importPrice,
+      conversionFactor: conversionFactor,
+      wholeSalePrice: wholeSalePrice,
+    );
+  }
 
   @override
   List<Object?> get props => [

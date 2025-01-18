@@ -4,7 +4,6 @@ import 'package:ngu_app/core/features/transactions/data/models/transaction_model
 
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/journals/data/data_sources/journal_data_source.dart';
-import 'package:ngu_app/features/journals/data/models/journal_model.dart';
 import 'package:ngu_app/features/journals/domain/entities/journal_entity.dart';
 import 'package:ngu_app/features/journals/domain/repositories/journal_repository.dart';
 
@@ -20,7 +19,7 @@ class JournalRepositoryImpl implements JournalRepository {
     JournalEntity journalEntity,
   ) async {
     return await apiHelper.safeApiCall(() => journalDataSource.createJournal(
-        _getJournalModel(journalEntity), _getTransactions(journalEntity)));
+        journalEntity.toModel(), _getTransactions(journalEntity)));
   }
 
   @override
@@ -41,33 +40,12 @@ class JournalRepositoryImpl implements JournalRepository {
     JournalEntity journalEntity,
   ) async {
     return await apiHelper.safeApiCall(() => journalDataSource.updateJournal(
-        _getJournalModel(journalEntity), _getTransactions(journalEntity)));
-  }
-
-  JournalModel _getJournalModel(JournalEntity journalEntity) {
-    return JournalModel(
-      id: journalEntity.id,
-      document: journalEntity.document,
-      description: journalEntity.description,
-      status: journalEntity.status,
-      transactions: journalEntity.transactions,
-      date: journalEntity.date,
-    );
+        journalEntity.toModel(), _getTransactions(journalEntity)));
   }
 
   List<TransactionModel> _getTransactions(JournalEntity journalEntity) {
     return journalEntity.transactions.map((transaction) {
-      return TransactionModel(
-        type: transaction.type,
-        accountName: transaction.accountName,
-        accountCode: transaction.accountCode,
-        accountId: transaction.accountId,
-        amount: transaction.amount,
-        description: transaction.description,
-        documentNumber: transaction.documentNumber,
-      );
+      return transaction.toModel();
     }).toList();
   }
-
-
 }

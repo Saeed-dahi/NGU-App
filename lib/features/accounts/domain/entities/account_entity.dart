@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ngu_app/features/accounts/data/models/account_model.dart';
 
 class AccountEntity extends Equatable {
   final int? id;
@@ -29,6 +30,23 @@ class AccountEntity extends Equatable {
       required this.subAccounts,
       this.createdAt,
       this.updatedAt});
+
+  AccountModel toModel() {
+    return AccountModel(
+        id: id,
+        code: code,
+        arName: arName,
+        enName: enName,
+        accountType: accountType,
+        accountNature: accountNature,
+        accountCategory: accountCategory,
+        balance: balance,
+        parentId: parentId,
+        subAccounts: subAccounts,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        closingAccountId: closingAccountId);
+  }
 
   @override
   List<Object?> get props => [

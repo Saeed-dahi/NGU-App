@@ -38,8 +38,7 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
   @override
   Future<Either<Failure, Unit>> createClosingAccount(
       ClosingAccountEntity closingAccountEntity) async {
-    ClosingAccountModel closingAccountModel =
-        getClosingAccountModel(closingAccountEntity);
+    ClosingAccountModel closingAccountModel = closingAccountEntity.toModel();
 
     return apiHelper.safeApiCall(
       () => closingAccountDataSource.createClosingAccount(closingAccountModel),
@@ -49,8 +48,7 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
   @override
   Future<Either<Failure, Unit>> updateClosingAccount(
       ClosingAccountEntity closingAccountEntity) async {
-    ClosingAccountModel closingAccountModel =
-        getClosingAccountModel(closingAccountEntity);
+    ClosingAccountModel closingAccountModel = closingAccountEntity.toModel();
 
     return apiHelper.safeApiCall(() =>
         closingAccountDataSource.updateClosingAccounts(closingAccountModel));
@@ -61,15 +59,5 @@ class ClosingAccountRepositoryImpl implements ClosingAccountRepository {
       closingAccountStatement(double? completedProductsValue) {
     return apiHelper.safeApiCall(() => closingAccountDataSource
         .closingAccountStatement(completedProductsValue));
-  }
-
-  ClosingAccountModel getClosingAccountModel(
-      ClosingAccountEntity closingAccountEntity) {
-    return ClosingAccountModel(
-        id: closingAccountEntity.id,
-        arName: closingAccountEntity.arName,
-        enName: closingAccountEntity.enName,
-        createdAt: closingAccountEntity.createdAt,
-        updatedAt: closingAccountEntity.updatedAt);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:ngu_app/core/features/transactions/data/models/transaction_model.dart';
 
 class TransactionEntity extends Equatable {
   final int? id;
@@ -27,6 +28,18 @@ class TransactionEntity extends Equatable {
       this.accountNewBalance,
       this.createdAt,
       this.updatedAt});
+
+  TransactionModel toModel() {
+    return TransactionModel(
+      type: type,
+      accountName: accountName,
+      accountCode: accountCode,
+      accountId: accountId,
+      amount: amount,
+      description: description,
+      documentNumber: documentNumber,
+    );
+  }
 
   @override
   List<Object?> get props => [
