@@ -34,7 +34,8 @@ class TransactionModel extends TransactionEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'account_id': accountCode,
+      'account_id': accountId,
+      'account_code': accountCode,
       'type': type,
       'amount': amount.toString(),
       'description': description,

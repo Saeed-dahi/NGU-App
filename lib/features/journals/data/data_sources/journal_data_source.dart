@@ -15,7 +15,6 @@ abstract class JournalDataSource {
   );
   Future<JournalModel> updateJournal(
       JournalModel journalModel, List<TransactionModel> transactionModel);
-  
 }
 
 class JournalDataSourceImpl implements JournalDataSource {
@@ -60,7 +59,7 @@ class JournalDataSourceImpl implements JournalDataSource {
       'document': journalModel.document,
       'status': journalModel.status,
       'date': journalModel.date,
-      'entries':
+      'transactions':
           transactions.map((transaction) => transaction.toJson()).toList(),
     };
 
@@ -82,7 +81,7 @@ class JournalDataSourceImpl implements JournalDataSource {
       'document': journalModel.document,
       'status': journalModel.status,
       'date': journalModel.date,
-      'entries':
+      'transactions':
           transactions.map((transaction) => transaction.toJson()).toList(),
     };
 
@@ -96,5 +95,4 @@ class JournalDataSourceImpl implements JournalDataSource {
 
     return journal;
   }
-
 }
