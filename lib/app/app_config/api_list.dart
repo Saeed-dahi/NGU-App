@@ -1,5 +1,5 @@
 class APIList {
-  static const String baseUrl = "192.168.0.190:8000";
+  static const String baseUrl = "192.168.0.115:8000";
   static const String api = "api/v1/";
   static const String storageUrl = 'http://$baseUrl/storage/';
 
@@ -21,4 +21,5 @@ class APIList {
   static const String unit = "unit";
   static const String product = "product";
   static const String productUnit = "product-unit";
+  static const String invoice = "invoice";
 }
