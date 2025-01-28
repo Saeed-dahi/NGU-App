@@ -54,30 +54,28 @@ class StockControlSection extends StatelessWidget {
                 ),
                 CustomExpansionTile(
                   title: 'sales_invoices'.tr,
-                  icon: Icons.inventory_2_outlined,
+                  icon: Icons.receipt_long,
                   children: [
                     BasicListTile(
-                        title: 'invoice'.tr,
-                        icon: Icons.padding_outlined,
-                        onTap: () {}),
+                        title: 'invoice'.tr, icon: Icons.receipt, onTap: () {}),
                     BasicListTile(
                       title: 'all_invoices'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.view_list,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.table_chart,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'ready_invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.done_all_outlined,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'tax_invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.request_quote,
                       onTap: () {},
                     ),
                     const Divider(
@@ -85,47 +83,45 @@ class StockControlSection extends StatelessWidget {
                     ),
                     BasicListTile(
                       title: 'returns'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.autorenew,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'returns_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.table_chart,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'tax_returns_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.request_quote,
                       onTap: () {},
                     ),
                   ],
                 ),
                 CustomExpansionTile(
                   title: 'purchase_invoices'.tr,
-                  icon: Icons.inventory_2_outlined,
+                  icon: Icons.receipt_long,
                   children: [
                     BasicListTile(
-                        title: 'invoice'.tr,
-                        icon: Icons.padding_outlined,
-                        onTap: () {}),
+                        title: 'invoice'.tr, icon: Icons.receipt, onTap: () {}),
                     BasicListTile(
                       title: 'all_invoices'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.view_list,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.table_chart,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'ready_invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.done_all_outlined,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'tax_invoices_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.request_quote,
                       onTap: () {},
                     ),
                     const Divider(
@@ -133,17 +129,17 @@ class StockControlSection extends StatelessWidget {
                     ),
                     BasicListTile(
                       title: 'returns'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.autorenew,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'returns_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.table_chart,
                       onTap: () {},
                     ),
                     BasicListTile(
                       title: 'tax_returns_table'.tr,
-                      icon: Icons.table_chart_outlined,
+                      icon: Icons.request_quote,
                       onTap: () {},
                     ),
                   ],
