@@ -22,6 +22,8 @@ enum ProductType {
   service
 }
 
+enum InvoiceType { sales, purchase }
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }
