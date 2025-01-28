@@ -113,12 +113,17 @@ Map<String, String> ar = {
   'shortcuts': 'اختصارات',
 
   // Invoices
+  'invoices': 'فواتير',
+  'invoice': 'فاتورة',
   'purchase_invoices': 'فواتير الشراء',
   'sales_invoices': 'فواتير المبيع',
   'all_invoices': 'كل الفواتير',
   'invoices_table': 'جدول الفواتير',
   'ready_invoices_table': 'جدول الفواتير الجاهزة',
   'tax_invoices_table': 'جدول ضريبة الفواتير',
+  'returns': 'مرتجعات',
+  'returns_table': 'جدول المرتجعات',
+  'tax_returns_table': 'جدول ضريبة المرتجعات',
 
   // Account Record
   'account': 'الحساب',

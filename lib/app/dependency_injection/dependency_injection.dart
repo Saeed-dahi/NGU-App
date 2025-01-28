@@ -38,6 +38,14 @@ import 'package:ngu_app/features/inventory/categories/domain/use_cases/create_ca
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/get_categories_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/domain/use_cases/update_category_use_case.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/bloc/category_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_data_source.dart';
+import 'package:ngu_app/features/inventory/invoices/data/repositories/invoice_repository_impl.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/repositories/invoice_repository.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/products/data/data_sources/product_data_source.dart';
 import 'package:ngu_app/features/inventory/products/data/repositories/product_repository_impl.dart';
 import 'package:ngu_app/features/inventory/products/domain/repositories/product_repository.dart';
@@ -99,6 +107,8 @@ Future<void> init() async {
   _unit();
 
   _product();
+
+  _invoice();
 
   // External
   await _external();
@@ -316,12 +326,35 @@ void _product() {
   sl.registerLazySingleton(() => ShowProductUseCase(productRepository: sl()));
   sl.registerLazySingleton(() => CreateProductUseCase(productRepository: sl()));
   sl.registerLazySingleton(() => UpdateProductUseCase(productRepository: sl()));
-  sl.registerLazySingleton(() => CreateProductUnitUseCase(productRepository: sl()));
-  sl.registerLazySingleton(() => UpdateProductUnitUseCase(productRepository: sl()));
+  sl.registerLazySingleton(
+      () => CreateProductUnitUseCase(productRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdateProductUnitUseCase(productRepository: sl()));
 
   sl.registerLazySingleton<ProductRepository>(
       () => ProductRepositoryImpl(productDataSource: sl(), apiHelper: sl()));
 
   sl.registerLazySingleton<ProductDataSource>(
       () => ProductDataSourceImpl(networkConnection: sl()));
+}
+
+void _invoice() {
+  sl.registerFactory(() => InvoiceBloc(
+        getAllInvoicesUseCase: sl(),
+        showInvoiceUseCase: sl(),
+        createInvoiceUseCase: sl(),
+        updateInvoiceUseCase: sl(),
+      ));
+
+  sl.registerLazySingleton(
+      () => GetAllInvoicesUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(() => ShowInvoiceUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(() => CreateInvoiceUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(() => UpdateInvoiceUseCase(invoiceRepository: sl()));
+
+  sl.registerLazySingleton<InvoiceRepository>(
+      () => InvoiceRepositoryImpl(apiHelper: sl(), invoiceDataSource: sl()));
+
+  sl.registerLazySingleton<InvoiceDataSource>(
+      () => InvoiceDataSourceImpl(networkConnection: sl()));
 }

@@ -52,6 +52,102 @@ class StockControlSection extends StatelessWidget {
                     ),
                   ],
                 ),
+                CustomExpansionTile(
+                  title: 'sales_invoices'.tr,
+                  icon: Icons.inventory_2_outlined,
+                  children: [
+                    BasicListTile(
+                        title: 'invoice'.tr,
+                        icon: Icons.padding_outlined,
+                        onTap: () {}),
+                    BasicListTile(
+                      title: 'all_invoices'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'ready_invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'tax_invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    const Divider(
+                      color: AppColors.primaryColor,
+                    ),
+                    BasicListTile(
+                      title: 'returns'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'returns_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'tax_returns_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+                CustomExpansionTile(
+                  title: 'purchase_invoices'.tr,
+                  icon: Icons.inventory_2_outlined,
+                  children: [
+                    BasicListTile(
+                        title: 'invoice'.tr,
+                        icon: Icons.padding_outlined,
+                        onTap: () {}),
+                    BasicListTile(
+                      title: 'all_invoices'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'ready_invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'tax_invoices_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    const Divider(
+                      color: AppColors.primaryColor,
+                    ),
+                    BasicListTile(
+                      title: 'returns'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'returns_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                    BasicListTile(
+                      title: 'tax_returns_table'.tr,
+                      icon: Icons.table_chart_outlined,
+                      onTap: () {},
+                    ),
+                  ],
+                ),
                 CustomListTile(
                   title: 'stores'.tr,
                   onTap: () {

@@ -119,6 +119,9 @@ Map<String, String> en = {
   'invoices_table': 'Invoices Table',
   'ready_invoices_table': 'Ready Invoices Table',
   'tax_invoices_table': 'Tax Invoices Table',
+  'returns': 'Returns',
+  'returns_table': ' Returns Table',
+  'tax_returns_table': 'Tax Returns Table',
 
   // Account Record
   'account': 'Account',
