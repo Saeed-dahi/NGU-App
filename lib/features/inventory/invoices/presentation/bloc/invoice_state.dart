@@ -29,9 +29,9 @@ class LoadedInvoiceState extends InvoiceState {
 class LoadingInvoiceState extends InvoiceState {}
 
 class ErrorInvoiceState extends InvoiceState {
-  final Map<String, dynamic> errors;
+  final String error;
 
-  const ErrorInvoiceState({required this.errors});
+  const ErrorInvoiceState({required this.error});
   @override
-  List<Object> get props => [errors];
+  List<Object> get props => [error];
 }

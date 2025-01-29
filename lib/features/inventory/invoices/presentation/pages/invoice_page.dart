@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
+import 'package:ngu_app/core/widgets/loaders.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 
 class InvoicePage extends StatefulWidget {
@@ -16,7 +18,7 @@ class _InvoicePageState extends State<InvoicePage> {
 
   @override
   void initState() {
-    _invoiceBloc = sl<InvoiceBloc>();
+    _invoiceBloc = sl<InvoiceBloc>()..add(const ShowInvoiceEvent(invoiceId: 1));
     super.initState();
   }
 
@@ -32,8 +34,14 @@ class _InvoicePageState extends State<InvoicePage> {
       onRefresh: () => Future.value(),
       child: BlocProvider(
         create: (context) => _invoiceBloc,
-        child: BlocConsumer(
+        child: BlocConsumer<InvoiceBloc, InvoiceState>(
           builder: (context, state) {
+            if (state is LoadingInvoiceState) {
+              return Center(child: Loaders.loading());
+            }
+            if (state is ErrorInvoiceState) {
+              return Center(child: MessageScreen(text: state.error));
+            }
             return const SizedBox();
           },
           listener: (context, state) {},

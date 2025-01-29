@@ -14,15 +14,16 @@ class InvoiceItemModel extends InvoiceItemEntity {
 
   factory InvoiceItemModel.fromJson(Map<String, dynamic> json) {
     return InvoiceItemModel(
-        id: json['id'],
-        invoiceId: json['invoice_id'],
-        productUnitId: json['product_unit_id'],
-        description: json['description'] ?? '',
-        quantity: json['quantity'],
-        price: json['price'],
-        taxAmount: json['tax_amount'],
-        discountAmount: json['discount_amount'],
-        total: json['total']);
+      id: json['id'],
+      invoiceId: json['invoice_id'],
+      productUnitId: json['product_unit_id'],
+      description: json['description'] ?? '',
+      quantity: double.parse(json['quantity'].toString()),
+      price: double.parse(json['price'].toString()),
+      taxAmount: double.parse(json['tax_amount'].toString()),
+      discountAmount: double.parse(json['discount_amount'].toString()),
+      total: double.parse(json['total'].toString()),
+    );
   }
 
   Map<String, dynamic> toJson() {

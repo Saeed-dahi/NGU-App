@@ -37,6 +37,8 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
         await networkConnection.get('${APIList.invoice}/$invoiceId', {});
     var decodedJson = jsonDecode(response.body);
 
+    print(decodedJson);
+
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
     InvoiceModel invoice = InvoiceModel.fromJson(decodedJson['data']);

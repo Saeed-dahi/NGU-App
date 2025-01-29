@@ -1,16 +1,15 @@
 import 'package:equatable/equatable.dart';
-import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 
 class InvoiceEntity extends Equatable {
   final int id;
   final int invoiceNumber;
-  final InvoiceType invoiceType;
+  final String invoiceType;
   final String date;
   final String dueDate;
-  final Status status;
-  final AccountNature invoiceNature;
+  final String status;
+  final String invoiceNature;
   final String currency;
   final double subTotal;
   final double total;

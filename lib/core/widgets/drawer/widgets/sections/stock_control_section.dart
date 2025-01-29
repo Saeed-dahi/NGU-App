@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/lists_tile/basic_list_tile.dart';
 import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_page.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/product_record.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
@@ -54,96 +56,15 @@ class StockControlSection extends StatelessWidget {
                 ),
                 CustomExpansionTile(
                   title: 'sales_invoices'.tr,
-                  icon: Icons.receipt_long,
-                  children: [
-                    BasicListTile(
-                        title: 'invoice'.tr, icon: Icons.receipt, onTap: () {}),
-                    BasicListTile(
-                      title: 'all_invoices'.tr,
-                      icon: Icons.view_list,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'invoices_table'.tr,
-                      icon: Icons.table_chart,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'ready_invoices_table'.tr,
-                      icon: Icons.done_all_outlined,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'tax_invoices_table'.tr,
-                      icon: Icons.request_quote,
-                      onTap: () {},
-                    ),
-                    const Divider(
-                      color: AppColors.primaryColor,
-                    ),
-                    BasicListTile(
-                      title: 'returns'.tr,
-                      icon: Icons.autorenew,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'returns_table'.tr,
-                      icon: Icons.table_chart,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'tax_returns_table'.tr,
-                      icon: Icons.request_quote,
-                      onTap: () {},
-                    ),
-                  ],
+                  icon: Icons.shopping_bag_outlined,
+                  children:
+                      _sharedInvoiceChildren(InvoiceType.sales.name, context),
                 ),
                 CustomExpansionTile(
-                  title: 'purchase_invoices'.tr,
-                  icon: Icons.receipt_long,
-                  children: [
-                    BasicListTile(
-                        title: 'invoice'.tr, icon: Icons.receipt, onTap: () {}),
-                    BasicListTile(
-                      title: 'all_invoices'.tr,
-                      icon: Icons.view_list,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'invoices_table'.tr,
-                      icon: Icons.table_chart,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'ready_invoices_table'.tr,
-                      icon: Icons.done_all_outlined,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'tax_invoices_table'.tr,
-                      icon: Icons.request_quote,
-                      onTap: () {},
-                    ),
-                    const Divider(
-                      color: AppColors.primaryColor,
-                    ),
-                    BasicListTile(
-                      title: 'returns'.tr,
-                      icon: Icons.autorenew,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'returns_table'.tr,
-                      icon: Icons.table_chart,
-                      onTap: () {},
-                    ),
-                    BasicListTile(
-                      title: 'tax_returns_table'.tr,
-                      icon: Icons.request_quote,
-                      onTap: () {},
-                    ),
-                  ],
-                ),
+                    title: 'purchase_invoices'.tr,
+                    icon: Icons.receipt_long,
+                    children: _sharedInvoiceChildren(
+                        InvoiceType.purchase.name, context)),
                 CustomListTile(
                   title: 'stores'.tr,
                   onTap: () {
@@ -181,5 +102,56 @@ class StockControlSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Widget> _sharedInvoiceChildren(String type, BuildContext context) {
+    return [
+      BasicListTile(
+          title: 'invoice'.tr,
+          icon: Icons.receipt,
+          onTap: () {
+            context
+                .read<TabCubit>()
+                .addNewTab(title: type.tr, content: const InvoicePage());
+          }),
+      BasicListTile(
+        title: 'all_invoices'.tr,
+        icon: Icons.view_list,
+        onTap: () {},
+      ),
+      BasicListTile(
+        title: 'invoices_table'.tr,
+        icon: Icons.table_chart,
+        onTap: () {},
+      ),
+      BasicListTile(
+        title: 'ready_invoices_table'.tr,
+        icon: Icons.done_all_outlined,
+        onTap: () {},
+      ),
+      BasicListTile(
+        title: 'tax_invoices_table'.tr,
+        icon: Icons.request_quote,
+        onTap: () {},
+      ),
+      const Divider(
+        color: AppColors.primaryColor,
+      ),
+      BasicListTile(
+        title: 'returns'.tr,
+        icon: Icons.autorenew,
+        onTap: () {},
+      ),
+      BasicListTile(
+        title: 'returns_table'.tr,
+        icon: Icons.table_chart,
+        onTap: () {},
+      ),
+      BasicListTile(
+        title: 'tax_returns_table'.tr,
+        icon: Icons.request_quote,
+        onTap: () {},
+      ),
+    ];
   }
 }

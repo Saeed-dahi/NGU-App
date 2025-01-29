@@ -26,21 +26,21 @@ class InvoiceModel extends InvoiceEntity {
     return InvoiceModel(
         id: json['id'],
         invoiceNumber: json['invoice_number'],
-        invoiceType: json['invoice_type'],
+        invoiceType: json['type'],
         date: json['date'],
-        dueDate: json['due_date'],
+        dueDate: json['due_date'] ?? '',
         status: json['status'],
         invoiceNature: json['invoice_nature'],
         currency: json['currency'],
-        subTotal: json['sub_total'],
-        total: json['total'],
+        subTotal: double.parse(json['sub_total'].toString()),
+        total: double.parse(json['total'].toString()),
         notes: json['notes'] ?? '',
         accountId: json['account_id'],
         goodsAccountId: json['goods_account_id'],
         totalTaxAccount: json['total_tax_account'],
-        totalTax: json['total_tax'],
+        totalTax: double.parse(json['total_tax'].toString()),
         totalDiscountAccount: json['total_discount_account'],
-        totalDiscount: json['total_discount'],
+        totalDiscount: double.parse(json['total_discount'].toString()),
         invoiceItems: json['items']
             .map<InvoiceItemModel>(
                 (invoice) => InvoiceItemModel.fromJson(invoice))
