@@ -18,6 +18,7 @@ Map<String, String> ar = {
   'options': 'خيارات',
   'created_at': 'تاريخ الحفظ',
   'updated_at': 'تاريخ التعديل',
+  'due_date': 'تاريخ الاستحقاق',
   'are_you_sure': 'هل أنت متأكد',
   'yes': 'نعم',
   'no': 'لا',
@@ -29,6 +30,7 @@ Map<String, String> ar = {
   'draft': 'محفوظ وغير مرحل',
   'alert': 'تنبيه',
   'each': 'كل',
+  'notes': 'ملاحظات',
 
   // Accounts
   'accounting': 'المحاسبة',
@@ -115,6 +117,7 @@ Map<String, String> ar = {
   // Invoices
   'invoices': 'فواتير',
   'invoice': 'فاتورة',
+  'invoice_number': 'رقم الفاتورة',
   'purchase_invoices': 'فواتير الشراء',
   'sales_invoices': 'فواتير المبيع',
   'all_invoices': 'كل الفواتير',
@@ -124,6 +127,11 @@ Map<String, String> ar = {
   'returns': 'مرتجعات',
   'returns_table': 'جدول المرتجعات',
   'tax_returns_table': 'جدول ضريبة المرتجعات',
+  'goods_account': 'حساب البضاعة',
+  'quantity': 'الكمية',
+  'discount': 'الحسم',
+  'price': 'السعر',
+  'receipt_print': 'طباعة الإيصال',
 
   // Account Record
   'account': 'الحساب',

@@ -18,6 +18,7 @@ Map<String, String> en = {
   'options': 'Options',
   'created_at': 'Created At',
   'updated_at': 'Updated At',
+  'due_date': 'Due Date',
   'are_you_sure': 'Are You Sure',
   'yes': 'Yes',
   'no': 'No',
@@ -29,6 +30,7 @@ Map<String, String> en = {
   'draft': 'Saved not Posted',
   'alert': 'Alert',
   'each': 'Each',
+  'notes': 'Notes',
 
   // Accounts
   'accounting': 'Accounting',
@@ -113,6 +115,9 @@ Map<String, String> en = {
   'shortcuts': 'Shortcuts',
 
   // Invoices
+  'invoices': 'Invoices',
+  'invoice': 'Invoice',
+  'invoice_number': 'Invoice Number',
   'purchase_invoices': 'Purchase Invoices',
   'sales_invoices': 'Sales Invoices',
   'all_invoices': 'All Invoices',
@@ -122,6 +127,11 @@ Map<String, String> en = {
   'returns': 'Returns',
   'returns_table': ' Returns Table',
   'tax_returns_table': 'Tax Returns Table',
+  'goods_account': 'Goods Account',
+  'quantity': 'Quantity',
+  'discount': 'Discount',
+  'price': 'Price',
+  'receipt_print': 'Receipt Print',
 
   // Account Record
   'account': 'Account',

@@ -11,7 +11,8 @@ import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart'
 import 'package:ngu_app/features/accounts/presentation/widgets/custom_account_pluto_table.dart';
 
 class AccountsTable extends StatefulWidget {
-  const AccountsTable({super.key});
+  final String? initValue;
+  const AccountsTable({super.key, this.initValue});
 
   @override
   State<AccountsTable> createState() => _AccountsTableState();
@@ -24,8 +25,12 @@ class _AccountsTableState extends State<AccountsTable> {
 
   @override
   void initState() {
-    searchController = TextEditingController();
+    searchController = TextEditingController(text: widget.initValue);
+
     _accountsBloc = sl<AccountsBloc>()..add(GetAllAccountsEvent());
+    _accountsBloc.add(SearchInAccountsEvent(
+      query: searchController.text,
+    ));
     super.initState();
   }
 

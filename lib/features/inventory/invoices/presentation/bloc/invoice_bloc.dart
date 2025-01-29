@@ -47,9 +47,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     final result = await showInvoiceUseCase(event.invoiceId, event.direction);
     result.fold((failure) {
-      print(failure);
+      emit(ErrorInvoiceState(error: failure.errors['error']));
     }, (data) {
-      print(data);
+      emit(LoadedInvoiceState(invoice: data));
     });
   }
 
