@@ -6,17 +6,43 @@ import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 
 class CustomInvoiceFields extends StatelessWidget {
-  final bool enable;
-  const CustomInvoiceFields({super.key, required this.enable});
+  final TextEditingController numberController;
+  final TextEditingController dateController;
+  final TextEditingController dueDateController;
+  final TextEditingController notesController;
+  final InvoiceAccountEntity accountController;
+  final InvoiceAccountEntity goodsAccountController;
+  String? natureController;
 
-  _openAccountDialog(BuildContext context) async {
+  final bool enable;
+
+  CustomInvoiceFields(
+      {super.key,
+      required this.numberController,
+      required this.dateController,
+      required this.dueDateController,
+      required this.notesController,
+      required this.accountController,
+      required this.goodsAccountController,
+      required this.natureController,
+      required this.enable});
+
+  _openAccountDialog(BuildContext context, InvoiceAccountEntity query) async {
     final result = await ShowDialog.showCustomDialog(
         context: context,
-        content: const AccountsTable(
-          initValue: 'assets',
+        content: AccountsTable(
+          initValue: query.code,
         ));
+
+    query = InvoiceAccountEntity(
+      id: result['account_id'],
+      code: result['account_code'],
+      arName: result['account_name'],
+      enName: result['account_name'],
+    );
   }
 
   @override
@@ -29,14 +55,15 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'invoice_number'.tr,
                 enabled: enable,
+                controller: numberController,
               ),
               CustomDatePicker(
-                dateInput: TextEditingController(),
+                dateInput: dateController,
                 labelText: 'created_at'.tr,
                 enabled: enable,
               ),
               CustomDatePicker(
-                dateInput: TextEditingController(),
+                dateInput: dueDateController,
                 labelText: 'due_date'.tr,
                 enabled: enable,
               ),
@@ -44,6 +71,7 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'notes'.tr,
                 enabled: enable,
+                controller: notesController,
               ),
             ],
           ),
@@ -51,24 +79,34 @@ class CustomInvoiceFields extends StatelessWidget {
             children: [
               CustomInputField(
                 label: 'account'.tr,
-                onTap: () => _openAccountDialog(context),
+                onTap: () => _openAccountDialog(context, accountController),
                 enabled: enable,
+                controller: TextEditingController(
+                    text:
+                        '${accountController.arName} - ${accountController.enName}'),
               ),
               CustomInputField(
                 label: 'address'.tr,
                 enabled: enable,
+                controller: TextEditingController(),
               ),
               CustomInputField(
                 label: 'goods_account'.tr,
-                onTap: () => _openAccountDialog(context),
+                onTap: () =>
+                    _openAccountDialog(context, goodsAccountController),
                 enabled: enable,
+                controller:
+                    TextEditingController(text: goodsAccountController.arName),
               ),
               const SizedBox(),
               CustomDropdown(
                 dropdownValue: getEnumValues(AccountNature.values),
-                onChanged: (value) {},
+                onChanged: (value) {
+                  natureController = value!;
+                },
                 label: 'invoice_nature'.tr,
                 enabled: enable,
+                value: natureController,
               ),
             ],
           ),

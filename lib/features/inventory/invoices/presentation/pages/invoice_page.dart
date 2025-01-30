@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
-import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
@@ -26,15 +26,40 @@ class InvoicePage extends StatefulWidget {
 class _InvoicePageState extends State<InvoicePage> {
   late final InvoiceBloc _invoiceBloc;
 
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _numberController;
+  late TextEditingController _dateController;
+  late TextEditingController _dueDateController;
+  late TextEditingController _notesController;
+  late InvoiceAccountEntity _accountController;
+  late InvoiceAccountEntity _goodsAccountController;
+  String? _natureController;
+
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()..add(const ShowInvoiceEvent(invoiceId: 1));
     super.initState();
   }
 
+  _initControllers(InvoiceEntity invoice) {
+    _numberController =
+        TextEditingController(text: invoice.invoiceNumber.toString());
+    _dateController = TextEditingController(text: invoice.date);
+    _dueDateController = TextEditingController(text: invoice.dueDate);
+    _notesController = TextEditingController(text: invoice.notes);
+    _accountController = invoice.account;
+    _goodsAccountController = invoice.goodsAccount;
+    _natureController = invoice.invoiceNature;
+  }
+
   @override
   void dispose() {
     _invoiceBloc.close();
+    _dateController.dispose();
+    _dueDateController.dispose();
+    _notesController.dispose();
+    _numberController.dispose();
+
     super.dispose();
   }
 
@@ -50,25 +75,23 @@ class _InvoicePageState extends State<InvoicePage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomRefreshIndicator(
-      onRefresh: () => Future.value(),
-      child: BlocProvider(
-        create: (context) => _invoiceBloc,
-        child: BlocConsumer<InvoiceBloc, InvoiceState>(
-          builder: (context, state) {
-            if (state is ErrorInvoiceState) {
-              return Center(child: MessageScreen(text: state.error));
-            }
-            if (state is LoadedInvoiceState) {
-              return DefaultTabController(
-                length: 3,
-                child: _pageBody(state),
-              );
-            }
-            return Center(child: Loaders.loading());
-          },
-          listener: (context, state) {},
-        ),
+    return BlocProvider(
+      create: (context) => _invoiceBloc,
+      child: BlocConsumer<InvoiceBloc, InvoiceState>(
+        builder: (context, state) {
+          if (state is ErrorInvoiceState) {
+            return Center(child: MessageScreen(text: state.error));
+          }
+          if (state is LoadedInvoiceState) {
+            _initControllers(_invoiceBloc.getInvoiceEntity);
+            return DefaultTabController(
+              length: 3,
+              child: _pageBody(state),
+            );
+          }
+          return Center(child: Loaders.loading());
+        },
+        listener: (context, state) {},
       ),
     );
   }
@@ -76,6 +99,7 @@ class _InvoicePageState extends State<InvoicePage> {
   Widget _pageBody(LoadedInvoiceState state) {
     bool isSavedInvoice =
         state.invoice.status == Status.saved.name ? true : false;
+    // bool isSavedInvoice = false;
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.borderRadius),
@@ -114,7 +138,16 @@ class _InvoicePageState extends State<InvoicePage> {
   Column _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
     return Column(
       children: [
-        CustomInvoiceFields(enable: !isSavedInvoice),
+        CustomInvoiceFields(
+          enable: !isSavedInvoice,
+          accountController: _accountController,
+          dateController: _dateController,
+          dueDateController: _dueDateController,
+          goodsAccountController: _goodsAccountController,
+          natureController: _natureController,
+          notesController: _notesController,
+          numberController: _numberController,
+        ),
         CustomInvoicePlutoTable(
           invoice: state.invoice,
           readOnly: isSavedInvoice,

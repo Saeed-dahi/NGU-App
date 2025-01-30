@@ -17,6 +17,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final CreateInvoiceUseCase createInvoiceUseCase;
   final UpdateInvoiceUseCase updateInvoiceUseCase;
 
+  late InvoiceEntity _invoiceEntity;
+  get getInvoiceEntity => _invoiceEntity;
+
   InvoiceBloc(
       {required this.getAllInvoicesUseCase,
       required this.showInvoiceUseCase,
@@ -49,6 +52,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     result.fold((failure) {
       emit(ErrorInvoiceState(error: failure.errors['error']));
     }, (data) {
+      _invoiceEntity = data;
       emit(LoadedInvoiceState(invoice: data));
     });
   }
