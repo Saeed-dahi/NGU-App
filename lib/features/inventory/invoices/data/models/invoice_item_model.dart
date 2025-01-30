@@ -1,10 +1,11 @@
+import 'package:ngu_app/features/inventory/invoices/data/models/invoice_product_unit_model.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 
 class InvoiceItemModel extends InvoiceItemEntity {
   const InvoiceItemModel(
       {required super.id,
       required super.invoiceId,
-      required super.productUnitId,
+      required super.productUnit,
       required super.description,
       required super.quantity,
       required super.price,
@@ -16,7 +17,7 @@ class InvoiceItemModel extends InvoiceItemEntity {
     return InvoiceItemModel(
       id: json['id'],
       invoiceId: json['invoice_id'],
-      productUnitId: json['product_unit_id'],
+      productUnit: InvoiceProductUnitModel.fromJson(json['product_unit']),
       description: json['description'] ?? '',
       quantity: double.parse(json['quantity'].toString()),
       price: double.parse(json['price'].toString()),
@@ -28,7 +29,7 @@ class InvoiceItemModel extends InvoiceItemEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'product_unit_id': productUnitId,
+      'product_unit_id': productUnit,
       if (description != null) 'description': description,
       'quantity': quantity,
       'price': price,

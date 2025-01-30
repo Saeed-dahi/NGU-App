@@ -8,7 +8,7 @@ class InvoiceProductUnitModel extends InvoiceProductUnitEntity {
     return InvoiceProductUnitModel(
         id: json['id'],
         product: InvoiceProductModel.fromJson(json['product']),
-        unit: InvoiceUnitModel.fromJson(json['product']));
+        unit: InvoiceUnitModel.fromJson(json['unit']));
   }
 }
 

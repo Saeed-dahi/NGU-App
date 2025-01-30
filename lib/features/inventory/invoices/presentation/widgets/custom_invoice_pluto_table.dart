@@ -66,14 +66,16 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   Iterable<PlutoRow> _buildFilledRows() {
     return invoice!.invoiceItems.map(
       (invoiceItem) {
+        var product = invoiceItem.productUnit.product;
+        var unit = invoiceItem.productUnit.unit;
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: invoiceItem.id,
           cells: {
-            'code': PlutoCell(value: '1205'),
-            'name': PlutoCell(value: 'جبنة'),
+            'code': PlutoCell(value: product.code),
+            'name': PlutoCell(value: '${product.arName} - ${product.enName}'),
             'quantity': PlutoCell(value: invoiceItem.quantity),
-            'unit': PlutoCell(value: 'كرتونة'),
+            'unit': PlutoCell(value: unit.arName),
             'price': PlutoCell(value: invoiceItem.price),
             'total': PlutoCell(value: invoiceItem.total),
             'discount': PlutoCell(value: invoiceItem.discountAmount),

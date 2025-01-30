@@ -1,3 +1,4 @@
+import 'package:ngu_app/features/inventory/invoices/data/models/invoice_account_model.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_item_model.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 
@@ -14,11 +15,11 @@ class InvoiceModel extends InvoiceEntity {
       required super.subTotal,
       required super.total,
       required super.notes,
-      required super.accountId,
-      required super.goodsAccountId,
-      required super.totalTaxAccount,
+      required super.account,
+      required super.goodsAccount,
+      required super.taxAccount,
       required super.totalTax,
-      required super.totalDiscountAccount,
+      required super.discountAccount,
       required super.totalDiscount,
       required super.invoiceItems});
 
@@ -35,11 +36,11 @@ class InvoiceModel extends InvoiceEntity {
         subTotal: double.parse(json['sub_total'].toString()),
         total: double.parse(json['total'].toString()),
         notes: json['notes'] ?? '',
-        accountId: json['account_id'],
-        goodsAccountId: json['goods_account_id'],
-        totalTaxAccount: json['total_tax_account'],
+        account: InvoiceAccountModel.fromJson(json['account']),
+        goodsAccount: InvoiceAccountModel.fromJson(json['goods_account']),
+        taxAccount: InvoiceAccountModel.fromJson(json['tax_account']),
         totalTax: double.parse(json['total_tax'].toString()),
-        totalDiscountAccount: json['total_discount_account'],
+        discountAccount: InvoiceAccountModel.fromJson(json['discount_account']),
         totalDiscount: double.parse(json['total_discount'].toString()),
         invoiceItems: json['items']
             .map<InvoiceItemModel>(
@@ -57,10 +58,10 @@ class InvoiceModel extends InvoiceEntity {
       'invoice_nature': invoiceNature,
       'currency': currency,
       'notes': notes,
-      'account_id': accountId,
+      'account_id': account,
       'goods_account_id': 12,
-      'total_tax_account': totalTaxAccount,
-      'total_discount_account': totalDiscountAccount
+      'total_tax_account': taxAccount,
+      'total_discount_account': discountAccount
     };
   }
 }

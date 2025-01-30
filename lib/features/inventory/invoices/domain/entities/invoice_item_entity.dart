@@ -1,10 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_item_model.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
 
 class InvoiceItemEntity extends Equatable {
   final int id;
   final int invoiceId;
-  final int productUnitId;
+  final InvoiceProductUnitEntity productUnit;
   final String? description;
   final double quantity;
   final double price;
@@ -15,7 +16,7 @@ class InvoiceItemEntity extends Equatable {
   const InvoiceItemEntity(
       {required this.id,
       required this.invoiceId,
-      required this.productUnitId,
+      required this.productUnit,
       required this.description,
       required this.quantity,
       required this.price,
@@ -27,7 +28,7 @@ class InvoiceItemEntity extends Equatable {
   List<Object?> get props => [
         id,
         invoiceId,
-        productUnitId,
+        productUnit,
         description,
         quantity,
         price,
@@ -39,7 +40,7 @@ class InvoiceItemEntity extends Equatable {
     return InvoiceItemModel(
         id: id,
         invoiceId: invoiceId,
-        productUnitId: productUnitId,
+        productUnit: productUnit,
         description: description,
         quantity: quantity,
         price: price,

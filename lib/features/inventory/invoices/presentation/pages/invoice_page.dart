@@ -13,7 +13,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bl
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_pluto_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
 
 class InvoicePage extends StatefulWidget {

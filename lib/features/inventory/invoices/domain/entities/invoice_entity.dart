@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 
 class InvoiceEntity extends Equatable {
@@ -14,11 +15,11 @@ class InvoiceEntity extends Equatable {
   final double subTotal;
   final double total;
   final String? notes;
-  final int accountId;
-  final int goodsAccountId;
-  final int totalTaxAccount;
+  final InvoiceAccountEntity account;
+  final InvoiceAccountEntity goodsAccount;
+  final InvoiceAccountEntity taxAccount;
   final double totalTax;
-  final int totalDiscountAccount;
+  final InvoiceAccountEntity discountAccount;
   final double totalDiscount;
   final List<InvoiceItemEntity> invoiceItems;
 
@@ -34,11 +35,11 @@ class InvoiceEntity extends Equatable {
       required this.subTotal,
       required this.total,
       required this.notes,
-      required this.accountId,
-      required this.goodsAccountId,
-      required this.totalTaxAccount,
+      required this.account,
+      required this.goodsAccount,
+      required this.taxAccount,
       required this.totalTax,
-      required this.totalDiscountAccount,
+      required this.discountAccount,
       required this.totalDiscount,
       required this.invoiceItems});
 
@@ -55,11 +56,11 @@ class InvoiceEntity extends Equatable {
         subTotal: subTotal,
         total: total,
         notes: notes,
-        accountId: accountId,
-        goodsAccountId: goodsAccountId,
-        totalTaxAccount: totalTaxAccount,
+        account: account,
+        goodsAccount: goodsAccount,
+        taxAccount: taxAccount,
         totalTax: totalTax,
-        totalDiscountAccount: totalDiscountAccount,
+        discountAccount: discountAccount,
         totalDiscount: totalDiscount,
         invoiceItems: invoiceItems);
   }
@@ -77,11 +78,11 @@ class InvoiceEntity extends Equatable {
         subTotal,
         total,
         notes,
-        accountId,
-        goodsAccountId,
-        totalTaxAccount,
+        account,
+        goodsAccount,
+        taxAccount,
         totalTax,
-        totalDiscountAccount,
+        discountAccount,
         totalDiscount,
         invoiceItems
       ];
