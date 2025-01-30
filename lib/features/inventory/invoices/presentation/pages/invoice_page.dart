@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_journal_vouchers_pluto_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
@@ -39,7 +43,7 @@ class _InvoicePageState extends State<InvoicePage> {
       return Colors.green;
     }
     if (InvoiceType.purchase.name == type) {
-      return Colors.orange;
+      return Colors.white;
     }
     return Colors.white;
   }
@@ -55,8 +59,12 @@ class _InvoicePageState extends State<InvoicePage> {
             if (state is ErrorInvoiceState) {
               return Center(child: MessageScreen(text: state.error));
             }
-            if (state is LoadedInvoiceState) return _pageBody(state);
-
+            if (state is LoadedInvoiceState) {
+              return DefaultTabController(
+                length: 3,
+                child: _pageBody(state),
+              );
+            }
             return Center(child: Loaders.loading());
           },
           listener: (context, state) {},
@@ -74,19 +82,44 @@ class _InvoicePageState extends State<InvoicePage> {
           color:
               _getBackgroundColor(state.invoice.invoiceType).withOpacity(0.1)),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InvoiceToolBar(
             invoice: state.invoice,
             onSaveAsDraft: isSavedInvoice ? () {} : null,
             onSaveAsSaved: isSavedInvoice ? null : () {},
           ),
-          const CustomInvoiceFields(),
-          CustomInvoicePlutoTable(
-            invoice: state.invoice,
-            readOnly: isSavedInvoice,
+          TabBar(
+            labelColor: AppColors.black,
+            indicatorColor: AppColors.primaryColor,
+            tabs: [
+              Tab(text: 'invoice'.tr),
+              Tab(text: 'options'.tr),
+              Tab(text: 'print'.tr),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: TabBarView(children: [
+              _invoiceTabWidgets(state, isSavedInvoice),
+              const InvoiceOptionsPage(),
+              const InvoicePrintPage()
+            ]),
           ),
         ],
       ),
+    );
+  }
+
+  Column _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
+    return Column(
+      children: [
+        const CustomInvoiceFields(),
+        CustomInvoicePlutoTable(
+          invoice: state.invoice,
+          readOnly: isSavedInvoice,
+        ),
+      ],
     );
   }
 }

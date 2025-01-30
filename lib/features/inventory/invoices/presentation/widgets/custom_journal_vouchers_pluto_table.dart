@@ -19,7 +19,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.6,
+      height: MediaQuery.sizeOf(context).height * 0.5,
       child: CustomPlutoTable(
         controller: _plutoGridController,
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
@@ -43,21 +43,9 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     return Row(
       children: [
         CustomIconButton(
-          icon: Icons.balance,
-          tooltip: '${'balance'.tr} (F3)',
-          onPressed: () {
-            _plutoGridController.makeTableBalanced();
-          },
-        ),
-        CustomIconButton(
             icon: Icons.copy,
             tooltip: '${'copy'.tr} ${'table'.tr} ',
             onPressed: () {}),
-        CustomIconButton(
-          icon: Icons.article_outlined,
-          tooltip: '${'account_sts'.tr} ',
-          onPressed: () {},
-        ),
       ],
     );
   }

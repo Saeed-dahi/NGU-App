@@ -128,10 +128,17 @@ Map<String, String> en = {
   'returns_table': ' Returns Table',
   'tax_returns_table': 'Tax Returns Table',
   'goods_account': 'Goods Account',
+  'tax_account': 'Tax Account',
+  'tax_amount': 'Tax Amount',
+  'discount_account': 'Discount Account',
+  'discount_amount': 'Discount Amount',
   'quantity': 'Quantity',
   'discount': 'Discount',
   'price': 'Price',
   'receipt_print': 'Receipt Print',
+  'invoice_nature': 'Invoice Nature',
+  'invoice_printer': 'Invoice Printer',
+  'receipt_printer': 'Receipt Printer',
 
   // Account Record
   'account': 'Account',

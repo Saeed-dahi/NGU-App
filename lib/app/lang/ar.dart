@@ -128,10 +128,17 @@ Map<String, String> ar = {
   'returns_table': 'جدول المرتجعات',
   'tax_returns_table': 'جدول ضريبة المرتجعات',
   'goods_account': 'حساب البضاعة',
+  'tax_account': 'حساب الضريبة',
+  'tax_amount': 'قيمة الضريبة',
+  'discount_account': 'حساب الحسم',
+  'discount_amount': 'قيمة الحسم',
   'quantity': 'الكمية',
   'discount': 'الحسم',
   'price': 'السعر',
   'receipt_print': 'طباعة الإيصال',
+  'invoice_nature': 'طبيعة الفاتورة',
+  'invoice_printer': 'طابعة الفواتير',
+  'receipt_printer': 'طابعة الإيصالات',
 
   // Account Record
   'account': 'الحساب',
