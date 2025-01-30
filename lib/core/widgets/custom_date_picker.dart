@@ -8,11 +8,20 @@ class CustomDatePicker extends StatefulWidget {
   final TextEditingController dateInput;
   final String labelText;
   Function? onPressed = () {};
+
+  final bool enabled;
+  final bool required;
+  final bool readOnly;
+  final bool autofocus;
   CustomDatePicker(
       {super.key,
       required this.dateInput,
       this.onPressed,
-      required this.labelText});
+      required this.labelText,
+      this.autofocus = false,
+      this.required = true,
+      this.enabled = true,
+      this.readOnly = false});
 
   @override
   State<StatefulWidget> createState() {
@@ -36,9 +45,11 @@ class _CustomDatePicker extends State<CustomDatePicker> {
     return CustomInputField(
       controller: widget.dateInput,
       inputType: TextInputType.datetime,
-      autofocus: false,
+      autofocus: widget.autofocus,
       label: widget.labelText,
-      readOnly: false,
+      readOnly: widget.readOnly,
+      enabled: widget.enabled,
+      required: widget.required,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
             context: context,

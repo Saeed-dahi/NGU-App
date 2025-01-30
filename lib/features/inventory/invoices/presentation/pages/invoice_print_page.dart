@@ -14,31 +14,17 @@ class InvoicePrintPage extends StatelessWidget {
         TableRow(
           children: [
             CustomContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text('invoice_printer'.tr),
-                    CustomDropdown(
-                      dropdownValue: ['طابعة ١', 'طابعة ٢'],
-                      onChanged: (value) {},
-                    ),
-                  ],
-                ),
+              child: CustomDropdown(
+                dropdownValue: ['طابعة ١', 'طابعة ٢'],
+                label: 'invoice_printer'.tr,
+                onChanged: (value) {},
               ),
             ),
             CustomContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text('receipt_printer'.tr),
-                    CustomDropdown(
-                      dropdownValue: ['طابعة ٢', 'طابعة 1', 'طابعة 3'],
-                      onChanged: (value) {},
-                    ),
-                  ],
-                ),
+              child: CustomDropdown(
+                dropdownValue: ['طابعة ١', 'طابعة ٢'],
+                label: 'receipt_printer'.tr,
+                onChanged: (value) {},
               ),
             ),
           ],

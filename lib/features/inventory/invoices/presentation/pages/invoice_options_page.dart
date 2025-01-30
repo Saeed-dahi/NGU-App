@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 
 class InvoiceOptionsPage extends StatelessWidget {
-  const InvoiceOptionsPage({super.key});
+  final bool enableEditing;
+  const InvoiceOptionsPage({super.key, required this.enableEditing});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +14,11 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomInputField(
               label: 'goods_account'.tr,
+              enabled: enableEditing,
             ),
             CustomInputField(
               label: 'description'.tr,
+              enabled: enableEditing,
             ),
             const SizedBox()
           ],
@@ -24,13 +27,16 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomInputField(
               label: 'tax_account'.tr,
+              enabled: enableEditing,
             ),
             CustomInputField(
               label: 'tax_amount'.tr,
+              enabled: enableEditing,
               helper: '%',
             ),
             CustomInputField(
               label: 'description'.tr,
+              enabled: enableEditing,
             ),
           ],
         ),
@@ -38,13 +44,16 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomInputField(
               label: 'discount_account'.tr,
+              enabled: enableEditing,
             ),
             CustomInputField(
               label: 'discount_amount'.tr,
+              enabled: enableEditing,
               helper: '%',
             ),
             CustomInputField(
               label: 'description'.tr,
+              enabled: enableEditing,
             ),
           ],
         ),

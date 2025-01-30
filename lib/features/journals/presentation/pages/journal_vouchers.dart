@@ -161,6 +161,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        // TODO: Add enable option
         CustomJournalFields(
             formKey: _formKey,
             journalIdController: _journalIdController,

@@ -102,7 +102,7 @@ class _InvoicePageState extends State<InvoicePage> {
           Expanded(
             child: TabBarView(children: [
               _invoiceTabWidgets(state, isSavedInvoice),
-              const InvoiceOptionsPage(),
+              InvoiceOptionsPage(enableEditing: !isSavedInvoice),
               const InvoicePrintPage()
             ]),
           ),
@@ -114,7 +114,7 @@ class _InvoicePageState extends State<InvoicePage> {
   Column _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
     return Column(
       children: [
-        const CustomInvoiceFields(),
+        CustomInvoiceFields(enable: !isSavedInvoice),
         CustomInvoicePlutoTable(
           invoice: state.invoice,
           readOnly: isSavedInvoice,
