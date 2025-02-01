@@ -147,7 +147,7 @@ class _JournalVouchersState extends State<JournalVouchers> {
           onSaveAsSaved: isSavedJournal ? null : _onSaveAsSaved,
         ),
         const Divider(),
-        _buildHeader(context),
+        _buildHeader(context, isSavedJournal),
         CustomJournalVouchersPlutoTable(
           journalEntity: journalEntity,
           accountsName: _journalBloc.accountsName,
@@ -157,18 +157,20 @@ class _JournalVouchersState extends State<JournalVouchers> {
     );
   }
 
-  _buildHeader(BuildContext context) {
+  _buildHeader(BuildContext context, bool isSavedJournal) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         // TODO: Add enable option
         CustomJournalFields(
-            formKey: _formKey,
-            journalIdController: _journalIdController,
-            journalDocumentNumberController: _journalDocumentNumberController,
-            journalCreatedAtController: _journalDateController,
-            journalDescriptionController: _journalDescriptionController,
-            journalBloc: _journalBloc),
+          formKey: _formKey,
+          journalIdController: _journalIdController,
+          journalDocumentNumberController: _journalDocumentNumberController,
+          journalCreatedAtController: _journalDateController,
+          journalDescriptionController: _journalDescriptionController,
+          journalBloc: _journalBloc,
+          enableEditing: !isSavedJournal,
+        ),
         _statusHint()
       ],
     );

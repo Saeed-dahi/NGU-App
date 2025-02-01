@@ -5,42 +5,38 @@ import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/features/journals/presentation/bloc/journal_bloc.dart';
 
 class CustomJournalFields extends StatelessWidget {
-  const CustomJournalFields({
-    super.key,
-    required GlobalKey<FormState> formKey,
-    required TextEditingController journalIdController,
-    required TextEditingController journalDocumentNumberController,
-    required TextEditingController journalCreatedAtController,
-    required TextEditingController journalDescriptionController,
-    required JournalBloc journalBloc,
-  })  : _formKey = formKey,
-        _journalIdController = journalIdController,
-        _journalDocumentNumberController = journalDocumentNumberController,
-        _journalCreatedAtController = journalCreatedAtController,
-        _journalDescriptionController = journalDescriptionController,
-        _journalBloc = journalBloc;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController journalIdController;
+  final TextEditingController journalDocumentNumberController;
+  final TextEditingController journalCreatedAtController;
+  final TextEditingController journalDescriptionController;
+  final JournalBloc journalBloc;
+  final bool enableEditing;
 
-  final GlobalKey<FormState> _formKey;
-  final TextEditingController _journalIdController;
-  final TextEditingController _journalDocumentNumberController;
-  final TextEditingController _journalCreatedAtController;
-  final TextEditingController _journalDescriptionController;
-  final JournalBloc _journalBloc;
+  const CustomJournalFields(
+      {super.key,
+      required this.formKey,
+      required this.journalIdController,
+      required this.journalDocumentNumberController,
+      required this.journalCreatedAtController,
+      required this.journalDescriptionController,
+      required this.journalBloc,
+      required this.enableEditing});
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Wrap(
         children: [
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.2,
             child: CustomInputField(
               inputType: TextInputType.text,
-              controller: _journalIdController,
+              controller: journalIdController,
               label: 'code'.tr,
               readOnly: true,
-              enabled: false,
+              enabled: enableEditing,
               onTap: () {},
             ),
           ),
@@ -48,21 +44,24 @@ class CustomJournalFields extends StatelessWidget {
             width: MediaQuery.sizeOf(context).width * 0.2,
             child: CustomInputField(
               inputType: TextInputType.text,
-              controller: _journalDocumentNumberController,
+              controller: journalDocumentNumberController,
               label: 'document_number'.tr,
+              enabled: enableEditing,
             ),
           ),
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.2,
             child: CustomDatePicker(
-                dateInput: _journalCreatedAtController,
+                dateInput: journalCreatedAtController,
+                enabled: enableEditing,
                 labelText: 'created_at'.tr),
           ),
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.2,
             child: CustomInputField(
               inputType: TextInputType.text,
-              controller: _journalDescriptionController,
+              controller: journalDescriptionController,
+              enabled: enableEditing,
               label: 'description'.tr,
               onEditingComplete: () {
                 _moveFocusToTable();
@@ -75,8 +74,8 @@ class CustomJournalFields extends StatelessWidget {
   }
 
   void _moveFocusToTable() {
-    _journalBloc.getStateManger.setCurrentCell(
-        _journalBloc.getStateManger.rows.first.cells.values.first, 0);
-    _journalBloc.getStateManger.setKeepFocus(true);
+    journalBloc.getStateManger.setCurrentCell(
+        journalBloc.getStateManger.rows.first.cells.values.first, 0);
+    journalBloc.getStateManger.setKeepFocus(true);
   }
 }

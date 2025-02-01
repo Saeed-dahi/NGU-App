@@ -133,11 +133,13 @@ class _CreateJournalState extends State<CreateJournal> {
 
   _buildHeader(BuildContext context) {
     return CustomJournalFields(
-        formKey: _formKey,
-        journalIdController: _journalIdController,
-        journalDocumentNumberController: _journalDocumentNumberController,
-        journalCreatedAtController: _journalDateController,
-        journalDescriptionController: _journalDescriptionController,
-        journalBloc: _journalBloc);
+      formKey: _formKey,
+      journalIdController: _journalIdController,
+      journalDocumentNumberController: _journalDocumentNumberController,
+      journalCreatedAtController: _journalDateController,
+      journalDescriptionController: _journalDescriptionController,
+      journalBloc: _journalBloc,
+      enableEditing: true,
+    );
   }
 }
