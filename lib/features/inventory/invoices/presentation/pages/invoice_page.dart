@@ -49,8 +49,9 @@ class _InvoicePageState extends State<InvoicePage> {
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
-      ..add(GetAccountsNameEvent())
-      ..add(const ShowInvoiceEvent(invoiceId: 1));
+      ..add(const ShowInvoiceEvent(invoiceId: 1))
+      ..add(GetAccountsNameEvent());
+
     super.initState();
   }
 

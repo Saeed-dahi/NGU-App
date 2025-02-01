@@ -26,7 +26,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   Map<String, dynamic> _accountsName = {};
   Map<String, dynamic> get accountsName => _accountsName;
 
-  late List<String> _accountsNameList;
+  List<String> _accountsNameList = [];
   List<String> get accountsNameList => _accountsNameList;
 
   InvoiceBloc(
