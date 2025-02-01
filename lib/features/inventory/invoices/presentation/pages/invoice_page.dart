@@ -174,6 +174,7 @@ class _InvoicePageState extends State<InvoicePage> {
 
   Column _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         CustomInvoiceFields(
           enable: !isSavedInvoice,
@@ -185,11 +186,32 @@ class _InvoicePageState extends State<InvoicePage> {
           notesController: _notesController,
           numberController: _numberController,
         ),
+        _statusHint(),
         CustomInvoicePlutoTable(
           invoice: state.invoice,
           readOnly: isSavedInvoice,
         ),
       ],
+    );
+  }
+
+  Visibility _statusHint() {
+    return Visibility(
+      visible: _invoiceBloc.getInvoiceEntity.status == Status.saved.name,
+      replacement: Text(
+        'draft'.tr,
+        style: const TextStyle(
+          color: AppColors.red,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      child: Text(
+        'saved'.tr,
+        style: const TextStyle(
+          color: AppColors.green,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }
