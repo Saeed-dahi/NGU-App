@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
@@ -32,12 +33,24 @@ class _InvoicePageState extends State<InvoicePage> {
   late TextEditingController _dueDateController;
   late TextEditingController _notesController;
   late InvoiceAccountEntity _accountController;
+
   late InvoiceAccountEntity _goodsAccountController;
+  late TextEditingController _goodsAccountDescriptionController;
+
+  late InvoiceAccountEntity _taxAccountController;
+  late TextEditingController _taxAmountController;
+  late TextEditingController _taxAccountDescriptionController;
+
+  late InvoiceAccountEntity _discountAccountController;
+  late TextEditingController _discountAmountController;
+  late TextEditingController _discountAccountDescriptionController;
   String? _natureController;
 
   @override
   void initState() {
-    _invoiceBloc = sl<InvoiceBloc>()..add(const ShowInvoiceEvent(invoiceId: 1));
+    _invoiceBloc = sl<InvoiceBloc>()
+      ..add(GetAccountsNameEvent())
+      ..add(const ShowInvoiceEvent(invoiceId: 1));
     super.initState();
   }
 
@@ -48,8 +61,18 @@ class _InvoicePageState extends State<InvoicePage> {
     _dueDateController = TextEditingController(text: invoice.dueDate);
     _notesController = TextEditingController(text: invoice.notes);
     _accountController = invoice.account;
-    _goodsAccountController = invoice.goodsAccount;
     _natureController = invoice.invoiceNature;
+
+    _goodsAccountController = invoice.goodsAccount;
+    _goodsAccountDescriptionController = TextEditingController();
+
+    _taxAccountController = invoice.taxAccount;
+    _taxAccountDescriptionController = TextEditingController();
+    _taxAmountController = TextEditingController();
+
+    _discountAccountController = invoice.discountAccount;
+    _discountAmountController = TextEditingController();
+    _discountAccountDescriptionController = TextEditingController();
   }
 
   @override
@@ -126,7 +149,20 @@ class _InvoicePageState extends State<InvoicePage> {
           Expanded(
             child: TabBarView(children: [
               _invoiceTabWidgets(state, isSavedInvoice),
-              InvoiceOptionsPage(enableEditing: !isSavedInvoice),
+              InvoiceOptionsPage(
+                  enableEditing: !isSavedInvoice,
+                  goodsAccountController: _goodsAccountController,
+                  goodsAccountDescriptionController:
+                      _goodsAccountDescriptionController,
+                  taxAccountController: _taxAccountController,
+                  taxAmountController: _taxAmountController,
+                  taxAccountDescriptionController:
+                      _taxAccountDescriptionController,
+                  discountAccountController: _discountAccountController,
+                  discountAmountController: _discountAmountController,
+                  discountAccountDescriptionController:
+                      _discountAccountDescriptionController,
+                  accountController: _accountController),
               const InvoicePrintPage()
             ]),
           ),

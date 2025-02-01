@@ -1,13 +1,15 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/app_strings.dart';
+import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
-
 part 'invoice_event.dart';
 part 'invoice_state.dart';
 
@@ -16,20 +18,30 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final ShowInvoiceUseCase showInvoiceUseCase;
   final CreateInvoiceUseCase createInvoiceUseCase;
   final UpdateInvoiceUseCase updateInvoiceUseCase;
+  final GetAccountsNameUseCase getAccountsNameUseCase;
 
   late InvoiceEntity _invoiceEntity;
   get getInvoiceEntity => _invoiceEntity;
+
+  Map<String, dynamic> _accountsName = {};
+  Map<String, dynamic> get accountsName => _accountsName;
+
+  late List<String> _accountsNameList;
+  List<String> get accountsNameList => _accountsNameList;
 
   InvoiceBloc(
       {required this.getAllInvoicesUseCase,
       required this.showInvoiceUseCase,
       required this.createInvoiceUseCase,
-      required this.updateInvoiceUseCase})
+      required this.updateInvoiceUseCase,
+      required this.getAccountsNameUseCase})
       : super(InvoiceInitial()) {
     on<GetAllInvoiceEvent>(_getAllInvoices);
     on<ShowInvoiceEvent>(_showInvoice);
     on<CreateInvoiceEvent>(_createInvoice);
     on<UpdateInvoiceEvent>(_updateInvoice);
+
+    on<GetAccountsNameEvent>(_getAccountNameEvent);
   }
 
   FutureOr<void> _getAllInvoices(
@@ -53,7 +65,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       emit(ErrorInvoiceState(error: failure.errors['error']));
     }, (data) {
       _invoiceEntity = data;
-      emit(LoadedInvoiceState(invoice: data));
+      emit(LoadedInvoiceState(invoice: _invoiceEntity));
     });
   }
 
@@ -79,5 +91,33 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     }, (data) {
       print(data);
     });
+  }
+
+  FutureOr<void> _getAccountNameEvent(
+      GetAccountsNameEvent event, Emitter emit) async {
+    final result = await getAccountsNameUseCase();
+
+    result.fold((failure) {
+      emit(ErrorInvoiceState(error: AppStrings.unKnown.tr));
+    }, (data) {
+      _accountsName = data;
+      _accountsNameList = data.entries
+          .map(
+            (e) => !e.key.startsWith('id')
+                ? '${e.key} - ${e.value.toString()}'
+                : '',
+          )
+          .toList();
+    });
+  }
+
+  int getDesiredId(
+    String value,
+  ) {
+    var spitedValue = value.split('-');
+    var desiredId =
+        int.parse(accountsName['id_${spitedValue[0].removeAllWhitespace}']);
+
+    return desiredId;
   }
 }

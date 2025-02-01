@@ -27,3 +27,5 @@ class UpdateInvoiceEvent extends InvoiceEvent {
 
   const UpdateInvoiceEvent({required this.invoice});
 }
+
+class GetAccountsNameEvent extends InvoiceEvent {}

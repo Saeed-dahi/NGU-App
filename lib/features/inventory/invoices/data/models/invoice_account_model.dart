@@ -1,7 +1,7 @@
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 
 class InvoiceAccountModel extends InvoiceAccountEntity {
-  const InvoiceAccountModel(
+  InvoiceAccountModel(
       {required super.id,
       required super.code,
       required super.arName,

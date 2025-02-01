@@ -8,9 +8,16 @@ class CustomAutoComplete extends StatelessWidget {
   final List<String> data;
   void Function(String)? onSelected;
   final String label;
+  final TextEditingValue? initialValue;
+  final bool enabled;
 
   CustomAutoComplete(
-      {super.key, required this.data, this.onSelected, required this.label});
+      {super.key,
+      required this.data,
+      this.onSelected,
+      required this.label,
+      this.initialValue,
+      this.enabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -32,41 +39,12 @@ class CustomAutoComplete extends StatelessWidget {
         }
       },
       onSelected: onSelected,
-      // optionsViewBuilder: (context, onSelected, options) {
-      //   return Align(
-      //     alignment: Alignment.topRight,
-      //     child: Material(
-      //       child: SizedBox(
-      //         width: 300,
-      //         height: 200,
-      //         child: ListView.separated(
-      //           itemBuilder: (BuildContext context, int index) {
-      //             return ListTile(
-      //               title: Text(options.elementAt(index)),
-      //               focusNode: FocusNode(
-      //                 canRequestFocus: true,
-      //               ),
-      //               autofocus: true,
-      //               focusColor: Colors.amber,
-      //               onTap: () {
-      //                 onSelected;
-      //               },
-      //             );
-      //           },
-      //           separatorBuilder: (BuildContext context, int index) {
-      //             return const Divider();
-      //           },
-      //           itemCount: options.length,
-      //         ),
-      //       ),
-      //     ),
-      //   );
-      // },
-
+      initialValue: initialValue,
       fieldViewBuilder: (context, controller, focusNode, onEditingComplete) {
         return CustomInputField(
           controller: controller,
           focusNode: focusNode,
+          enabled: enabled,
           onEditingComplete: onEditingComplete,
           inputType: TextInputType.datetime,
           label: 'account'.tr,

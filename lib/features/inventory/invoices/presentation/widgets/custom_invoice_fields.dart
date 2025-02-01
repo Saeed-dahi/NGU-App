@@ -1,12 +1,13 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
-import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 
 class CustomInvoiceFields extends StatelessWidget {
   final TextEditingController numberController;
@@ -16,7 +17,6 @@ class CustomInvoiceFields extends StatelessWidget {
   final InvoiceAccountEntity accountController;
   final InvoiceAccountEntity goodsAccountController;
   String? natureController;
-
   final bool enable;
 
   CustomInvoiceFields(
@@ -29,21 +29,6 @@ class CustomInvoiceFields extends StatelessWidget {
       required this.goodsAccountController,
       required this.natureController,
       required this.enable});
-
-  _openAccountDialog(BuildContext context, InvoiceAccountEntity query) async {
-    final result = await ShowDialog.showCustomDialog(
-        context: context,
-        content: AccountsTable(
-          initValue: query.code,
-        ));
-
-    query = InvoiceAccountEntity(
-      id: result['account_id'],
-      code: result['account_code'],
-      arName: result['account_name'],
-      enName: result['account_name'],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,26 +62,31 @@ class CustomInvoiceFields extends StatelessWidget {
           ),
           TableRow(
             children: [
-              CustomInputField(
-                label: 'account'.tr,
-                onTap: () => _openAccountDialog(context, accountController),
+              CustomAutoComplete(
+                data: context.read<InvoiceBloc>().accountsNameList,
+                label: 'account',
                 enabled: enable,
-                controller: TextEditingController(
-                    text:
-                        '${accountController.arName} - ${accountController.enName}'),
+                initialValue: TextEditingValue(text: accountController.arName),
+                onSelected: (value) {
+                  accountController.id =
+                      context.read<InvoiceBloc>().getDesiredId(value);
+                },
               ),
               CustomInputField(
                 label: 'address'.tr,
                 enabled: enable,
                 controller: TextEditingController(),
               ),
-              CustomInputField(
-                label: 'goods_account'.tr,
-                onTap: () =>
-                    _openAccountDialog(context, goodsAccountController),
+              CustomAutoComplete(
+                data: context.read<InvoiceBloc>().accountsNameList,
+                label: 'goods_account',
                 enabled: enable,
-                controller:
-                    TextEditingController(text: goodsAccountController.arName),
+                initialValue:
+                    TextEditingValue(text: goodsAccountController.arName),
+                onSelected: (value) {
+                  goodsAccountController.id =
+                      context.read<InvoiceBloc>().getDesiredId(value);
+                },
               ),
               const SizedBox(),
               CustomDropdown(

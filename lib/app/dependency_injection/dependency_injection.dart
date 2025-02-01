@@ -340,11 +340,11 @@ void _product() {
 
 void _invoice() {
   sl.registerFactory(() => InvoiceBloc(
-        getAllInvoicesUseCase: sl(),
-        showInvoiceUseCase: sl(),
-        createInvoiceUseCase: sl(),
-        updateInvoiceUseCase: sl(),
-      ));
+      getAllInvoicesUseCase: sl(),
+      showInvoiceUseCase: sl(),
+      createInvoiceUseCase: sl(),
+      updateInvoiceUseCase: sl(),
+      getAccountsNameUseCase: sl()));
 
   sl.registerLazySingleton(
       () => GetAllInvoicesUseCase(invoiceRepository: sl()));
