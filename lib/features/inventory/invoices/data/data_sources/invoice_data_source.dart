@@ -7,7 +7,8 @@ import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.da
 
 abstract class InvoiceDataSource {
   Future<List<InvoiceModel>> getAllInvoices();
-  Future<InvoiceModel> showInvoice(int invoiceId, String? direction);
+  Future<InvoiceModel> showInvoice(
+      int invoiceId, String? direction, String type);
   Future<InvoiceModel> createInvoice(InvoiceModel invoiceModel);
   Future<InvoiceModel> updateInvoice(InvoiceModel invoiceModel);
 }
@@ -32,9 +33,13 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   }
 
   @override
-  Future<InvoiceModel> showInvoice(int invoiceId, String? direction) async {
+  Future<InvoiceModel> showInvoice(
+      int invoiceId, String? direction, String type) async {
     final response =
-        await networkConnection.get('${APIList.invoice}/$invoiceId', {});
+        await networkConnection.get('${APIList.invoice}/$invoiceId', {
+          'direction':direction,
+          'type':type,
+        });
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);

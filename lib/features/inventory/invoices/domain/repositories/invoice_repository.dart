@@ -5,7 +5,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_enti
 abstract class InvoiceRepository {
   Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices();
   Future<Either<Failure, InvoiceEntity>> showInvoice(
-      int invoiceId, String? direction);
+      int invoiceId, String? direction, String type);
 
   Future<Either<Failure, InvoiceEntity>> createInvoice(
       InvoiceEntity invoiceEntity);

@@ -18,7 +18,8 @@ import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
 
 class InvoicePage extends StatefulWidget {
-  const InvoicePage({super.key});
+  final String type;
+  const InvoicePage({super.key, required this.type});
 
   @override
   State<InvoicePage> createState() => _InvoicePageState();
@@ -49,7 +50,7 @@ class _InvoicePageState extends State<InvoicePage> {
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
-      ..add(const ShowInvoiceEvent(invoiceId: 1))
+      ..add(ShowInvoiceEvent(invoiceId: 1, type: widget.type))
       ..add(GetAccountsNameEvent());
 
     super.initState();

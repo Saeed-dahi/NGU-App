@@ -110,15 +110,17 @@ class StockControlSection extends StatelessWidget {
           title: 'invoice'.tr,
           icon: Icons.receipt,
           onTap: () {
-            context
-                .read<TabCubit>()
-                .addNewTab(title: type.tr, content: const InvoicePage());
+            context.read<TabCubit>().addNewTab(
+                title: type.tr,
+                content: InvoicePage(
+                  type: type,
+                ));
           }),
-      BasicListTile(
-        title: 'all_invoices'.tr,
-        icon: Icons.view_list,
-        onTap: () {},
-      ),
+      // BasicListTile(
+      //   title: 'all_invoices'.tr,
+      //   icon: Icons.view_list,
+      //   onTap: () {},
+      // ),
       BasicListTile(
         title: 'invoices_table'.tr,
         icon: Icons.table_chart,

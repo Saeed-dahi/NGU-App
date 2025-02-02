@@ -12,8 +12,9 @@ class GetAllInvoiceEvent extends InvoiceEvent {}
 class ShowInvoiceEvent extends InvoiceEvent {
   final int invoiceId;
   final String? direction;
+  final String type;
 
-  const ShowInvoiceEvent({required this.invoiceId, this.direction});
+  const ShowInvoiceEvent({required this.invoiceId, this.direction,required this.type});
 }
 
 class CreateInvoiceEvent extends InvoiceEvent {
