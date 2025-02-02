@@ -5,7 +5,6 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
-
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
@@ -89,11 +88,11 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   Color _getBackgroundColor(String type) {
-    if (InvoiceType.sales.name == type) {
+    if (InvoiceType.purchase.name == type) {
       return Colors.green;
     }
-    if (InvoiceType.purchase.name == type) {
-      return Colors.white;
+    if (InvoiceType.sales.name == type) {
+      return Colors.blue;
     }
     return Colors.white;
   }
@@ -126,10 +125,12 @@ class _InvoicePageState extends State<InvoicePage> {
         state.invoice.status == Status.saved.name ? true : false;
     // bool isSavedInvoice = false;
     return Container(
+      padding: const EdgeInsets.only(
+          right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-          color:
-              _getBackgroundColor(state.invoice.invoiceType).withOpacity(0.1)),
+        borderRadius: BorderRadius.circular(Dimensions.borderRadius),
+        color: _getBackgroundColor(state.invoice.invoiceType).withOpacity(0.05),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -173,9 +174,10 @@ class _InvoicePageState extends State<InvoicePage> {
     );
   }
 
-  Column _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+  Widget _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
+    return ListView(
+      // crossAxisAlignment: CrossAxisAlignment.end,
+      // alignment: WrapAlignment.end,
       children: [
         CustomInvoiceFields(
           enable: !isSavedInvoice,
@@ -192,6 +194,7 @@ class _InvoicePageState extends State<InvoicePage> {
           invoice: state.invoice,
           readOnly: isSavedInvoice,
         ),
+        _buildCustomFooter(context)
       ],
     );
   }
@@ -212,6 +215,25 @@ class _InvoicePageState extends State<InvoicePage> {
           color: AppColors.green,
           fontWeight: FontWeight.bold,
         ),
+      ),
+    );
+  }
+
+  Widget _buildCustomFooter(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(Dimensions.primaryPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity!.totalTax}%): ${(_invoiceBloc.getInvoiceEntity!.subTotal * _invoiceBloc.getInvoiceEntity!.totalTax / 100).toString()}',
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          Text(
+            '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity!.total).toString()}',
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ],
       ),
     );
   }

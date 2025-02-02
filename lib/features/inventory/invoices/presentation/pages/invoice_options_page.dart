@@ -43,7 +43,7 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomAutoComplete(
               data: context.read<InvoiceBloc>().accountsNameList,
-              label: 'goods_account',
+              label: 'goods_account'.tr,
               enabled: enableEditing,
               initialValue:
                   TextEditingValue(text: goodsAccountController.arName),
@@ -63,7 +63,7 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomAutoComplete(
               data: context.read<InvoiceBloc>().accountsNameList,
-              label: 'tax_account',
+              label: 'tax_account'.tr,
               enabled: enableEditing,
               initialValue: TextEditingValue(text: taxAccountController.arName),
               onSelected: (value) {
@@ -86,7 +86,7 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomAutoComplete(
               data: context.read<InvoiceBloc>().accountsNameList,
-              label: 'discount_account',
+              label: 'discount_account'.tr,
               enabled: enableEditing,
               initialValue:
                   TextEditingValue(text: discountAccountController.arName),

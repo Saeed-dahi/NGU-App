@@ -64,7 +64,7 @@ class CustomInvoiceFields extends StatelessWidget {
             children: [
               CustomAutoComplete(
                 data: context.read<InvoiceBloc>().accountsNameList,
-                label: 'account',
+                label: 'account'.tr,
                 enabled: enable,
                 initialValue: TextEditingValue(text: accountController.arName),
                 onSelected: (value) {
@@ -79,7 +79,7 @@ class CustomInvoiceFields extends StatelessWidget {
               ),
               CustomAutoComplete(
                 data: context.read<InvoiceBloc>().accountsNameList,
-                label: 'goods_account',
+                label: 'goods_account'.tr,
                 enabled: enable,
                 initialValue:
                     TextEditingValue(text: goodsAccountController.arName),

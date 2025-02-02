@@ -22,6 +22,7 @@ class CustomPlutoTable extends StatelessWidget {
   final PlutoGridController controller;
   final bool showDefaultHeader;
   final Widget customHeader;
+  final Widget? customFooter;
   final VoidCallback? customEnterKeyAction;
   final bool localeSearch;
   final bool showRowNumbers;
@@ -39,6 +40,7 @@ class CustomPlutoTable extends StatelessWidget {
       this.onChanged,
       this.customEnterKeyAction,
       this.customHeader = const SizedBox(),
+      this.customFooter,
       this.showDefaultHeader = false,
       this.localeSearch = false,
       this.showRowNumbers = false});
@@ -86,6 +88,9 @@ class CustomPlutoTable extends StatelessWidget {
                         ? _createHeader(stateManager, context)
                         : const SizedBox();
                   },
+                  createFooter: (stateManager) {
+                    return customFooter ?? const SizedBox();
+                  },
                 ),
               ),
             ],
@@ -96,46 +101,50 @@ class CustomPlutoTable extends StatelessWidget {
   }
 
   Widget _createHeader(stateManager, BuildContext context) {
-    return Row(
-      children: [
-        customHeader,
-        Visibility(
-          child: Row(
+    return mode != PlutoGridMode.readOnly
+        ? Row(
             children: [
-              CustomIconButton(
-                icon: Icons.repeat,
-                tooltip: '${'repeat'.tr} ${'row'.tr} ${'previous'.tr} (F5)',
-                onPressed: () {
-                  controller.repeatPreviousRow();
-                },
-              ),
-              CustomIconButton(
-                icon: Icons.repeat_one,
-                tooltip: '${'repeat'.tr} ${'column'.tr} ${'previous'.tr} (F4)',
-                onPressed: () {
-                  controller.repeatPreviousColumn();
-                },
-              ),
-              CustomIconButton(
-                icon: Icons.insert_drive_file_outlined,
-                tooltip: '${'insert'.tr} ${'row'.tr} (F1)',
-                onPressed: () {
-                  controller.appendNewRow();
-                },
-              ),
-              CustomIconButton(
-                icon: Icons.delete_forever,
-                tooltip: '${'delete'.tr} ${'row'.tr} (F9)',
-                onPressed: () {
-                  controller.removeCurrentRow();
-                  context.read<PlutoGridCubit>().onChangeFunction();
-                },
+              customHeader,
+              Visibility(
+                child: Row(
+                  children: [
+                    CustomIconButton(
+                      icon: Icons.repeat,
+                      tooltip:
+                          '${'repeat'.tr} ${'row'.tr} ${'previous'.tr} (F5)',
+                      onPressed: () {
+                        controller.repeatPreviousRow();
+                      },
+                    ),
+                    CustomIconButton(
+                      icon: Icons.repeat_one,
+                      tooltip:
+                          '${'repeat'.tr} ${'column'.tr} ${'previous'.tr} (F4)',
+                      onPressed: () {
+                        controller.repeatPreviousColumn();
+                      },
+                    ),
+                    CustomIconButton(
+                      icon: Icons.insert_drive_file_outlined,
+                      tooltip: '${'insert'.tr} ${'row'.tr} (F1)',
+                      onPressed: () {
+                        controller.appendNewRow();
+                      },
+                    ),
+                    CustomIconButton(
+                      icon: Icons.delete_forever,
+                      tooltip: '${'delete'.tr} ${'row'.tr} (F9)',
+                      onPressed: () {
+                        controller.removeCurrentRow();
+                        context.read<PlutoGridCubit>().onChangeFunction();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
+          )
+        : const SizedBox();
   }
 
   PlutoGridConfiguration _tableConfig() {

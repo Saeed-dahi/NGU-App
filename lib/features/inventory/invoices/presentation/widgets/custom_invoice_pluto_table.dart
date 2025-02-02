@@ -23,18 +23,18 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       child: CustomPlutoTable(
         controller: _plutoGridController,
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
+        noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
+        columns: _buildColumns(),
+        rows: _buildFilledRows().toList(),
+        showDefaultHeader: true,
+        customHeader: _buildCustomHeader(context),
+        onChanged: (p0) {
+          _plutoGridController.onChanged(p0);
+        },
         onLoaded: (event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
         },
-        noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
-        columns: _buildColumns(),
-        rows: invoice != null ? _buildFilledRows().toList() : _buildEmptyRows(),
-        onChanged: (p0) {
-          _plutoGridController.onChanged(p0);
-        },
-        showDefaultHeader: true,
-        customHeader: _buildCustomHeader(context),
       ),
     );
   }
@@ -54,10 +54,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     return [
       _buildCustomColumn('code'),
       _buildCustomColumn('name'),
-      _buildCustomColumn('quantity'),
+      _buildCustomColumn('quantity', showSum: true),
       _buildCustomColumn('unit', readOnly: true),
-      _buildCustomColumn('price'),
-      _buildCustomColumn('total'),
+      _buildCustomColumn('price', showSum: true),
+      _buildCustomColumn('total', showSum: true),
       _buildCustomColumn('discount'),
       _buildCustomColumn('notes'),
     ];
@@ -86,23 +86,8 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     );
   }
 
-  List<PlutoRow> _buildEmptyRows() {
-    return [
-      PlutoRow(
-        type: PlutoRowTypeGroup(children: FilteredList()),
-        cells: {
-          'debit': PlutoCell(value: ''),
-          'credit': PlutoCell(value: ''),
-          'account_code': PlutoCell(value: ''),
-          'account_name': PlutoCell(value: ''),
-          'description': PlutoCell(value: ''),
-          'document_number': PlutoCell(value: ''),
-        },
-      )
-    ];
-  }
-
-  PlutoColumn _buildCustomColumn(String title, {bool readOnly = false}) {
+  PlutoColumn _buildCustomColumn(String title,
+      {bool readOnly = false, bool showSum = false}) {
     return PlutoColumn(
       title: title.tr,
       field: title,
@@ -114,7 +99,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       enableFilterMenuItem: false,
       readOnly: readOnly,
       footerRenderer: (context) {
-        if (title == 'debit' || title == 'credit') {
+        if (showSum) {
           return Center(
             child: Text(
               _plutoGridController

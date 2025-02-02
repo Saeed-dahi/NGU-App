@@ -47,7 +47,7 @@ class CustomAutoComplete extends StatelessWidget {
           enabled: enabled,
           onEditingComplete: onEditingComplete,
           inputType: TextInputType.datetime,
-          label: 'account'.tr,
+          label: label,
           prefixIcon: const Icon(
             Icons.search,
             color: AppColors.primaryColor,
