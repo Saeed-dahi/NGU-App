@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';

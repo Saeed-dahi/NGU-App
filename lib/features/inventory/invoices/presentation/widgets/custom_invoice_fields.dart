@@ -16,10 +16,9 @@ class CustomInvoiceFields extends StatelessWidget {
   final TextEditingController notesController;
   final InvoiceAccountEntity accountController;
   final InvoiceAccountEntity goodsAccountController;
-  String? natureController;
   final bool enable;
 
-  CustomInvoiceFields(
+  const CustomInvoiceFields(
       {super.key,
       required this.numberController,
       required this.dateController,
@@ -27,7 +26,6 @@ class CustomInvoiceFields extends StatelessWidget {
       required this.notesController,
       required this.accountController,
       required this.goodsAccountController,
-      required this.natureController,
       required this.enable});
 
   @override
@@ -92,11 +90,11 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomDropdown(
                 dropdownValue: getEnumValues(AccountNature.values),
                 onChanged: (value) {
-                  natureController = value!;
+                  context.read<InvoiceBloc>().natureController = value;
                 },
                 label: 'invoice_nature'.tr,
                 enabled: enable,
-                value: natureController,
+                value: context.read<InvoiceBloc>().natureController!,
               ),
             ],
           ),

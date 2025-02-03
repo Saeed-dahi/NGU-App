@@ -74,10 +74,12 @@ class InvoiceOptionsPage extends StatelessWidget {
             CustomInputField(
               label: 'tax_amount'.tr,
               enabled: enableEditing,
+              controller: taxAmountController,
               helper: '%',
             ),
             CustomInputField(
               label: 'description'.tr,
+              controller: taxAccountDescriptionController,
               enabled: enableEditing,
             ),
           ],
@@ -98,10 +100,12 @@ class InvoiceOptionsPage extends StatelessWidget {
             CustomInputField(
               label: 'discount_amount'.tr,
               enabled: enableEditing,
+              controller: discountAmountController,
               helper: '%',
             ),
             CustomInputField(
               label: 'description'.tr,
+              controller: discountAccountDescriptionController,
               enabled: enableEditing,
             ),
           ],

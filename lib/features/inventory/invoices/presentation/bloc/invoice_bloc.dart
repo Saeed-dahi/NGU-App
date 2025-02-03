@@ -3,12 +3,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
+
+import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 part 'invoice_event.dart';
 part 'invoice_state.dart';
 
@@ -20,13 +24,41 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final GetAccountsNameUseCase getAccountsNameUseCase;
 
   late InvoiceEntity _invoiceEntity;
-  get getInvoiceEntity => _invoiceEntity;
+  InvoiceEntity get getInvoiceEntity => _invoiceEntity;
 
   Map<String, dynamic> _accountsName = {};
   Map<String, dynamic> get accountsName => _accountsName;
 
   List<String> _accountsNameList = [];
   List<String> get accountsNameList => _accountsNameList;
+
+  late PlutoGridStateManager _stateManager;
+  PlutoGridStateManager get getStateManger => _stateManager;
+  set setStateManager(PlutoGridStateManager sts) => _stateManager = sts;
+
+  String? natureController;
+
+  List<Map> get invoiceItems {
+    // return _stateManager.rows.where((row) {
+    //   final productUnitId = row.cells['account_code']?.value;
+    //   final quantity =      row.cells['quantity']?.value;
+    //   final price =         row.cells['price']?.value;
+
+    //   return productUnitId != null &&
+    //       productUnitId.toString().isNotEmpty &&
+    //       quantity != null &&
+    //       quantity.toString().isNotEmpty;
+    // }).map((row) {
+    //   return {};
+    // }).toList();
+    return _stateManager.rows.map((row) {
+      return {
+        'product_unit_id': row.cells['account_code']?.value,
+        'quantity': row.cells['quantity']?.value,
+        'price': row.cells['price']?.value
+      };
+    }).toList();
+  }
 
   InvoiceBloc(
       {required this.getAllInvoicesUseCase,
@@ -48,18 +80,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     emit(LoadingInvoiceState());
 
     final result = await getAllInvoicesUseCase();
-    result.fold((failure) {
-      print(failure);
-    }, (data) {
-      print(data);
-    });
+    result.fold((failure) {}, (data) {});
   }
 
   FutureOr<void> _showInvoice(
       ShowInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
-
-    final result = await showInvoiceUseCase(event.invoiceId, event.direction,event.type);
+    final result =
+        await showInvoiceUseCase(event.invoiceId, event.direction, event.type);
     result.fold((failure) {
       emit(ErrorInvoiceState(error: failure.errors['error']));
     }, (data) {
@@ -73,11 +101,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     emit(LoadingInvoiceState());
 
     final result = await createInvoiceUseCase(event.invoice);
-    result.fold((failure) {
-      print(failure);
-    }, (data) {
-      print(data);
-    });
+    result.fold((failure) {}, (data) {});
   }
 
   FutureOr<void> _updateInvoice(
@@ -85,10 +109,20 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     emit(LoadingInvoiceState());
 
     final result = await updateInvoiceUseCase(event.invoice);
+
     result.fold((failure) {
-      print(failure);
+      if (failure is ValidationFailure) {
+        List<String> errors = failure.errors.entries.map(
+          (error) {
+            return '${error.value.join('\n')}';
+          },
+        ).toList();
+        ShowSnackBar.showValidationSnackbar(messages: errors);
+        emit(LoadedInvoiceState(invoice: _invoiceEntity));
+      }
     }, (data) {
-      print(data);
+      _invoiceEntity = data;
+      emit(LoadedInvoiceState(invoice: data));
     });
   }
 

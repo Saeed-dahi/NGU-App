@@ -44,7 +44,6 @@ class _InvoicePageState extends State<InvoicePage> {
   late InvoiceAccountEntity _discountAccountController;
   late TextEditingController _discountAmountController;
   late TextEditingController _discountAccountDescriptionController;
-  String? _natureController;
 
   @override
   void initState() {
@@ -62,17 +61,19 @@ class _InvoicePageState extends State<InvoicePage> {
     _dueDateController = TextEditingController(text: invoice.dueDate);
     _notesController = TextEditingController(text: invoice.notes);
     _accountController = invoice.account;
-    _natureController = invoice.invoiceNature;
+    _invoiceBloc.natureController = invoice.invoiceNature;
 
     _goodsAccountController = invoice.goodsAccount;
     _goodsAccountDescriptionController = TextEditingController();
 
     _taxAccountController = invoice.taxAccount;
     _taxAccountDescriptionController = TextEditingController();
-    _taxAmountController = TextEditingController();
+    _taxAmountController =
+        TextEditingController(text: invoice.totalTax.toString());
 
     _discountAccountController = invoice.discountAccount;
-    _discountAmountController = TextEditingController();
+    _discountAmountController =
+        TextEditingController(text: invoice.totalDiscount.toString());
     _discountAccountDescriptionController = TextEditingController();
   }
 
@@ -85,6 +86,36 @@ class _InvoicePageState extends State<InvoicePage> {
     _numberController.dispose();
 
     super.dispose();
+  }
+
+  InvoiceEntity invoiceEntity(Enum status) {
+    return InvoiceEntity(
+        id: _invoiceBloc.getInvoiceEntity.id,
+        invoiceNumber: int.parse(_numberController.text),
+        invoiceType: widget.type,
+        date: _dateController.text,
+        dueDate: _dueDateController.text,
+        status: status.name,
+        invoiceNature: _invoiceBloc.natureController!,
+        currency: '',
+        subTotal: 0,
+        total: 0,
+        notes: _notesController.text,
+        account: _accountController,
+        goodsAccount: _goodsAccountController,
+        taxAccount: _taxAccountController,
+        totalTax: double.tryParse(_taxAmountController.text) ?? 5,
+        discountAccount: _discountAccountController,
+        totalDiscount: double.tryParse(_taxAmountController.text) ?? 0,
+        invoiceItems: const []);
+  }
+
+  void _onSaveAsDraft() {
+    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
+  }
+
+  void _onSaveAsSaved() {
+    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.saved)));
   }
 
   Color _getBackgroundColor(String type) {
@@ -123,7 +154,6 @@ class _InvoicePageState extends State<InvoicePage> {
   Widget _pageBody(LoadedInvoiceState state) {
     bool isSavedInvoice =
         state.invoice.status == Status.saved.name ? true : false;
-    // bool isSavedInvoice = false;
     return Container(
       padding: const EdgeInsets.only(
           right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
@@ -136,8 +166,8 @@ class _InvoicePageState extends State<InvoicePage> {
         children: [
           InvoiceToolBar(
             invoice: state.invoice,
-            onSaveAsDraft: isSavedInvoice ? () {} : null,
-            onSaveAsSaved: isSavedInvoice ? null : () {},
+            onSaveAsDraft: isSavedInvoice ? _onSaveAsDraft : null,
+            onSaveAsSaved: isSavedInvoice ? null : _onSaveAsSaved,
           ),
           TabBar(
             labelColor: AppColors.black,
@@ -176,8 +206,6 @@ class _InvoicePageState extends State<InvoicePage> {
 
   Widget _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
     return ListView(
-      // crossAxisAlignment: CrossAxisAlignment.end,
-      // alignment: WrapAlignment.end,
       children: [
         CustomInvoiceFields(
           enable: !isSavedInvoice,
@@ -185,7 +213,6 @@ class _InvoicePageState extends State<InvoicePage> {
           dateController: _dateController,
           dueDateController: _dueDateController,
           goodsAccountController: _goodsAccountController,
-          natureController: _natureController,
           notesController: _notesController,
           numberController: _numberController,
         ),
@@ -226,11 +253,11 @@ class _InvoicePageState extends State<InvoicePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity!.totalTax}%): ${(_invoiceBloc.getInvoiceEntity!.subTotal * _invoiceBloc.getInvoiceEntity!.totalTax / 100).toString()}',
+            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal * _invoiceBloc.getInvoiceEntity.totalTax / 100).toString()}',
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           Text(
-            '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity!.total).toString()}',
+            '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity.total).toString()}',
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ],

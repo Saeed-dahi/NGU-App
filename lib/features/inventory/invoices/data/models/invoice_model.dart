@@ -55,13 +55,14 @@ class InvoiceModel extends InvoiceEntity {
       'type': invoiceType,
       'date': date,
       'due_date': dueDate,
+      'status': status,
       'invoice_nature': invoiceNature,
-      'currency': currency,
+      'currency': 'AED',
       'notes': notes,
-      'account_id': account,
-      'goods_account_id': 12,
-      'total_tax_account': taxAccount,
-      'total_discount_account': discountAccount
+      'account_id': account.id,
+      'goods_account_id': goodsAccount.id,
+      'total_tax_account': taxAccount.id,
+      'total_discount_account': discountAccount.id
     };
   }
 }

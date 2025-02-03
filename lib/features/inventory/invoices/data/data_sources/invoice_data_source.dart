@@ -37,9 +37,9 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
       int invoiceId, String? direction, String type) async {
     final response =
         await networkConnection.get('${APIList.invoice}/$invoiceId', {
-          'direction':direction,
-          'type':type,
-        });
+      'direction': direction,
+      'type': type,
+    });
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -63,8 +63,20 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
 
   @override
   Future<InvoiceModel> updateInvoice(InvoiceModel invoiceModel) async {
-    final response = await networkConnection
-        .put('${APIList.invoice}/${invoiceModel.id}', {});
+    final response =
+        await networkConnection.put('${APIList.invoice}/${invoiceModel.id}', {
+      'invoice': invoiceModel.toJson(),
+      'items': [
+        {
+          'product_unit_id': 1,
+          'description': 1,
+          'quantity': 1,
+          'price': 1,
+          'tax_amount': 1,
+          'discount_amount': 1,
+        }
+      ]
+    });
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
