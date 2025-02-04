@@ -132,40 +132,43 @@ class _InvoicePageState extends State<InvoicePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _invoiceBloc,
-      child: BlocConsumer<InvoiceBloc, InvoiceState>(
+      child: BlocBuilder<InvoiceBloc, InvoiceState>(
         builder: (context, state) {
           if (state is ErrorInvoiceState) {
             return Center(child: MessageScreen(text: state.error));
           }
+
           if (state is LoadedInvoiceState) {
             _initControllers(_invoiceBloc.getInvoiceEntity);
             return DefaultTabController(
               length: 3,
-              child: _pageBody(state),
+              child: _pageBody(),
             );
           }
           return Center(child: Loaders.loading());
         },
-        listener: (context, state) {},
       ),
     );
   }
 
-  Widget _pageBody(LoadedInvoiceState state) {
+  Widget _pageBody() {
     bool isSavedInvoice =
-        state.invoice.status == Status.saved.name ? true : false;
+        _invoiceBloc.getInvoiceEntity.status == Status.saved.name
+            ? true
+            : false;
     return Container(
       padding: const EdgeInsets.only(
           right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-        color: _getBackgroundColor(state.invoice.invoiceType).withOpacity(0.05),
+        color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType)
+            .withOpacity(0.05),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InvoiceToolBar(
-            invoice: state.invoice,
+            invoice: _invoiceBloc.getInvoiceEntity,
             onSaveAsDraft: isSavedInvoice ? _onSaveAsDraft : null,
             onSaveAsSaved: isSavedInvoice ? null : _onSaveAsSaved,
           ),
@@ -181,21 +184,23 @@ class _InvoicePageState extends State<InvoicePage> {
           const SizedBox(height: 10),
           Expanded(
             child: TabBarView(children: [
-              _invoiceTabWidgets(state, isSavedInvoice),
+              _invoiceTabWidgets(isSavedInvoice),
               InvoiceOptionsPage(
-                  enableEditing: !isSavedInvoice,
-                  goodsAccountController: _goodsAccountController,
-                  goodsAccountDescriptionController:
-                      _goodsAccountDescriptionController,
-                  taxAccountController: _taxAccountController,
-                  taxAmountController: _taxAmountController,
-                  taxAccountDescriptionController:
-                      _taxAccountDescriptionController,
-                  discountAccountController: _discountAccountController,
-                  discountAmountController: _discountAmountController,
-                  discountAccountDescriptionController:
-                      _discountAccountDescriptionController,
-                  accountController: _accountController),
+                enableEditing: !isSavedInvoice,
+                goodsAccountController: _goodsAccountController,
+                goodsAccountDescriptionController:
+                    _goodsAccountDescriptionController,
+                taxAccountController: _taxAccountController,
+                taxAmountController: _taxAmountController,
+                taxAccountDescriptionController:
+                    _taxAccountDescriptionController,
+                discountAccountController: _discountAccountController,
+                discountAmountController: _discountAmountController,
+                discountAccountDescriptionController:
+                    _discountAccountDescriptionController,
+                accountController: _accountController,
+                errors: _invoiceBloc.getValidationErrors,
+              ),
               const InvoicePrintPage()
             ]),
           ),
@@ -204,7 +209,7 @@ class _InvoicePageState extends State<InvoicePage> {
     );
   }
 
-  Widget _invoiceTabWidgets(LoadedInvoiceState state, bool isSavedInvoice) {
+  Widget _invoiceTabWidgets(bool isSavedInvoice) {
     return ListView(
       children: [
         CustomInvoiceFields(
@@ -215,10 +220,11 @@ class _InvoicePageState extends State<InvoicePage> {
           goodsAccountController: _goodsAccountController,
           notesController: _notesController,
           numberController: _numberController,
+          errors: _invoiceBloc.getValidationErrors,
         ),
         _statusHint(),
         CustomInvoicePlutoTable(
-          invoice: state.invoice,
+          invoice: _invoiceBloc.getInvoiceEntity,
           readOnly: isSavedInvoice,
         ),
         _buildCustomFooter(context)

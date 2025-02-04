@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
-import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
@@ -31,6 +30,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
   List<String> _accountsNameList = [];
   List<String> get accountsNameList => _accountsNameList;
+
+  Map<String, dynamic> _validationErrors = {};
+  Map<String, dynamic> get getValidationErrors => _validationErrors;
 
   late PlutoGridStateManager _stateManager;
   PlutoGridStateManager get getStateManger => _stateManager;
@@ -112,16 +114,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     result.fold((failure) {
       if (failure is ValidationFailure) {
-        List<String> errors = failure.errors.entries.map(
-          (error) {
-            return '${error.value.join('\n')}';
-          },
-        ).toList();
-        ShowSnackBar.showValidationSnackbar(messages: errors);
+        _validationErrors = failure.errors;
         emit(LoadedInvoiceState(invoice: _invoiceEntity));
+      } else {
+        emit(ErrorInvoiceState(error: failure.errors['error']));
       }
     }, (data) {
       _invoiceEntity = data;
+      _validationErrors = {};
       emit(LoadedInvoiceState(invoice: data));
     });
   }

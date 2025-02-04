@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class InvoiceOptionsPage extends StatelessWidget {
   final TextEditingController discountAccountDescriptionController;
 
   final InvoiceAccountEntity accountController;
+  final Map<String, dynamic> errors;
 
   const InvoiceOptionsPage(
       {super.key,
@@ -33,7 +35,8 @@ class InvoiceOptionsPage extends StatelessWidget {
       required this.discountAccountController,
       required this.discountAmountController,
       required this.discountAccountDescriptionController,
-      required this.accountController});
+      required this.accountController,
+      required this.errors});
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +54,12 @@ class InvoiceOptionsPage extends StatelessWidget {
                 goodsAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);
               },
+              error: errors['goods_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
               enabled: enableEditing,
+              error: errors['description']?.join('\n'),
             ),
             const SizedBox()
           ],
@@ -70,17 +75,21 @@ class InvoiceOptionsPage extends StatelessWidget {
                 taxAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);
               },
+              error: errors['tax_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'tax_amount'.tr,
               enabled: enableEditing,
               controller: taxAmountController,
               helper: '%',
+              format: FilteringTextInputFormatter.digitsOnly,
+              error: errors['tax_amount']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
               controller: taxAccountDescriptionController,
               enabled: enableEditing,
+              error: errors['description']?.join('\n'),
             ),
           ],
         ),
@@ -96,17 +105,21 @@ class InvoiceOptionsPage extends StatelessWidget {
                 discountAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);
               },
+              error: errors['discount_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'discount_amount'.tr,
               enabled: enableEditing,
               controller: discountAmountController,
               helper: '%',
+              format: FilteringTextInputFormatter.digitsOnly,
+              error: errors['discount_amount']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
               controller: discountAccountDescriptionController,
               enabled: enableEditing,
+              error: errors['description']?.join('\n'),
             ),
           ],
         ),

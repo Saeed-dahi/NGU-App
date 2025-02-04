@@ -31,6 +31,7 @@ Map<String, String> ar = {
   'alert': 'تنبيه',
   'each': 'كل',
   'notes': 'ملاحظات',
+  'refresh': 'تحديث',
 
   // Accounts
   'accounting': 'المحاسبة',

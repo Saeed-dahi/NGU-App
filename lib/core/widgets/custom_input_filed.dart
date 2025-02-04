@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
@@ -24,6 +24,7 @@ class CustomInputField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onFieldSubmitted;
   final TextInputType inputType;
+  TextInputFormatter? format;
   VoidCallback? onEditingComplete;
 
   TextEditingController? controller = TextEditingController();
@@ -31,7 +32,8 @@ class CustomInputField extends StatelessWidget {
   CustomInputField(
       {super.key,
       this.label = '',
-      this.inputType = TextInputType.name,
+      this.inputType = TextInputType.text,
+      this.format,
       this.hint = '',
       this.prefix = '',
       this.suffix = '',
@@ -60,7 +62,10 @@ class CustomInputField extends StatelessWidget {
         focusNode: focusNode,
         enabled: enabled,
         controller: controller,
-        keyboardType: TextInputType.text,
+        keyboardType: inputType,
+        inputFormatters: [
+          format ?? FilteringTextInputFormatter.singleLineFormatter
+        ],
         readOnly: readOnly,
         onTap: onTap,
         validator: (value) {

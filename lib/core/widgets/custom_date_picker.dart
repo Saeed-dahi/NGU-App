@@ -13,6 +13,7 @@ class CustomDatePicker extends StatefulWidget {
   final bool required;
   final bool readOnly;
   final bool autofocus;
+  String? error;
   CustomDatePicker(
       {super.key,
       required this.dateInput,
@@ -21,7 +22,8 @@ class CustomDatePicker extends StatefulWidget {
       this.autofocus = false,
       this.required = true,
       this.enabled = true,
-      this.readOnly = false});
+      this.readOnly = false,
+      this.error});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,6 +51,7 @@ class _CustomDatePicker extends State<CustomDatePicker> {
       readOnly: widget.readOnly,
       enabled: widget.enabled,
       required: widget.required,
+      error: widget.error,
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
             context: context,

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class CustomInvoiceFields extends StatelessWidget {
   final InvoiceAccountEntity accountController;
   final InvoiceAccountEntity goodsAccountController;
   final bool enable;
+  final Map<String, dynamic> errors;
 
   const CustomInvoiceFields(
       {super.key,
@@ -26,7 +28,8 @@ class CustomInvoiceFields extends StatelessWidget {
       required this.notesController,
       required this.accountController,
       required this.goodsAccountController,
-      required this.enable});
+      required this.enable,
+      required this.errors});
 
   @override
   Widget build(BuildContext context) {
@@ -39,22 +42,27 @@ class CustomInvoiceFields extends StatelessWidget {
                 label: 'invoice_number'.tr,
                 enabled: enable,
                 controller: numberController,
+                error: errors['invoice_number']?.join('\n'),
+                format: FilteringTextInputFormatter.digitsOnly,
               ),
               CustomDatePicker(
                 dateInput: dateController,
                 labelText: 'created_at'.tr,
                 enabled: enable,
+                error: errors['date']?.join('\n'),
               ),
               CustomDatePicker(
                 dateInput: dueDateController,
                 labelText: 'due_date'.tr,
                 enabled: enable,
+                error: errors['due_date']?.join('\n'),
               ),
               const SizedBox(),
               CustomInputField(
                 label: 'notes'.tr,
                 enabled: enable,
                 controller: notesController,
+                error: errors['notes']?.join('\n'),
               ),
             ],
           ),
@@ -69,11 +77,13 @@ class CustomInvoiceFields extends StatelessWidget {
                   accountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);
                 },
+                error: errors['account']?.join('\n'),
               ),
               CustomInputField(
                 label: 'address'.tr,
                 enabled: enable,
                 controller: TextEditingController(),
+                error: errors['address']?.join('\n'),
               ),
               CustomAutoComplete(
                 data: context.read<InvoiceBloc>().accountsNameList,
@@ -85,6 +95,7 @@ class CustomInvoiceFields extends StatelessWidget {
                   goodsAccountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);
                 },
+                error: errors['goods_account']?.join('\n'),
               ),
               const SizedBox(),
               CustomDropdown(
@@ -95,6 +106,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 label: 'invoice_nature'.tr,
                 enabled: enable,
                 value: context.read<InvoiceBloc>().natureController!,
+                error: errors['invoice_nature']?.join('\n'),
               ),
             ],
           ),

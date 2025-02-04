@@ -10,6 +10,7 @@ class CustomDropdown extends StatelessWidget {
   final String suffix;
   final String helper;
   final String? value;
+  final String? error;
   final bool enabled;
   final bool required;
   final bool readOnly;
@@ -23,6 +24,7 @@ class CustomDropdown extends StatelessWidget {
       this.prefix = '',
       this.suffix = '',
       this.helper = '',
+      this.error,
       this.value,
       this.enabled = true,
       this.required = true,
@@ -61,6 +63,7 @@ class CustomDropdown extends StatelessWidget {
           suffixText: suffix,
           helperText: helper,
           enabled: enabled,
+          errorText: error,
 
           // icon: Text(helper),
           hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),

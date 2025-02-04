@@ -9,6 +9,7 @@ class CustomAutoComplete extends StatelessWidget {
   final String label;
   final TextEditingValue? initialValue;
   final bool enabled;
+  String? error;
 
   CustomAutoComplete(
       {super.key,
@@ -16,7 +17,8 @@ class CustomAutoComplete extends StatelessWidget {
       this.onSelected,
       required this.label,
       this.initialValue,
-      this.enabled = true});
+      this.enabled = true,
+      this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class CustomAutoComplete extends StatelessWidget {
           onEditingComplete: onEditingComplete,
           inputType: TextInputType.datetime,
           label: label,
+          error: error,
           prefixIcon: const Icon(
             Icons.search,
             color: AppColors.primaryColor,
