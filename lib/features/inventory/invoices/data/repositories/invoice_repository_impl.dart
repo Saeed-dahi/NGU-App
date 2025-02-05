@@ -13,9 +13,10 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
       {required this.apiHelper, required this.invoiceDataSource});
 
   @override
-  Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices() async {
+  Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices(
+      String type) async {
     return await apiHelper
-        .safeApiCall(() => invoiceDataSource.getAllInvoices());
+        .safeApiCall(() => invoiceDataSource.getAllInvoices(type));
   }
 
   @override

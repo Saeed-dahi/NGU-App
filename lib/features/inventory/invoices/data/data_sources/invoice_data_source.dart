@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
+
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
 
 abstract class InvoiceDataSource {
-  Future<List<InvoiceModel>> getAllInvoices();
+  Future<List<InvoiceModel>> getAllInvoices(String type);
   Future<InvoiceModel> showInvoice(
       int invoiceId, String? direction, String type);
   Future<InvoiceModel> createInvoice(InvoiceModel invoiceModel);
@@ -19,7 +20,7 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   InvoiceDataSourceImpl({required this.networkConnection});
 
   @override
-  Future<List<InvoiceModel>> getAllInvoices() async {
+  Future<List<InvoiceModel>> getAllInvoices(String type) async {
     final response = await networkConnection.get(APIList.invoice, {});
     var decodedJson = jsonDecode(response.body);
 

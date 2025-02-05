@@ -8,7 +8,7 @@ class GetAllInvoicesUseCase {
 
   GetAllInvoicesUseCase({required this.invoiceRepository});
 
-  Future<Either<Failure, List<InvoiceEntity>>> call() async {
-    return await invoiceRepository.getAllInvoices();
+  Future<Either<Failure, List<InvoiceEntity>>> call(String type) async {
+    return await invoiceRepository.getAllInvoices(type);
   }
 }

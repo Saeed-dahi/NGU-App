@@ -7,14 +7,19 @@ sealed class InvoiceEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetAllInvoiceEvent extends InvoiceEvent {}
+class GetAllInvoiceEvent extends InvoiceEvent {
+  final String type;
+
+  const GetAllInvoiceEvent({required this.type});
+}
 
 class ShowInvoiceEvent extends InvoiceEvent {
   final int invoiceId;
   final String? direction;
   final String type;
 
-  const ShowInvoiceEvent({required this.invoiceId, this.direction,required this.type});
+  const ShowInvoiceEvent(
+      {required this.invoiceId, this.direction, required this.type});
 }
 
 class CreateInvoiceEvent extends InvoiceEvent {

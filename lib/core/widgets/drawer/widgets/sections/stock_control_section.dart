@@ -11,6 +11,7 @@ import 'package:ngu_app/core/widgets/lists_tile/custom_list_tile.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/categories/presentation/pages/categories_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_page.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoices_page.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/product_record.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:ngu_app/features/inventory/stores/presentation/pages/stores_table.dart';
@@ -124,7 +125,13 @@ class StockControlSection extends StatelessWidget {
       BasicListTile(
         title: 'invoices_table'.tr,
         icon: Icons.table_chart,
-        onTap: () {},
+        onTap: () {
+          context.read<TabCubit>().addNewTab(
+              title: type.tr,
+              content: InvoicesPage(
+                type: type,
+              ));
+        },
       ),
       BasicListTile(
         title: 'ready_invoices_table'.tr,

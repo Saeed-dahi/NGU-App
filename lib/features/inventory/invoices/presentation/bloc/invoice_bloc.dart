@@ -81,8 +81,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       GetAllInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
 
-    final result = await getAllInvoicesUseCase();
-    result.fold((failure) {}, (data) {});
+    final result = await getAllInvoicesUseCase(event.type);
+    result.fold((failure) {
+      emit(ErrorInvoiceState(error: failure.errors['error']));
+    }, (data) {
+      emit(LoadedAllInvoicesState(invoices: data));
+    });
   }
 
   FutureOr<void> _showInvoice(

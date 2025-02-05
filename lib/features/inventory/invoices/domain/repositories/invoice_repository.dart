@@ -3,7 +3,7 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 
 abstract class InvoiceRepository {
-  Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices();
+  Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices(String type);
   Future<Either<Failure, InvoiceEntity>> showInvoice(
       int invoiceId, String? direction, String type);
 
