@@ -60,18 +60,18 @@ class _InvoicePageState extends State<InvoicePage> {
     _dateController = TextEditingController(text: invoice.date);
     _dueDateController = TextEditingController(text: invoice.dueDate);
     _notesController = TextEditingController(text: invoice.notes);
-    _accountController = invoice.account;
+    _accountController = invoice.account!;
     _invoiceBloc.natureController = invoice.invoiceNature;
 
-    _goodsAccountController = invoice.goodsAccount;
+    _goodsAccountController = invoice.goodsAccount!;
     _goodsAccountDescriptionController = TextEditingController();
 
-    _taxAccountController = invoice.taxAccount;
+    _taxAccountController = invoice.taxAccount!;
     _taxAccountDescriptionController = TextEditingController();
     _taxAmountController =
         TextEditingController(text: invoice.totalTax.toString());
 
-    _discountAccountController = invoice.discountAccount;
+    _discountAccountController = invoice.discountAccount!;
     _discountAmountController =
         TextEditingController(text: invoice.totalDiscount.toString());
     _discountAccountDescriptionController = TextEditingController();
@@ -161,7 +161,7 @@ class _InvoicePageState extends State<InvoicePage> {
           right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-        color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType)
+        color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType!)
             .withOpacity(0.05),
       ),
       child: Column(
@@ -259,7 +259,7 @@ class _InvoicePageState extends State<InvoicePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal * _invoiceBloc.getInvoiceEntity.totalTax / 100).toString()}',
+            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal! * _invoiceBloc.getInvoiceEntity.totalTax! / 100).toString()}',
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           Text(

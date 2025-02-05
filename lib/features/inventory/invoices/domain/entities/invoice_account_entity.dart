@@ -1,16 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class InvoiceAccountEntity extends Equatable {
-  int id;
-  final String code;
-  final String arName;
-  final String enName;
+  int? id;
+  final String? code;
+  final String? arName;
+  final String? enName;
 
-  InvoiceAccountEntity(
-      {required this.id,
-      required this.code,
-      required this.arName,
-      required this.enName});
+  InvoiceAccountEntity({this.id, this.code, this.arName, this.enName});
 
   @override
   List<Object?> get props => [

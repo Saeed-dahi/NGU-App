@@ -64,7 +64,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   }
 
   Iterable<PlutoRow> _buildFilledRows() {
-    return invoice!.invoiceItems.map(
+    return invoice!.invoiceItems!.map(
       (invoiceItem) {
         var product = invoiceItem.productUnit.product;
         var unit = invoiceItem.productUnit.unit;

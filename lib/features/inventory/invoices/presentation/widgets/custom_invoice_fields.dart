@@ -72,7 +72,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 data: context.read<InvoiceBloc>().accountsNameList,
                 label: 'account'.tr,
                 enabled: enable,
-                initialValue: TextEditingValue(text: accountController.arName),
+                initialValue: TextEditingValue(text: accountController.arName!),
                 onSelected: (value) {
                   accountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);
@@ -90,7 +90,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 label: 'goods_account'.tr,
                 enabled: enable,
                 initialValue:
-                    TextEditingValue(text: goodsAccountController.arName),
+                    TextEditingValue(text: goodsAccountController.arName!),
                 onSelected: (value) {
                   goodsAccountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);

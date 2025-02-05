@@ -60,7 +60,7 @@ class CustomInvoicesPlutoTable extends StatelessWidget {
           data: invoice.id,
           cells: {
             'invoice_number': PlutoCell(value: invoice.invoiceNumber),
-            'status': PlutoCell(value: invoice.status.tr),
+            'status': PlutoCell(value: invoice.status!.tr),
             'date': PlutoCell(value: invoice.date),
             'account_name': PlutoCell(value: 'invoice.account.arName'),
             'sub_total': PlutoCell(value: invoice.subTotal),

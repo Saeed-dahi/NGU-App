@@ -110,6 +110,6 @@ class InvoiceToolBar extends StatelessWidget {
     context.read<InvoiceBloc>().add(ShowInvoiceEvent(
         invoiceId: invoiceId ?? 1,
         direction: direction,
-        type: invoice!.invoiceType));
+        type: invoice!.invoiceType!));
   }
 }
