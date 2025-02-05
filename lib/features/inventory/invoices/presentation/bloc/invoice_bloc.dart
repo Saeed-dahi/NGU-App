@@ -6,6 +6,7 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
@@ -106,7 +107,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       CreateInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
 
-    final result = await createInvoiceUseCase(event.invoice);
+    final result = await createInvoiceUseCase(event.invoice, []);
     result.fold((failure) {}, (data) {});
   }
 
@@ -114,7 +115,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       UpdateInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
 
-    final result = await updateInvoiceUseCase(event.invoice);
+    final result = await updateInvoiceUseCase(event.invoice, [
+      const InvoiceItemsEntityParams(
+          productUnitId: 1, description: '1', price: 10, quantity: 20)
+    ]);
 
     result.fold((failure) {
       if (failure is ValidationFailure) {

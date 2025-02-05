@@ -2,7 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_data_source.dart';
+import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/repositories/invoice_repository.dart';
 
 class InvoiceRepositoryImpl implements InvoiceRepository {
@@ -28,15 +30,22 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
 
   @override
   Future<Either<Failure, InvoiceEntity>> createInvoice(
-      InvoiceEntity invoiceEntity) async {
-    return await apiHelper.safeApiCall(
-        () => invoiceDataSource.createInvoice(invoiceEntity.toModel()));
+      InvoiceEntity invoiceEntity, List<InvoiceItemsEntityParams> items) async {
+    return await apiHelper.safeApiCall(() => invoiceDataSource.createInvoice(
+        invoiceEntity.toModel(), _getItemsModel(items)));
   }
 
   @override
   Future<Either<Failure, InvoiceEntity>> updateInvoice(
-      InvoiceEntity invoiceEntity) async {
-    return await apiHelper.safeApiCall(
-        () => invoiceDataSource.updateInvoice(invoiceEntity.toModel()));
+      InvoiceEntity invoiceEntity, List<InvoiceItemsEntityParams> items) async {
+    return await apiHelper.safeApiCall(() => invoiceDataSource.updateInvoice(
+        invoiceEntity.toModel(), _getItemsModel(items)));
+  }
+
+  List<InvoiceItemsModelParams> _getItemsModel(
+      List<InvoiceItemsEntityParams> items) {
+    return items.map((item) {
+      return item.toModel();
+    }).toList();
   }
 }

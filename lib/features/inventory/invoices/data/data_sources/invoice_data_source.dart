@@ -5,13 +5,16 @@ import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
+import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
 
 abstract class InvoiceDataSource {
   Future<List<InvoiceModel>> getAllInvoices(String type);
   Future<InvoiceModel> showInvoice(
       int invoiceId, String? direction, String type);
-  Future<InvoiceModel> createInvoice(InvoiceModel invoiceModel);
-  Future<InvoiceModel> updateInvoice(InvoiceModel invoiceModel);
+  Future<InvoiceModel> createInvoice(
+      InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
+  Future<InvoiceModel> updateInvoice(
+      InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -52,7 +55,8 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   }
 
   @override
-  Future<InvoiceModel> createInvoice(InvoiceModel invoiceModel) async {
+  Future<InvoiceModel> createInvoice(
+      InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items) async {
     final response = await networkConnection.post(APIList.invoice, {});
     var decodedJson = jsonDecode(response.body);
 
@@ -64,20 +68,12 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   }
 
   @override
-  Future<InvoiceModel> updateInvoice(InvoiceModel invoiceModel) async {
+  Future<InvoiceModel> updateInvoice(
+      InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items) async {
     final response =
         await networkConnection.put('${APIList.invoice}/${invoiceModel.id}', {
       'invoice': invoiceModel.toJson(),
-      'items': [
-        {
-          'product_unit_id': 1,
-          'description': 1,
-          'quantity': 1,
-          'price': 1,
-          'tax_amount': 1,
-          'discount_amount': 1,
-        }
-      ]
+      'items': items.map((item) => item.toJson()).toList()
     });
     var decodedJson = jsonDecode(response.body);
 
