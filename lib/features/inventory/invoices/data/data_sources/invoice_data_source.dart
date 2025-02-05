@@ -21,7 +21,8 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
 
   @override
   Future<List<InvoiceModel>> getAllInvoices(String type) async {
-    final response = await networkConnection.get(APIList.invoice, {});
+    final response =
+        await networkConnection.get(APIList.invoice, {'type': type});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
