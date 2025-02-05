@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
@@ -6,6 +7,8 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/main.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInvoicePlutoTable extends StatelessWidget {
@@ -34,6 +37,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         onLoaded: (event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
+          context.read<InvoiceBloc>().setStateManager = event.stateManager;
         },
       ),
     );

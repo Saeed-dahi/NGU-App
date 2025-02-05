@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
@@ -41,7 +42,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
   String? natureController;
 
-  List<Map> get invoiceItems {
+  List<InvoiceItemsEntityParams> get invoiceItems {
     // return _stateManager.rows.where((row) {
     //   final productUnitId = row.cells['account_code']?.value;
     //   final quantity =      row.cells['quantity']?.value;
@@ -55,11 +56,11 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     //   return {};
     // }).toList();
     return _stateManager.rows.map((row) {
-      return {
-        'product_unit_id': row.cells['account_code']?.value,
-        'quantity': row.cells['quantity']?.value,
-        'price': row.cells['price']?.value
-      };
+      return InvoiceItemsEntityParams(
+          productUnitId: row.cells['code']?.value,
+          quantity:
+              FormatterClass.doubleFormatter(row.cells['quantity']?.value),
+          price: FormatterClass.doubleFormatter(row.cells['price']?.value));
     }).toList();
   }
 
@@ -115,10 +116,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       UpdateInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
 
-    final result = await updateInvoiceUseCase(event.invoice, [
-      const InvoiceItemsEntityParams(
-          productUnitId: 1, description: '1', price: 10, quantity: 20)
-    ]);
+    final result = await updateInvoiceUseCase(event.invoice, invoiceItems);
 
     result.fold((failure) {
       if (failure is ValidationFailure) {
@@ -130,6 +128,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     }, (data) {
       _invoiceEntity = data;
       _validationErrors = {};
+
       emit(LoadedInvoiceState(invoice: data));
     });
   }

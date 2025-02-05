@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
 
 class InvoiceItemsEntityParams extends Equatable {
-  final int? productUnitId;
+  final String? productUnitId;
   final String? description;
   final double? quantity;
   final double? price;
