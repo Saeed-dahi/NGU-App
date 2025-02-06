@@ -27,7 +27,6 @@ class InvoicePage extends StatefulWidget {
 class _InvoicePageState extends State<InvoicePage> {
   late final InvoiceBloc _invoiceBloc;
 
-  final _formKey = GlobalKey<FormState>();
   late TextEditingController _numberController;
   late TextEditingController _dateController;
   late TextEditingController _dueDateController;
@@ -96,7 +95,7 @@ class _InvoicePageState extends State<InvoicePage> {
       date: _dateController.text,
       dueDate: _dueDateController.text,
       status: status.name,
-      invoiceNature: _invoiceBloc.natureController!,
+      invoiceNature: _invoiceBloc.natureController,
       notes: _notesController.text,
       account: _accountController,
       goodsAccount: _goodsAccountController,

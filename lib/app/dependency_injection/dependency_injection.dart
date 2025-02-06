@@ -43,6 +43,7 @@ import 'package:ngu_app/features/inventory/invoices/data/repositories/invoice_re
 import 'package:ngu_app/features/inventory/invoices/domain/repositories/invoice_repository.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
@@ -339,18 +340,24 @@ void _product() {
 }
 
 void _invoice() {
-  sl.registerFactory(() => InvoiceBloc(
+  sl.registerFactory(
+    () => InvoiceBloc(
       getAllInvoicesUseCase: sl(),
       showInvoiceUseCase: sl(),
       createInvoiceUseCase: sl(),
       updateInvoiceUseCase: sl(),
-      getAccountsNameUseCase: sl()));
+      getAccountsNameUseCase: sl(),
+      getCreateInvoiceFormDataUseCase: sl(),
+    ),
+  );
 
   sl.registerLazySingleton(
       () => GetAllInvoicesUseCase(invoiceRepository: sl()));
   sl.registerLazySingleton(() => ShowInvoiceUseCase(invoiceRepository: sl()));
   sl.registerLazySingleton(() => CreateInvoiceUseCase(invoiceRepository: sl()));
   sl.registerLazySingleton(() => UpdateInvoiceUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetCreateInvoiceFormDataUseCase(invoiceRepository: sl()));
 
   sl.registerLazySingleton<InvoiceRepository>(
       () => InvoiceRepositoryImpl(apiHelper: sl(), invoiceDataSource: sl()));

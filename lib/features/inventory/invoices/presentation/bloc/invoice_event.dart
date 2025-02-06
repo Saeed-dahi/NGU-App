@@ -35,3 +35,9 @@ class UpdateInvoiceEvent extends InvoiceEvent {
 }
 
 class GetAccountsNameEvent extends InvoiceEvent {}
+
+class GetCreateInvoiceFormData extends InvoiceEvent {
+  final String type;
+
+  const GetCreateInvoiceFormData({required this.type});
+}

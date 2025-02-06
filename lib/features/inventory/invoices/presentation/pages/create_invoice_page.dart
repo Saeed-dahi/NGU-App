@@ -27,7 +27,6 @@ class CreateInvoicePage extends StatefulWidget {
 class _CreateInvoicePageState extends State<CreateInvoicePage> {
   late final InvoiceBloc _invoiceBloc;
 
-  final _formKey = GlobalKey<FormState>();
   late TextEditingController _numberController;
   late TextEditingController _dateController;
   late TextEditingController _dueDateController;
@@ -47,18 +46,20 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
 
   @override
   void initState() {
-    _invoiceBloc = sl<InvoiceBloc>()..add(GetAccountsNameEvent());
+    _invoiceBloc = sl<InvoiceBloc>()
+      ..add(GetAccountsNameEvent())
+      ..add(GetCreateInvoiceFormData(type: widget.type));
 
     super.initState();
   }
 
   _initControllers(InvoiceEntity invoice) {
-    _numberController = TextEditingController();
-    _dateController = TextEditingController();
-    _dueDateController = TextEditingController();
-    _notesController = TextEditingController();
+    _numberController =
+        TextEditingController(text: invoice.invoiceNumber.toString());
+    _dateController = TextEditingController(text: invoice.date);
+    _dueDateController = TextEditingController(text: invoice.dueDate);
+    _notesController = TextEditingController(text: invoice.notes);
     _accountController = invoice.account!;
-    _invoiceBloc.natureController = invoice.invoiceNature;
 
     _goodsAccountController = invoice.goodsAccount!;
     _goodsAccountDescriptionController = TextEditingController();
@@ -92,8 +93,8 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
       invoiceType: widget.type,
       date: _dateController.text,
       dueDate: _dueDateController.text,
+      invoiceNature: _invoiceBloc.natureController,
       status: status.name,
-      invoiceNature: _invoiceBloc.natureController!,
       notes: _notesController.text,
       account: _accountController,
       goodsAccount: _goodsAccountController,
@@ -105,11 +106,11 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   }
 
   void _onSaveAsDraft() {
-    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
+    _invoiceBloc.add(CreateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
   }
 
   void _onSaveAsSaved() {
-    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.saved)));
+    _invoiceBloc.add(CreateInvoiceEvent(invoice: invoiceEntity(Status.saved)));
   }
 
   Color _getBackgroundColor(String type) {
@@ -131,7 +132,6 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
           if (state is ErrorInvoiceState) {
             return Center(child: MessageScreen(text: state.error));
           }
-
           if (state is LoadedInvoiceState) {
             _initControllers(_invoiceBloc.getInvoiceEntity);
             return DefaultTabController(

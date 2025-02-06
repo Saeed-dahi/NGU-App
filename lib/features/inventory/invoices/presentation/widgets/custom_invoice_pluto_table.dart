@@ -8,7 +8,6 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
-import 'package:ngu_app/main.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInvoicePlutoTable extends StatelessWidget {
@@ -28,7 +27,9 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(),
-        rows: _buildFilledRows().toList(),
+        rows: invoice == null
+            ? _buildEmptyRows().toList()
+            : _buildFilledRows().toList(),
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
@@ -64,6 +65,24 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('total', showSum: true),
       _buildCustomColumn('discount'),
       _buildCustomColumn('notes'),
+    ];
+  }
+
+  List<PlutoRow> _buildEmptyRows() {
+    return [
+      PlutoRow(
+        type: PlutoRowTypeGroup(children: FilteredList()),
+        cells: {
+          'code': PlutoCell(value: ''),
+          'name': PlutoCell(value: ''),
+          'quantity': PlutoCell(value: ''),
+          'unit': PlutoCell(value: ''),
+          'price': PlutoCell(value: ''),
+          'total': PlutoCell(value: ''),
+          'discount': PlutoCell(value: ''),
+          'notes': PlutoCell(value: ''),
+        },
+      )
     ];
   }
 

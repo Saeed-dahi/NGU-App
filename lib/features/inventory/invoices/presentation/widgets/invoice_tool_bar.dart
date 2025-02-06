@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/create_invoice_page.dart';
 
 class InvoiceToolBar extends StatelessWidget {
   final InvoiceEntity? invoice;
@@ -42,7 +44,15 @@ class InvoiceToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add'.tr,
-          onPressed: () {},
+          onPressed: () {
+            context.read<TabCubit>().addNewTab(
+                title: 'new',
+                content: CreateInvoicePage(
+                    type: context
+                        .read<InvoiceBloc>()
+                        .getInvoiceEntity
+                        .invoiceType!));
+          },
         ),
         Visibility(
           visible: onSaveAsSaved != null,

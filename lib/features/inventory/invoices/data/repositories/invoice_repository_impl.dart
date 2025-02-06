@@ -42,6 +42,13 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
         invoiceEntity.toModel(), _getItemsModel(items)));
   }
 
+  @override
+  Future<Either<Failure, InvoiceEntity>> getCreateInvoiceFormData(
+      String type) async {
+    return await apiHelper
+        .safeApiCall(() => invoiceDataSource.getCreateInvoiceFormData(type));
+  }
+
   List<InvoiceItemsModelParams> _getItemsModel(
       List<InvoiceItemsEntityParams> items) {
     return items.map((item) {

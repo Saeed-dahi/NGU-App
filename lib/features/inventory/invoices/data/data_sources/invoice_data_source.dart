@@ -15,6 +15,8 @@ abstract class InvoiceDataSource {
       InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
   Future<InvoiceModel> updateInvoice(
       InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
+
+  Future<InvoiceModel> getCreateInvoiceFormData(String type);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -57,7 +59,10 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   @override
   Future<InvoiceModel> createInvoice(
       InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items) async {
-    final response = await networkConnection.post(APIList.invoice, {});
+    final response = await networkConnection.post(APIList.invoice, {
+      'invoice': invoiceModel.toJson(),
+      'items': items.map((item) => item.toJson()).toList()
+    });
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -77,6 +82,19 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
     });
     var decodedJson = jsonDecode(response.body);
 
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    InvoiceModel invoice = InvoiceModel.fromJson(decodedJson['data']);
+
+    return invoice;
+  }
+
+  @override
+  Future<InvoiceModel> getCreateInvoiceFormData(String type) async {
+    final response = await networkConnection
+        .get('${APIList.invoice}/create', {'type': type});
+
+    var decodedJson = jsonDecode(response.body);
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
     InvoiceModel invoice = InvoiceModel.fromJson(decodedJson['data']);

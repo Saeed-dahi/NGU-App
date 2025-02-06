@@ -105,7 +105,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 },
                 label: 'invoice_nature'.tr,
                 enabled: enable,
-                value: context.read<InvoiceBloc>().natureController!,
+                value: context.read<InvoiceBloc>().natureController,
                 error: errors['invoice_nature']?.join('\n'),
               ),
             ],

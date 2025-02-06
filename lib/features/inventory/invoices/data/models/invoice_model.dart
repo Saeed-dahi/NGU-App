@@ -31,7 +31,7 @@ class InvoiceModel extends InvoiceEntity {
       date: json['date'] ?? '',
       dueDate: json['due_date'] ?? '',
       status: json['status'] ?? '',
-      invoiceNature: json['invoice_nature'] ?? '',
+      invoiceNature: json['invoice_nature'],
       currency: json['currency'] ?? '',
       subTotal: double.tryParse(json['sub_total'].toString()),
       total: double.tryParse(json['total'].toString()),

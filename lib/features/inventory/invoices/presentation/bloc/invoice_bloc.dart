@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_enti
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 
@@ -23,6 +25,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final CreateInvoiceUseCase createInvoiceUseCase;
   final UpdateInvoiceUseCase updateInvoiceUseCase;
   final GetAccountsNameUseCase getAccountsNameUseCase;
+  final GetCreateInvoiceFormDataUseCase getCreateInvoiceFormDataUseCase;
 
   late InvoiceEntity _invoiceEntity;
   InvoiceEntity get getInvoiceEntity => _invoiceEntity;
@@ -43,18 +46,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   String? natureController;
 
   List<InvoiceItemsEntityParams> get invoiceItems {
-    // return _stateManager.rows.where((row) {
-    //   final productUnitId = row.cells['account_code']?.value;
-    //   final quantity =      row.cells['quantity']?.value;
-    //   final price =         row.cells['price']?.value;
-
-    //   return productUnitId != null &&
-    //       productUnitId.toString().isNotEmpty &&
-    //       quantity != null &&
-    //       quantity.toString().isNotEmpty;
-    // }).map((row) {
-    //   return {};
-    // }).toList();
     return _stateManager.rows.map((row) {
       return InvoiceItemsEntityParams(
           productUnitId: row.cells['code']?.value,
@@ -69,13 +60,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       required this.showInvoiceUseCase,
       required this.createInvoiceUseCase,
       required this.updateInvoiceUseCase,
-      required this.getAccountsNameUseCase})
+      required this.getAccountsNameUseCase,
+      required this.getCreateInvoiceFormDataUseCase})
       : super(InvoiceInitial()) {
     on<GetAllInvoiceEvent>(_getAllInvoices);
     on<ShowInvoiceEvent>(_showInvoice);
     on<CreateInvoiceEvent>(_createInvoice);
     on<UpdateInvoiceEvent>(_updateInvoice);
-
+    on<GetCreateInvoiceFormData>(_createFormData);
     on<GetAccountsNameEvent>(_getAccountNameEvent);
   }
 
@@ -108,8 +100,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       CreateInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
 
-    final result = await createInvoiceUseCase(event.invoice, []);
-    result.fold((failure) {}, (data) {});
+    final result = await createInvoiceUseCase(event.invoice, invoiceItems);
+    _createAndUpdateFoldResult(result, event, emit);
+    _invoiceEntity = event.invoice;
   }
 
   FutureOr<void> _updateInvoice(
@@ -118,19 +111,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     final result = await updateInvoiceUseCase(event.invoice, invoiceItems);
 
-    result.fold((failure) {
-      if (failure is ValidationFailure) {
-        _validationErrors = failure.errors;
-        emit(LoadedInvoiceState(invoice: _invoiceEntity));
-      } else {
-        emit(ErrorInvoiceState(error: failure.errors['error']));
-      }
-    }, (data) {
-      _invoiceEntity = data;
-      _validationErrors = {};
-
-      emit(LoadedInvoiceState(invoice: data));
-    });
+    _createAndUpdateFoldResult(result, event, emit);
   }
 
   FutureOr<void> _getAccountNameEvent(
@@ -148,6 +129,33 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
                 : '',
           )
           .toList();
+    });
+  }
+
+  void _createAndUpdateFoldResult(Either<Failure, InvoiceEntity> result, event,
+      Emitter<InvoiceState> emit) {
+    result.fold((failure) {
+      if (failure is ValidationFailure) {
+        _validationErrors = failure.errors;
+        emit(LoadedInvoiceState(invoice: _invoiceEntity));
+      } else {
+        emit(ErrorInvoiceState(error: failure.errors['error']));
+      }
+    }, (data) {
+      _invoiceEntity = data;
+      _validationErrors = {};
+      emit(LoadedInvoiceState(invoice: data));
+    });
+  }
+
+  FutureOr<void> _createFormData(
+      GetCreateInvoiceFormData event, Emitter<InvoiceState> emit) async {
+    final result = await getCreateInvoiceFormDataUseCase(event.type);
+
+    result.fold((failure) {}, (data) {
+      _invoiceEntity = data;
+      natureController = null;
+      emit(LoadedInvoiceState(invoice: data));
     });
   }
 

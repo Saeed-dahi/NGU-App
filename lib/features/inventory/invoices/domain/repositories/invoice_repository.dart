@@ -12,4 +12,6 @@ abstract class InvoiceRepository {
       InvoiceEntity invoiceEntity, List<InvoiceItemsEntityParams> items);
   Future<Either<Failure, InvoiceEntity>> updateInvoice(
       InvoiceEntity invoiceEntity, List<InvoiceItemsEntityParams> items);
+
+  Future<Either<Failure, InvoiceEntity>> getCreateInvoiceFormData(String type);
 }
