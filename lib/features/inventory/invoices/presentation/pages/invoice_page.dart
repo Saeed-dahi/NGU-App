@@ -90,24 +90,21 @@ class _InvoicePageState extends State<InvoicePage> {
 
   InvoiceEntity invoiceEntity(Enum status) {
     return InvoiceEntity(
-        id: _invoiceBloc.getInvoiceEntity.id,
-        invoiceNumber: int.parse(_numberController.text),
-        invoiceType: widget.type,
-        date: _dateController.text,
-        dueDate: _dueDateController.text,
-        status: status.name,
-        invoiceNature: _invoiceBloc.natureController!,
-        currency: '',
-        subTotal: 0,
-        total: 0,
-        notes: _notesController.text,
-        account: _accountController,
-        goodsAccount: _goodsAccountController,
-        taxAccount: _taxAccountController,
-        totalTax: double.tryParse(_taxAmountController.text) ?? 5,
-        discountAccount: _discountAccountController,
-        totalDiscount: double.tryParse(_taxAmountController.text) ?? 0,
-        invoiceItems: const []);
+      id: _invoiceBloc.getInvoiceEntity.id,
+      invoiceNumber: int.parse(_numberController.text),
+      invoiceType: widget.type,
+      date: _dateController.text,
+      dueDate: _dueDateController.text,
+      status: status.name,
+      invoiceNature: _invoiceBloc.natureController!,
+      notes: _notesController.text,
+      account: _accountController,
+      goodsAccount: _goodsAccountController,
+      taxAccount: _taxAccountController,
+      totalTax: double.tryParse(_taxAmountController.text) ?? 5,
+      discountAccount: _discountAccountController,
+      totalDiscount: double.tryParse(_taxAmountController.text) ?? 0,
+    );
   }
 
   void _onSaveAsDraft() {
@@ -185,27 +182,29 @@ class _InvoicePageState extends State<InvoicePage> {
           Expanded(
             child: TabBarView(children: [
               _invoiceTabWidgets(isSavedInvoice),
-              InvoiceOptionsPage(
-                enableEditing: !isSavedInvoice,
-                goodsAccountController: _goodsAccountController,
-                goodsAccountDescriptionController:
-                    _goodsAccountDescriptionController,
-                taxAccountController: _taxAccountController,
-                taxAmountController: _taxAmountController,
-                taxAccountDescriptionController:
-                    _taxAccountDescriptionController,
-                discountAccountController: _discountAccountController,
-                discountAmountController: _discountAmountController,
-                discountAccountDescriptionController:
-                    _discountAccountDescriptionController,
-                accountController: _accountController,
-                errors: _invoiceBloc.getValidationErrors,
-              ),
+              _invoiceOptionPage(isSavedInvoice),
               const InvoicePrintPage()
             ]),
           ),
         ],
       ),
+    );
+  }
+
+  InvoiceOptionsPage _invoiceOptionPage(bool isSavedInvoice) {
+    return InvoiceOptionsPage(
+      enableEditing: !isSavedInvoice,
+      goodsAccountController: _goodsAccountController,
+      goodsAccountDescriptionController: _goodsAccountDescriptionController,
+      taxAccountController: _taxAccountController,
+      taxAmountController: _taxAmountController,
+      taxAccountDescriptionController: _taxAccountDescriptionController,
+      discountAccountController: _discountAccountController,
+      discountAmountController: _discountAmountController,
+      discountAccountDescriptionController:
+          _discountAccountDescriptionController,
+      accountController: _accountController,
+      errors: _invoiceBloc.getValidationErrors,
     );
   }
 
