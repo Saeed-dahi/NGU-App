@@ -45,6 +45,7 @@ class InvoiceToolBar extends StatelessWidget {
           icon: Icons.add,
           tooltip: 'add'.tr,
           onPressed: () {
+            context.read<TabCubit>().removeLastTab();
             context.read<TabCubit>().addNewTab(
                 title: 'new',
                 content: CreateInvoicePage(

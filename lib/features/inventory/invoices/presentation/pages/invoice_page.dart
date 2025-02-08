@@ -158,7 +158,7 @@ class _InvoicePageState extends State<InvoicePage> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.borderRadius),
         color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType!)
-            .withOpacity(0.05),
+            .withOpacity(0.08),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

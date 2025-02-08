@@ -21,7 +21,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.5,
+      height: MediaQuery.sizeOf(context).height * 0.45,
       child: CustomPlutoTable(
         controller: _plutoGridController,
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
@@ -61,7 +61,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('name'),
       _buildCustomColumn('quantity', showSum: true),
       _buildCustomColumn('unit', readOnly: true),
-      _buildCustomColumn('price', showSum: true),
+      _buildCustomColumn('price'),
       _buildCustomColumn('total', showSum: true),
       _buildCustomColumn('discount'),
       _buildCustomColumn('notes'),
