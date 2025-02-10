@@ -10,6 +10,20 @@ class InvoiceAccountEntity extends Equatable {
   InvoiceAccountEntity(
       {this.id, this.code, this.arName, this.enName, this.description});
 
+  InvoiceAccountEntity copyWith(
+      {int? id,
+      String? code,
+      String? arName,
+      String? enName,
+      String? description}) {
+    return InvoiceAccountEntity(
+        id: id,
+        arName: arName,
+        enName: enName,
+        code: code,
+        description: description);
+  }
+
   @override
   List<Object?> get props => [id, code, arName, enName, description];
 }

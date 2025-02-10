@@ -209,7 +209,6 @@ class _InvoicePageState extends State<InvoicePage> {
       discountAmountController: _discountAmountController,
       discountAccountDescriptionController:
           _discountAccountDescriptionController,
-      accountController: _accountController,
       errors: _invoiceBloc.getValidationErrors,
     );
   }

@@ -16,12 +16,12 @@ class CustomInvoiceFields extends StatelessWidget {
   final TextEditingController dueDateController;
   final TextEditingController notesController;
   final TextEditingController addressController;
-  final InvoiceAccountEntity accountController;
-  final InvoiceAccountEntity goodsAccountController;
+  InvoiceAccountEntity accountController;
+  InvoiceAccountEntity goodsAccountController;
   final bool enable;
   final Map<String, dynamic> errors;
 
-  const CustomInvoiceFields(
+  CustomInvoiceFields(
       {super.key,
       required this.numberController,
       required this.dateController,
@@ -78,8 +78,9 @@ class CustomInvoiceFields extends StatelessWidget {
                 onSelected: (value) {
                   accountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);
+                  accountController = accountController.copyWith(arName: value);
                 },
-                error: errors['account']?.join('\n'),
+                error: errors['account_id']?.join('\n'),
               ),
               CustomInputField(
                 label: 'address'.tr,
@@ -96,8 +97,10 @@ class CustomInvoiceFields extends StatelessWidget {
                 onSelected: (value) {
                   goodsAccountController.id =
                       context.read<InvoiceBloc>().getDesiredId(value);
+                  goodsAccountController =
+                      goodsAccountController.copyWith(arName: value);
                 },
-                error: errors['goods_account']?.join('\n'),
+                error: errors['goods_account_id']?.join('\n'),
               ),
               const SizedBox(),
               CustomDropdown(
