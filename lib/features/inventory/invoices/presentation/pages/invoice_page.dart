@@ -31,6 +31,7 @@ class _InvoicePageState extends State<InvoicePage> {
   late TextEditingController _dateController;
   late TextEditingController _dueDateController;
   late TextEditingController _notesController;
+  late TextEditingController _addressController;
   late InvoiceAccountEntity _accountController;
 
   late InvoiceAccountEntity _goodsAccountController;
@@ -60,25 +61,30 @@ class _InvoicePageState extends State<InvoicePage> {
     _dueDateController = TextEditingController(text: invoice.dueDate);
     _notesController = TextEditingController(text: invoice.notes);
     _accountController = invoice.account!;
+    _addressController = TextEditingController(text: invoice.address);
     _invoiceBloc.natureController = invoice.invoiceNature;
 
     _goodsAccountController = invoice.goodsAccount!;
-    _goodsAccountDescriptionController = TextEditingController();
+    _goodsAccountDescriptionController =
+        TextEditingController(text: invoice.goodsAccount!.description);
 
     _taxAccountController = invoice.taxAccount!;
-    _taxAccountDescriptionController = TextEditingController();
+    _taxAccountDescriptionController =
+        TextEditingController(text: invoice.taxAccount!.description);
     _taxAmountController =
         TextEditingController(text: invoice.totalTax.toString());
 
     _discountAccountController = invoice.discountAccount!;
     _discountAmountController =
         TextEditingController(text: invoice.totalDiscount.toString());
-    _discountAccountDescriptionController = TextEditingController();
+    _discountAccountDescriptionController =
+        TextEditingController(text: invoice.discountAccount!.description);
   }
 
   @override
   void dispose() {
     _invoiceBloc.close();
+
     _dateController.dispose();
     _dueDateController.dispose();
     _notesController.dispose();
@@ -96,6 +102,7 @@ class _InvoicePageState extends State<InvoicePage> {
       dueDate: _dueDateController.text,
       status: status.name,
       invoiceNature: _invoiceBloc.natureController,
+      address: _addressController.text,
       notes: _notesController.text,
       account: _accountController,
       goodsAccount: _goodsAccountController,
@@ -215,6 +222,7 @@ class _InvoicePageState extends State<InvoicePage> {
           accountController: _accountController,
           dateController: _dateController,
           dueDateController: _dueDateController,
+          addressController: _addressController,
           goodsAccountController: _goodsAccountController,
           notesController: _notesController,
           numberController: _numberController,

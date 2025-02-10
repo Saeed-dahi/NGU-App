@@ -59,6 +59,7 @@ class InvoiceOptionsPage extends StatelessWidget {
             CustomInputField(
               label: 'description'.tr,
               enabled: enableEditing,
+              controller: goodsAccountDescriptionController,
               error: errors['description']?.join('\n'),
             ),
             const SizedBox()

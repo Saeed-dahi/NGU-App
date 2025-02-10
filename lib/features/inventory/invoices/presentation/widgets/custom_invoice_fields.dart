@@ -15,6 +15,7 @@ class CustomInvoiceFields extends StatelessWidget {
   final TextEditingController dateController;
   final TextEditingController dueDateController;
   final TextEditingController notesController;
+  final TextEditingController addressController;
   final InvoiceAccountEntity accountController;
   final InvoiceAccountEntity goodsAccountController;
   final bool enable;
@@ -26,6 +27,7 @@ class CustomInvoiceFields extends StatelessWidget {
       required this.dateController,
       required this.dueDateController,
       required this.notesController,
+      required this.addressController,
       required this.accountController,
       required this.goodsAccountController,
       required this.enable,
@@ -82,7 +84,7 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'address'.tr,
                 enabled: enable,
-                controller: TextEditingController(),
+                controller: addressController,
                 error: errors['address']?.join('\n'),
               ),
               CustomAutoComplete(

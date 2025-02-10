@@ -11,6 +11,7 @@ class InvoiceEntity extends Equatable {
   final String? dueDate;
   final String? status;
   final String? invoiceNature;
+  final String? address;
   final String? currency;
   final double? subTotal;
   final double? total;
@@ -31,6 +32,7 @@ class InvoiceEntity extends Equatable {
       this.dueDate,
       this.status,
       this.invoiceNature,
+      this.address,
       this.currency,
       this.subTotal,
       this.total,
@@ -52,6 +54,7 @@ class InvoiceEntity extends Equatable {
         dueDate: dueDate,
         status: status,
         invoiceNature: invoiceNature,
+        address: address,
         currency: currency,
         subTotal: subTotal,
         total: total,
@@ -74,6 +77,7 @@ class InvoiceEntity extends Equatable {
         dueDate,
         status,
         invoiceNature,
+        address,
         currency,
         subTotal,
         total,

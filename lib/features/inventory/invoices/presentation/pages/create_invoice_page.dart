@@ -31,6 +31,7 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   late TextEditingController _dateController;
   late TextEditingController _dueDateController;
   late TextEditingController _notesController;
+  late TextEditingController _addressController;
   late InvoiceAccountEntity _accountController;
 
   late InvoiceAccountEntity _goodsAccountController;
@@ -60,6 +61,7 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
     _dueDateController = TextEditingController(text: invoice.dueDate);
     _notesController = TextEditingController(text: invoice.notes);
     _accountController = invoice.account!;
+    _addressController = TextEditingController(text: invoice.address);
 
     _goodsAccountController = invoice.goodsAccount!;
     _goodsAccountDescriptionController = TextEditingController();
@@ -209,6 +211,7 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
           accountController: _accountController,
           dateController: _dateController,
           dueDateController: _dueDateController,
+          addressController: _addressController,
           goodsAccountController: _goodsAccountController,
           notesController: _notesController,
           numberController: _numberController,
