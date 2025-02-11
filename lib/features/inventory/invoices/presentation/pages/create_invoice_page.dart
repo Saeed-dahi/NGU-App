@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
@@ -13,6 +12,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_f
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_page_container.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_pluto_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
 
@@ -63,16 +63,6 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
         invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
   }
 
-  Color _getBackgroundColor(String type) {
-    if (InvoiceType.purchase.name == type) {
-      return Colors.green;
-    }
-    if (InvoiceType.sales.name == type) {
-      return Colors.blue;
-    }
-    return Colors.white;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -105,14 +95,8 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   }
 
   Widget _pageBody() {
-    return Container(
-      padding: const EdgeInsets.only(
-          right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-        color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType!)
-            .withOpacity(0.05),
-      ),
+    return CustomInvoicePageContainer(
+      type: _invoiceBloc.getInvoiceEntity.invoiceType!,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

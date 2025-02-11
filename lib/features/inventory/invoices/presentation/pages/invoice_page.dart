@@ -13,6 +13,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_f
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_page_container.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_pluto_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
 
@@ -60,16 +61,6 @@ class _InvoicePageState extends State<InvoicePage> {
         invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
   }
 
-  Color _getBackgroundColor(String type) {
-    if (InvoiceType.purchase.name == type) {
-      return Colors.green;
-    }
-    if (InvoiceType.sales.name == type) {
-      return Colors.blue;
-    }
-    return Colors.white;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -105,14 +96,8 @@ class _InvoicePageState extends State<InvoicePage> {
         _invoiceBloc.getInvoiceEntity.status == Status.saved.name
             ? true
             : false;
-    return Container(
-      padding: const EdgeInsets.only(
-          right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-        color: _getBackgroundColor(_invoiceBloc.getInvoiceEntity.invoiceType!)
-            .withOpacity(0.08),
-      ),
+    return CustomInvoicePageContainer(
+      type: _invoiceBloc.getInvoiceEntity.invoiceType!,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
