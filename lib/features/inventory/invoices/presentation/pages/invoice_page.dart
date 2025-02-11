@@ -7,9 +7,9 @@ import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
@@ -26,99 +26,38 @@ class InvoicePage extends StatefulWidget {
 
 class _InvoicePageState extends State<InvoicePage> {
   late final InvoiceBloc _invoiceBloc;
-
-  late TextEditingController _numberController;
-  late TextEditingController _dateController;
-  late TextEditingController _dueDateController;
-  late TextEditingController _notesController;
-  late TextEditingController _addressController;
-  late InvoiceAccountEntity _accountController;
-
-  late InvoiceAccountEntity _goodsAccountController;
-  late TextEditingController _goodsAccountDescriptionController;
-
-  late InvoiceAccountEntity _taxAccountController;
-  late TextEditingController _taxAmountController;
-  late TextEditingController _taxAccountDescriptionController;
-
-  late InvoiceAccountEntity _discountAccountController;
-  late TextEditingController _discountAmountController;
-  late TextEditingController _discountAccountDescriptionController;
+  late final InvoiceFormCubit _invoiceFormCubit;
 
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
       ..add(ShowInvoiceEvent(invoiceId: 1, type: widget.type))
       ..add(GetAccountsNameEvent());
+    _invoiceFormCubit =
+        InvoiceFormCubit(invoiceBloc: _invoiceBloc, invoiceType: widget.type);
 
     super.initState();
   }
 
   _initControllers(InvoiceEntity invoice) {
-    _numberController =
-        TextEditingController(text: invoice.invoiceNumber.toString());
-    _dateController = TextEditingController(text: invoice.date);
-    _dueDateController = TextEditingController(text: invoice.dueDate);
-    _notesController = TextEditingController(text: invoice.notes);
-    _accountController = invoice.account!;
-    _addressController = TextEditingController(text: invoice.address);
-    _invoiceBloc.natureController = invoice.invoiceNature;
-
-    _goodsAccountController = invoice.goodsAccount!;
-    _goodsAccountDescriptionController =
-        TextEditingController(text: invoice.goodsAccount!.description);
-
-    _taxAccountController = invoice.taxAccount!;
-    _taxAccountDescriptionController =
-        TextEditingController(text: invoice.taxAccount!.description);
-    _taxAmountController =
-        TextEditingController(text: invoice.totalTax.toString());
-
-    _discountAccountController = invoice.discountAccount!;
-    _discountAmountController =
-        TextEditingController(text: invoice.totalDiscount.toString());
-    _discountAccountDescriptionController =
-        TextEditingController(text: invoice.discountAccount!.description);
+    _invoiceFormCubit.initControllers(invoice);
   }
 
   @override
   void dispose() {
     _invoiceBloc.close();
-
-    _dateController.dispose();
-    _dueDateController.dispose();
-    _notesController.dispose();
-    _numberController.dispose();
-
+    _invoiceFormCubit.disposeControllers();
     super.dispose();
   }
 
-  InvoiceEntity invoiceEntity(Enum status) {
-    return InvoiceEntity(
-      id: _invoiceBloc.getInvoiceEntity.id,
-      invoiceNumber: int.parse(_numberController.text),
-      invoiceType: widget.type,
-      date: _dateController.text,
-      dueDate: _dueDateController.text,
-      status: status.name,
-      invoiceNature: _invoiceBloc.natureController,
-      address: _addressController.text,
-      notes: _notesController.text,
-      account: _accountController,
-      goodsAccount: _goodsAccountController,
-      taxAccount: _taxAccountController,
-      totalTax: double.tryParse(_taxAmountController.text) ?? 5,
-      discountAccount: _discountAccountController,
-      totalDiscount: double.tryParse(_taxAmountController.text) ?? 0,
-    );
+  void onSaveAsDraft() {
+    _invoiceBloc.add(UpdateInvoiceEvent(
+        invoice: _invoiceFormCubit.invoiceEntity(Status.draft)));
   }
 
-  void _onSaveAsDraft() {
-    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
-  }
-
-  void _onSaveAsSaved() {
-    _invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.saved)));
+  void onSaveAsSaved() {
+    _invoiceBloc.add(UpdateInvoiceEvent(
+        invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
   }
 
   Color _getBackgroundColor(String type) {
@@ -133,8 +72,15 @@ class _InvoicePageState extends State<InvoicePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _invoiceBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => _invoiceBloc,
+        ),
+        BlocProvider(
+          create: (context) => _invoiceFormCubit,
+        ),
+      ],
       child: BlocBuilder<InvoiceBloc, InvoiceState>(
         builder: (context, state) {
           if (state is ErrorInvoiceState) {
@@ -172,8 +118,8 @@ class _InvoicePageState extends State<InvoicePage> {
         children: [
           InvoiceToolBar(
             invoice: _invoiceBloc.getInvoiceEntity,
-            onSaveAsDraft: isSavedInvoice ? _onSaveAsDraft : null,
-            onSaveAsSaved: isSavedInvoice ? null : _onSaveAsSaved,
+            onSaveAsDraft: isSavedInvoice ? onSaveAsDraft : null,
+            onSaveAsSaved: isSavedInvoice ? null : onSaveAsSaved,
           ),
           TabBar(
             labelColor: AppColors.black,
@@ -200,15 +146,17 @@ class _InvoicePageState extends State<InvoicePage> {
   InvoiceOptionsPage _invoiceOptionPage(bool isSavedInvoice) {
     return InvoiceOptionsPage(
       enableEditing: !isSavedInvoice,
-      goodsAccountController: _goodsAccountController,
-      goodsAccountDescriptionController: _goodsAccountDescriptionController,
-      taxAccountController: _taxAccountController,
-      taxAmountController: _taxAmountController,
-      taxAccountDescriptionController: _taxAccountDescriptionController,
-      discountAccountController: _discountAccountController,
-      discountAmountController: _discountAmountController,
+      goodsAccountController: _invoiceFormCubit.goodsAccountController,
+      goodsAccountDescriptionController:
+          _invoiceFormCubit.goodsAccountDescriptionController,
+      taxAccountController: _invoiceFormCubit.taxAccountController,
+      taxAmountController: _invoiceFormCubit.taxAmountController,
+      taxAccountDescriptionController:
+          _invoiceFormCubit.taxAccountDescriptionController,
+      discountAccountController: _invoiceFormCubit.discountAccountController,
+      discountAmountController: _invoiceFormCubit.discountAmountController,
       discountAccountDescriptionController:
-          _discountAccountDescriptionController,
+          _invoiceFormCubit.discountAccountDescriptionController,
       errors: _invoiceBloc.getValidationErrors,
     );
   }
@@ -218,13 +166,13 @@ class _InvoicePageState extends State<InvoicePage> {
       children: [
         CustomInvoiceFields(
           enable: !isSavedInvoice,
-          accountController: _accountController,
-          dateController: _dateController,
-          dueDateController: _dueDateController,
-          addressController: _addressController,
-          goodsAccountController: _goodsAccountController,
-          notesController: _notesController,
-          numberController: _numberController,
+          accountController: _invoiceFormCubit.accountController,
+          dateController: _invoiceFormCubit.dateController,
+          dueDateController: _invoiceFormCubit.dueDateController,
+          addressController: _invoiceFormCubit.addressController,
+          goodsAccountController: _invoiceFormCubit.goodsAccountController,
+          notesController: _invoiceFormCubit.notesController,
+          numberController: _invoiceFormCubit.numberController,
           errors: _invoiceBloc.getValidationErrors,
         ),
         _statusHint(),

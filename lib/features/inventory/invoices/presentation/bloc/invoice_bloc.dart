@@ -43,8 +43,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   PlutoGridStateManager get getStateManger => _stateManager;
   set setStateManager(PlutoGridStateManager sts) => _stateManager = sts;
 
-  String? natureController;
-
   List<InvoiceItemsEntityParams> get invoiceItems {
     return _stateManager.rows.map((row) {
       return InvoiceItemsEntityParams(
@@ -154,7 +152,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     result.fold((failure) {}, (data) {
       _invoiceEntity = data;
-      natureController = null;
       emit(LoadedInvoiceState(invoice: data));
     });
   }

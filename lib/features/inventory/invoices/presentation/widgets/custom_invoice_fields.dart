@@ -9,6 +9,7 @@ import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
 
 class CustomInvoiceFields extends StatelessWidget {
   final TextEditingController numberController;
@@ -106,11 +107,11 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomDropdown(
                 dropdownValue: getEnumValues(AccountNature.values),
                 onChanged: (value) {
-                  context.read<InvoiceBloc>().natureController = value;
+                  context.read<InvoiceFormCubit>().natureController = value;
                 },
                 label: 'invoice_nature'.tr,
                 enabled: enable,
-                value: context.read<InvoiceBloc>().natureController,
+                value: context.read<InvoiceFormCubit>().natureController,
                 error: errors['invoice_nature']?.join('\n'),
               ),
             ],
