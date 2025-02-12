@@ -50,6 +50,7 @@ Map<String, String> en = {
   'journal_vouchers_table': 'Journal Vouchers Table',
   'reports': 'Reports',
   'detailed': 'Detailed',
+  'sub_total': 'Sub Total',
   'total': 'Total',
   'trail_balance': 'Trail Balance',
 

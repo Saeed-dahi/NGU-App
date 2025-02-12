@@ -171,7 +171,6 @@ class _InvoicePageState extends State<InvoicePage> {
           invoice: _invoiceBloc.getInvoiceEntity,
           readOnly: isSavedInvoice,
         ),
-        _buildCustomFooter(context)
       ],
     );
   }

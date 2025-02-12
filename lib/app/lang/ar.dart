@@ -50,6 +50,7 @@ Map<String, String> ar = {
   'journal_vouchers_table': 'جدول سندات القيد',
   'reports': 'التقارير',
   'detailed': 'التفصيلية',
+  'sub_total': 'المجموع الفرعي',
   'total': 'الإجمالية',
   'trail_balance': 'ميزان المراجعة',
 

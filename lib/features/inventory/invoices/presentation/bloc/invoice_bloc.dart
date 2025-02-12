@@ -7,6 +7,7 @@ import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
@@ -134,7 +135,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     result.fold((failure) {
       if (failure is ValidationFailure) {
         _validationErrors = failure.errors;
-        emit(LoadedInvoiceState(invoice: _invoiceEntity));
+        _invoiceEntity = event.invoice;
+        ShowSnackBar.showValidationSnackbar(messages: ['error'.tr]);
+        emit(LoadedInvoiceState(invoice: event.invoice));
       } else {
         emit(ErrorInvoiceState(error: failure.errors['error']));
       }

@@ -21,7 +21,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.45,
+      height: MediaQuery.sizeOf(context).height * 0.5,
       child: CustomPlutoTable(
         controller: _plutoGridController,
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
@@ -62,6 +62,8 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('quantity', showSum: true),
       _buildCustomColumn('unit', readOnly: true),
       _buildCustomColumn('price'),
+      _buildCustomColumn('sub_total', showSum: true),
+      _buildCustomColumn('tax_amount', showSum: true),
       _buildCustomColumn('total', showSum: true),
       _buildCustomColumn('discount'),
       _buildCustomColumn('notes'),
@@ -78,6 +80,8 @@ class CustomInvoicePlutoTable extends StatelessWidget {
           'quantity': PlutoCell(value: ''),
           'unit': PlutoCell(value: ''),
           'price': PlutoCell(value: ''),
+          'sub_total': PlutoCell(value: ''),
+          'tax_amount': PlutoCell(value: ''),
           'total': PlutoCell(value: ''),
           'discount': PlutoCell(value: ''),
           'notes': PlutoCell(value: ''),
@@ -100,7 +104,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
             'quantity': PlutoCell(value: invoiceItem.quantity),
             'unit': PlutoCell(value: unit.arName),
             'price': PlutoCell(value: invoiceItem.price),
-            'total': PlutoCell(value: invoiceItem.total),
+            'sub_total': PlutoCell(value: invoiceItem.total),
+            'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
+            'total':
+                PlutoCell(value: invoiceItem.total + invoiceItem.taxAmount),
             'discount': PlutoCell(value: invoiceItem.discountAmount),
             'notes': PlutoCell(value: invoiceItem.description),
           },
