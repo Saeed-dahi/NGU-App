@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
+import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInvoicePlutoTable extends StatelessWidget {
@@ -17,6 +20,25 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   CustomInvoicePlutoTable({super.key, this.invoice, this.readOnly = false});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
+
+  Future<void> _getAccountName(BuildContext context) async {
+    switch (_plutoGridController.stateManager!.currentColumn!.field) {
+      case 'unit':
+        ShowDialog.showCustomDialog(
+            context: context,
+            content: const UnitsTable(),
+            width: 0.2,
+            height: 0.2);
+        break;
+      case 'code':
+        ShowDialog.showCustomDialog(
+          context: context,
+          content: const ProductsTable(),
+        );
+        break;
+      default:
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +56,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
+          _getAccountName(context);
         },
         onLoaded: (event) {
           _plutoGridController =
@@ -58,13 +81,13 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   List<PlutoColumn> _buildColumns() {
     return [
       _buildCustomColumn('code'),
-      _buildCustomColumn('name'),
+      _buildCustomColumn('name', readOnly: true),
       _buildCustomColumn('quantity', showSum: true),
-      _buildCustomColumn('unit', readOnly: true),
+      _buildCustomColumn('unit', showSum: true),
       _buildCustomColumn('price'),
-      _buildCustomColumn('sub_total', showSum: true),
-      _buildCustomColumn('tax_amount', showSum: true),
-      _buildCustomColumn('total', showSum: true),
+      _buildCustomColumn('sub_total', showSum: true, readOnly: true),
+      _buildCustomColumn('tax_amount', showSum: true, readOnly: true),
+      _buildCustomColumn('total', showSum: true, readOnly: true),
       _buildCustomColumn('notes'),
     ];
   }
@@ -114,11 +137,11 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   }
 
   PlutoColumn _buildCustomColumn(String title,
-      {bool readOnly = false, bool showSum = false}) {
+      {bool readOnly = false, bool showSum = false, PlutoColumnType? type}) {
     return PlutoColumn(
       title: title.tr,
       field: title,
-      type: PlutoColumnType.text(),
+      type: type ?? PlutoColumnType.text(),
       textAlign: PlutoColumnTextAlign.center,
       enableSorting: false,
       enableContextMenu: false,

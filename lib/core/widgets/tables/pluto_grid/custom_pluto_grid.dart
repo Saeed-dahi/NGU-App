@@ -156,7 +156,7 @@ class CustomPlutoTable extends StatelessWidget {
       scrollbar: const PlutoGridScrollbarConfig(
           scrollBarColor: AppColors.primaryColor),
       columnSize: const PlutoGridColumnSizeConfig(
-          autoSizeMode: PlutoAutoSizeMode.equal),
+          autoSizeMode: PlutoAutoSizeMode.scale),
       style: PlutoGridStyleConfig(
         rowCheckedColor: AppColors.primaryColorLow.withOpacity(0.3),
         gridBorderColor: AppColors.primaryColor,
