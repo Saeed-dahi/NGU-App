@@ -70,7 +70,7 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   void onRefresh() {
-    context.read<InvoiceBloc>().add(ShowInvoiceEvent(
+    _invoiceBloc.add(ShowInvoiceEvent(
         invoiceId: _invoiceBloc.getInvoiceEntity.id!, type: widget.type));
   }
 
