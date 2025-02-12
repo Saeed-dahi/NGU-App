@@ -79,8 +79,13 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
       child: BlocConsumer<InvoiceBloc, InvoiceState>(
         listener: (context, state) {
           if (state is CreatedInvoiceState) {
+            context.read<TabCubit>().removeCurrentTab();
             context.read<TabCubit>().addNewTab(
-                title: 'sales'.tr, content: InvoicePage(type: widget.type));
+                title: widget.type.tr,
+                content: InvoicePage(
+                  type: widget.type,
+                  invoiceId: _invoiceBloc.getInvoiceEntity.id!,
+                ));
           }
         },
         builder: (context, state) {

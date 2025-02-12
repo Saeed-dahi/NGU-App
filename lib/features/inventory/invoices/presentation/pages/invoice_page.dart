@@ -21,7 +21,8 @@ import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice
 
 class InvoicePage extends StatefulWidget {
   final String type;
-  const InvoicePage({super.key, required this.type});
+  final int invoiceId;
+  const InvoicePage({super.key, required this.type, this.invoiceId = 1});
 
   @override
   State<InvoicePage> createState() => _InvoicePageState();
@@ -34,7 +35,7 @@ class _InvoicePageState extends State<InvoicePage> {
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
-      ..add(ShowInvoiceEvent(invoiceId: 1, type: widget.type))
+      ..add(ShowInvoiceEvent(invoiceId: widget.invoiceId, type: widget.type))
       ..add(GetAccountsNameEvent());
     _invoiceFormCubit =
         InvoiceFormCubit(invoiceBloc: _invoiceBloc, invoiceType: widget.type);
