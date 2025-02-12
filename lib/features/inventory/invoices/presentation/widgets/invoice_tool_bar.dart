@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
-import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/pages/create_invoice_page.dart';
 
 class InvoiceToolBar extends StatelessWidget {
   final InvoiceEntity? invoice;
   void Function()? onSaveAsDraft;
   void Function()? onSaveAsSaved;
+  void Function()? onAdd;
+  void Function()? onRefresh;
   InvoiceToolBar(
-      {super.key, this.onSaveAsDraft, this.onSaveAsSaved, this.invoice});
+      {super.key,
+      this.onSaveAsDraft,
+      this.onSaveAsSaved,
+      this.invoice,
+      this.onAdd,
+      this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -44,16 +49,7 @@ class InvoiceToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.add,
           tooltip: 'add'.tr,
-          onPressed: () {
-            context.read<TabCubit>().removeLastTab();
-            context.read<TabCubit>().addNewTab(
-                title: 'new',
-                content: CreateInvoicePage(
-                    type: context
-                        .read<InvoiceBloc>()
-                        .getInvoiceEntity
-                        .invoiceType!));
-          },
+          onPressed: onAdd,
         ),
         Visibility(
           visible: onSaveAsSaved != null,
@@ -84,7 +80,7 @@ class InvoiceToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.refresh,
           tooltip: 'refresh'.tr,
-          onPressed: () => _navigate(context, invoice!.id, null),
+          onPressed: onRefresh,
         ),
       ],
     );

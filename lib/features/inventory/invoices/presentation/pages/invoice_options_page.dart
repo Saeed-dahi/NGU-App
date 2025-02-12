@@ -47,7 +47,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               label: 'goods_account'.tr,
               enabled: enableEditing,
               initialValue:
-                  TextEditingValue(text: goodsAccountController.arName!),
+                  TextEditingValue(text: goodsAccountController.arName ?? ''),
               onSelected: (value) {
                 goodsAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);
@@ -70,7 +70,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               label: 'tax_account'.tr,
               enabled: enableEditing,
               initialValue:
-                  TextEditingValue(text: taxAccountController.arName!),
+                  TextEditingValue(text: taxAccountController.arName ?? ''),
               onSelected: (value) {
                 taxAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);
@@ -101,8 +101,8 @@ class InvoiceOptionsPage extends StatelessWidget {
               data: context.read<InvoiceBloc>().accountsNameList,
               label: 'discount_account'.tr,
               enabled: enableEditing,
-              initialValue:
-                  TextEditingValue(text: discountAccountController.arName!),
+              initialValue: TextEditingValue(
+                  text: discountAccountController.arName ?? ''),
               onSelected: (value) {
                 discountAccountController.id =
                     context.read<InvoiceBloc>().getDesiredId(value);

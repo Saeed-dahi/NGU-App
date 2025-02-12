@@ -95,6 +95,7 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
         .get('${APIList.invoice}/create', {'type': type});
 
     var decodedJson = jsonDecode(response.body);
+
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
     InvoiceModel invoice = InvoiceModel.fromJson(decodedJson['data']);

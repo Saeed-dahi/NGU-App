@@ -7,9 +7,11 @@ import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/create_invoice_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
@@ -61,6 +63,18 @@ class _InvoicePageState extends State<InvoicePage> {
         invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
   }
 
+  void onAdd() {
+    context.read<TabCubit>().removeLastTab();
+    context
+        .read<TabCubit>()
+        .addNewTab(title: 'new', content: CreateInvoicePage(type: widget.type));
+  }
+
+  void onRefresh() {
+    context.read<InvoiceBloc>().add(ShowInvoiceEvent(
+        invoiceId: _invoiceBloc.getInvoiceEntity.id!, type: widget.type));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -75,7 +89,12 @@ class _InvoicePageState extends State<InvoicePage> {
       child: BlocBuilder<InvoiceBloc, InvoiceState>(
         builder: (context, state) {
           if (state is ErrorInvoiceState) {
-            return Center(child: MessageScreen(text: state.error));
+            return Center(
+              child: MessageScreen(
+                text: state.error,
+                onAdd: onAdd,
+              ),
+            );
           }
 
           if (state is LoadedInvoiceState) {
@@ -105,6 +124,8 @@ class _InvoicePageState extends State<InvoicePage> {
             invoice: _invoiceBloc.getInvoiceEntity,
             onSaveAsDraft: isSavedInvoice ? onSaveAsDraft : null,
             onSaveAsSaved: isSavedInvoice ? null : onSaveAsSaved,
+            onAdd: onAdd,
+            onRefresh: onRefresh,
           ),
           TabBar(
             labelColor: AppColors.black,
