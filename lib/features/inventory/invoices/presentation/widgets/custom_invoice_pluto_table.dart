@@ -27,7 +27,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(),
-        rows: invoice == null
+        rows: invoice!.invoiceItems == null
             ? _buildEmptyRows().toList()
             : _buildFilledRows().toList(),
         showDefaultHeader: true,

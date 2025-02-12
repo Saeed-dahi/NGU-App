@@ -27,7 +27,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final GetAccountsNameUseCase getAccountsNameUseCase;
   final GetCreateInvoiceFormDataUseCase getCreateInvoiceFormDataUseCase;
 
-  late InvoiceEntity _invoiceEntity;
+  InvoiceEntity _invoiceEntity = const InvoiceEntity();
   InvoiceEntity get getInvoiceEntity => _invoiceEntity;
 
   Map<String, dynamic> _accountsName = {};
@@ -100,7 +100,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     final result = await createInvoiceUseCase(event.invoice, invoiceItems);
     _createAndUpdateFoldResult(result, event, emit);
-    _invoiceEntity = event.invoice;
   }
 
   FutureOr<void> _updateInvoice(
@@ -142,6 +141,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     }, (data) {
       _invoiceEntity = data;
       _validationErrors = {};
+      emit(CreatedInvoiceState());
       emit(LoadedInvoiceState(invoice: data));
     });
   }

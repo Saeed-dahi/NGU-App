@@ -28,6 +28,8 @@ class LoadedInvoiceState extends InvoiceState {
 
 class LoadingInvoiceState extends InvoiceState {}
 
+class CreatedInvoiceState extends InvoiceState {}
+
 class ErrorInvoiceState extends InvoiceState {
   final String error;
 
