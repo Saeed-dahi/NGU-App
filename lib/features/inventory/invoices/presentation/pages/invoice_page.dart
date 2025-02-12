@@ -64,7 +64,7 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   void onAdd() {
-    context.read<TabCubit>().removeLastTab();
+    context.read<TabCubit>().removeCurrentTab();
     context.read<TabCubit>().addNewTab(
         title: widget.type.tr, content: CreateInvoicePage(type: widget.type));
   }

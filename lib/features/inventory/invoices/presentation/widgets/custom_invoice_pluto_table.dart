@@ -65,7 +65,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('sub_total', showSum: true),
       _buildCustomColumn('tax_amount', showSum: true),
       _buildCustomColumn('total', showSum: true),
-      _buildCustomColumn('discount'),
       _buildCustomColumn('notes'),
     ];
   }
@@ -83,7 +82,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
           'sub_total': PlutoCell(value: ''),
           'tax_amount': PlutoCell(value: ''),
           'total': PlutoCell(value: ''),
-          'discount': PlutoCell(value: ''),
           'notes': PlutoCell(value: ''),
         },
       )
@@ -108,7 +106,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
             'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
             'total':
                 PlutoCell(value: invoiceItem.total + invoiceItem.taxAmount),
-            'discount': PlutoCell(value: invoiceItem.discountAmount),
             'notes': PlutoCell(value: invoiceItem.description),
           },
         );
@@ -122,7 +119,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       title: title.tr,
       field: title,
       type: PlutoColumnType.text(),
-      // enableAutoEditing: true,
       textAlign: PlutoColumnTextAlign.center,
       enableSorting: false,
       enableContextMenu: false,

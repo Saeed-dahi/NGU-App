@@ -7,6 +7,7 @@ part 'tab_state.dart';
 
 class TabCubit extends Cubit<TabState> {
   int tabNumber = 0;
+  int activeTabIndex = 0;
   TabCubit() : super(TabState(tabs: []));
 
   void addNewTab({required String title, required Widget content}) {
@@ -31,14 +32,28 @@ class TabCubit extends Cubit<TabState> {
   void removeTab(int index) {
     // final newTabs = List<TabData>.from(state.tabs)..removeAt(index);
     emit(TabState(tabs: state.tabs..removeAt(index)));
+    if (activeTabIndex >= state.tabs.length) {
+      activeTabIndex = state.tabs.isNotEmpty ? state.tabs.length - 1 : 0;
+    }
     reIndexTabNumber();
   }
 
   void removeAll() {
     // final newTabs = List<TabData>.from(state.tabs)..removeAt(index);
     state.tabs.clear();
+    activeTabIndex = 0;
     emit(TabState(tabs: []));
     reIndexTabNumber();
+  }
+
+  void removeCurrentTab() {
+    removeTab(activeTabIndex);
+  }
+
+  void setActiveTab(int index) {
+    if (index >= 0 && index < state.tabs.length) {
+      activeTabIndex = index;
+    }
   }
 
   void removeLastTab() {

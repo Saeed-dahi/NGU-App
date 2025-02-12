@@ -29,6 +29,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   _updateTabController(int length) {
     _tabController?.dispose();
     _tabController = TabController(length: length, vsync: this);
+
+    _tabController!.addListener(() {
+      if (!_tabController!.indexIsChanging) {
+        context.read<TabCubit>().setActiveTab(_tabController!.index);
+      }
+    });
+
     if (length > 0) _tabController?.animateTo(length - 1);
 
     if (scaffoldKey.currentState!.isDrawerOpen) {
