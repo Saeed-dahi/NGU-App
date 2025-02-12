@@ -7,32 +7,21 @@ import 'package:ngu_app/core/widgets/custom_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
 
 class CustomInvoiceFields extends StatelessWidget {
-  final TextEditingController numberController;
-  final TextEditingController dateController;
-  final TextEditingController dueDateController;
-  final TextEditingController notesController;
-  final TextEditingController addressController;
-  InvoiceAccountEntity accountController;
-  InvoiceAccountEntity goodsAccountController;
   final bool enable;
   final Map<String, dynamic> errors;
+  final InvoiceFormCubit invoiceFormCubit;
+  final InvoiceBloc invoiceBloc;
 
-  CustomInvoiceFields(
+  const CustomInvoiceFields(
       {super.key,
-      required this.numberController,
-      required this.dateController,
-      required this.dueDateController,
-      required this.notesController,
-      required this.addressController,
-      required this.accountController,
-      required this.goodsAccountController,
       required this.enable,
-      required this.errors});
+      required this.errors,
+      required this.invoiceFormCubit,
+      required this.invoiceBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -44,18 +33,18 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'invoice_number'.tr,
                 enabled: enable,
-                controller: numberController,
+                controller: invoiceFormCubit.numberController,
                 error: errors['invoice_number']?.join('\n'),
                 format: FilteringTextInputFormatter.digitsOnly,
               ),
               CustomDatePicker(
-                dateInput: dateController,
+                dateInput: invoiceFormCubit.dateController,
                 labelText: 'created_at'.tr,
                 enabled: enable,
                 error: errors['date']?.join('\n'),
               ),
               CustomDatePicker(
-                dateInput: dueDateController,
+                dateInput: invoiceFormCubit.dueDateController,
                 labelText: 'due_date'.tr,
                 enabled: enable,
                 error: errors['due_date']?.join('\n'),
@@ -64,7 +53,7 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'notes'.tr,
                 enabled: enable,
-                controller: notesController,
+                controller: invoiceFormCubit.notesController,
                 error: errors['notes']?.join('\n'),
               ),
             ],
@@ -72,35 +61,34 @@ class CustomInvoiceFields extends StatelessWidget {
           TableRow(
             children: [
               CustomAutoComplete(
-                data: context.read<InvoiceBloc>().accountsNameList,
+                data: invoiceBloc.accountsNameList,
                 label: 'account'.tr,
                 enabled: enable,
-                initialValue:
-                    TextEditingValue(text: accountController.arName ?? ''),
+                initialValue: TextEditingValue(
+                    text: invoiceFormCubit.accountController.arName ?? ''),
                 onSelected: (value) {
-                  accountController.id =
-                      context.read<InvoiceBloc>().getDesiredId(value);
-                  accountController = accountController.copyWith(arName: value);
+                  invoiceFormCubit.accountController =
+                      invoiceFormCubit.accountController.copyWith(
+                          arName: value, id: invoiceBloc.getDesiredId(value));
                 },
                 error: errors['account_id']?.join('\n'),
               ),
               CustomInputField(
                 label: 'address'.tr,
                 enabled: enable,
-                controller: addressController,
+                controller: invoiceFormCubit.addressController,
                 error: errors['address']?.join('\n'),
               ),
               CustomAutoComplete(
-                data: context.read<InvoiceBloc>().accountsNameList,
+                data: invoiceBloc.accountsNameList,
                 label: 'goods_account'.tr,
                 enabled: enable,
-                initialValue:
-                    TextEditingValue(text: goodsAccountController.arName ?? ''),
+                initialValue: TextEditingValue(
+                    text: invoiceFormCubit.goodsAccountController.arName ?? ''),
                 onSelected: (value) {
-                  goodsAccountController.id =
-                      context.read<InvoiceBloc>().getDesiredId(value);
-                  goodsAccountController =
-                      goodsAccountController.copyWith(arName: value);
+                  invoiceFormCubit.goodsAccountController =
+                      invoiceFormCubit.goodsAccountController.copyWith(
+                          arName: value, id: invoiceBloc.getDesiredId(value));
                 },
                 error: errors['goods_account_id']?.join('\n'),
               ),
@@ -108,11 +96,11 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomDropdown(
                 dropdownValue: getEnumValues(AccountNature.values),
                 onChanged: (value) {
-                  context.read<InvoiceFormCubit>().natureController = value;
+                  invoiceFormCubit.natureController = value;
                 },
                 label: 'invoice_nature'.tr,
                 enabled: enable,
-                value: context.read<InvoiceFormCubit>().natureController,
+                value: invoiceFormCubit.natureController,
                 error: errors['invoice_nature']?.join('\n'),
               ),
             ],

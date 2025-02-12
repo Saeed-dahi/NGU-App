@@ -130,17 +130,8 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   InvoiceOptionsPage _invoiceOptionPage(bool isSavedInvoice) {
     return InvoiceOptionsPage(
       enableEditing: !isSavedInvoice,
-      goodsAccountController: _invoiceFormCubit.goodsAccountController,
-      goodsAccountDescriptionController:
-          _invoiceFormCubit.goodsAccountDescriptionController,
-      taxAccountController: _invoiceFormCubit.taxAccountController,
-      taxAmountController: _invoiceFormCubit.taxAmountController,
-      taxAccountDescriptionController:
-          _invoiceFormCubit.taxAccountDescriptionController,
-      discountAccountController: _invoiceFormCubit.discountAccountController,
-      discountAmountController: _invoiceFormCubit.discountAmountController,
-      discountAccountDescriptionController:
-          _invoiceFormCubit.discountAccountDescriptionController,
+      invoiceBloc: _invoiceBloc,
+      invoiceFormCubit: _invoiceFormCubit,
       errors: _invoiceBloc.getValidationErrors,
     );
   }
@@ -150,13 +141,8 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
       children: [
         CustomInvoiceFields(
           enable: !isSavedInvoice,
-          accountController: _invoiceFormCubit.accountController,
-          dateController: _invoiceFormCubit.dateController,
-          dueDateController: _invoiceFormCubit.dueDateController,
-          addressController: _invoiceFormCubit.addressController,
-          goodsAccountController: _invoiceFormCubit.goodsAccountController,
-          notesController: _invoiceFormCubit.notesController,
-          numberController: _invoiceFormCubit.numberController,
+          invoiceBloc: _invoiceBloc,
+          invoiceFormCubit: _invoiceFormCubit,
           errors: _invoiceBloc.getValidationErrors,
         ),
         CustomInvoicePlutoTable(

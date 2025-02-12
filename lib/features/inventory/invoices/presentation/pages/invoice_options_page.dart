@@ -4,37 +4,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
 
 class InvoiceOptionsPage extends StatelessWidget {
   final bool enableEditing;
-
-  final InvoiceAccountEntity goodsAccountController;
-  final TextEditingController goodsAccountDescriptionController;
-
-  InvoiceAccountEntity taxAccountController;
-  final TextEditingController taxAmountController;
-  final TextEditingController taxAccountDescriptionController;
-
-  InvoiceAccountEntity discountAccountController;
-  final TextEditingController discountAmountController;
-  final TextEditingController discountAccountDescriptionController;
+  final InvoiceFormCubit invoiceFormCubit;
+  final InvoiceBloc invoiceBloc;
 
   final Map<String, dynamic> errors;
 
-  InvoiceOptionsPage(
+  const InvoiceOptionsPage(
       {super.key,
       required this.enableEditing,
-      required this.goodsAccountController,
-      required this.goodsAccountDescriptionController,
-      required this.taxAccountController,
-      required this.taxAmountController,
-      required this.taxAccountDescriptionController,
-      required this.discountAccountController,
-      required this.discountAmountController,
-      required this.discountAccountDescriptionController,
-      required this.errors});
+      required this.errors,
+      required this.invoiceBloc,
+      required this.invoiceFormCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +31,19 @@ class InvoiceOptionsPage extends StatelessWidget {
               data: context.read<InvoiceBloc>().accountsNameList,
               label: 'goods_account'.tr,
               enabled: enableEditing,
-              initialValue:
-                  TextEditingValue(text: goodsAccountController.arName ?? ''),
+              initialValue: TextEditingValue(
+                  text: invoiceFormCubit.goodsAccountController.arName ?? ''),
               onSelected: (value) {
-                goodsAccountController.id =
-                    context.read<InvoiceBloc>().getDesiredId(value);
+                invoiceFormCubit.goodsAccountController =
+                    invoiceFormCubit.goodsAccountController.copyWith(
+                        arName: value, id: invoiceBloc.getDesiredId(value));
               },
               error: errors['goods_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
               enabled: enableEditing,
-              controller: goodsAccountDescriptionController,
+              controller: invoiceFormCubit.goodsAccountDescriptionController,
               error: errors['description']?.join('\n'),
             ),
             const SizedBox()
@@ -66,30 +52,29 @@ class InvoiceOptionsPage extends StatelessWidget {
         TableRow(
           children: [
             CustomAutoComplete(
-              data: context.read<InvoiceBloc>().accountsNameList,
+              data: invoiceBloc.accountsNameList,
               label: 'tax_account'.tr,
               enabled: enableEditing,
-              initialValue:
-                  TextEditingValue(text: taxAccountController.arName ?? ''),
+              initialValue: TextEditingValue(
+                  text: invoiceFormCubit.taxAccountController.arName ?? ''),
               onSelected: (value) {
-                taxAccountController.id =
-                    context.read<InvoiceBloc>().getDesiredId(value);
-                taxAccountController =
-                    taxAccountController.copyWith(arName: value);
+                invoiceFormCubit.taxAccountController =
+                    invoiceFormCubit.taxAccountController.copyWith(
+                        arName: value, id: invoiceBloc.getDesiredId(value));
               },
               error: errors['total_tax_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'tax_amount'.tr,
               enabled: enableEditing,
-              controller: taxAmountController,
+              controller: invoiceFormCubit.taxAmountController,
               helper: '%',
               format: FilteringTextInputFormatter.digitsOnly,
               error: errors['tax_amount']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
-              controller: taxAccountDescriptionController,
+              controller: invoiceFormCubit.taxAccountDescriptionController,
               enabled: enableEditing,
               error: errors['tax_account_description']?.join('\n'),
             ),
@@ -98,30 +83,30 @@ class InvoiceOptionsPage extends StatelessWidget {
         TableRow(
           children: [
             CustomAutoComplete(
-              data: context.read<InvoiceBloc>().accountsNameList,
+              data: invoiceBloc.accountsNameList,
               label: 'discount_account'.tr,
               enabled: enableEditing,
               initialValue: TextEditingValue(
-                  text: discountAccountController.arName ?? ''),
+                  text:
+                      invoiceFormCubit.discountAccountController.arName ?? ''),
               onSelected: (value) {
-                discountAccountController.id =
-                    context.read<InvoiceBloc>().getDesiredId(value);
-                discountAccountController =
-                    discountAccountController.copyWith(arName: value);
+                invoiceFormCubit.discountAccountController =
+                    invoiceFormCubit.discountAccountController.copyWith(
+                        arName: value, id: invoiceBloc.getDesiredId(value));
               },
               error: errors['total_discount_account']?.join('\n'),
             ),
             CustomInputField(
               label: 'discount_amount'.tr,
               enabled: enableEditing,
-              controller: discountAmountController,
+              controller: invoiceFormCubit.discountAmountController,
               helper: '%',
               format: FilteringTextInputFormatter.digitsOnly,
               error: errors['discount_amount']?.join('\n'),
             ),
             CustomInputField(
               label: 'description'.tr,
-              controller: discountAccountDescriptionController,
+              controller: invoiceFormCubit.discountAccountDescriptionController,
               enabled: enableEditing,
               error: errors['discount_account_description']?.join('\n'),
             ),
