@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/cubit/invoice_form_cubit.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
 
 class InvoiceOptionsPage extends StatelessWidget {
   final bool enableEditing;

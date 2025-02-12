@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 
 class InvoiceToolBar extends StatelessWidget {
   final InvoiceEntity? invoice;

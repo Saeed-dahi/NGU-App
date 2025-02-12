@@ -46,7 +46,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_inv
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/products/data/data_sources/product_data_source.dart';
 import 'package:ngu_app/features/inventory/products/data/repositories/product_repository_impl.dart';
 import 'package:ngu_app/features/inventory/products/domain/repositories/product_repository.dart';
