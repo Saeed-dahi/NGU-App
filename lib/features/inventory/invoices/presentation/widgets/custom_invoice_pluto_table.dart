@@ -26,14 +26,19 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       case 'unit':
         ShowDialog.showCustomDialog(
             context: context,
-            content: const UnitsTable(),
+            content: const UnitsTable(
+              productId: 1,
+              showProductUnits: true,
+            ),
             width: 0.2,
             height: 0.2);
         break;
       case 'code':
         ShowDialog.showCustomDialog(
           context: context,
-          content: const ProductsTable(),
+          content: const ProductsTable(
+            localeSearchQuery: 'dddd',
+          ),
         );
         break;
       default:

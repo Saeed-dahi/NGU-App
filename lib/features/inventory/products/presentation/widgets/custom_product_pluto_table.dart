@@ -16,7 +16,9 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 class CustomProductPlutoTable extends StatelessWidget {
   final List<ProductEntity> products;
   late PlutoGridController _plutoGridController = PlutoGridController();
-  CustomProductPlutoTable({super.key, required this.products});
+  final String localeSearchQuery;
+  CustomProductPlutoTable(
+      {super.key, required this.products, this.localeSearchQuery = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class CustomProductPlutoTable extends StatelessWidget {
         controller: _plutoGridController,
         mode: PlutoGridMode.readOnly,
         localeSearch: true,
+        localeSearchQuery: localeSearchQuery,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(context),
         rows: _buildRows().toList(),

@@ -9,7 +9,8 @@ import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bl
 import 'package:ngu_app/features/inventory/products/presentation/widgets/custom_product_pluto_table.dart';
 
 class ProductsTable extends StatefulWidget {
-  const ProductsTable({super.key});
+  final String localeSearchQuery;
+  const ProductsTable({super.key, this.localeSearchQuery = ''});
 
   @override
   State<ProductsTable> createState() => _ProductsTableState();
@@ -41,6 +42,7 @@ class _ProductsTableState extends State<ProductsTable> {
                 if (state is LoadedAllProductsState) {
                   return CustomProductPlutoTable(
                     products: state.products,
+                    localeSearchQuery: widget.localeSearchQuery,
                   );
                 }
                 if (state is ErrorProductsState) {
