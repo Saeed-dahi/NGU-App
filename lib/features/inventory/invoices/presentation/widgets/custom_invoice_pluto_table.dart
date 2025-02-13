@@ -52,25 +52,29 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
     final row = onChangeEvent.row;
 
-    InvoiceItemEntity invoiceItemEntity = const InvoiceItemEntity(
+    InvoiceItemEntity currentInvoiceItem =
+        row.data ?? const InvoiceItemEntity();
+    InvoiceProductUnitEntity productUnit =
+        currentInvoiceItem.productUnit ?? const InvoiceProductUnitEntity();
+    InvoiceProductEntity product =
+        productUnit.product ?? const InvoiceProductEntity();
+    InvoiceUnitEntity unit = productUnit.unit ?? const InvoiceUnitEntity();
+
+    currentInvoiceItem = currentInvoiceItem.copyWith(
       price: 10,
-      description: 'Saeed',
-      quantity: 10,
-      productUnit: InvoiceProductUnitEntity(
-        product: InvoiceProductEntity(
-          arName: 'Saeed',
-        ),
-      ),
+      quantity: 20,
     );
-    updateCurrentCell(onChangeEvent, 'price', 20);
-    updateCurrentCell(onChangeEvent, 'notes', 20);
-    updateCurrentCell(onChangeEvent, 'quantity', 20);
-    updateCurrentCell(onChangeEvent, 'code', 20);
-    updateCurrentCell(onChangeEvent, 'name', 20);
-    updateCurrentCell(onChangeEvent, 'unit', 20);
-    updateCurrentCell(onChangeEvent, 'sub_total', 20);
-    updateCurrentCell(onChangeEvent, 'tax_amount', 20);
-    updateCurrentCell(onChangeEvent, 'total', 20);
+
+    updateCurrentCell(onChangeEvent, 'price', currentInvoiceItem.price);
+    // updateCurrentCell(onChangeEvent, 'notes', currentInvoiceItem.description);
+    updateCurrentCell(onChangeEvent, 'quantity', currentInvoiceItem.quantity);
+    // updateCurrentCell(
+    //     onChangeEvent, 'code', currentInvoiceItem.productUnit!.product!.code);
+    // updateCurrentCell(onChangeEvent, 'name', 20);
+    // updateCurrentCell(onChangeEvent, 'unit', 20);
+    // updateCurrentCell(onChangeEvent, 'sub_total', 20);
+    // updateCurrentCell(onChangeEvent, 'tax_amount', 20);
+    // updateCurrentCell(onChangeEvent, 'total', 20);
   }
 
   updateCurrentCell(
