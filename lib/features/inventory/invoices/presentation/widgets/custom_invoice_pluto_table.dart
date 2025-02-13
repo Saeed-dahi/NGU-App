@@ -8,6 +8,7 @@ import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
@@ -21,28 +22,37 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  Future<void> _getAccountName(BuildContext context) async {
-    switch (_plutoGridController.stateManager!.currentColumn!.field) {
-      case 'unit':
-        ShowDialog.showCustomDialog(
-            context: context,
-            content: const UnitsTable(
-              productId: 1,
-              showProductUnits: true,
-            ),
-            width: 0.2,
-            height: 0.2);
-        break;
-      case 'code':
-        ShowDialog.showCustomDialog(
-          context: context,
-          content: const ProductsTable(
-            localeSearchQuery: 'dddd',
-          ),
-        );
-        break;
-      default:
-    }
+  Future<void> _getAccountName(
+      BuildContext context, PlutoGridOnChangedEvent onChangeEvent) async {
+    // switch (onChangeEvent.column.field) {
+    //   case 'unit':
+    //     if (onChangeEvent.row.data != null) {
+    //       ShowDialog.showCustomDialog(
+    //           context: context,
+    //           content: UnitsTable(
+    //             productId: onChangeEvent.row.data.productUnit.product.id,
+    //             showProductUnits: true,
+    //           ),
+    //           width: 0.4,
+    //           height: 0.4);
+    //     }
+
+    //     break;
+    //   case 'code':
+    //     ShowDialog.showCustomDialog(
+    //       context: context,
+    //       content: ProductsTable(
+    //         localeSearchQuery: onChangeEvent.value,
+    //       ),
+    //     );
+    //     break;
+    //   default:
+    // }
+  }
+
+  addCustomCell(
+      PlutoGridOnChangedEvent onChangeEvent, String cell, dynamic value) {
+    onChangeEvent.row.cells[cell] = PlutoCell(value: value);
   }
 
   @override
@@ -61,7 +71,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
-          _getAccountName(context);
+          _getAccountName(context, p0);
         },
         onLoaded: (event) {
           _plutoGridController =
@@ -89,7 +99,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('name', readOnly: true),
       _buildCustomColumn('quantity', showSum: true),
       _buildCustomColumn('unit', showSum: true),
-      _buildCustomColumn('price'),
+      _buildCustomColumn('price', type: PlutoColumnType.number()),
       _buildCustomColumn('sub_total', showSum: true, readOnly: true),
       _buildCustomColumn('tax_amount', showSum: true, readOnly: true),
       _buildCustomColumn('total', showSum: true, readOnly: true),
@@ -119,11 +129,11 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   Iterable<PlutoRow> _buildFilledRows() {
     return invoice!.invoiceItems!.map(
       (invoiceItem) {
-        var product = invoiceItem.productUnit.product;
-        var unit = invoiceItem.productUnit.unit;
+        var product = invoiceItem.productUnit!.product;
+        var unit = invoiceItem.productUnit!.unit;
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: invoiceItem.id,
+          data: invoiceItem,
           cells: {
             'code': PlutoCell(value: product.code),
             'name': PlutoCell(value: '${product.arName} - ${product.enName}'),
@@ -133,7 +143,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
             'sub_total': PlutoCell(value: invoiceItem.total),
             'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
             'total':
-                PlutoCell(value: invoiceItem.total + invoiceItem.taxAmount),
+                PlutoCell(value: invoiceItem.total! + invoiceItem.taxAmount!),
             'notes': PlutoCell(value: invoiceItem.description),
           },
         );

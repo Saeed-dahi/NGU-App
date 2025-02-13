@@ -3,15 +3,15 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item
 
 class InvoiceItemModel extends InvoiceItemEntity {
   const InvoiceItemModel(
-      {required super.id,
-      required super.invoiceId,
-      required super.productUnit,
-      required super.description,
-      required super.quantity,
-      required super.price,
-      required super.taxAmount,
-      required super.discountAmount,
-      required super.total});
+      {super.id,
+      super.invoiceId,
+      super.productUnit,
+      super.description,
+      super.quantity,
+      super.price,
+      super.taxAmount,
+      super.discountAmount,
+      super.total});
 
   factory InvoiceItemModel.fromJson(Map<String, dynamic> json) {
     return InvoiceItemModel(
