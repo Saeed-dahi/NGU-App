@@ -9,8 +9,9 @@ sealed class UnitEvent extends Equatable {
 
 class GetUnitsEvent extends UnitEvent {
   final int? productId;
+  final bool? showProductUnits;
 
-  const GetUnitsEvent({this.productId});
+  const GetUnitsEvent({this.productId, this.showProductUnits});
 }
 
 class CreateUnitEvent extends UnitEvent {

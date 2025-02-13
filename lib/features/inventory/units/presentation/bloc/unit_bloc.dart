@@ -33,7 +33,8 @@ class UnitBloc extends Bloc<UnitEvent, UnitState> {
       GetUnitsEvent event, Emitter<UnitState> emit) async {
     emit(LoadingUnitsState());
 
-    final result = await getUnitsUseCase(productId: event.productId);
+    final result = await getUnitsUseCase(
+        productId: event.productId, showProductUnits: event.showProductUnits);
 
     result.fold((failure) {
       emit(ErrorUnitsState(message: failure.errors['error']));

@@ -11,7 +11,8 @@ import 'package:ngu_app/features/inventory/units/presentation/widgets/unit_toolb
 
 class UnitsTable extends StatefulWidget {
   final int? productId;
-  const UnitsTable({super.key, this.productId});
+  final bool? showProductUnits;
+  const UnitsTable({super.key, this.productId, this.showProductUnits});
 
   @override
   State<UnitsTable> createState() => _CategoriesTableState();
@@ -21,7 +22,10 @@ class _CategoriesTableState extends State<UnitsTable> {
   late final UnitBloc _unitBloc;
   @override
   void initState() {
-    _unitBloc = sl<UnitBloc>()..add(GetUnitsEvent(productId: widget.productId));
+    _unitBloc = sl<UnitBloc>()
+      ..add(GetUnitsEvent(
+          productId: widget.productId,
+          showProductUnits: widget.showProductUnits));
     super.initState();
   }
 
