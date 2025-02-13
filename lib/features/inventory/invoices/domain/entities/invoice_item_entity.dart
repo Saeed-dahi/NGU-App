@@ -24,6 +24,29 @@ class InvoiceItemEntity extends Equatable {
       this.discountAmount,
       this.total});
 
+  InvoiceItemEntity copyWith(
+      {int? id,
+      int? invoiceId,
+      InvoiceProductUnitEntity? productUnit,
+      String? description,
+      double? quantity,
+      double? price,
+      double? taxAmount,
+      double? discountAmount,
+      double? total}) {
+    return InvoiceItemEntity(
+      id: id ?? this.id,
+      invoiceId: invoiceId ?? this.invoiceId,
+      productUnit: productUnit ?? this.productUnit,
+      description: description ?? this.description,
+      quantity: quantity ?? this.quantity,
+      price: price ?? this.price,
+      taxAmount: taxAmount ?? this.taxAmount,
+      discountAmount: discountAmount ?? this.discountAmount,
+      total: total ?? this.total,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

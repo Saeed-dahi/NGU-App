@@ -17,11 +17,12 @@ class InvoiceAccountEntity extends Equatable {
       String? enName,
       String? description}) {
     return InvoiceAccountEntity(
-        id: id,
-        arName: arName,
-        enName: enName,
-        code: code,
-        description: description);
+      id: id ?? this.id,
+      code: code ?? this.code,
+      arName: arName ?? this.arName,
+      enName: enName ?? this.enName,
+      description: description ?? this.description,
+    );
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
@@ -22,7 +23,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  Future<void> _getAccountName(
+  Future<void> _onChange(
       BuildContext context, PlutoGridOnChangedEvent onChangeEvent) async {
     // switch (onChangeEvent.column.field) {
     //   case 'unit':
@@ -48,11 +49,33 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     //     break;
     //   default:
     // }
+
+    final row = onChangeEvent.row;
+
+    InvoiceItemEntity invoiceItemEntity = const InvoiceItemEntity(
+      price: 10,
+      description: 'Saeed',
+      quantity: 10,
+      productUnit: InvoiceProductUnitEntity(
+        product: InvoiceProductEntity(
+          arName: 'Saeed',
+        ),
+      ),
+    );
+    updateCurrentCell(onChangeEvent, 'price', 20);
+    updateCurrentCell(onChangeEvent, 'notes', 20);
+    updateCurrentCell(onChangeEvent, 'quantity', 20);
+    updateCurrentCell(onChangeEvent, 'code', 20);
+    updateCurrentCell(onChangeEvent, 'name', 20);
+    updateCurrentCell(onChangeEvent, 'unit', 20);
+    updateCurrentCell(onChangeEvent, 'sub_total', 20);
+    updateCurrentCell(onChangeEvent, 'tax_amount', 20);
+    updateCurrentCell(onChangeEvent, 'total', 20);
   }
 
-  addCustomCell(
+  updateCurrentCell(
       PlutoGridOnChangedEvent onChangeEvent, String cell, dynamic value) {
-    onChangeEvent.row.cells[cell] = PlutoCell(value: value);
+    onChangeEvent.row.cells[cell]!.value = value;
   }
 
   @override
@@ -71,7 +94,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
           _plutoGridController.onChanged(p0);
-          _getAccountName(context, p0);
+          _onChange(context, p0);
         },
         onLoaded: (event) {
           _plutoGridController =
@@ -135,10 +158,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: invoiceItem,
           cells: {
-            'code': PlutoCell(value: product.code),
+            'code': PlutoCell(value: product!.code),
             'name': PlutoCell(value: '${product.arName} - ${product.enName}'),
             'quantity': PlutoCell(value: invoiceItem.quantity),
-            'unit': PlutoCell(value: unit.arName),
+            'unit': PlutoCell(value: unit!.arName),
             'price': PlutoCell(value: invoiceItem.price),
             'sub_total': PlutoCell(value: invoiceItem.total),
             'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
