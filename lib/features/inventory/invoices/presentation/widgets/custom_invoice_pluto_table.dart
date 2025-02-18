@@ -65,9 +65,9 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       quantity: 20,
     );
 
-    updateCurrentCell(onChangeEvent, 'price', currentInvoiceItem.price);
+    // updateCurrentCell(onChangeEvent, 'price', currentInvoiceItem.price);
     // updateCurrentCell(onChangeEvent, 'notes', currentInvoiceItem.description);
-    updateCurrentCell(onChangeEvent, 'quantity', currentInvoiceItem.quantity);
+    // updateCurrentCell(onChangeEvent, 'quantity', currentInvoiceItem.quantity);
     // updateCurrentCell(
     //     onChangeEvent, 'code', currentInvoiceItem.productUnit!.product!.code);
     // updateCurrentCell(onChangeEvent, 'name', 20);
@@ -126,7 +126,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('name', readOnly: true),
       _buildCustomColumn('quantity', showSum: true),
       _buildCustomColumn('unit', showSum: true),
-      _buildCustomColumn('price', type: PlutoColumnType.number()),
+      _buildCustomColumn('price'),
       _buildCustomColumn('sub_total', showSum: true, readOnly: true),
       _buildCustomColumn('tax_amount', showSum: true, readOnly: true),
       _buildCustomColumn('total', showSum: true, readOnly: true),

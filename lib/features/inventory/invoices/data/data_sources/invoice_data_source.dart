@@ -6,6 +6,7 @@ import 'package:ngu_app/core/network/network_connection.dart';
 
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
+import 'package:ngu_app/features/inventory/invoices/data/models/params/preview_invoice_item_model.dart';
 
 abstract class InvoiceDataSource {
   Future<List<InvoiceModel>> getAllInvoices(String type);
@@ -17,6 +18,9 @@ abstract class InvoiceDataSource {
       InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
 
   Future<InvoiceModel> getCreateInvoiceFormData(String type);
+
+  Future<PreviewInvoiceItemModel> previewInvoiceItem(
+      String query, String? accountId, String productUnitId);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -101,5 +105,22 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
     InvoiceModel invoice = InvoiceModel.fromJson(decodedJson['data']);
 
     return invoice;
+  }
+
+  @override
+  Future<PreviewInvoiceItemModel> previewInvoiceItem(
+      String query, String? accountId, String productUnitId) async {
+    final response = await networkConnection.get(APIList.previewInvoiceItem, {
+      'query': query,
+      'account_id': accountId,
+      'product_unit_id': productUnitId
+    });
+    var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    PreviewInvoiceItemModel invoiceItem =
+        PreviewInvoiceItemModel.toJson(decodedJson['data']);
+
+    return invoiceItem;
   }
 }

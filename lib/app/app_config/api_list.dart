@@ -22,4 +22,5 @@ class APIList {
   static const String product = "product";
   static const String productUnit = "product-unit";
   static const String invoice = "invoice";
+  static const String previewInvoiceItem = "get-invoice-item-data";
 }
