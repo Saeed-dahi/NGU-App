@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/products/domain/entities/product_entity.dart';
-import 'package:ngu_app/features/inventory/products/presentation/bloc/product_bloc.dart';
-import 'package:ngu_app/features/inventory/products/presentation/pages/product_history.dart';
 import 'package:ngu_app/features/inventory/products/presentation/widgets/product_option_menu.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -34,16 +30,19 @@ class CustomProductPlutoTable extends StatelessWidget {
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         customEnterKeyAction: () {
-          Get.back();
-          context.read<TabCubit>().addNewTab(
-              title: 'product_sts'.tr, content: const ProductHistory());
+          Get.back(result: {
+            'code': _plutoGridController
+                .stateManager!.currentRow!.cells['code']!.value,
+          });
+          // context.read<TabCubit>().addNewTab(
+          //     title: 'product_sts'.tr, content: const ProductHistory());
         },
         showDefaultHeader: false,
         onLoaded: (PlutoGridOnLoadedEvent event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
-          context.read<ProductBloc>().plutoGridController =
-              _plutoGridController;
+          // context.read<ProductBloc>().plutoGridController =
+          //     _plutoGridController;
         },
       ),
     );

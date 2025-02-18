@@ -20,7 +20,7 @@ abstract class InvoiceDataSource {
   Future<InvoiceModel> getCreateInvoiceFormData(String type);
 
   Future<PreviewInvoiceItemModel> previewInvoiceItem(
-      String query, String? accountId, String productUnitId);
+      String query, int? accountId, String? productUnitId);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -109,10 +109,10 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
 
   @override
   Future<PreviewInvoiceItemModel> previewInvoiceItem(
-      String query, String? accountId, String productUnitId) async {
+      String query, int? accountId, String? productUnitId) async {
     final response = await networkConnection.get(APIList.previewInvoiceItem, {
       'query': query,
-      'account_id': accountId,
+      'account_id': accountId?.toString(),
       'product_unit_id': productUnitId
     });
     var decodedJson = jsonDecode(response.body);

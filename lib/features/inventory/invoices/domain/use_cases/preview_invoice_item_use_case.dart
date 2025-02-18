@@ -9,7 +9,7 @@ class PreviewInvoiceItemUseCase {
   PreviewInvoiceItemUseCase({required this.invoiceRepository});
 
   Future<Either<Failure, PreviewInvoiceItemEntity>> call(
-      String query, String? accountId, String productUnitId) async {
+      String query, int? accountId, String? productUnitId) async {
     return invoiceRepository.previewInvoiceItem(
         query, accountId, productUnitId);
   }

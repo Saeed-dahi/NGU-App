@@ -30,6 +30,6 @@ class PreviewProductUnitModel extends PreviewProductUnitEntity {
         id: json['id'],
         arName: json['ar_name'],
         enName: json['en_name'],
-        price: json['price']);
+        price: double.parse(json['price'].toString()));
   }
 }

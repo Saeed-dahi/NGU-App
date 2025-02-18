@@ -17,5 +17,5 @@ abstract class InvoiceRepository {
   Future<Either<Failure, InvoiceEntity>> getCreateInvoiceFormData(String type);
 
   Future<Either<Failure, PreviewInvoiceItemEntity>> previewInvoiceItem(
-      String query, String? accountId, String productUnitId);
+      String query, int? accountId, String? productUnitId);
 }

@@ -10,9 +10,11 @@ import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/preview_invoice_item_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 
@@ -27,6 +29,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   final UpdateInvoiceUseCase updateInvoiceUseCase;
   final GetAccountsNameUseCase getAccountsNameUseCase;
   final GetCreateInvoiceFormDataUseCase getCreateInvoiceFormDataUseCase;
+  final PreviewInvoiceItemUseCase previewInvoiceItemUseCase;
 
   InvoiceEntity _invoiceEntity = const InvoiceEntity();
   InvoiceEntity get getInvoiceEntity => _invoiceEntity;
@@ -47,7 +50,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   List<InvoiceItemsEntityParams> get invoiceItems {
     return _stateManager.rows.map((row) {
       return InvoiceItemsEntityParams(
-          productUnitId: row.cells['code']?.value,
+          productUnitId: row.data.productUnit.id.toString(),
           quantity:
               FormatterClass.doubleFormatter(row.cells['quantity']?.value),
           price: FormatterClass.doubleFormatter(row.cells['price']?.value));
@@ -60,7 +63,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       required this.createInvoiceUseCase,
       required this.updateInvoiceUseCase,
       required this.getAccountsNameUseCase,
-      required this.getCreateInvoiceFormDataUseCase})
+      required this.getCreateInvoiceFormDataUseCase,
+      required this.previewInvoiceItemUseCase})
       : super(InvoiceInitial()) {
     on<GetAllInvoiceEvent>(_getAllInvoices);
     on<ShowInvoiceEvent>(_showInvoice);
@@ -167,5 +171,23 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         int.parse(accountsName['id_${spitedValue[0].removeAllWhitespace}']);
 
     return desiredId;
+  }
+
+  Future<PreviewInvoiceItemEntity?> previewInvoiceItem(
+      {required String query, int? accountId, String? productUnitId}) async {
+    PreviewInvoiceItemEntity? previewInvoiceItem;
+    final result =
+        await previewInvoiceItemUseCase(query, accountId, productUnitId);
+
+    result.fold(
+      (failure) {
+        ShowSnackBar.showValidationSnackbar(
+            messages: [failure.errors.values.toString()]);
+      },
+      (data) {
+        previewInvoiceItem = data;
+      },
+    );
+    return previewInvoiceItem;
   }
 }

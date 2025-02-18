@@ -7,12 +7,16 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
+
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInvoicePlutoTable extends StatelessWidget {
@@ -23,35 +27,105 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
+  Future<Map<String, dynamic>> _openProductsDialog(
+      BuildContext context, String query) async {
+    final result = await ShowDialog.showCustomDialog(
+      context: context,
+      content: ProductsTable(
+        localeSearchQuery: query,
+      ),
+    );
+    return result ?? {};
+  }
+
+  Future<Map<String, dynamic>> _openProductUnitsDialog(
+      BuildContext context, int productId) async {
+    final result = await ShowDialog.showCustomDialog(
+      context: context,
+      content: UnitsTable(
+        productId: productId,
+        showProductUnits: true,
+      ),
+    );
+    return result ?? {};
+  }
+
   Future<void> _onChange(
       BuildContext context, PlutoGridOnChangedEvent onChangeEvent) async {
-    // switch (onChangeEvent.column.field) {
-    //   case 'unit':
-    //     if (onChangeEvent.row.data != null) {
-    //       ShowDialog.showCustomDialog(
-    //           context: context,
-    //           content: UnitsTable(
-    //             productId: onChangeEvent.row.data.productUnit.product.id,
-    //             showProductUnits: true,
-    //           ),
-    //           width: 0.4,
-    //           height: 0.4);
-    //     }
-
-    //     break;
-    //   case 'code':
-    //     ShowDialog.showCustomDialog(
-    //       context: context,
-    //       content: ProductsTable(
-    //         localeSearchQuery: onChangeEvent.value,
-    //       ),
-    //     );
-    //     break;
-    //   default:
-    // }
-
     final row = onChangeEvent.row;
+    String query = onChangeEvent.value;
+    InvoiceProductUnitEntity? productUnit = row.data?.productUnit;
 
+    PreviewInvoiceItemEntity? previewInvoiceItem;
+
+    switch (onChangeEvent.column.field) {
+      case 'code':
+        previewInvoiceItem = await _previewInvoiceItem(context, query);
+        if (previewInvoiceItem == null) {
+          final result = await _openProductsDialog(context, query);
+          if (result.isNotEmpty) {
+            query = result['code'];
+            previewInvoiceItem = await _previewInvoiceItem(context, query);
+          }
+        }
+        break;
+
+      case 'unit':
+        if (row.data != null) {
+          final result =
+              await _openProductUnitsDialog(context, productUnit!.product!.id!);
+          if (result.isNotEmpty) {
+            query = productUnit.product!.code.toString();
+            previewInvoiceItem = await _previewInvoiceItem(context, query,
+                productUnitId: result['unit_id'].toString());
+          }
+        }
+        break;
+      default:
+        if (row.data != null) {
+          previewInvoiceItem = await _previewInvoiceItem(
+              context, productUnit!.product!.code.toString(),
+              productUnitId: productUnit.unit!.id.toString());
+        }
+        break;
+    }
+
+    if (previewInvoiceItem != null) {
+      InvoiceItemEntity updatedInvoiceItem =
+          _updateInvoiceItemEntity(row, previewInvoiceItem);
+      row.data = updatedInvoiceItem;
+
+      final updates = {
+        'code': updatedInvoiceItem.productUnit?.product?.code,
+        'name': updatedInvoiceItem.productUnit?.product?.arName,
+        'quantity': updatedInvoiceItem.quantity,
+        'unit': updatedInvoiceItem.productUnit?.unit?.arName,
+        'price': updatedInvoiceItem.price,
+        'sub_total': updatedInvoiceItem.total,
+        'tax_amount': updatedInvoiceItem.taxAmount,
+        'total': updatedInvoiceItem.total! + updatedInvoiceItem.taxAmount!,
+        'notes': updatedInvoiceItem.description,
+      };
+
+      // Apply updates to the grid
+      _updateGridCells(onChangeEvent, updates);
+
+      _plutoGridController.stateManager?.notifyListeners();
+    }
+  }
+
+  Future<PreviewInvoiceItemEntity?> _previewInvoiceItem(
+      BuildContext context, String query,
+      {String? productUnitId}) async {
+    InvoiceAccountEntity? account =
+        context.read<InvoiceFormCubit>().accountController;
+    final data = await context.read<InvoiceBloc>().previewInvoiceItem(
+        query: query, accountId: account.id, productUnitId: productUnitId);
+    return data;
+  }
+
+  InvoiceItemEntity _updateInvoiceItemEntity(
+      PlutoRow<dynamic> row, PreviewInvoiceItemEntity data) {
     InvoiceItemEntity currentInvoiceItem =
         row.data ?? const InvoiceItemEntity();
     InvoiceProductUnitEntity productUnit =
@@ -60,21 +134,42 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         productUnit.product ?? const InvoiceProductEntity();
     InvoiceUnitEntity unit = productUnit.unit ?? const InvoiceUnitEntity();
 
-    currentInvoiceItem = currentInvoiceItem.copyWith(
-      price: 10,
-      quantity: 20,
+    // Update product and unit details
+    final updatedProduct = product.copyWith(
+      id: data.id,
+      arName: data.arName,
+      enName: data.enName,
+      code: data.code,
     );
 
-    // updateCurrentCell(onChangeEvent, 'price', currentInvoiceItem.price);
-    // updateCurrentCell(onChangeEvent, 'notes', currentInvoiceItem.description);
-    // updateCurrentCell(onChangeEvent, 'quantity', currentInvoiceItem.quantity);
-    // updateCurrentCell(
-    //     onChangeEvent, 'code', currentInvoiceItem.productUnit!.product!.code);
-    // updateCurrentCell(onChangeEvent, 'name', 20);
-    // updateCurrentCell(onChangeEvent, 'unit', 20);
-    // updateCurrentCell(onChangeEvent, 'sub_total', 20);
-    // updateCurrentCell(onChangeEvent, 'tax_amount', 20);
-    // updateCurrentCell(onChangeEvent, 'total', 20);
+    final updatedUnit = unit.copyWith(
+      arName: data.productUnit.arName,
+      enName: data.productUnit.enName,
+    );
+
+    final updatedProductUnit = productUnit.copyWith(
+      id: data.productUnit.id,
+      product: updatedProduct,
+      unit: updatedUnit,
+    );
+
+    // Update invoice item
+    final updatedInvoiceItem = currentInvoiceItem.copyWith(
+      price: data.productUnit.price,
+      quantity: 1,
+      taxAmount: 2,
+      total: 3,
+      description: '',
+      productUnit: updatedProductUnit,
+    );
+    return updatedInvoiceItem;
+  }
+
+  void _updateGridCells(
+      PlutoGridOnChangedEvent onChangeEvent, Map<String, dynamic> updates) {
+    for (var entry in updates.entries) {
+      updateCurrentCell(onChangeEvent, entry.key, entry.value);
+    }
   }
 
   updateCurrentCell(
@@ -159,7 +254,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         var product = invoiceItem.productUnit!.product;
         var unit = invoiceItem.productUnit!.unit;
         return PlutoRow(
-          type: PlutoRowTypeGroup(children: FilteredList()),
           data: invoiceItem,
           cells: {
             'code': PlutoCell(value: product!.code),

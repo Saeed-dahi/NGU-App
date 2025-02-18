@@ -52,7 +52,7 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
 
   @override
   Future<Either<Failure, PreviewInvoiceItemEntity>> previewInvoiceItem(
-      String query, String? accountId, String productUnitId) async {
+      String query, int? accountId, String? productUnitId) async {
     return await apiHelper.safeApiCall(() =>
         invoiceDataSource.previewInvoiceItem(query, accountId, productUnitId));
   }
