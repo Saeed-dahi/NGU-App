@@ -22,14 +22,16 @@ class PreviewProductUnitEntity extends Equatable {
   final int id;
   final String arName;
   final String enName;
+  final int unitId;
   final double price;
 
   const PreviewProductUnitEntity(
       {required this.id,
       required this.arName,
       required this.enName,
+      required this.unitId,
       required this.price});
 
   @override
-  List<Object?> get props => [id, arName, enName, price];
+  List<Object?> get props => [id, arName, enName, unitId, price];
 }

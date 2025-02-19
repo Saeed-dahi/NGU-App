@@ -61,9 +61,9 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     switch (onChangeEvent.column.field) {
       case 'code':
         previewInvoiceItem = await _previewInvoiceItem(context, query);
-        if (previewInvoiceItem == null) {
+        if (previewInvoiceItem == null && context.mounted) {
           final result = await _openProductsDialog(context, query);
-          if (result.isNotEmpty) {
+          if (result.isNotEmpty && context.mounted) {
             query = result['code'];
             previewInvoiceItem = await _previewInvoiceItem(context, query);
           }
@@ -74,7 +74,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         if (row.data != null) {
           final result =
               await _openProductUnitsDialog(context, productUnit!.product!.id!);
-          if (result.isNotEmpty) {
+          if (result.isNotEmpty && context.mounted) {
             query = productUnit.product!.code.toString();
             previewInvoiceItem = await _previewInvoiceItem(context, query,
                 productUnitId: result['unit_id'].toString());
@@ -143,6 +143,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     );
 
     final updatedUnit = unit.copyWith(
+      id: data.productUnit.unitId,
       arName: data.productUnit.arName,
       enName: data.productUnit.enName,
     );

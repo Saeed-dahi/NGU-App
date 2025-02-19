@@ -14,7 +14,7 @@ class PreviewInvoiceItemModel extends PreviewInvoiceItemEntity {
         arName: json['ar_name'],
         enName: json['en_name'],
         code: json['code'],
-        productUnit: PreviewProductUnitModel.toJson(json['unit']));
+        productUnit: PreviewProductUnitModel.toJson(json['product_unit']));
   }
 }
 
@@ -23,6 +23,7 @@ class PreviewProductUnitModel extends PreviewProductUnitEntity {
       {required super.id,
       required super.arName,
       required super.enName,
+      required super.unitId,
       required super.price});
 
   factory PreviewProductUnitModel.toJson(Map<String, dynamic> json) {
@@ -30,6 +31,7 @@ class PreviewProductUnitModel extends PreviewProductUnitEntity {
         id: json['id'],
         arName: json['ar_name'],
         enName: json['en_name'],
+        unitId: json['unit_id'],
         price: double.parse(json['price'].toString()));
   }
 }
