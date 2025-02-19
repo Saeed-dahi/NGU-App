@@ -3,21 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
-import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
-import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
-import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
-import 'package:ngu_app/features/inventory/units/presentation/pages/units_table.dart';
-
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomInvoicePlutoTable extends StatelessWidget {
@@ -27,178 +18,6 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   CustomInvoicePlutoTable({super.key, this.invoice, this.readOnly = false});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
-
-  Future<Map<String, dynamic>> _openProductsDialog(
-      BuildContext context, String query) async {
-    final result = await ShowDialog.showCustomDialog(
-      context: context,
-      content: ProductsTable(
-        localeSearchQuery: query,
-      ),
-    );
-    return result ?? {};
-  }
-
-  Future<Map<String, dynamic>> _openProductUnitsDialog(
-      BuildContext context, int productId) async {
-    final result = await ShowDialog.showCustomDialog(
-      context: context,
-      content: UnitsTable(
-        productId: productId,
-        showProductUnits: true,
-      ),
-    );
-    return result ?? {};
-  }
-
-  Future<void> _onChange(
-      BuildContext context, PlutoGridOnChangedEvent onChangeEvent) async {
-    final row = onChangeEvent.row;
-    String query = onChangeEvent.value;
-    InvoiceProductUnitEntity? productUnit = row.data?.productUnit;
-
-    PreviewInvoiceItemEntity? previewInvoiceItem;
-
-    switch (onChangeEvent.column.field) {
-      case 'code':
-        previewInvoiceItem =
-            await _previewInvoiceItem(context: context, query: query, row: row);
-        if (previewInvoiceItem == null && context.mounted) {
-          final result = await _openProductsDialog(context, query);
-          if (result.isNotEmpty && context.mounted) {
-            query = result['code'];
-            previewInvoiceItem = await _previewInvoiceItem(
-                context: context, query: query, row: row);
-          }
-        }
-        break;
-
-      case 'unit':
-        if (row.data != null) {
-          final result =
-              await _openProductUnitsDialog(context, productUnit!.product!.id!);
-          if (result.isNotEmpty && context.mounted) {
-            query = productUnit.product!.code.toString();
-            previewInvoiceItem = await _previewInvoiceItem(
-              context: context,
-              query: query,
-              productUnitId: result['unit_id'],
-              row: row,
-            );
-          }
-        }
-        break;
-      default:
-        if (row.data != null) {
-          previewInvoiceItem = await _previewInvoiceItem(
-            context: context,
-            query: productUnit!.product!.code.toString(),
-            productUnitId: productUnit.unit!.id,
-            row: row,
-          );
-        }
-        break;
-    }
-
-    if (previewInvoiceItem != null) {
-      InvoiceItemEntity updatedInvoiceItem =
-          _updateInvoiceItemEntity(row, previewInvoiceItem);
-      row.data = updatedInvoiceItem;
-
-      final updates = {
-        'code': updatedInvoiceItem.productUnit?.product?.code,
-        'name': updatedInvoiceItem.productUnit?.product?.arName,
-        'quantity': updatedInvoiceItem.quantity,
-        'unit': updatedInvoiceItem.productUnit?.unit?.arName,
-        'price': updatedInvoiceItem.price,
-        'sub_total': previewInvoiceItem.productUnit.subTotal,
-        'tax_amount': updatedInvoiceItem.taxAmount,
-        'total': updatedInvoiceItem.total! + updatedInvoiceItem.taxAmount!,
-        'notes': updatedInvoiceItem.description,
-      };
-
-      // Apply updates to the grid
-      _updateGridCells(onChangeEvent, updates);
-
-      _plutoGridController.stateManager?.notifyListeners();
-    }
-  }
-
-  Future<PreviewInvoiceItemEntity?> _previewInvoiceItem({
-    required BuildContext context,
-    required String query,
-    required PlutoRow<dynamic> row,
-    int? productUnitId,
-    double? price,
-  }) async {
-    InvoiceAccountEntity? account =
-        context.read<InvoiceFormCubit>().accountController;
-
-    PreviewInvoiceItemEntityParams params = PreviewInvoiceItemEntityParams(
-      query: query,
-      accountId: account.id,
-      productUnitId: productUnitId,
-      price: price ?? double.tryParse(row.cells['price']!.value.toString()),
-      quantity: double.tryParse(row.cells['quantity']!.value.toString()),
-    );
-
-    final data = await context.read<InvoiceBloc>().previewInvoiceItem(params);
-    return data;
-  }
-
-  InvoiceItemEntity _updateInvoiceItemEntity(
-      PlutoRow<dynamic> row, PreviewInvoiceItemEntity previewInvoiceItem) {
-    InvoiceItemEntity currentInvoiceItem =
-        row.data ?? const InvoiceItemEntity();
-    InvoiceProductUnitEntity productUnit =
-        currentInvoiceItem.productUnit ?? const InvoiceProductUnitEntity();
-    InvoiceProductEntity product =
-        productUnit.product ?? const InvoiceProductEntity();
-    InvoiceUnitEntity unit = productUnit.unit ?? const InvoiceUnitEntity();
-
-    // Update product and unit details
-    final updatedProduct = product.copyWith(
-      id: previewInvoiceItem.id,
-      arName: previewInvoiceItem.arName,
-      enName: previewInvoiceItem.enName,
-      code: previewInvoiceItem.code,
-    );
-
-    final updatedUnit = unit.copyWith(
-      id: previewInvoiceItem.productUnit.unitId,
-      arName: previewInvoiceItem.productUnit.arName,
-      enName: previewInvoiceItem.productUnit.enName,
-    );
-
-    final updatedProductUnit = productUnit.copyWith(
-      id: previewInvoiceItem.productUnit.id,
-      product: updatedProduct,
-      unit: updatedUnit,
-    );
-
-    // Update invoice item
-    final updatedInvoiceItem = currentInvoiceItem.copyWith(
-      price: previewInvoiceItem.productUnit.price,
-      quantity: double.tryParse(row.cells['quantity']!.value.toString()) ?? 1,
-      taxAmount: previewInvoiceItem.productUnit.taxAmount,
-      total: previewInvoiceItem.productUnit.total,
-      description: '',
-      productUnit: updatedProductUnit,
-    );
-    return updatedInvoiceItem;
-  }
-
-  void _updateGridCells(
-      PlutoGridOnChangedEvent onChangeEvent, Map<String, dynamic> updates) {
-    for (var entry in updates.entries) {
-      updateCurrentCell(onChangeEvent, entry.key, entry.value);
-    }
-  }
-
-  updateCurrentCell(
-      PlutoGridOnChangedEvent onChangeEvent, String cell, dynamic value) {
-    onChangeEvent.row.cells[cell]!.value = value;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,8 +34,9 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
-          _plutoGridController.onChanged(p0);
-          _onChange(context, p0);
+          context
+              .read<PreviewInvoiceItemCubit>()
+              .onColumnChange(context, p0, _plutoGridController.stateManager);
         },
         onLoaded: (event) {
           _plutoGridController =
