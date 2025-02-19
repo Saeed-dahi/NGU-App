@@ -61,12 +61,14 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
     switch (onChangeEvent.column.field) {
       case 'code':
-        previewInvoiceItem = await _previewInvoiceItem(context, query);
+        previewInvoiceItem =
+            await _previewInvoiceItem(context: context, query: query, row: row);
         if (previewInvoiceItem == null && context.mounted) {
           final result = await _openProductsDialog(context, query);
           if (result.isNotEmpty && context.mounted) {
             query = result['code'];
-            previewInvoiceItem = await _previewInvoiceItem(context, query);
+            previewInvoiceItem = await _previewInvoiceItem(
+                context: context, query: query, row: row);
           }
         }
         break;
@@ -77,16 +79,23 @@ class CustomInvoicePlutoTable extends StatelessWidget {
               await _openProductUnitsDialog(context, productUnit!.product!.id!);
           if (result.isNotEmpty && context.mounted) {
             query = productUnit.product!.code.toString();
-            previewInvoiceItem = await _previewInvoiceItem(context, query,
-                productUnitId: result['unit_id']);
+            previewInvoiceItem = await _previewInvoiceItem(
+              context: context,
+              query: query,
+              productUnitId: result['unit_id'],
+              row: row,
+            );
           }
         }
         break;
       default:
         if (row.data != null) {
           previewInvoiceItem = await _previewInvoiceItem(
-              context, productUnit!.product!.code.toString(),
-              productUnitId: productUnit.unit!.id);
+            context: context,
+            query: productUnit!.product!.code.toString(),
+            productUnitId: productUnit.unit!.id,
+            row: row,
+          );
         }
         break;
     }
@@ -102,7 +111,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         'quantity': updatedInvoiceItem.quantity,
         'unit': updatedInvoiceItem.productUnit?.unit?.arName,
         'price': updatedInvoiceItem.price,
-        'sub_total': updatedInvoiceItem.total,
+        'sub_total': previewInvoiceItem.productUnit.subTotal,
         'tax_amount': updatedInvoiceItem.taxAmount,
         'total': updatedInvoiceItem.total! + updatedInvoiceItem.taxAmount!,
         'notes': updatedInvoiceItem.description,
@@ -115,19 +124,30 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     }
   }
 
-  Future<PreviewInvoiceItemEntity?> _previewInvoiceItem(
-      BuildContext context, String query,
-      {int? productUnitId}) async {
+  Future<PreviewInvoiceItemEntity?> _previewInvoiceItem({
+    required BuildContext context,
+    required String query,
+    required PlutoRow<dynamic> row,
+    int? productUnitId,
+    double? price,
+  }) async {
     InvoiceAccountEntity? account =
         context.read<InvoiceFormCubit>().accountController;
+
     PreviewInvoiceItemEntityParams params = PreviewInvoiceItemEntityParams(
-        query: query, accountId: account.id, productUnitId: productUnitId);
+      query: query,
+      accountId: account.id,
+      productUnitId: productUnitId,
+      price: price ?? double.tryParse(row.cells['price']!.value.toString()),
+      quantity: double.tryParse(row.cells['quantity']!.value.toString()),
+    );
+
     final data = await context.read<InvoiceBloc>().previewInvoiceItem(params);
     return data;
   }
 
   InvoiceItemEntity _updateInvoiceItemEntity(
-      PlutoRow<dynamic> row, PreviewInvoiceItemEntity data) {
+      PlutoRow<dynamic> row, PreviewInvoiceItemEntity previewInvoiceItem) {
     InvoiceItemEntity currentInvoiceItem =
         row.data ?? const InvoiceItemEntity();
     InvoiceProductUnitEntity productUnit =
@@ -138,30 +158,30 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
     // Update product and unit details
     final updatedProduct = product.copyWith(
-      id: data.id,
-      arName: data.arName,
-      enName: data.enName,
-      code: data.code,
+      id: previewInvoiceItem.id,
+      arName: previewInvoiceItem.arName,
+      enName: previewInvoiceItem.enName,
+      code: previewInvoiceItem.code,
     );
 
     final updatedUnit = unit.copyWith(
-      id: data.productUnit.unitId,
-      arName: data.productUnit.arName,
-      enName: data.productUnit.enName,
+      id: previewInvoiceItem.productUnit.unitId,
+      arName: previewInvoiceItem.productUnit.arName,
+      enName: previewInvoiceItem.productUnit.enName,
     );
 
     final updatedProductUnit = productUnit.copyWith(
-      id: data.productUnit.id,
+      id: previewInvoiceItem.productUnit.id,
       product: updatedProduct,
       unit: updatedUnit,
     );
 
     // Update invoice item
     final updatedInvoiceItem = currentInvoiceItem.copyWith(
-      price: data.productUnit.price,
-      quantity: 1,
-      taxAmount: 2,
-      total: 3,
+      price: previewInvoiceItem.productUnit.price,
+      quantity: double.tryParse(row.cells['quantity']!.value.toString()) ?? 1,
+      taxAmount: previewInvoiceItem.productUnit.taxAmount,
+      total: previewInvoiceItem.productUnit.total,
       description: '',
       productUnit: updatedProductUnit,
     );
