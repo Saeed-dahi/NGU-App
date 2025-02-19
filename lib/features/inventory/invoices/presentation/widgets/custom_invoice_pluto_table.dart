@@ -11,6 +11,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_acco
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
@@ -77,7 +78,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
           if (result.isNotEmpty && context.mounted) {
             query = productUnit.product!.code.toString();
             previewInvoiceItem = await _previewInvoiceItem(context, query,
-                productUnitId: result['unit_id'].toString());
+                productUnitId: result['unit_id']);
           }
         }
         break;
@@ -85,7 +86,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         if (row.data != null) {
           previewInvoiceItem = await _previewInvoiceItem(
               context, productUnit!.product!.code.toString(),
-              productUnitId: productUnit.unit!.id.toString());
+              productUnitId: productUnit.unit!.id);
         }
         break;
     }
@@ -116,11 +117,12 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
   Future<PreviewInvoiceItemEntity?> _previewInvoiceItem(
       BuildContext context, String query,
-      {String? productUnitId}) async {
+      {int? productUnitId}) async {
     InvoiceAccountEntity? account =
         context.read<InvoiceFormCubit>().accountController;
-    final data = await context.read<InvoiceBloc>().previewInvoiceItem(
+    PreviewInvoiceItemEntityParams params = PreviewInvoiceItemEntityParams(
         query: query, accountId: account.id, productUnitId: productUnitId);
+    final data = await context.read<InvoiceBloc>().previewInvoiceItem(params);
     return data;
   }
 

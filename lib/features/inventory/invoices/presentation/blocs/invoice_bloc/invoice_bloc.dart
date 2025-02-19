@@ -10,6 +10,7 @@ import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
@@ -174,10 +175,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<PreviewInvoiceItemEntity?> previewInvoiceItem(
-      {required String query, int? accountId, String? productUnitId}) async {
+      PreviewInvoiceItemEntityParams params) async {
     PreviewInvoiceItemEntity? previewInvoiceItem;
     final result =
-        await previewInvoiceItemUseCase(query, accountId, productUnitId);
+        await previewInvoiceItemUseCase(params);
 
     result.fold(
       (failure) {

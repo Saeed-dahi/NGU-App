@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 
 abstract class InvoiceRepository {
@@ -17,5 +18,5 @@ abstract class InvoiceRepository {
   Future<Either<Failure, InvoiceEntity>> getCreateInvoiceFormData(String type);
 
   Future<Either<Failure, PreviewInvoiceItemEntity>> previewInvoiceItem(
-      String query, int? accountId, String? productUnitId);
+      PreviewInvoiceItemEntityParams params);
 }

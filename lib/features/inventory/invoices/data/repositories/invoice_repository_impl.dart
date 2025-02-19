@@ -5,6 +5,7 @@ import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_da
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/repositories/invoice_repository.dart';
 
@@ -52,9 +53,9 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
 
   @override
   Future<Either<Failure, PreviewInvoiceItemEntity>> previewInvoiceItem(
-      String query, int? accountId, String? productUnitId) async {
-    return await apiHelper.safeApiCall(() =>
-        invoiceDataSource.previewInvoiceItem(query, accountId, productUnitId));
+      PreviewInvoiceItemEntityParams params) async {
+    return await apiHelper.safeApiCall(
+        () => invoiceDataSource.previewInvoiceItem(params.toModel()));
   }
 
   List<InvoiceItemsModelParams> _getItemsModel(
