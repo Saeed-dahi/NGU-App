@@ -11,6 +11,9 @@ class PlutoGridController {
   VoidCallback? enterKeyAction;
   set setEnterKeyAction(VoidCallback? action) => enterKeyAction = action;
 
+  VoidCallback? spaceKeyAction;
+  set setSpaceKeyAction(VoidCallback? action) => spaceKeyAction = action;
+
   final Map<ShortcutActivator, PlutoGridShortcutAction> _customKeysMap = {};
   final List<LogicalKeyboardKey> numpadKeys = [];
 
@@ -29,6 +32,7 @@ class PlutoGridController {
       LogicalKeySet(LogicalKeyboardKey.f3): customAction,
       LogicalKeySet(LogicalKeyboardKey.f4): customAction,
       LogicalKeySet(LogicalKeyboardKey.f5): customAction,
+      LogicalKeySet(LogicalKeyboardKey.space): customAction,
     });
 
     numpadKeys.addAll([
@@ -335,6 +339,9 @@ class CustomPlutoKeyAction extends PlutoGridShortcutAction {
         break;
       case LogicalKeyboardKey.f5:
         plutoGridController.repeatPreviousRow();
+        break;
+      case LogicalKeyboardKey.space:
+        plutoGridController.spaceKeyAction!();
         break;
     }
   }

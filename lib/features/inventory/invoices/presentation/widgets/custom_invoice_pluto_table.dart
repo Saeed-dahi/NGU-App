@@ -38,6 +38,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
               .read<PreviewInvoiceItemCubit>()
               .onColumnChange(context, p0, _plutoGridController.stateManager);
         },
+        customSpaceKeyAction: () {
+          context.read<PreviewInvoiceItemCubit>().handleUnitColumnChange(
+              context, _plutoGridController.stateManager);
+        },
         onLoaded: (event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
@@ -63,7 +67,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       _buildCustomColumn('code'),
       _buildCustomColumn('name', readOnly: true),
       _buildCustomColumn('quantity', showSum: true),
-      _buildCustomColumn('unit', showSum: true),
+      _buildCustomColumn('unit', enableEditingMode: false),
       _buildCustomColumn('price'),
       _buildCustomColumn('sub_total', showSum: true, readOnly: true),
       _buildCustomColumn('tax_amount', showSum: true, readOnly: true),
@@ -116,7 +120,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   }
 
   PlutoColumn _buildCustomColumn(String title,
-      {bool readOnly = false, bool showSum = false, PlutoColumnType? type}) {
+      {bool readOnly = false,
+      bool enableEditingMode = true,
+      bool showSum = false,
+      PlutoColumnType? type}) {
     return PlutoColumn(
       title: title.tr,
       field: title,
@@ -125,6 +132,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       enableSorting: false,
       enableContextMenu: false,
       enableFilterMenuItem: false,
+      enableEditingMode: enableEditingMode,
       readOnly: readOnly,
       footerRenderer: (context) {
         if (showSum) {

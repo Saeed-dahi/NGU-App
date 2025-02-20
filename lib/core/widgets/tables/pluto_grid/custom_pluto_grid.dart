@@ -24,6 +24,7 @@ class CustomPlutoTable extends StatelessWidget {
   final Widget customHeader;
   final Widget? customFooter;
   final VoidCallback? customEnterKeyAction;
+  final VoidCallback? customSpaceKeyAction;
   final String localeSearchQuery;
   final bool localeSearch;
 
@@ -41,6 +42,7 @@ class CustomPlutoTable extends StatelessWidget {
       this.noRowsWidget,
       this.onChanged,
       this.customEnterKeyAction,
+      this.customSpaceKeyAction,
       this.customHeader = const SizedBox(),
       this.customFooter,
       this.showDefaultHeader = false,
@@ -88,6 +90,8 @@ class CustomPlutoTable extends StatelessWidget {
                   createHeader: (stateManager) {
                     controller.setStateManager = stateManager;
                     controller.setEnterKeyAction = customEnterKeyAction;
+                    controller.spaceKeyAction = customSpaceKeyAction;
+
                     controller.searchFunction(localeSearchQuery);
                     return showDefaultHeader
                         ? _createHeader(stateManager, context)

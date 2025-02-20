@@ -8,6 +8,7 @@ class PreviewInvoiceItemEntityParams extends Equatable {
   final int? invoiceId;
   final double? quantity;
   final double? price;
+  final bool? changeUnit;
 
   const PreviewInvoiceItemEntityParams({
     required this.query,
@@ -16,6 +17,7 @@ class PreviewInvoiceItemEntityParams extends Equatable {
     this.invoiceId,
     this.quantity,
     this.price,
+    this.changeUnit,
   });
 
   PreviewInvoiceItemModelParams toModel() {
@@ -25,9 +27,11 @@ class PreviewInvoiceItemEntityParams extends Equatable {
         accountId: accountId,
         invoiceId: invoiceId,
         price: price,
-        quantity: quantity);
+        quantity: quantity,
+        changeUnit: changeUnit);
   }
 
   @override
-  List<Object?> get props => [query, productUnitId, accountId];
+  List<Object?> get props =>
+      [query, productUnitId, accountId, invoiceId, quantity, price, changeUnit];
 }

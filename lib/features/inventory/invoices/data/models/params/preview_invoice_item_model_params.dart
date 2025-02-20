@@ -7,7 +7,8 @@ class PreviewInvoiceItemModelParams extends PreviewInvoiceItemEntityParams {
       super.productUnitId,
       super.invoiceId,
       super.price,
-      super.quantity});
+      super.quantity,
+      super.changeUnit});
 
   Map<String, dynamic> toJson() {
     return {
@@ -17,6 +18,7 @@ class PreviewInvoiceItemModelParams extends PreviewInvoiceItemEntityParams {
       if (invoiceId != null) 'invoice_id': invoiceId.toString(),
       if (price != null) 'price': price.toString(),
       if (quantity != null) 'quantity': quantity.toString(),
+      if (changeUnit != null) 'change_unit': changeUnit.toString(),
     };
   }
 }
