@@ -56,6 +56,7 @@ class CustomPlutoTable extends StatelessWidget {
       create: (context) => PlutoGridCubit(),
       child: BlocBuilder<PlutoGridCubit, OnChangeState>(
         builder: (context, state) {
+          print('saeed');
           return Column(
             children: [
               Visibility(
