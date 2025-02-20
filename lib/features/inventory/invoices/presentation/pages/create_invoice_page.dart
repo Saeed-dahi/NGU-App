@@ -10,6 +10,7 @@ import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.da
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
@@ -74,6 +75,9 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
         ),
         BlocProvider(
           create: (context) => _invoiceFormCubit,
+        ),
+        BlocProvider(
+          create: (context) => PreviewInvoiceItemCubit(),
         ),
       ],
       child: BlocConsumer<InvoiceBloc, InvoiceState>(
