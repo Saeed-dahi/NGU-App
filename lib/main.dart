@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => PlutoGridCubit(),
+          lazy: true,
         ),
       ],
       child: BlocBuilder<LanguageCubit, LanguageState>(
