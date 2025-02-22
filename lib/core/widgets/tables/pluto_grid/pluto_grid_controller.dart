@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
+import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/cubit/pluto_grid_cubit.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class PlutoGridController {
@@ -149,6 +153,7 @@ class PlutoGridController {
     } else {
       moveRight();
     }
+    Get.context!.read<PlutoGridCubit>().onChangeFunction();
   }
 
   // Checks if the current cell is in the last column

@@ -52,61 +52,55 @@ class CustomPlutoTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PlutoGridCubit(),
-      child: BlocBuilder<PlutoGridCubit, OnChangeState>(
-        builder: (context, state) {
-          print('saeed');
-          return Column(
-            children: [
-              Visibility(
-                visible: localeSearch,
-                child: CustomInputField(
-                  inputType: TextInputType.text,
-                  label: 'search'.tr,
-                  controller: TextEditingController(text: localeSearchQuery),
-                  onTap: () {},
-                  onChanged: (query) {
-                    controller.searchFunction(query);
-                  },
-                ),
+    return BlocBuilder<PlutoGridCubit, OnChangeState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Visibility(
+              visible: localeSearch,
+              child: CustomInputField(
+                inputType: TextInputType.text,
+                label: 'search'.tr,
+                controller: TextEditingController(text: localeSearchQuery),
+                onTap: () {},
+                onChanged: (query) {
+                  controller.searchFunction(query);
+                },
               ),
-              Expanded(
-                child: PlutoGrid(
-                  onLoaded: onLoaded,
-                  columns: showRowNumbers
-                      ? controller.initNumbersForColumns(columns)
-                      : columns,
-                  rows: showRowNumbers
-                      ? controller.initNumbersForRows(rows)
-                      : rows,
-                  mode: mode,
-                  configuration: configuration ?? _tableConfig(),
-                  onChanged: (event) {
-                    onChanged!(event);
-                    context.read<PlutoGridCubit>().onChangeFunction();
-                  },
-                  onRowDoubleTap: onRowDoubleTap,
-                  noRowsWidget: noRowsWidget,
-                  createHeader: (stateManager) {
-                    controller.setStateManager = stateManager;
-                    controller.setEnterKeyAction = customEnterKeyAction;
-                    controller.spaceKeyAction = customSpaceKeyAction;
+            ),
+            Expanded(
+              child: PlutoGrid(
+                onLoaded: onLoaded,
+                columns: showRowNumbers
+                    ? controller.initNumbersForColumns(columns)
+                    : columns,
+                rows:
+                    showRowNumbers ? controller.initNumbersForRows(rows) : rows,
+                mode: mode,
+                configuration: configuration ?? _tableConfig(),
+                onChanged: (event) {
+                  onChanged!(event);
+                },
+                onRowDoubleTap: onRowDoubleTap,
+                noRowsWidget: noRowsWidget,
+                createHeader: (stateManager) {
+                  controller.setStateManager = stateManager;
+                  controller.setEnterKeyAction = customEnterKeyAction;
+                  controller.spaceKeyAction = customSpaceKeyAction;
 
-                    controller.searchFunction(localeSearchQuery);
-                    return showDefaultHeader
-                        ? _createHeader(stateManager, context)
-                        : const SizedBox();
-                  },
-                  createFooter: (stateManager) {
-                    return customFooter ?? const SizedBox();
-                  },
-                ),
+                  controller.searchFunction(localeSearchQuery);
+                  return showDefaultHeader
+                      ? _createHeader(stateManager, context)
+                      : const SizedBox();
+                },
+                createFooter: (stateManager) {
+                  return customFooter ?? const SizedBox();
+                },
               ),
-            ],
-          );
-        },
-      ),
+            ),
+          ],
+        );
+      },
     );
   }
 

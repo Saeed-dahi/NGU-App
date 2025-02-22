@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/cubit/pluto_grid_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_product_unit_entity.dart';
@@ -44,6 +45,8 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
 
     // Update the invoice item and grid
     _updateUiAfterColumnChange(row, previewInvoiceItem, stateManager);
+
+    context.mounted ? context.read<PlutoGridCubit>().onChangeFunction() : ();
   }
 
   void _updateUiAfterColumnChange(
