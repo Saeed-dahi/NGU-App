@@ -34,9 +34,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
+          context.read<PreviewInvoiceItemCubit>().setOnChangeEvent = p0;
           context
               .read<PreviewInvoiceItemCubit>()
-              .onColumnChange(context, p0, _plutoGridController.stateManager);
+              .onColumnChange(context, _plutoGridController.stateManager);
         },
         customSpaceKeyAction: () {
           context.read<PreviewInvoiceItemCubit>().handleUnitColumnChange(

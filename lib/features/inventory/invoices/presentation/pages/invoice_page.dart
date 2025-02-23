@@ -87,7 +87,7 @@ class _InvoicePageState extends State<InvoicePage> {
           create: (context) => _invoiceFormCubit,
         ),
         BlocProvider(
-          create: (context) => PreviewInvoiceItemCubit(),
+          create: (context) => sl<PreviewInvoiceItemCubit>(),
         ),
       ],
       child: BlocBuilder<InvoiceBloc, InvoiceState>(
