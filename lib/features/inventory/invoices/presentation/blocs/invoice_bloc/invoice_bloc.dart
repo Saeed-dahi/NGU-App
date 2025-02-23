@@ -49,9 +49,13 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   set setStateManager(PlutoGridStateManager sts) => _stateManager = sts;
 
   List<InvoiceItemsEntityParams> get invoiceItems {
-    return _stateManager.rows.map((row) {
+    return _stateManager.rows.where((row) {
+      final data = row.data;
+      return data != null;
+    }).map((row) {
+      PreviewInvoiceItemEntity previewInvoiceItemEntity = row.data;
       return InvoiceItemsEntityParams(
-          productUnitId: row.data.productUnit.id.toString(),
+          productUnitId: previewInvoiceItemEntity.productUnit.id.toString(),
           quantity:
               FormatterClass.doubleFormatter(row.cells['quantity']?.value),
           price: FormatterClass.doubleFormatter(row.cells['price']?.value));
@@ -177,8 +181,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   Future<PreviewInvoiceItemEntity?> previewInvoiceItem(
       PreviewInvoiceItemEntityParams params) async {
     PreviewInvoiceItemEntity? previewInvoiceItem;
-    final result =
-        await previewInvoiceItemUseCase(params);
+    final result = await previewInvoiceItemUseCase(params);
 
     result.fold(
       (failure) {

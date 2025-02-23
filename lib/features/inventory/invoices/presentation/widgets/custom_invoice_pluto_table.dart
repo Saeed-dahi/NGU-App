@@ -30,7 +30,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         columns: _buildColumns(),
         rows: invoice!.invoiceItems == null
             ? _buildEmptyRows().toList()
-            : _buildFilledRows().toList(),
+            : _buildFilledRows(context).toList(),
         showDefaultHeader: true,
         customHeader: _buildCustomHeader(context),
         onChanged: (p0) {
@@ -95,13 +95,17 @@ class CustomInvoicePlutoTable extends StatelessWidget {
     ];
   }
 
-  Iterable<PlutoRow> _buildFilledRows() {
+  Iterable<PlutoRow> _buildFilledRows(BuildContext context) {
     return invoice!.invoiceItems!.map(
       (invoiceItem) {
         var product = invoiceItem.productUnit!.product;
         var unit = invoiceItem.productUnit!.unit;
+        var data = context
+            .read<PreviewInvoiceItemCubit>()
+            .invoiceItemToPreviewInvoiceItem(product, invoiceItem, unit);
+
         return PlutoRow(
-          data: invoiceItem,
+          data: data,
           cells: {
             'code': PlutoCell(value: product!.code),
             'name': PlutoCell(value: '${product.arName} - ${product.enName}'),

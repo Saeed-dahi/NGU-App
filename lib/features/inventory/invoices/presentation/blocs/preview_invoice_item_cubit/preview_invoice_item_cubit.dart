@@ -35,11 +35,11 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
       PlutoGridStateManager? stateManager) async {
     final row = onChangeEvent.row;
     String query = onChangeEvent.value;
-    InvoiceProductUnitEntity? productUnit = row.data?.productUnit;
+
     PreviewInvoiceItemEntity? previewInvoiceItem;
 
-    previewInvoiceItem = await _handleColumnChange(
-        context, onChangeEvent, query, row, productUnit);
+    previewInvoiceItem =
+        await _handleColumnChange(context, onChangeEvent, query, row);
 
     if (previewInvoiceItem == null) return;
 
@@ -53,11 +53,9 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
       PlutoRow<dynamic> row,
       PreviewInvoiceItemEntity previewInvoiceItem,
       PlutoGridStateManager? stateManager) {
-    InvoiceItemEntity updatedInvoiceItem =
-        _updateInvoiceItemEntity(row, previewInvoiceItem);
-    row.data = updatedInvoiceItem;
+    row.data = previewInvoiceItem;
 
-    final updates = _generateUpdateMap(updatedInvoiceItem, previewInvoiceItem);
+    final updates = _generateUpdateMap(previewInvoiceItem, row);
 
     // Apply updates to the grid
     _updateGridCells(row, updates);
@@ -67,21 +65,22 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
 
   /// Handles column-specific changes
   Future<PreviewInvoiceItemEntity?> _handleColumnChange(
-      BuildContext context,
-      PlutoGridOnChangedEvent onChangeEvent,
-      String query,
-      PlutoRow row,
-      InvoiceProductUnitEntity? productUnit) async {
+    BuildContext context,
+    PlutoGridOnChangedEvent onChangeEvent,
+    String query,
+    PlutoRow row,
+  ) async {
+    PreviewInvoiceItemEntity? previewInvoiceItem = row.data;
     switch (onChangeEvent.column.field) {
       case 'code':
         return await _handleCodeColumnChange(context, query, row);
 
       default:
-        return productUnit != null
+        return previewInvoiceItem != null
             ? await _previewInvoiceItem(
                 context: context,
-                query: productUnit.product!.code.toString(),
-                productUnitId: productUnit.unit!.id,
+                query: previewInvoiceItem.code.toString(),
+                productUnitId: previewInvoiceItem.productUnit.unitId,
                 row: row,
               )
             : null;
@@ -102,21 +101,19 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
             await _previewInvoiceItem(context: context, query: query, row: row);
       }
     }
-
     return previewInvoiceItem;
   }
 
   /// Handles changes when the "unit" column is updated
   Future<PreviewInvoiceItemEntity?> handleUnitColumnChange(
       BuildContext context, PlutoGridStateManager? stateManager) async {
-    InvoiceProductUnitEntity productUnit =
-        stateManager!.currentRow!.data.productUnit;
-    PlutoRow? row = stateManager.currentRow;
+    PlutoRow? row = stateManager!.currentRow;
+    PreviewInvoiceItemEntity currentInvoiceItem = row!.data;
     PreviewInvoiceItemEntity? previewInvoiceItem = await _previewInvoiceItem(
         context: context,
-        query: productUnit.product!.code.toString(),
-        productUnitId: productUnit.unit!.id,
-        row: row!,
+        query: currentInvoiceItem.code.toString(),
+        productUnitId: currentInvoiceItem.productUnit.unitId,
+        row: row,
         changeUnit: true);
     if (previewInvoiceItem != null) {
       _updateUiAfterColumnChange(row, previewInvoiceItem, stateManager);
@@ -125,19 +122,18 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
   }
 
   /// Generates a map of updates for the grid cells
-  Map<String, dynamic> _generateUpdateMap(InvoiceItemEntity updatedInvoiceItem,
-      PreviewInvoiceItemEntity previewInvoiceItem) {
+  Map<String, dynamic> _generateUpdateMap(
+      PreviewInvoiceItemEntity previewInvoiceItem, PlutoRow<dynamic> row) {
+    var currentQuantity = row.cells['quantity']!.value;
     return {
-      'code': updatedInvoiceItem.productUnit?.product?.code,
-      'name': updatedInvoiceItem.productUnit?.product?.arName,
-      'quantity': updatedInvoiceItem.quantity,
-      'unit': updatedInvoiceItem.productUnit?.unit?.arName,
-      'price': updatedInvoiceItem.price,
+      'code': previewInvoiceItem.code,
+      'name': previewInvoiceItem.arName,
+      'unit': previewInvoiceItem.productUnit.arName,
+      'quantity': currentQuantity != '' ? currentQuantity : 1,
+      'price': previewInvoiceItem.productUnit.price,
       'sub_total': previewInvoiceItem.productUnit.subTotal,
-      'tax_amount': updatedInvoiceItem.taxAmount,
-      'total':
-          (updatedInvoiceItem.total ?? 0) + (updatedInvoiceItem.taxAmount ?? 0),
-      'notes': updatedInvoiceItem.description,
+      'tax_amount': previewInvoiceItem.productUnit.taxAmount,
+      'total': previewInvoiceItem.productUnit.total,
     };
   }
 
@@ -164,48 +160,6 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
     return data;
   }
 
-  InvoiceItemEntity _updateInvoiceItemEntity(
-      PlutoRow<dynamic> row, PreviewInvoiceItemEntity previewInvoiceItem) {
-    InvoiceItemEntity currentInvoiceItem =
-        row.data ?? const InvoiceItemEntity();
-    InvoiceProductUnitEntity productUnit =
-        currentInvoiceItem.productUnit ?? const InvoiceProductUnitEntity();
-    InvoiceProductEntity product =
-        productUnit.product ?? const InvoiceProductEntity();
-    InvoiceUnitEntity unit = productUnit.unit ?? const InvoiceUnitEntity();
-
-    // Update product and unit details
-    final updatedProduct = product.copyWith(
-      id: previewInvoiceItem.id,
-      arName: previewInvoiceItem.arName,
-      enName: previewInvoiceItem.enName,
-      code: previewInvoiceItem.code,
-    );
-
-    final updatedUnit = unit.copyWith(
-      id: previewInvoiceItem.productUnit.unitId,
-      arName: previewInvoiceItem.productUnit.arName,
-      enName: previewInvoiceItem.productUnit.enName,
-    );
-
-    final updatedProductUnit = productUnit.copyWith(
-      id: previewInvoiceItem.productUnit.id,
-      product: updatedProduct,
-      unit: updatedUnit,
-    );
-
-    // Update invoice item
-    final updatedInvoiceItem = currentInvoiceItem.copyWith(
-      price: previewInvoiceItem.productUnit.price,
-      quantity: double.tryParse(row.cells['quantity']!.value.toString()) ?? 1,
-      taxAmount: previewInvoiceItem.productUnit.taxAmount,
-      total: previewInvoiceItem.productUnit.total,
-      description: '',
-      productUnit: updatedProductUnit,
-    );
-    return updatedInvoiceItem;
-  }
-
   void _updateGridCells(PlutoRow<dynamic> row, Map<String, dynamic> updates) {
     for (var entry in updates.entries) {
       updateCurrentCell(row, entry.key, entry.value);
@@ -214,5 +168,26 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
 
   updateCurrentCell(PlutoRow<dynamic> row, String cell, dynamic value) {
     row.cells[cell]!.value = value;
+  }
+
+  PreviewInvoiceItemEntity invoiceItemToPreviewInvoiceItem(
+      InvoiceProductEntity? product,
+      InvoiceItemEntity invoiceItem,
+      InvoiceUnitEntity? unit) {
+    PreviewInvoiceItemEntity previewInvoiceItem = PreviewInvoiceItemEntity(
+        id: product!.id!,
+        arName: product.arName!,
+        enName: product.enName!,
+        code: product.code!,
+        productUnit: PreviewProductUnitEntity(
+            id: invoiceItem.productUnit!.id!,
+            arName: unit!.arName!,
+            enName: unit.enName!,
+            unitId: unit.id!,
+            price: invoiceItem.price!,
+            taxAmount: invoiceItem.taxAmount!,
+            subTotal: invoiceItem.total!,
+            total: invoiceItem.total! + invoiceItem.taxAmount!));
+    return previewInvoiceItem;
   }
 }
