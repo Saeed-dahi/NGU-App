@@ -80,7 +80,7 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
             ? await _previewInvoiceItem(
                 context: context,
                 query: previewInvoiceItem.code.toString(),
-                productUnitId: previewInvoiceItem.productUnit.unitId,
+                productUnitId: previewInvoiceItem.productUnit.id,
                 row: row,
               )
             : null;
@@ -112,7 +112,7 @@ class PreviewInvoiceItemCubit extends Cubit<PreviewInvoiceItemState> {
     PreviewInvoiceItemEntity? previewInvoiceItem = await _previewInvoiceItem(
         context: context,
         query: currentInvoiceItem.code.toString(),
-        productUnitId: currentInvoiceItem.productUnit.unitId,
+        productUnitId: currentInvoiceItem.productUnit.id,
         row: row,
         changeUnit: true);
     if (previewInvoiceItem != null) {
