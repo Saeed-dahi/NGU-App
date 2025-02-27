@@ -12,7 +12,7 @@ import 'package:ngu_app/features/inventory/invoices/data/models/preview_invoice_
 abstract class InvoiceDataSource {
   Future<List<InvoiceModel>> getAllInvoices(String type);
   Future<InvoiceModel> showInvoice(
-      int invoiceId, String? direction, String type);
+      int invoiceQuery, String? direction, String type, String? getBy);
   Future<InvoiceModel> createInvoice(
       InvoiceModel invoiceModel, List<InvoiceItemsModelParams> items);
   Future<InvoiceModel> updateInvoice(
@@ -46,7 +46,7 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
 
   @override
   Future<InvoiceModel> showInvoice(
-      int invoiceId, String? direction, String type) async {
+      int invoiceId, String? direction, String type, String? getBy) async {
     final response =
         await networkConnection.get('${APIList.invoice}/$invoiceId', {
       'direction': direction,

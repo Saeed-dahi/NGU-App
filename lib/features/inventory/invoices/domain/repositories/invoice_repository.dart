@@ -8,7 +8,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invo
 abstract class InvoiceRepository {
   Future<Either<Failure, List<InvoiceEntity>>> getAllInvoices(String type);
   Future<Either<Failure, InvoiceEntity>> showInvoice(
-      int invoiceId, String? direction, String type);
+      int invoiceQuery, String? direction, String type,String? getBy);
 
   Future<Either<Failure, InvoiceEntity>> createInvoice(
       InvoiceEntity invoiceEntity, List<InvoiceItemsEntityParams> items);

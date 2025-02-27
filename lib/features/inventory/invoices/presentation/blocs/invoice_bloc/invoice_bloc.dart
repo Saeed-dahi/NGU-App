@@ -53,9 +53,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       PreviewInvoiceItemEntity previewInvoiceItemEntity = row.data;
       return InvoiceItemsEntityParams(
           productUnitId: previewInvoiceItemEntity.productUnit.id.toString(),
-          quantity:
-              FormatterClass.doubleFormatter(row.cells['quantity']?.value),
-          price: FormatterClass.doubleFormatter(row.cells['price']?.value));
+          quantity: double.parse(row.cells['quantity']!.value.toString()),
+          price: double.parse(row.cells['price']!.value.toString()));
     }).toList();
   }
 
@@ -90,8 +89,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   FutureOr<void> _showInvoice(
       ShowInvoiceEvent event, Emitter<InvoiceState> emit) async {
     emit(LoadingInvoiceState());
-    final result =
-        await showInvoiceUseCase(event.invoiceId, event.direction, event.type);
+    final result = await showInvoiceUseCase(
+        event.invoiceQuery, event.direction, event.type, event.getBy);
     result.fold((failure) {
       emit(ErrorInvoiceState(error: failure.errors['error']));
     }, (data) {

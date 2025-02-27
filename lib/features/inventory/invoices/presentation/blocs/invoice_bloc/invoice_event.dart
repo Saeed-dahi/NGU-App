@@ -14,12 +14,16 @@ class GetAllInvoiceEvent extends InvoiceEvent {
 }
 
 class ShowInvoiceEvent extends InvoiceEvent {
-  final int invoiceId;
+  final int invoiceQuery;
   final String? direction;
   final String type;
+  final String? getBy;
 
   const ShowInvoiceEvent(
-      {required this.invoiceId, this.direction, required this.type});
+      {required this.invoiceQuery,
+      this.direction,
+      required this.type,
+      this.getBy});
 }
 
 class CreateInvoiceEvent extends InvoiceEvent {

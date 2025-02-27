@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 
 class InvoiceToolBar extends StatelessWidget {
+  final TextEditingController _invoiceNumController = TextEditingController();
   final InvoiceEntity? invoice;
   void Function()? onSaveAsDraft;
   void Function()? onSaveAsSaved;
@@ -36,6 +39,15 @@ class InvoiceToolBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _navigateActions(context),
+            CustomEditableText(
+              controller: _invoiceNumController,
+              enable: true,
+              width: 0.1,
+              onEditingComplete: () => context.read<InvoiceBloc>().add(
+                  ShowInvoiceEvent(
+                      invoiceQuery: int.parse(_invoiceNumController.text),
+                      type: invoice!.invoiceType!)),
+            ),
             _crudActions(context),
           ],
         ),
@@ -115,7 +127,7 @@ class InvoiceToolBar extends StatelessWidget {
 
   void _navigate(BuildContext context, int? invoiceId, String? direction) {
     context.read<InvoiceBloc>().add(ShowInvoiceEvent(
-        invoiceId: invoiceId ?? 1,
+        invoiceQuery: invoiceId ?? 1,
         direction: direction,
         type: invoice!.invoiceType!));
   }

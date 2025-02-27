@@ -36,7 +36,7 @@ class _InvoicePageState extends State<InvoicePage> {
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
-      ..add(ShowInvoiceEvent(invoiceId: widget.invoiceId, type: widget.type))
+      ..add(ShowInvoiceEvent(invoiceQuery: widget.invoiceId, type: widget.type))
       ..add(GetAccountsNameEvent());
     _invoiceFormCubit =
         InvoiceFormCubit(invoiceBloc: _invoiceBloc, invoiceType: widget.type);
@@ -73,7 +73,7 @@ class _InvoicePageState extends State<InvoicePage> {
 
   void onRefresh() {
     _invoiceBloc.add(ShowInvoiceEvent(
-        invoiceId: _invoiceBloc.getInvoiceEntity.id!, type: widget.type));
+        invoiceQuery: _invoiceBloc.getInvoiceEntity.id!, type: widget.type));
   }
 
   @override

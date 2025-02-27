@@ -9,7 +9,7 @@ class ShowInvoiceUseCase {
   ShowInvoiceUseCase({required this.invoiceRepository});
 
   Future<Either<Failure, InvoiceEntity>> call(
-      int invoiceId, String? direction, String type) async {
-    return await invoiceRepository.showInvoice(invoiceId, direction, type);
+      int invoiceQuery, String? direction, String type, String? getBy) async {
+    return await invoiceRepository.showInvoice(invoiceQuery, direction, type,getBy);
   }
 }
