@@ -46,6 +46,7 @@ class InvoiceToolBar extends StatelessWidget {
               onEditingComplete: () => context.read<InvoiceBloc>().add(
                   ShowInvoiceEvent(
                       invoiceQuery: int.parse(_invoiceNumController.text),
+                      getBy: 'invoice_number',
                       type: invoice!.invoiceType!)),
             ),
             _crudActions(context),

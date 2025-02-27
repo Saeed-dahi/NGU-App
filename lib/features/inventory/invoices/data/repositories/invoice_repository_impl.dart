@@ -26,8 +26,8 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
   @override
   Future<Either<Failure, InvoiceEntity>> showInvoice(
       int invoiceQuery, String? direction, String type, String? getBy) async {
-    return await apiHelper.safeApiCall(() =>
-        invoiceDataSource.showInvoice(invoiceQuery, direction, type, getBy));
+    return await apiHelper.safeApiCall(() => invoiceDataSource.showInvoice(
+        invoiceQuery, direction, type, getBy ?? 'id'));
   }
 
   @override
