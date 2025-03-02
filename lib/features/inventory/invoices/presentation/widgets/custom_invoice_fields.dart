@@ -47,6 +47,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 labelText: 'due_date'.tr,
                 enabled: enable,
                 error: errors['due_date']?.join('\n'),
+                required: false,
               ),
               const SizedBox(),
               CustomInputField(
@@ -54,6 +55,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 enabled: enable,
                 controller: invoiceFormCubit.notesController,
                 error: errors['notes']?.join('\n'),
+                required: false,
               ),
             ],
           ),
@@ -77,6 +79,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 enabled: enable,
                 controller: invoiceFormCubit.addressController,
                 error: errors['address']?.join('\n'),
+                required: false,
               ),
               CustomAutoComplete(
                 data: invoiceBloc.accountsNameList,

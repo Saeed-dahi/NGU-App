@@ -1,5 +1,5 @@
 class APIList {
-  static const String baseUrl = "192.168.0.57:8000";
+  static const String baseUrl = "192.168.137.155:8000";
   static const String api = "api/v1/";
   static const String storageUrl = 'http://$baseUrl/storage/';
 

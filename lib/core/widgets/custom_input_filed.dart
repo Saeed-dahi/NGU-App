@@ -83,6 +83,8 @@ class CustomInputField extends StatelessWidget {
         onTapAlwaysCalled: true,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
+        autovalidateMode:
+            required ? AutovalidateMode.always : AutovalidateMode.disabled,
         decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             focusColor: AppColors.primaryColorLow,

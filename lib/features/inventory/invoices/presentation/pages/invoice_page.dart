@@ -7,6 +7,7 @@ import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
@@ -61,8 +62,12 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   void onSaveAsSaved() {
-    _invoiceBloc.add(UpdateInvoiceEvent(
-        invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
+    if (_invoiceFormCubit.validateForm()) {
+      _invoiceBloc.add(UpdateInvoiceEvent(
+          invoice: _invoiceFormCubit.invoiceEntity(Status.saved)));
+    } else {
+      ShowSnackBar.showValidationSnackbar(messages: ['required'.tr]);
+    }
   }
 
   void onAdd() {

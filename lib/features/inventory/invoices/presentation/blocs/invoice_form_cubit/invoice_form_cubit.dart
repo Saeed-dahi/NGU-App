@@ -97,26 +97,17 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     );
   }
 
-  // InvoiceEntity invoiceEntity(Enum status) {
-  //   return InvoiceEntity(
-  //     id: _invoiceBloc.getInvoiceEntity.id,
-  //     invoiceNumber: int.parse(_numberController.text),
-  //     invoiceType: widget.type,
-  //     date: _dateController.text,
-  //     dueDate: _dueDateController.text,
-  //     status: status.name,
-  //     invoiceNature: _invoiceBloc.natureController,
-  //     address: addressController.text,
-
-  //     notes: _notesController.text,
-  //     account: _accountController,
-  //     goodsAccount: _goodsAccountController,
-  //     taxAccount: _taxAccountController,
-  //     totalTax: double.tryParse(_taxAmountController.text) ?? 5,
-  //     discountAccount: _discountAccountController,
-  //     totalDiscount: double.tryParse(_taxAmountController.text) ?? 0,
-  //   );
-  // }
+  bool validateForm() {
+    if (numberController.text.isEmpty ||
+        dateController.text.isEmpty ||
+        accountController.id == null ||
+        goodsAccountController.id == null ||
+        taxAccountController.id == null ||
+        discountAccountController.id == null) {
+      return false;
+    }
+    return true;
+  }
 
   void onSaveAsDraft() {
     invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
