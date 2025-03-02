@@ -108,12 +108,4 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     }
     return true;
   }
-
-  void onSaveAsDraft() {
-    invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.draft)));
-  }
-
-  void onSaveAsSaved() {
-    invoiceBloc.add(UpdateInvoiceEvent(invoice: invoiceEntity(Status.saved)));
-  }
 }
