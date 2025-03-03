@@ -107,6 +107,7 @@ class PlutoGridController {
         for (final entry in previousRow.cells.entries) {
           currentRow.cells[entry.key]?.value = entry.value.value;
         }
+        currentRow.data = previousRow.data;
         stateManager!.moveCurrentCell(PlutoMoveDirection.right, force: true);
       }
     }
@@ -131,6 +132,7 @@ class PlutoGridController {
           currentRow.cells[entry.key]?.value =
               entry.key == targetColumn ? entry.value.value : currentCellValue;
         }
+        currentRow.data = previousRow.data;
       }
     }
 
