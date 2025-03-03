@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ngu_app/core/utils/enums.dart';
+
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
@@ -12,6 +12,8 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   final String invoiceType;
 
   TextEditingController numberController = TextEditingController();
+  final TextEditingController invoiceSearchNumController =
+      TextEditingController();
   late TextEditingController dateController = TextEditingController();
   late TextEditingController dueDateController = TextEditingController();
   late TextEditingController notesController = TextEditingController();

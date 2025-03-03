@@ -6,57 +6,46 @@ import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
 
 class InvoiceToolBar extends StatelessWidget {
-  final TextEditingController _invoiceNumController = TextEditingController();
   final InvoiceEntity? invoice;
+  final String? invoiceType;
   void Function()? onSaveAsDraft;
   void Function()? onSaveAsSaved;
   void Function()? onAdd;
   void Function()? onRefresh;
+  void Function() onInvoiceSearch;
   InvoiceToolBar(
       {super.key,
       this.onSaveAsDraft,
       this.onSaveAsSaved,
       this.invoice,
+      this.invoiceType,
       this.onAdd,
-      this.onRefresh});
+      this.onRefresh,
+      required this.onInvoiceSearch});
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: Visibility(
-        visible: true,
-        replacement: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomIconButton(
-                icon: Icons.close, tooltip: 'close'.tr, onPressed: () {}),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _navigateActions(context),
-            CustomEditableText(
-              controller: _invoiceNumController,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _navigateActions(context),
+          CustomEditableText(
+              controller: context.read<InvoiceFormCubit>().invoiceSearchNumController,
               enable: true,
               width: 0.1,
-              onEditingComplete: () => context.read<InvoiceBloc>().add(
-                  ShowInvoiceEvent(
-                      invoiceQuery: int.parse(_invoiceNumController.text),
-                      getBy: 'invoice_number',
-                      type: invoice!.invoiceType!)),
-            ),
-            _crudActions(context),
-          ],
-        ),
+              onEditingComplete: onInvoiceSearch),
+          _crudActions(context),
+        ],
       ),
     );
   }
 
-  Wrap _crudActions(BuildContext context) {
+  Widget _crudActions(BuildContext context) {
     return Wrap(
       children: [
         CustomIconButton(
@@ -99,30 +88,33 @@ class InvoiceToolBar extends StatelessWidget {
     );
   }
 
-  Wrap _navigateActions(BuildContext context) {
-    return Wrap(
-      children: [
-        CustomIconButton(
-          icon: Icons.fast_rewind_rounded,
-          tooltip: 'first'.tr,
-          onPressed: () => _navigate(context, invoice!.id, 'first'),
-        ),
-        CustomIconButton(
-          icon: Icons.arrow_left_rounded,
-          tooltip: 'previous'.tr,
-          onPressed: () => _navigate(context, invoice!.id, 'previous'),
-        ),
-        CustomIconButton(
-          icon: Icons.arrow_right_rounded,
-          tooltip: 'next'.tr,
-          onPressed: () => _navigate(context, invoice!.id, 'next'),
-        ),
-        CustomIconButton(
-          icon: Icons.fast_forward_rounded,
-          tooltip: 'last'.tr,
-          onPressed: () => _navigate(context, invoice!.id, 'last'),
-        ),
-      ],
+  Widget _navigateActions(BuildContext context) {
+    return Visibility(
+      visible: invoice != null,
+      child: Wrap(
+        children: [
+          CustomIconButton(
+            icon: Icons.fast_rewind_rounded,
+            tooltip: 'first'.tr,
+            onPressed: () => _navigate(context, invoice!.id, 'first'),
+          ),
+          CustomIconButton(
+            icon: Icons.arrow_left_rounded,
+            tooltip: 'previous'.tr,
+            onPressed: () => _navigate(context, invoice!.id, 'previous'),
+          ),
+          CustomIconButton(
+            icon: Icons.arrow_right_rounded,
+            tooltip: 'next'.tr,
+            onPressed: () => _navigate(context, invoice!.id, 'next'),
+          ),
+          CustomIconButton(
+            icon: Icons.fast_forward_rounded,
+            tooltip: 'last'.tr,
+            onPressed: () => _navigate(context, invoice!.id, 'last'),
+          ),
+        ],
+      ),
     );
   }
 

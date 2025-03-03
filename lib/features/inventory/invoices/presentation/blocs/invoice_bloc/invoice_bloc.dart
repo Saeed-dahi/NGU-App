@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
+
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
@@ -30,6 +31,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
   InvoiceEntity _invoiceEntity = const InvoiceEntity();
   InvoiceEntity get getInvoiceEntity => _invoiceEntity;
+
+  bool isSavedInvoice = false;
 
   Map<String, dynamic> _accountsName = {};
   Map<String, dynamic> get accountsName => _accountsName;
@@ -139,6 +142,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       if (failure is ValidationFailure) {
         _validationErrors = failure.errors;
         _invoiceEntity = event.invoice;
+
         ShowSnackBar.showValidationSnackbar(messages: ['error'.tr]);
         emit(LoadedInvoiceState(invoice: event.invoice));
       } else {
@@ -158,6 +162,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     result.fold((failure) {}, (data) {
       _invoiceEntity = data;
+
       emit(LoadedInvoiceState(invoice: data));
     });
   }

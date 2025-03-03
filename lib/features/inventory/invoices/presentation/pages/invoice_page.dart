@@ -47,6 +47,8 @@ class _InvoicePageState extends State<InvoicePage> {
 
   _initControllers(InvoiceEntity invoice) {
     _invoiceFormCubit.initControllers(invoice);
+    _invoiceBloc.isSavedInvoice =
+        invoice.status == Status.saved.name ? true : false;
   }
 
   @override
@@ -73,12 +75,24 @@ class _InvoicePageState extends State<InvoicePage> {
   void onAdd() {
     context.read<TabCubit>().removeCurrentTab();
     context.read<TabCubit>().addNewTab(
-        title: widget.type.tr, content: CreateInvoicePage(type: widget.type));
+        title: '${widget.type.tr} (${'new'.tr})',
+        content: CreateInvoicePage(type: widget.type));
   }
 
   void onRefresh() {
     _invoiceBloc.add(ShowInvoiceEvent(
         invoiceQuery: _invoiceBloc.getInvoiceEntity.id!, type: widget.type));
+  }
+
+  void onInvoiceSearch() {
+    _invoiceBloc.add(
+      ShowInvoiceEvent(
+        invoiceQuery:
+            int.parse(_invoiceFormCubit.invoiceSearchNumController.text),
+        getBy: 'invoice_number',
+        type: widget.type,
+      ),
+    );
   }
 
   @override
@@ -98,11 +112,19 @@ class _InvoicePageState extends State<InvoicePage> {
       child: BlocBuilder<InvoiceBloc, InvoiceState>(
         builder: (context, state) {
           if (state is ErrorInvoiceState) {
-            return Center(
-              child: MessageScreen(
-                text: state.error,
-                onAdd: onAdd,
-              ),
+            return Column(
+              children: [
+                InvoiceToolBar(
+                  onAdd: onAdd,
+                  invoiceType: widget.type,
+                  onInvoiceSearch: onInvoiceSearch,
+                ),
+                Center(
+                  child: MessageScreen(
+                    text: state.error,
+                  ),
+                ),
+              ],
             );
           }
 
@@ -120,10 +142,6 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   Widget _pageBody() {
-    bool isSavedInvoice =
-        _invoiceBloc.getInvoiceEntity.status == Status.saved.name
-            ? true
-            : false;
     return CustomInvoicePageContainer(
       type: _invoiceBloc.getInvoiceEntity.invoiceType!,
       child: Column(
@@ -131,10 +149,12 @@ class _InvoicePageState extends State<InvoicePage> {
         children: [
           InvoiceToolBar(
             invoice: _invoiceBloc.getInvoiceEntity,
-            onSaveAsDraft: isSavedInvoice ? onSaveAsDraft : null,
-            onSaveAsSaved: isSavedInvoice ? null : onSaveAsSaved,
+            onSaveAsDraft: _invoiceBloc.isSavedInvoice ? onSaveAsDraft : null,
+            onSaveAsSaved: _invoiceBloc.isSavedInvoice ? null : onSaveAsSaved,
             onAdd: onAdd,
             onRefresh: onRefresh,
+            invoiceType: widget.type,
+            onInvoiceSearch: onInvoiceSearch,
           ),
           TabBar(
             labelColor: AppColors.black,
@@ -148,8 +168,8 @@ class _InvoicePageState extends State<InvoicePage> {
           const SizedBox(height: 10),
           Expanded(
             child: TabBarView(children: [
-              _invoiceTabWidgets(isSavedInvoice),
-              _invoiceOptionPage(isSavedInvoice),
+              _invoiceTabWidgets(_invoiceBloc.isSavedInvoice),
+              _invoiceOptionPage(_invoiceBloc.isSavedInvoice),
               const InvoicePrintPage()
             ]),
           ),

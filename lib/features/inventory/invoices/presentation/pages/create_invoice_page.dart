@@ -119,6 +119,15 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
     );
   }
 
+  void onInvoiceSearch() {
+    context.read<TabCubit>().addNewTab(
+        title: widget.type.tr,
+        content: InvoicePage(
+            type: widget.type,
+            invoiceId:
+                int.parse(_invoiceFormCubit.invoiceSearchNumController.text)));
+  }
+
   Widget _pageBody() {
     return CustomInvoicePageContainer(
       type: _invoiceBloc.getInvoiceEntity.invoiceType!,
@@ -126,9 +135,11 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InvoiceToolBar(
-            invoice: _invoiceBloc.getInvoiceEntity,
+            // invoice: _invoiceBloc.getInvoiceEntity,
             onSaveAsDraft: onSaveAsDraft,
             onSaveAsSaved: onSaveAsSaved,
+            invoiceType: widget.type,
+            onInvoiceSearch: onInvoiceSearch,
           ),
           TabBar(
             labelColor: AppColors.black,
