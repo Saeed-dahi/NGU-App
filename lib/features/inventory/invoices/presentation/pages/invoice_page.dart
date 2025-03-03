@@ -140,7 +140,7 @@ class _InvoicePageState extends State<InvoicePage> {
             labelColor: AppColors.black,
             indicatorColor: AppColors.primaryColor,
             tabs: [
-              Tab(text: 'invoice'.tr),
+              Tab(text: '${'invoice'.tr} ${widget.type.tr}'),
               Tab(text: 'options'.tr),
               Tab(text: 'print'.tr),
             ],
