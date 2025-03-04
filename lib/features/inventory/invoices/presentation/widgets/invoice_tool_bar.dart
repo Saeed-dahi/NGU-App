@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 
@@ -35,9 +36,11 @@ class InvoiceToolBar extends StatelessWidget {
         children: [
           _navigateActions(context),
           CustomEditableText(
-              controller: context.read<InvoiceFormCubit>().invoiceSearchNumController,
+              controller:
+                  context.read<InvoiceFormCubit>().invoiceSearchNumController,
               enable: true,
               width: 0.1,
+              hint: 'Search',
               onEditingComplete: onInvoiceSearch),
           _crudActions(context),
         ],

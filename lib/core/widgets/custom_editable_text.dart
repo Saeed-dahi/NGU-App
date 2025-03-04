@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 class CustomEditableText extends StatelessWidget {
   final TextEditingController controller;
   final double width;
+  final String hint;
   void Function()? onEditingComplete;
   void Function(String)? onChanged;
   final bool enable;
@@ -14,12 +15,12 @@ class CustomEditableText extends StatelessWidget {
       this.onChanged,
       required this.controller,
       this.width = 0.05,
+      this.hint = '',
       this.enable = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 4, right: 8, left: 8),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: enable ? AppColors.white : AppColors.secondaryColor,
@@ -31,17 +32,29 @@ class CustomEditableText extends StatelessWidget {
         ),
       ),
       width: MediaQuery.sizeOf(context).width * width,
-      child: EditableText(
-          controller: controller,
-          focusNode: FocusNode(),
-          maxLines: 1,
-          readOnly: !enable,
-          style: const TextStyle(color: AppColors.black),
-          cursorColor: AppColors.primaryColor,
-          selectionColor: AppColors.primaryColorLow,
-          onEditingComplete: onEditingComplete,
-          onChanged: onChanged,
-          backgroundCursorColor: AppColors.primaryColor),
+      child: Stack(
+        children: [
+          Positioned(
+            right: 0,
+            top: 1,
+            child: Text(
+              hint,
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ),
+          EditableText(
+              controller: controller,
+              focusNode: FocusNode(),
+              maxLines: 1,
+              readOnly: !enable,
+              style: const TextStyle(color: AppColors.black),
+              cursorColor: AppColors.primaryColor,
+              selectionColor: AppColors.primaryColorLow,
+              onEditingComplete: onEditingComplete,
+              onChanged: onChanged,
+              backgroundCursorColor: AppColors.primaryColor),
+        ],
+      ),
     );
   }
 }
