@@ -1,7 +1,10 @@
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class APIList {
-  static const String baseUrl = "192.168.137.155:8000";
+  static String baseUrl = "192.168.137.155:8000";
   static const String api = "api/v1/";
-  static const String storageUrl = 'http://$baseUrl/storage/';
+  static String storageUrl = 'http://$baseUrl/storage/';
 
   static const String login = "login";
   static const String register = "register";
@@ -23,4 +26,15 @@ class APIList {
   static const String productUnit = "product-unit";
   static const String invoice = "invoice";
   static const String previewInvoiceItem = "get-invoice-item-data";
+
+  static Future<void> saveBaseUrl(String url) async {
+    final prefs = sl<SharedPreferences>();
+    await prefs.setString('baseUrl', '$url:8000');
+    baseUrl = '$url:8000';
+  }
+
+  static Future<void> loadBaseUrl() async {
+    final prefs = sl<SharedPreferences>();
+    baseUrl = prefs.getString('baseUrl') ?? "192.168.137.155:8000";
+  }
 }

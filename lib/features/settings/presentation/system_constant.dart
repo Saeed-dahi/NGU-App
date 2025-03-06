@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
+import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 
 class SystemConstant extends StatelessWidget {
-  const SystemConstant({super.key});
+  TextEditingController baseUrlController =
+      TextEditingController(text: APIList.baseUrl);
+  SystemConstant({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,13 @@ class SystemConstant extends StatelessWidget {
             },
           ),
         ),
+        CustomInputField(
+          controller: baseUrlController,
+          label: 'url',
+          required: false,
+          autofocus: false,
+          onEditingComplete: () => APIList.saveBaseUrl(baseUrlController.text),
+        )
       ],
     );
   }

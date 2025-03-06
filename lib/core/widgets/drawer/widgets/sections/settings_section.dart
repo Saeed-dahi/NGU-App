@@ -34,7 +34,7 @@ class SettingsSection extends StatelessWidget {
                       title: 'system_constant'.tr,
                       icon: Icons.padding_outlined,
                       onTap: () => ShowDialog.showCustomDialog(
-                          context: context, content: const SystemConstant()),
+                          context: context, content: SystemConstant()),
                     ),
                     BasicListTile(
                         title: 'information_constant'.tr, icon: Icons.search),

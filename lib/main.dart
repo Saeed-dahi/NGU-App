@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/app/app_management/theme/app_theme.dart';
 import 'package:ngu_app/app/lang/cubit/language_cubit.dart';
 import 'package:ngu_app/app/lang/localization_service.dart';
@@ -22,6 +23,7 @@ void main() async {
   // Set minimum window size
   windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
 
+  await APIList.loadBaseUrl();
   runApp(const MyApp());
 }
 
