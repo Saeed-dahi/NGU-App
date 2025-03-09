@@ -7,7 +7,6 @@ import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
-import 'package:printing/printing.dart';
 
 class InvoiceToolBar extends StatelessWidget {
   final InvoiceEntity? invoice;
@@ -80,7 +79,9 @@ class InvoiceToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.receipt,
           tooltip: 'receipt_print'.tr,
-          onPressed: () {},
+          onPressed: () {
+            context.read<InvoiceBloc>().printInvoice(context);
+          },
         ),
         CustomIconButton(
           icon: Icons.refresh,
