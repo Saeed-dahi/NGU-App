@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 
-class InvoicePrintPage extends StatelessWidget {
-  const InvoicePrintPage({super.key});
+class InvoicePrintPageSettings extends StatelessWidget {
+  const InvoicePrintPageSettings({super.key});
 
   @override
   Widget build(BuildContext context) {

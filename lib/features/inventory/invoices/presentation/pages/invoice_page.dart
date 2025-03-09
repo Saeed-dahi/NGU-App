@@ -15,7 +15,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_f
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/create_invoice_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_print_page.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/invoice_print_page_settings.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_page_container.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_pluto_table.dart';
@@ -170,7 +170,7 @@ class _InvoicePageState extends State<InvoicePage> {
             child: TabBarView(children: [
               _invoiceTabWidgets(_invoiceBloc.isSavedInvoice),
               _invoiceOptionPage(_invoiceBloc.isSavedInvoice),
-              const InvoicePrintPage()
+              const InvoicePrintPageSettings()
             ]),
           ),
         ],

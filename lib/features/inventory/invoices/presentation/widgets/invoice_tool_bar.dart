@@ -75,9 +75,7 @@ class InvoiceToolBar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.print,
           tooltip: 'print'.tr,
-          onPressed: () {
-            print(Printing.listPrinters());
-          },
+          onPressed: () async {},
         ),
         CustomIconButton(
           icon: Icons.receipt,
