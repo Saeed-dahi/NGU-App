@@ -189,7 +189,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     final ttf = pw.Font.ttf(fontData);
     var dataList = _invoiceEntity.invoiceItems!.map((item) {
       return [
-        item.productUnit!.product!.arName!,
+        '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!}',
         item.quantity,
         item.productUnit!.unit!.arName!,
       ];

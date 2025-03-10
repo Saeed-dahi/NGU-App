@@ -21,6 +21,8 @@ class A4Page {
           );
         },
         pageTheme: pw.PageTheme(
+          textDirection: pw.TextDirection.rtl,
+          pageFormat: PdfPageFormat.a4,
           buildBackground: (context) {
             return pw.Column(
               mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -42,16 +44,16 @@ class A4Page {
         build: (pw.Context context) {
           return [
             pw.TableHelper.fromTextArray(
-              headers: columns,
+              headers: columns.map((column) => column).toList(),
+              headerStyle: pw.TextStyle(
+                  font: ttf, fontSize: 8, fontWeight: pw.FontWeight.bold),
               headerDecoration:
                   pw.BoxDecoration(color: PdfColor.fromHex('ffd59a4c')),
               border: pw.TableBorder.all(color: PdfColors.grey),
               oddRowDecoration:
                   const pw.BoxDecoration(color: PdfColors.grey200),
-
               data: data,
-              cellStyle: pw.TextStyle(font: ttf), // Apply Arabic font to cells
-              headerStyle: pw.TextStyle(font: ttf),
+              cellStyle: pw.TextStyle(fontSize: 8, font: ttf),
             )
           ];
         },
