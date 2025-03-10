@@ -9,6 +9,7 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
+import 'package:ngu_app/core/features/printing/presentation/pages/tax_invoice_page.dart';
 
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
@@ -181,6 +182,53 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         int.parse(accountsName['id_${spitedValue[0].removeAllWhitespace}']);
 
     return desiredId;
+  }
+
+  Future<void> printTaxInvoice(BuildContext context) async {
+    final fontData =
+        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
+    final ttf = pw.Font.ttf(fontData);
+    var dataList = _invoiceEntity.invoiceItems!
+        .asMap()
+        .map((index, item) {
+          return MapEntry(index, [
+            (index + 1).toString(),
+            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
+            item.quantity,
+            item.productUnit!.unit!.arName!,
+            item.price,
+            item.price! * item.quantity!,
+            item.taxAmount,
+            item.total
+          ]);
+        })
+        .values
+        .toList();
+
+    final columns = [
+      'name'.tr,
+      'quantity'.tr,
+      'unit'.tr,
+      'price'.tr,
+      'sub_total'.tr,
+      'tax'.tr,
+      'total'.tr
+    ];
+
+    pw.Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
+      columns: columns,
+      data: dataList,
+      ttf: ttf,
+    );
+    var fileBytes = pdf.save();
+    if (context.mounted) {
+      Printer? p = await Printing.pickPrinter(context: context);
+      await Printing.directPrintPdf(
+        printer: p!,
+        onLayout: (format) => fileBytes,
+      );
+      // await Printing.sharePdf(bytes: await fileBytes);
+    }
   }
 
   Future<void> printA4Invoice(BuildContext context) async {

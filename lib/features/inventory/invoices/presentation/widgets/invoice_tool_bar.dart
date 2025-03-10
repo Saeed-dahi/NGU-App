@@ -75,7 +75,7 @@ class InvoiceToolBar extends StatelessWidget {
           icon: Icons.print,
           tooltip: 'print'.tr,
           onPressed: () async {
-            context.read<InvoiceBloc>().printA4Invoice(context);
+            context.read<InvoiceBloc>().printTaxInvoice(context);
           },
         ),
         CustomIconButton(
