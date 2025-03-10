@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
 
 import 'package:ngu_app/core/widgets/snack_bar.dart';
@@ -182,7 +183,40 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     return desiredId;
   }
 
-  Future<void> printInvoice(BuildContext context) async {
+  Future<void> printA4Invoice(BuildContext context) async {
+    final fontData =
+        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
+    final ttf = pw.Font.ttf(fontData);
+    var dataList = _invoiceEntity.invoiceItems!.map((item) {
+      return [
+        item.productUnit!.product!.arName!,
+        item.quantity,
+        item.productUnit!.unit!.arName!,
+      ];
+    }).toList();
+
+    final columns = [
+      'name'.tr,
+      'quantity'.tr,
+      'unit'.tr,
+    ];
+
+    pw.Document pdf = await A4Page.buildCustomA4Page(
+      columns: columns,
+      data: dataList,
+      ttf: ttf,
+    );
+    var fileBytes = pdf.save();
+    if (context.mounted) {
+      Printer? p = await Printing.pickPrinter(context: context);
+      await Printing.directPrintPdf(
+        printer: p!,
+        onLayout: (format) => fileBytes,
+      );
+    }
+  }
+
+  Future<void> printReceipt(BuildContext context) async {
     final fontData =
         await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
     final ttf = pw.Font.ttf(fontData);
