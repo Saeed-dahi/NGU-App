@@ -1,11 +1,12 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart';
 
 class RollPage {
   static buildCustomRollPage(
       {required List columns,
       required data,
-      required ttf,
+      required Font ttf,
       Map<int, pw.TableColumnWidth>? columnWidths,
       pw.Widget? customPageHeader}) async {
     final pdf = pw.Document();

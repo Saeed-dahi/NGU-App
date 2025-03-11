@@ -1,9 +1,10 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart';
 
 class TaxInvoicePage {
   static buildCustomTaxInvoicePage(
-      {required List columns, required data, required ttf}) async {
+      {required List columns, required data, required Font ttf}) async {
     final pdf = pw.Document();
 
     pdf.addPage(

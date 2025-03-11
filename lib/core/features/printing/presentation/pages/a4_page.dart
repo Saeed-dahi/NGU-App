@@ -1,10 +1,11 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:pdf/widgets.dart';
 
 class A4Page {
   static buildCustomA4Page(
-      {required List columns, required data, required ttf}) async {
+      {required List columns, required data, required Font ttf}) async {
     final headerImage = pw.MemoryImage(
       (await rootBundle.load('assets/images/header.jpeg')).buffer.asUint8List(),
     );

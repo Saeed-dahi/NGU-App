@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
@@ -107,6 +108,9 @@ class _InvoicePageState extends State<InvoicePage> {
         ),
         BlocProvider(
           create: (context) => sl<PreviewInvoiceItemCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => PrintingBloc(),
         ),
       ],
       child: BlocBuilder<InvoiceBloc, InvoiceState>(

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
+import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/tax_invoice_page.dart';
@@ -22,6 +23,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoic
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:pdf/widgets.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:printing/printing.dart';
@@ -185,9 +187,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printTaxInvoice(BuildContext context) async {
-    final fontData =
-        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
-    final ttf = pw.Font.ttf(fontData);
     var dataList = _invoiceEntity.invoiceItems!
         .asMap()
         .map((index, item) {
@@ -216,10 +215,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     ];
 
     pw.Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
-      columns: columns,
-      data: dataList,
-      ttf: ttf,
-    );
+        columns: columns,
+        data: dataList,
+        ttf: await context.read<PrintingBloc>().getCustomFont());
     var fileBytes = pdf.save();
     if (context.mounted) {
       Printer? p = await Printing.pickPrinter(context: context);
@@ -232,9 +230,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printA4Invoice(BuildContext context) async {
-    final fontData =
-        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
-    final ttf = pw.Font.ttf(fontData);
     var dataList = _invoiceEntity.invoiceItems!.map((item) {
       return [
         '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!}',
@@ -250,10 +245,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     ];
 
     pw.Document pdf = await A4Page.buildCustomA4Page(
-      columns: columns,
-      data: dataList,
-      ttf: ttf,
-    );
+        columns: columns,
+        data: dataList,
+        ttf: await context.read<PrintingBloc>().getCustomFont());
     var fileBytes = pdf.save();
     if (context.mounted) {
       Printer? p = await Printing.pickPrinter(context: context);
@@ -265,9 +259,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printReceipt(BuildContext context) async {
-    final fontData =
-        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
-    final ttf = pw.Font.ttf(fontData);
     var dataList = _invoiceEntity.invoiceItems!.map((item) {
       return [
         item.productUnit!.product!.arName!,
@@ -275,6 +266,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         item.productUnit!.unit!.arName!,
       ];
     }).toList();
+
+    Font font = await context.read<PrintingBloc>().getCustomFont();
 
     final columns = [
       'name'.tr,
@@ -285,7 +278,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     pw.Document pdf = await RollPage.buildCustomRollPage(
       columns: columns,
       data: dataList,
-      ttf: ttf,
+      ttf: font,
       columnWidths: {},
       customPageHeader: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -293,23 +286,22 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
           pw.Text(
             _invoiceEntity.account!.arName!,
             textDirection: pw.TextDirection.rtl,
-            style: pw.TextStyle(fontSize: 8, font: ttf),
+            style: pw.TextStyle(fontSize: 8, font: font),
           ),
           pw.Text(
             '${_invoiceEntity.date}    -  ${'invoice_number'.tr}: (${_invoiceEntity.invoiceNumber})',
             textDirection: pw.TextDirection.rtl,
-            style: pw.TextStyle(fontSize: 8, font: ttf),
+            style: pw.TextStyle(fontSize: 8, font: font),
           ),
         ],
       ),
     );
     var fileBytes = pdf.save();
-    if (context.mounted) {
-      Printer? p = await Printing.pickPrinter(context: context);
-      await Printing.directPrintPdf(
-        printer: p!,
-        onLayout: (format) => fileBytes,
-      );
-    }
+
+    Printer? p = await Printing.pickPrinter(context: context);
+    await Printing.directPrintPdf(
+      printer: p!,
+      onLayout: (format) => fileBytes,
+    );
   }
 }
