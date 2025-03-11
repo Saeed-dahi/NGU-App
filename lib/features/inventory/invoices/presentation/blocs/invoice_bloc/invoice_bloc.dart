@@ -22,7 +22,6 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
@@ -214,7 +213,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       'total'.tr
     ];
 
-    pw.Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
+    Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
         columns: columns,
         data: dataList,
         ttf: await context.read<PrintingBloc>().getCustomFont());
@@ -244,7 +243,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       'unit'.tr,
     ];
 
-    pw.Document pdf = await A4Page.buildCustomA4Page(
+    Document pdf = await A4Page.buildCustomA4Page(
         columns: columns,
         data: dataList,
         ttf: await context.read<PrintingBloc>().getCustomFont());
@@ -275,7 +274,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       'unit'.tr,
     ];
 
-    pw.Document pdf = await RollPage.buildCustomRollPage(
+    Document pdf = await RollPage.buildCustomRollPage(
       columns: columns,
       data: dataList,
       ttf: font,
@@ -285,12 +284,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         children: [
           pw.Text(
             _invoiceEntity.account!.arName!,
-            textDirection: pw.TextDirection.rtl,
+            textDirection: TextDirection.rtl,
             style: pw.TextStyle(fontSize: 8, font: font),
           ),
           pw.Text(
             '${_invoiceEntity.date}    -  ${'invoice_number'.tr}: (${_invoiceEntity.invoiceNumber})',
-            textDirection: pw.TextDirection.rtl,
+            textDirection: TextDirection.rtl,
             style: pw.TextStyle(fontSize: 8, font: font),
           ),
         ],
