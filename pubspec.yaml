@@ -62,3 +62,16 @@ flutter:
         - asset: assets/fonts/tajawal/Tajawal-Light.ttf
         - asset: assets/fonts/tajawal/Tajawal-Medium.ttf
         - asset: assets/fonts/tajawal/Tajawal-Regular.ttf
+    - family: amiri
+      fonts:
+        - asset: assets/fonts/amiri/Amiri-Bold.ttf
+        - asset: assets/fonts/amiri/Amiri-BoldItalic.ttf
+        - asset: assets/fonts/amiri/Amiri-Italic.ttf
+        - asset: assets/fonts/amiri/Amiri-Regular.ttf
+    - family: mirza
+      fonts:
+        - asset: assets/fonts/mirza/Mirza-Bold.ttf
+        - asset: assets/fonts/mirza/Mirza-Medium.ttf
+        - asset: assets/fonts/mirza/Mirza-Regular.ttf
+        - asset: assets/fonts/mirza/Mirza-SemiBold.ttf
+
