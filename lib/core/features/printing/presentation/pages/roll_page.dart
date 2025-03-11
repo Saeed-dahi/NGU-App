@@ -1,5 +1,4 @@
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
 class RollPage {
@@ -7,30 +6,30 @@ class RollPage {
       {required List columns,
       required data,
       required Font ttf,
-      Map<int, pw.TableColumnWidth>? columnWidths,
-      pw.Widget? customPageHeader}) async {
-    final pdf = pw.Document();
+      Map<int, TableColumnWidth>? columnWidths,
+      Widget? customPageHeader}) async {
+    final pdf = Document();
     pdf.addPage(
-      pw.Page(
-        margin: const pw.EdgeInsets.only(right: 30, bottom: 10),
-        theme: pw.ThemeData(textAlign: pw.TextAlign.center),
+      Page(
+        margin: const EdgeInsets.only(right: 30, bottom: 10),
+        theme: ThemeData(textAlign: TextAlign.center),
         pageFormat: PdfPageFormat.roll80,
-        textDirection: pw.TextDirection.rtl,
-        build: (pw.Context context) {
-          return pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
+        textDirection: TextDirection.rtl,
+        build: (Context context) {
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                customPageHeader ?? pw.SizedBox(),
-                pw.TableHelper.fromTextArray(
+                customPageHeader ?? SizedBox(),
+                TableHelper.fromTextArray(
                   headers: columns.map((column) => column).toList(),
-                  headerStyle: pw.TextStyle(
-                      font: ttf, fontSize: 8, fontWeight: pw.FontWeight.bold),
+                  headerStyle: TextStyle(
+                      font: ttf, fontSize: 8, fontWeight: FontWeight.bold),
                   headerDecoration:
-                      pw.BoxDecoration(color: PdfColor.fromHex('#7F7F7F')),
-                  border: pw.TableBorder.all(color: PdfColors.black),
+                      BoxDecoration(color: PdfColor.fromHex('#7F7F7F')),
+                  border: TableBorder.all(color: PdfColors.black),
                   data: data,
                   columnWidths: columnWidths,
-                  cellStyle: pw.TextStyle(fontSize: 8, font: ttf),
+                  cellStyle: TextStyle(fontSize: 8, font: ttf),
                 )
               ]);
         },

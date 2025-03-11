@@ -1,60 +1,56 @@
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart';
 
 class A4Page {
   static buildCustomA4Page(
       {required List columns, required data, required Font ttf}) async {
-    final headerImage = pw.MemoryImage(
+    final headerImage = MemoryImage(
       (await rootBundle.load('assets/images/header.jpeg')).buffer.asUint8List(),
     );
-    final backgroundImage = pw.MemoryImage(
+    final backgroundImage = MemoryImage(
       (await rootBundle.load('assets/images/logo.png')).buffer.asUint8List(),
     );
-    final pdf = pw.Document();
+    final pdf = Document();
 
     pdf.addPage(
-      pw.MultiPage(
+      MultiPage(
         header: (context) {
-          return pw.Image(
+          return Image(
             headerImage,
           );
         },
-        pageTheme: pw.PageTheme(
-          textDirection: pw.TextDirection.rtl,
+        pageTheme: PageTheme(
+          textDirection: TextDirection.rtl,
           pageFormat: PdfPageFormat.a4,
           buildBackground: (context) {
-            return pw.Column(
-              mainAxisAlignment: pw.MainAxisAlignment.center,
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.center,
-                    children: [
-                      pw.Opacity(
-                        opacity: 0.3,
-                        child: pw.Image(
-                          backgroundImage,
-                        ),
-                      )
-                    ])
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Opacity(
+                    opacity: 0.3,
+                    child: Image(
+                      backgroundImage,
+                    ),
+                  )
+                ])
               ],
             );
           },
         ),
-        build: (pw.Context context) {
+        build: (Context context) {
           return [
-            pw.TableHelper.fromTextArray(
+            TableHelper.fromTextArray(
               headers: columns.map((column) => column).toList(),
-              headerStyle: pw.TextStyle(
-                  font: ttf, fontSize: 8, fontWeight: pw.FontWeight.bold),
+              headerStyle: TextStyle(
+                  font: ttf, fontSize: 8, fontWeight: FontWeight.bold),
               headerDecoration:
-                  pw.BoxDecoration(color: PdfColor.fromHex('ffd59a4c')),
-              border: pw.TableBorder.all(color: PdfColors.grey),
-              oddRowDecoration:
-                  const pw.BoxDecoration(color: PdfColors.grey200),
+                  BoxDecoration(color: PdfColor.fromHex('ffd59a4c')),
+              border: TableBorder.all(color: PdfColors.grey),
+              oddRowDecoration: const BoxDecoration(color: PdfColors.grey200),
               data: data,
-              cellStyle: pw.TextStyle(fontSize: 8, font: ttf),
+              cellStyle: TextStyle(fontSize: 8, font: ttf),
             )
           ];
         },

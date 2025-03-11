@@ -1,76 +1,75 @@
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
 class TaxInvoicePage {
   static buildCustomTaxInvoicePage(
       {required List columns, required data, required Font ttf}) async {
-    final pdf = pw.Document();
+    final pdf = Document();
 
     pdf.addPage(
-      pw.MultiPage(
-        pageTheme: const pw.PageTheme(
-          textDirection: pw.TextDirection.rtl,
-          margin: pw.EdgeInsets.only(left: 10),
+      MultiPage(
+        pageTheme: const PageTheme(
+          textDirection: TextDirection.rtl,
+          margin: EdgeInsets.only(left: 10),
         ),
-        build: (pw.Context context) {
-          List<pw.Widget> content = [];
+        build: (Context context) {
+          List<Widget> content = [];
 
-          content.add(pw.Container(
-            margin: const pw.EdgeInsets.only(
+          content.add(Container(
+            margin: const EdgeInsets.only(
                 left: PdfPageFormat.cm * 3, right: PdfPageFormat.cm * 2),
-            child: pw.Column(
+            child: Column(
               children: [
-                pw.SizedBox(height: PdfPageFormat.cm * 5),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                SizedBox(height: PdfPageFormat.cm * 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text(
+                    Text(
                       '5247',
-                      style: pw.TextStyle(fontSize: 9, font: ttf),
+                      style: TextStyle(fontSize: 9, font: ttf),
                     ),
-                    pw.Text(
+                    Text(
                       'السويدان لتجارة المواد الغذائية',
-                      style: pw.TextStyle(fontSize: 9, font: ttf),
+                      style: TextStyle(fontSize: 9, font: ttf),
                     ),
                   ],
                 ),
-                pw.SizedBox(height: PdfPageFormat.cm * 0.5),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                SizedBox(height: PdfPageFormat.cm * 0.5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    pw.Text(
+                    Text(
                       'أبو ظبي',
-                      style: pw.TextStyle(fontSize: 10, font: ttf),
+                      style: TextStyle(fontSize: 10, font: ttf),
                     ),
                   ],
                 ),
-                pw.SizedBox(height: PdfPageFormat.cm * 0.5),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                SizedBox(height: PdfPageFormat.cm * 0.5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text(
+                    Text(
                       '10/03/2025',
-                      style: pw.TextStyle(fontSize: 10, font: ttf),
+                      style: TextStyle(fontSize: 10, font: ttf),
                     ),
-                    pw.Text(
+                    Text(
                       '123456789987654321',
-                      style: pw.TextStyle(fontSize: 10, font: ttf),
+                      style: TextStyle(fontSize: 10, font: ttf),
                     ),
                   ],
                 ),
-                pw.SizedBox(height: PdfPageFormat.cm * 0.5),
+                SizedBox(height: PdfPageFormat.cm * 0.5),
               ],
             ),
           ));
 
           content.add(
-            pw.TableHelper.fromTextArray(
+            TableHelper.fromTextArray(
                 headers: [],
-                border: pw.TableBorder.all(width: 0, color: PdfColors.white),
+                border: TableBorder.all(width: 0, color: PdfColors.white),
                 data: data,
-                cellStyle: pw.TextStyle(fontSize: 8, font: ttf),
-                columnWidths: {1: const pw.FixedColumnWidth(120)}),
+                cellStyle: TextStyle(fontSize: 8, font: ttf),
+                columnWidths: {1: const FixedColumnWidth(120)}),
           );
 
           return content;
