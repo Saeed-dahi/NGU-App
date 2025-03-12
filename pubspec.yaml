@@ -74,4 +74,10 @@ flutter:
         - asset: assets/fonts/mirza/Mirza-Medium.ttf
         - asset: assets/fonts/mirza/Mirza-Regular.ttf
         - asset: assets/fonts/mirza/Mirza-SemiBold.ttf
-
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
