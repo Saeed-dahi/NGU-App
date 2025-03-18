@@ -123,6 +123,8 @@ Future<void> init() async {
 
   _invoice();
 
+  _printing();
+
   // External
   await _external();
 }
