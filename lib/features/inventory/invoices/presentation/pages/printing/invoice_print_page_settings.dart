@@ -15,14 +15,14 @@ class InvoicePrintPageSettings extends StatelessWidget {
           children: [
             CustomContainer(
               child: CustomDropdown(
-                dropdownValue: ['طابعة ١', 'طابعة ٢'],
+                dropdownValue: const ['طابعة ١', 'طابعة ٢'],
                 label: 'invoice_printer'.tr,
                 onChanged: (value) {},
               ),
             ),
             CustomContainer(
               child: CustomDropdown(
-                dropdownValue: ['طابعة ١', 'طابعة ٢'],
+                dropdownValue: const ['طابعة ١', 'طابعة ٢'],
                 label: 'receipt_printer'.tr,
                 onChanged: (value) {},
               ),
