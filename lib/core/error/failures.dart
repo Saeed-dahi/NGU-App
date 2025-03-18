@@ -30,3 +30,10 @@ class ValidationFailure extends Failure {
   @override
   List<Object?> get props => [errors];
 }
+
+class DatabaseFailure extends Failure {
+  const DatabaseFailure({required super.errors});
+
+  @override
+  List<Object?> get props => [errors];
+}

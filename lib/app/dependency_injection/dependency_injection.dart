@@ -1,7 +1,17 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:ngu_app/core/features/printing/data/data_sources/printing_local_data_sources.dart';
+import 'package:ngu_app/core/features/printing/data/database/printing_data_base.dart';
+import 'package:ngu_app/core/features/printing/data/repositories/printing_repositories_impl.dart';
+import 'package:ngu_app/core/features/printing/domain/repositories/printing_repository.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/add_new_printer_use_case.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/get_printer_use_case.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/get_printers_use_case.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_use_case.dart';
+import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
+import 'package:ngu_app/core/helper/data_base_helper.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/core/network/network_info.dart';
 import 'package:ngu_app/features/accounts/account_information/data/data_sources/account_information_data_source.dart';
@@ -133,6 +143,7 @@ void _core() {
   sl.registerLazySingleton<NetworkConnection>(
       () => HttpConnection(client: sl()));
   sl.registerLazySingleton(() => ApiHelper(networkInfo: sl()));
+  sl.registerLazySingleton(() => DataBaseHelper());
   sl.registerFactory(() => HomeCubit());
 }
 
@@ -370,4 +381,29 @@ void _invoice() {
 
   sl.registerLazySingleton<InvoiceDataSource>(
       () => InvoiceDataSourceImpl(networkConnection: sl()));
+}
+
+void _printing() {
+  sl.registerFactory(
+    () => PrintingBloc(
+      getPrinterUseCase: sl(),
+      getPrintersUseCase: sl(),
+      addNewPrinterUseCase: sl(),
+      updatePrinterUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetPrinterUseCase(printingRepository: sl()));
+  sl.registerLazySingleton(() => GetPrintersUseCase(printingRepository: sl()));
+  sl.registerLazySingleton(
+      () => AddNewPrinterUseCase(printingRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdatePrinterUseCase(printingRepository: sl()));
+
+  sl.registerLazySingleton<PrintingRepository>(() =>
+      PrintingRepositoryImpl(printingDataSource: sl(), dataBaseHelper: sl()));
+
+  sl.registerLazySingleton<PrintingDataSource>(
+      () => PrintingDataSourceImpl(printingDataBase: sl()));
+  sl.registerLazySingleton<PrintingDataBase>(() => PrintingDataBaseImpl());
 }
