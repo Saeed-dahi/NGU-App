@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
@@ -30,8 +31,8 @@ class InvoicePrintPageSettings extends StatelessWidget {
   BlocProvider<PrintingBloc> _customPrinterWidget(
       {required String printerType, void Function()? onPressed}) {
     return BlocProvider(
-      create: (context) => context.read<PrintingBloc>()
-        ..add(GetPrinterEvent(printerType: printerType)),
+      create: (context) =>
+          sl<PrintingBloc>()..add(GetPrinterEvent(printerType: printerType)),
       child: BlocBuilder<PrintingBloc, PrintingState>(
         builder: (context, state) {
           if (state is LoadedPrinterState) {
