@@ -7,7 +7,6 @@ import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.d
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
-import 'package:printing/printing.dart';
 
 class InvoicePrintPageSettings extends StatelessWidget {
   const InvoicePrintPageSettings({super.key});
@@ -18,9 +17,7 @@ class InvoicePrintPageSettings extends StatelessWidget {
       children: [
         TableRow(
           children: [
-            _customPrinterWidget(
-                printerType: 'printerType',
-                onPressed: () => Printing.pickPrinter(context: context)),
+            _customPrinterWidget(printerType: 'printerType'),
             _customPrinterWidget(printerType: ''),
           ],
         ),
@@ -29,7 +26,7 @@ class InvoicePrintPageSettings extends StatelessWidget {
   }
 
   BlocProvider<PrintingBloc> _customPrinterWidget(
-      {required String printerType, void Function()? onPressed}) {
+      {required String printerType}) {
     return BlocProvider(
       create: (context) =>
           sl<PrintingBloc>()..add(GetPrinterEvent(printerType: printerType)),
@@ -40,7 +37,9 @@ class InvoicePrintPageSettings extends StatelessWidget {
               child: CustomElevatedButton(
                 color: AppColors.primaryColorLow,
                 text: state.printerEntity.name,
-                onPressed: onPressed,
+                onPressed: () => context
+                    .read<PrintingBloc>()
+                    .pickPrinter(context, printerType, true),
               ),
             );
           }
@@ -49,7 +48,9 @@ class InvoicePrintPageSettings extends StatelessWidget {
               child: CustomElevatedButton(
                 color: AppColors.red,
                 text: state.error,
-                onPressed: onPressed,
+                onPressed: () => context
+                    .read<PrintingBloc>()
+                    .pickPrinter(context, printerType, false),
               ),
             );
           }

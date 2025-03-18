@@ -49,6 +49,6 @@ class PrintingDataSourceImpl implements PrintingDataSource {
     await db.update('printing_table', {'printer_type': printerType},
         where: 'printer_type = ?', whereArgs: [printerType]);
 
-    return PrinterModel(url: 'url', name: 'name', printerType: printerType);
+    return getPrinter(printerType);
   }
 }

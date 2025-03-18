@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/features/printing/domain/entities/printer_entity.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/add_new_printer_use_case.dart';
@@ -10,6 +11,7 @@ import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_u
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart';
+import 'package:printing/printing.dart';
 
 part 'printing_event.dart';
 part 'printing_state.dart';
@@ -68,5 +70,16 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
     }, (data) {
       emit(LoadedPrinterState(printerEntity: data));
     });
+  }
+
+  pickPrinter(BuildContext context, String printerType, bool isExisting) async {
+    Printer? printer = await Printing.pickPrinter(context: context);
+    if (printer != null) {
+      PrinterEntity printerEntity = PrinterEntity(
+          url: printer.url, name: printer.name, printerType: printerType);
+      isExisting
+          ? add(UpdatePrinterEvent(printerType: printerType))
+          : add(InsertPrinterEvent(printer: printerEntity));
+    }
   }
 }
