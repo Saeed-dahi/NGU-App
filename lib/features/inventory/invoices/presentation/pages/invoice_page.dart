@@ -113,6 +113,7 @@ class _InvoicePageState extends State<InvoicePage> {
           create: (context) => sl<PrintingBloc>()
             ..add(GetPrinterEvent(printerType: PrinterType.receipt.name))
             ..add(GetPrinterEvent(printerType: PrinterType.tax_invoice.name)),
+          lazy: false,
         ),
       ],
       child: BlocBuilder<InvoiceBloc, InvoiceState>(

@@ -6,7 +6,6 @@ import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.d
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
-import 'package:ngu_app/core/widgets/loaders.dart';
 
 class InvoicePrintPageSettings extends StatelessWidget {
   const InvoicePrintPageSettings({super.key});

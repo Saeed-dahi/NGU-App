@@ -8,6 +8,7 @@ import 'package:ngu_app/app/lang/localization_service.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/cubit/pluto_grid_cubit.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 import 'app/dependency_injection/dependency_injection.dart' as di;
 import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart';
@@ -22,6 +23,8 @@ void main() async {
   await windowManager.ensureInitialized();
   // Set minimum window size
   windowManager.setMinimumSize(const Size(1000, 800)); // Example minimum size
+
+  databaseFactory = databaseFactoryFfi;
 
   await APIList.loadBaseUrl();
   runApp(const MyApp());

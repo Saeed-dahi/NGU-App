@@ -219,7 +219,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     var fileBytes = pdf.save();
     if (context.mounted) {
       await Printing.directPrintPdf(
-        printer: context.read<PrintingBloc>().receiptPrinter!,
+        printer: context.read<PrintingBloc>().taxInvoicePrinter!,
         onLayout: (format) => fileBytes,
       );
       // await Printing.sharePdf(bytes: await fileBytes);
