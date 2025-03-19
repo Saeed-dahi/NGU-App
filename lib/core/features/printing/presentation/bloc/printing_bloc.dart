@@ -57,23 +57,13 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
     });
   }
 
-  void _setPrinterByPrinterType(
-      PrinterEntity printerEntity, String printerType) {
-    Printer? p = Printer(
-      url: printerEntity.url,
-      name: printerEntity.name,
-    );
-    printerType == PrinterType.receipt.name
-        ? receiptPrinter = p
-        : taxInvoicePrinter = p;
-  }
-
   FutureOr<void> _insertPrinter(
       InsertPrinterEvent event, Emitter<PrintingState> emit) async {
     final result = await addNewPrinterUseCase(event.printer);
     result.fold((failure) {
       emit(ErrorPrinterState(error: failure.errors['error']));
     }, (data) {
+      _setPrinterByPrinterType(data, data.printerType);
       emit(LoadedPrinterState(printerEntity: data));
     });
   }
@@ -97,5 +87,16 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
           ? add(UpdatePrinterEvent(printerType: printerType))
           : add(InsertPrinterEvent(printer: printerEntity));
     }
+  }
+
+  void _setPrinterByPrinterType(
+      PrinterEntity printerEntity, String printerType) {
+    Printer? p = Printer(
+      url: printerEntity.url,
+      name: printerEntity.name,
+    );
+    printerType == PrinterType.receipt.name
+        ? receiptPrinter = p
+        : taxInvoicePrinter = p;
   }
 }

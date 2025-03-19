@@ -110,7 +110,9 @@ class _InvoicePageState extends State<InvoicePage> {
           create: (context) => sl<PreviewInvoiceItemCubit>(),
         ),
         BlocProvider(
-          create: (context) => sl<PrintingBloc>(),
+          create: (context) => sl<PrintingBloc>()
+            ..add(GetPrinterEvent(printerType: PrinterType.receipt.name))
+            ..add(GetPrinterEvent(printerType: PrinterType.tax_invoice.name)),
         ),
       ],
       child: BlocBuilder<InvoiceBloc, InvoiceState>(

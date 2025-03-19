@@ -13,7 +13,7 @@ class PrintingDataBaseImpl implements PrintingDataBase {
   @override
   Future<Database> get database async {
     _database ??= await initDatabase();
-    // _database!.delete(_tableName);
+    // _database!.delete(DataBaseConstant.printingTable);
     return _database!;
   }
 
