@@ -29,30 +29,15 @@ class InvoicePrintPageSettings extends StatelessWidget {
   Widget _customReceiptPrinterWidget({required String printerType}) {
     return BlocBuilder<PrintingBloc, PrintingState>(
       builder: (context, state) {
-        if (state is LoadedPrinterState) {
-          return CustomContainer(
-            child: CustomElevatedButton(
-              color: AppColors.primaryColorLow,
-              text: context.read<PrintingBloc>().receiptPrinter!.name,
-              onPressed: () => context
-                  .read<PrintingBloc>()
-                  .pickPrinter(context, printerType, true),
-            ),
-          );
-        }
-        if (state is ErrorPrinterState) {
-          return CustomContainer(
-            child: CustomElevatedButton(
-              color: AppColors.red,
-              text: state.error,
-              onPressed: () => context
-                  .read<PrintingBloc>()
-                  .pickPrinter(context, printerType, false),
-            ),
-          );
-        }
-        return Center(
-          child: Loaders.loading(),
+        return CustomContainer(
+          child: CustomElevatedButton(
+            color: AppColors.primaryColorLow,
+            text:
+                context.read<PrintingBloc>().receiptPrinter?.name ?? 'No Data',
+            onPressed: () => context
+                .read<PrintingBloc>()
+                .pickPrinter(context, printerType, false),
+          ),
         );
       },
     );
@@ -61,31 +46,15 @@ class InvoicePrintPageSettings extends StatelessWidget {
   Widget _customTaxInvoicePrinterWidget({required String printerType}) {
     return BlocBuilder<PrintingBloc, PrintingState>(
       builder: (context, state) {
-        if (state is LoadedPrinterState) {
-          return CustomContainer(
-            child: CustomElevatedButton(
-              color: AppColors.primaryColorLow,
-              text: context.read<PrintingBloc>().taxInvoicePrinter?.name ??
-                  'No Data',
-              onPressed: () => context
-                  .read<PrintingBloc>()
-                  .pickPrinter(context, printerType, true),
-            ),
-          );
-        }
-        if (state is ErrorPrinterState) {
-          return CustomContainer(
-            child: CustomElevatedButton(
-              color: AppColors.red,
-              text: state.error,
-              onPressed: () => context
-                  .read<PrintingBloc>()
-                  .pickPrinter(context, printerType, false),
-            ),
-          );
-        }
-        return Center(
-          child: Loaders.loading(),
+        return CustomContainer(
+          child: CustomElevatedButton(
+            color: AppColors.primaryColorLow,
+            text: context.read<PrintingBloc>().taxInvoicePrinter?.name ??
+                'No Data',
+            onPressed: () => context
+                .read<PrintingBloc>()
+                .pickPrinter(context, printerType, false),
+          ),
         );
       },
     );

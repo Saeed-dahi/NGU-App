@@ -9,6 +9,7 @@ import 'package:ngu_app/core/features/printing/domain/use_cases/get_printer_use_
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printers_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_use_case.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart';
@@ -50,7 +51,7 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
     final result = await getPrinterUseCase(event.printerType);
 
     result.fold((failure) {
-      emit(ErrorPrinterState(error: failure.errors['error']));
+      ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
       _setPrinterByPrinterType(data, event.printerType);
       emit(LoadedPrinterState(printerEntity: data));
@@ -60,8 +61,9 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
   FutureOr<void> _insertPrinter(
       InsertPrinterEvent event, Emitter<PrintingState> emit) async {
     final result = await addNewPrinterUseCase(event.printer);
+
     result.fold((failure) {
-      emit(ErrorPrinterState(error: failure.errors['error']));
+      ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
       _setPrinterByPrinterType(data, data.printerType);
       emit(LoadedPrinterState(printerEntity: data));
@@ -72,7 +74,7 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
       UpdatePrinterEvent event, Emitter<PrintingState> emit) async {
     final result = await updatePrinterUseCase(event.printerType);
     result.fold((failure) {
-      emit(ErrorPrinterState(error: failure.errors['error']));
+      ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
       emit(LoadedPrinterState(printerEntity: data));
     });
