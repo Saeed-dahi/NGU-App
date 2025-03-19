@@ -8,6 +8,7 @@ import 'package:ngu_app/core/features/printing/domain/use_cases/add_new_printer_
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printer_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printers_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_use_case.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:pdf/widgets.dart';
@@ -21,6 +22,9 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
   final GetPrintersUseCase getPrintersUseCase;
   final AddNewPrinterUseCase addNewPrinterUseCase;
   final UpdatePrinterUseCase updatePrinterUseCase;
+
+  Printer? receiptPrinter;
+  Printer? taxInvoicePrinter;
 
   PrintingBloc(
       {required this.getPrinterUseCase,
@@ -48,8 +52,20 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
     result.fold((failure) {
       emit(ErrorPrinterState(error: failure.errors['error']));
     }, (data) {
+      _setPrinterByPrinterType(data, event.printerType);
       emit(LoadedPrinterState(printerEntity: data));
     });
+  }
+
+  void _setPrinterByPrinterType(
+      PrinterEntity printerEntity, String printerType) {
+    Printer? p = Printer(
+      url: printerEntity.url,
+      name: printerEntity.name,
+    );
+    printerType == PrinterType.receipt.name
+        ? receiptPrinter = p
+        : taxInvoicePrinter = p;
   }
 
   FutureOr<void> _insertPrinter(

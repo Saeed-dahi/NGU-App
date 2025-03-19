@@ -24,6 +24,8 @@ enum ProductType {
 
 enum InvoiceType { sales, purchase }
 
+enum PrinterType { receipt, tex_invoice }
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

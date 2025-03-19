@@ -11,7 +11,6 @@ import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.d
 import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/tax_invoice_page.dart';
-
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
@@ -219,9 +218,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: await context.read<PrintingBloc>().getCustomFont());
     var fileBytes = pdf.save();
     if (context.mounted) {
-      Printer? p = await Printing.pickPrinter(context: context);
       await Printing.directPrintPdf(
-        printer: p!,
+        printer: context.read<PrintingBloc>().receiptPrinter!,
         onLayout: (format) => fileBytes,
       );
       // await Printing.sharePdf(bytes: await fileBytes);
@@ -297,9 +295,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     );
     var fileBytes = pdf.save();
 
-    Printer? p = await Printing.pickPrinter(context: context);
     await Printing.directPrintPdf(
-      printer: p!,
+      printer: context.read<PrintingBloc>().receiptPrinter!,
       onLayout: (format) => fileBytes,
     );
   }

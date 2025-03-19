@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -17,8 +18,8 @@ class InvoicePrintPageSettings extends StatelessWidget {
       children: [
         TableRow(
           children: [
-            _customPrinterWidget(printerType: 'printerType'),
-            _customPrinterWidget(printerType: ''),
+            _customPrinterWidget(printerType: PrinterType.receipt.name),
+            _customPrinterWidget(printerType: PrinterType.tex_invoice.name),
           ],
         ),
       ],
