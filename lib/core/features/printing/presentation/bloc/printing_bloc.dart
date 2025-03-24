@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/features/printing/domain/entities/printer_entity.dart';
-import 'package:ngu_app/core/features/printing/domain/use_cases/add_new_printer_use_case.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/insert_printer_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printer_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printers_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_use_case.dart';
@@ -21,7 +21,7 @@ part 'printing_state.dart';
 class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
   final GetPrinterUseCase getPrinterUseCase;
   final GetPrintersUseCase getPrintersUseCase;
-  final AddNewPrinterUseCase addNewPrinterUseCase;
+  final InsertPrinterUseCase addNewPrinterUseCase;
   final UpdatePrinterUseCase updatePrinterUseCase;
 
   Printer? receiptPrinter;
@@ -73,9 +73,11 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
   FutureOr<void> _updatePrinter(
       UpdatePrinterEvent event, Emitter<PrintingState> emit) async {
     final result = await updatePrinterUseCase(event.printerType);
+
     result.fold((failure) {
       ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
+      _setPrinterByPrinterType(data, data.printerType);
       emit(LoadedPrinterState(printerEntity: data));
     });
   }

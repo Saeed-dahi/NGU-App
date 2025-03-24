@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/utils/enums.dart';
@@ -31,11 +32,11 @@ class InvoicePrintPageSettings extends StatelessWidget {
         return CustomContainer(
           child: CustomElevatedButton(
             color: AppColors.primaryColorLow,
-            text:
-                context.read<PrintingBloc>().receiptPrinter?.name ?? 'No Data',
-            onPressed: () => context
-                .read<PrintingBloc>()
-                .pickPrinter(context, printerType, false),
+            text: context.read<PrintingBloc>().receiptPrinter?.name ??
+                'not_found'.tr,
+            onPressed: () => _onPressed(context, printerType,
+                isExisting:
+                    context.read<PrintingBloc>().receiptPrinter != null),
           ),
         );
       },
@@ -49,13 +50,18 @@ class InvoicePrintPageSettings extends StatelessWidget {
           child: CustomElevatedButton(
             color: AppColors.primaryColorLow,
             text: context.read<PrintingBloc>().taxInvoicePrinter?.name ??
-                'No Data',
-            onPressed: () => context
-                .read<PrintingBloc>()
-                .pickPrinter(context, printerType, false),
+                'not_found'.tr,
+            onPressed: () => _onPressed(context, printerType,
+                isExisting:
+                    context.read<PrintingBloc>().taxInvoicePrinter != null),
           ),
         );
       },
     );
+  }
+
+  _onPressed(BuildContext context, String printerType,
+      {bool isExisting = false}) {
+    context.read<PrintingBloc>().pickPrinter(context, printerType, isExisting);
   }
 }

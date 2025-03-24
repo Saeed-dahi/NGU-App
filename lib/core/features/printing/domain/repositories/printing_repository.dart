@@ -5,6 +5,6 @@ import 'package:ngu_app/core/features/printing/domain/entities/printer_entity.da
 abstract class PrintingRepository {
   Future<Either<Failure, PrinterEntity>> getPrinter(String printerType);
   Future<Either<Failure, List<PrinterEntity>>> getPrinters();
-  Future<Either<Failure, PrinterEntity>> addNewPrinter(PrinterEntity printer);
+  Future<Either<Failure, PrinterEntity>> insertPrinter(PrinterEntity printer);
   Future<Either<Failure, PrinterEntity>> updatePrinter(String printerType);
 }

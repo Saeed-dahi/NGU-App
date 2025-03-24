@@ -5,7 +5,7 @@ import 'package:ngu_app/core/features/printing/data/data_sources/printing_local_
 import 'package:ngu_app/core/features/printing/data/database/printing_data_base.dart';
 import 'package:ngu_app/core/features/printing/data/repositories/printing_repositories_impl.dart';
 import 'package:ngu_app/core/features/printing/domain/repositories/printing_repository.dart';
-import 'package:ngu_app/core/features/printing/domain/use_cases/add_new_printer_use_case.dart';
+import 'package:ngu_app/core/features/printing/domain/use_cases/insert_printer_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printer_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/get_printers_use_case.dart';
 import 'package:ngu_app/core/features/printing/domain/use_cases/update_printer_use_case.dart';
@@ -398,7 +398,7 @@ void _printing() {
   sl.registerLazySingleton(() => GetPrinterUseCase(printingRepository: sl()));
   sl.registerLazySingleton(() => GetPrintersUseCase(printingRepository: sl()));
   sl.registerLazySingleton(
-      () => AddNewPrinterUseCase(printingRepository: sl()));
+      () => InsertPrinterUseCase(printingRepository: sl()));
   sl.registerLazySingleton(
       () => UpdatePrinterUseCase(printingRepository: sl()));
 

@@ -4,7 +4,7 @@ import 'package:ngu_app/core/features/printing/data/models/printer_model.dart';
 abstract class PrintingDataSource {
   Future<List<PrinterModel>> getPrinters();
   Future<PrinterModel> getPrinter(String printerType);
-  Future<PrinterModel> addNewPrinter(PrinterModel printer);
+  Future<PrinterModel> insertPrinter(PrinterModel printer);
   Future<PrinterModel> updatePrinter(String printerType);
 }
 
@@ -14,7 +14,7 @@ class PrintingDataSourceImpl implements PrintingDataSource {
   PrintingDataSourceImpl({required this.printingDataBase});
 
   @override
-  Future<PrinterModel> addNewPrinter(PrinterModel printer) async {
+  Future<PrinterModel> insertPrinter(PrinterModel printer) async {
     final db = await printingDataBase.database;
     await db.insert('printing_table', printer.toJson());
 

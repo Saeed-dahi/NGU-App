@@ -25,10 +25,10 @@ class PrintingRepositoryImpl implements PrintingRepository {
   }
 
   @override
-  Future<Either<Failure, PrinterEntity>> addNewPrinter(
+  Future<Either<Failure, PrinterEntity>> insertPrinter(
       PrinterEntity printer) async {
     return dataBaseHelper.safeDataBaseConnection(
-        () => printingDataSource.addNewPrinter(printer.toPrinterModel()));
+        () => printingDataSource.insertPrinter(printer.toPrinterModel()));
   }
 
   @override
