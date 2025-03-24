@@ -6,5 +6,5 @@ abstract class PrintingRepository {
   Future<Either<Failure, PrinterEntity>> getPrinter(String printerType);
   Future<Either<Failure, List<PrinterEntity>>> getPrinters();
   Future<Either<Failure, PrinterEntity>> insertPrinter(PrinterEntity printer);
-  Future<Either<Failure, PrinterEntity>> updatePrinter(String printerType);
+  Future<Either<Failure, PrinterEntity>> updatePrinter(PrinterEntity printer);
 }

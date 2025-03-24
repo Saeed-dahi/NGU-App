@@ -17,7 +17,6 @@ class PrinterModel extends PrinterEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'url': url,
       'name': name,
       'printer_type': printerType,

@@ -33,8 +33,8 @@ class PrintingRepositoryImpl implements PrintingRepository {
 
   @override
   Future<Either<Failure, PrinterEntity>> updatePrinter(
-      String printerType) async {
+      PrinterEntity printer) async {
     return dataBaseHelper.safeDataBaseConnection(
-        () => printingDataSource.updatePrinter(printerType));
+        () => printingDataSource.updatePrinter(printer.toPrinterModel()));
   }
 }

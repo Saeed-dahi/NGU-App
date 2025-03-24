@@ -5,7 +5,7 @@ abstract class PrintingDataSource {
   Future<List<PrinterModel>> getPrinters();
   Future<PrinterModel> getPrinter(String printerType);
   Future<PrinterModel> insertPrinter(PrinterModel printer);
-  Future<PrinterModel> updatePrinter(String printerType);
+  Future<PrinterModel> updatePrinter(PrinterModel printer);
 }
 
 class PrintingDataSourceImpl implements PrintingDataSource {
@@ -18,7 +18,7 @@ class PrintingDataSourceImpl implements PrintingDataSource {
     final db = await printingDataBase.database;
     await db.insert('printing_table', printer.toJson());
 
-    return printer;
+    return getPrinter(printer.printerType);
   }
 
   @override
@@ -44,11 +44,11 @@ class PrintingDataSourceImpl implements PrintingDataSource {
   }
 
   @override
-  Future<PrinterModel> updatePrinter(String printerType) async {
+  Future<PrinterModel> updatePrinter(PrinterModel printer) async {
     final db = await printingDataBase.database;
-    await db.update('printing_table', {'printer_type': printerType},
-        where: 'printer_type = ?', whereArgs: [printerType]);
+    await db.update('printing_table', printer.toJson(),
+        where: 'printer_type = ?', whereArgs: [printer.printerType]);
 
-    return getPrinter(printerType);
+    return getPrinter(printer.printerType);
   }
 }

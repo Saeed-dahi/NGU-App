@@ -60,8 +60,9 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
 
   FutureOr<void> _insertPrinter(
       InsertPrinterEvent event, Emitter<PrintingState> emit) async {
+    print('insert');
     final result = await addNewPrinterUseCase(event.printer);
-
+    print(result);
     result.fold((failure) {
       ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
@@ -72,8 +73,9 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
 
   FutureOr<void> _updatePrinter(
       UpdatePrinterEvent event, Emitter<PrintingState> emit) async {
-    final result = await updatePrinterUseCase(event.printerType);
-
+    print('update');
+    final result = await updatePrinterUseCase(event.printer);
+    print(result);
     result.fold((failure) {
       ShowSnackBar.showValidationSnackbar(messages: [failure.errors['error']]);
     }, (data) {
@@ -88,7 +90,7 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
       PrinterEntity printerEntity = PrinterEntity(
           url: printer.url, name: printer.name, printerType: printerType);
       isExisting
-          ? add(UpdatePrinterEvent(printerType: printerType))
+          ? add(UpdatePrinterEvent(printer: printerEntity))
           : add(InsertPrinterEvent(printer: printerEntity));
     }
   }

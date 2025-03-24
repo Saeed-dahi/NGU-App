@@ -22,7 +22,7 @@ class InsertPrinterEvent extends PrintingEvent {
 }
 
 class UpdatePrinterEvent extends PrintingEvent {
-  final String printerType;
+  final PrinterEntity printer;
 
-  const UpdatePrinterEvent({required this.printerType});
+  const UpdatePrinterEvent({required this.printer});
 }

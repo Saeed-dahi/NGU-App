@@ -8,7 +8,7 @@ class UpdatePrinterUseCase {
 
   UpdatePrinterUseCase({required this.printingRepository});
 
-  Future<Either<Failure, PrinterEntity>> call(String printerType) async {
-    return await printingRepository.updatePrinter(printerType);
+  Future<Either<Failure, PrinterEntity>> call(PrinterEntity printer) async {
+    return await printingRepository.updatePrinter(printer);
   }
 }
