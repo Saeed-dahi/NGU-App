@@ -24,6 +24,12 @@ class Dimensions {
   static const double primaryTextSize = 18.0;
   static const double largeTextSize = 23.0;
 
+  //Printing text size
+  static const double printingNumberTextSize = 8.0;
+  static const double printingSecondaryTextSize = 9.0;
+  static const double printingPrimaryTextSize = 10.0;
+  static const double printingLargeTextSize = 11.0;
+
   //dimensions
   static const double borderLength = 20;
   static const double borderWidth = 10;

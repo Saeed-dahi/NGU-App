@@ -20,6 +20,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_inv
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/custom_invoice_printing_header.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
@@ -203,19 +204,24 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         .toList();
 
     final columns = [
+      '',
       'name'.tr,
       'quantity'.tr,
       'unit'.tr,
       'price'.tr,
       'sub_total'.tr,
-      'tax'.tr,
+      'tax_amount'.tr,
       'total'.tr
     ];
+    Font? font = await context.read<PrintingBloc>().getCustomFont();
 
     Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
+        ttf: font,
         columns: columns,
         data: dataList,
-        ttf: await context.read<PrintingBloc>().getCustomFont());
+        customContent: CustomInvoicePrintingHeader.getCustomContent(
+            ttf: font, invoice: _invoiceEntity));
+
     var fileBytes = pdf.save();
     if (context.mounted) {
       await Printing.directPrintPdf(
@@ -227,18 +233,32 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printA4Invoice(BuildContext context) async {
-    var dataList = _invoiceEntity.invoiceItems!.map((item) {
-      return [
-        '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!}',
-        item.quantity,
-        item.productUnit!.unit!.arName!,
-      ];
-    }).toList();
+    var dataList = _invoiceEntity.invoiceItems!
+        .asMap()
+        .map((index, item) {
+          return MapEntry(index, [
+            (index + 1).toString(),
+            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
+            item.quantity,
+            item.productUnit!.unit!.arName!,
+            item.price,
+            item.price! * item.quantity!,
+            item.taxAmount,
+            item.total
+          ]);
+        })
+        .values
+        .toList();
 
     final columns = [
+      '',
       'name'.tr,
       'quantity'.tr,
       'unit'.tr,
+      'price'.tr,
+      'sub_total'.tr,
+      'tax_amount'.tr,
+      'total'.tr
     ];
 
     Document pdf = await A4Page.buildCustomA4Page(
@@ -247,11 +267,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: await context.read<PrintingBloc>().getCustomFont());
     var fileBytes = pdf.save();
     if (context.mounted) {
-      Printer? p = await Printing.pickPrinter(context: context);
-      await Printing.directPrintPdf(
-        printer: p!,
-        onLayout: (format) => fileBytes,
-      );
+      // Printer? p = await Printing.pickPrinter(context: context);
+      // await Printing.directPrintPdf(
+      //   printer: p!,
+      //   onLayout: (format) => fileBytes,
+      // );
+      await Printing.sharePdf(bytes: await fileBytes);
     }
   }
 

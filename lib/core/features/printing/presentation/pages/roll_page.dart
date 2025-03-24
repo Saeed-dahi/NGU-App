@@ -1,3 +1,4 @@
+import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
@@ -23,13 +24,17 @@ class RollPage {
                 TableHelper.fromTextArray(
                   headers: columns.map((column) => column).toList(),
                   headerStyle: TextStyle(
-                      font: ttf, fontSize: 8, fontWeight: FontWeight.bold),
+                      font: ttf,
+                      fontSize: Dimensions.printingSecondaryTextSize,
+                      fontWeight: FontWeight.bold),
                   headerDecoration:
                       BoxDecoration(color: PdfColor.fromHex('#7F7F7F')),
                   border: TableBorder.all(color: PdfColors.black),
                   data: data,
                   columnWidths: columnWidths,
-                  cellStyle: TextStyle(fontSize: 8, font: ttf),
+                  cellStyle: TextStyle(
+                      fontSize: Dimensions.printingSecondaryTextSize,
+                      font: ttf),
                 )
               ]);
         },

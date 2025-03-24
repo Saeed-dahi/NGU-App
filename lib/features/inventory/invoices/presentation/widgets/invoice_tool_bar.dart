@@ -86,6 +86,13 @@ class InvoiceToolBar extends StatelessWidget {
           },
         ),
         CustomIconButton(
+          icon: Icons.import_export,
+          tooltip: 'export'.tr,
+          onPressed: () {
+            context.read<InvoiceBloc>().printA4Invoice(context);
+          },
+        ),
+        CustomIconButton(
           icon: Icons.refresh,
           tooltip: 'refresh'.tr,
           onPressed: onRefresh,
