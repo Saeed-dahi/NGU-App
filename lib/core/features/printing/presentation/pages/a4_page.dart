@@ -5,7 +5,10 @@ import 'package:pdf/widgets.dart';
 
 class A4Page {
   static buildCustomA4Page(
-      {required List columns, required data, required Font ttf}) async {
+      {required List columns,
+      required data,
+      required Font ttf,
+      Widget? customContent}) async {
     final headerImage = MemoryImage(
       (await rootBundle.load('assets/images/header.jpeg')).buffer.asUint8List(),
     );
@@ -17,8 +20,14 @@ class A4Page {
     pdf.addPage(
       MultiPage(
         header: (context) {
-          return Image(
-            headerImage,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Image(
+                headerImage,
+              ),
+              customContent ?? SizedBox(),
+            ],
           );
         },
         pageTheme: PageTheme(

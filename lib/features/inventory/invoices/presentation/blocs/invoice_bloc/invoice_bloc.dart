@@ -20,7 +20,8 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_inv
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
-import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/custom_invoice_printing_header.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/A4_printing_header.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/tax_invoice_printing_header.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
@@ -260,11 +261,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       'tax_amount'.tr,
       'total'.tr
     ];
+    Font? font = await context.read<PrintingBloc>().getCustomFont();
 
     Document pdf = await A4Page.buildCustomA4Page(
         columns: columns,
         data: dataList,
-        ttf: await context.read<PrintingBloc>().getCustomFont());
+        customContent: A4PrintingHeader.getCustomContent(
+            ttf: font, invoice: _invoiceEntity),
+        ttf: font);
     var fileBytes = pdf.save();
     if (context.mounted) {
       // Printer? p = await Printing.pickPrinter(context: context);
@@ -272,7 +276,11 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       //   printer: p!,
       //   onLayout: (format) => fileBytes,
       // );
-      await Printing.sharePdf(bytes: await fileBytes);
+      await Printing.layoutPdf(
+        onLayout: (format) {
+          return fileBytes;
+        },
+      );
     }
   }
 
