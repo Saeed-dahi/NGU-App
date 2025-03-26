@@ -11,10 +11,10 @@ class CustomInvoicePrintingHeader {
     // Here you can define any custom content
     return pw.Container(
       margin: const pw.EdgeInsets.only(
-          left: PdfPageFormat.cm * 3, right: PdfPageFormat.cm * 2),
+          left: PdfPageFormat.cm * 3.5, right: PdfPageFormat.cm * 2),
       child: pw.Column(
         children: [
-          pw.SizedBox(height: PdfPageFormat.cm * 5),
+          pw.SizedBox(height: PdfPageFormat.cm * 4.5),
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
@@ -57,7 +57,7 @@ class CustomInvoicePrintingHeader {
               ),
             ],
           ),
-          pw.SizedBox(height: PdfPageFormat.cm * 0.5),
+          pw.SizedBox(height: PdfPageFormat.cm * 1),
         ],
       ),
     );

@@ -77,10 +77,16 @@ flutter:
         - asset: assets/fonts/mirza/Mirza-Medium.ttf
         - asset: assets/fonts/mirza/Mirza-Regular.ttf
         - asset: assets/fonts/mirza/Mirza-SemiBold.ttf
-    - family: Roboto
+
+    - family: Noto_Naskh_Arabic
       fonts:
-        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
-        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
-        - asset: assets/fonts/Roboto/Roboto-Light.ttf
-        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-Regular.ttf
+        - asset: assets/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-Bold.ttf
+        - asset: assets/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-SemiBold.ttf
+        - asset: assets/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-Medium.ttf
+    - family: Scheherazade_New
+      fonts:
+        - asset: assets/fonts/Scheherazade_New/ScheherazadeNew-Regular.ttf
+        - asset: assets/fonts/Scheherazade_New/ScheherazadeNew-Bold.ttf
+        - asset: assets/fonts/Scheherazade_New/ScheherazadeNew-SemiBold.ttf
+        - asset: assets/fonts/Scheherazade_New/ScheherazadeNew-Medium.ttf

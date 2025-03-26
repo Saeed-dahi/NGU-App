@@ -271,16 +271,16 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: font);
     var fileBytes = pdf.save();
     if (context.mounted) {
-      // Printer? p = await Printing.pickPrinter(context: context);
-      // await Printing.directPrintPdf(
-      //   printer: p!,
-      //   onLayout: (format) => fileBytes,
-      // );
-      await Printing.layoutPdf(
-        onLayout: (format) {
-          return fileBytes;
-        },
+      Printer? p = await Printing.pickPrinter(context: context);
+      await Printing.directPrintPdf(
+        printer: p!,
+        onLayout: (format) => fileBytes,
       );
+      // await Printing.layoutPdf(
+      //   onLayout: (format) {
+      //     return fileBytes;
+      //   },
+      // );
     }
   }
 
