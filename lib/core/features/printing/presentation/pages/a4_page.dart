@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:pdf/pdf.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -52,7 +53,7 @@ class A4Page {
         build: (Context context) {
           return [
             TableHelper.fromTextArray(
-              headers: columns.map((column) => column).toList(),
+              headers: columns.map((column) => column.toString().tr).toList(),
               headerStyle: TextStyle(
                   font: ttf,
                   fontSize: Dimensions.printingSecondaryTextSize,

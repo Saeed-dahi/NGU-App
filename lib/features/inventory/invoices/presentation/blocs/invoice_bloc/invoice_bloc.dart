@@ -187,33 +187,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printTaxInvoice(BuildContext context) async {
-    var dataList = _invoiceEntity.invoiceItems!
-        .asMap()
-        .map((index, item) {
-          return MapEntry(index, [
-            (index + 1).toString(),
-            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
-            item.quantity,
-            item.productUnit!.unit!.arName!,
-            item.price,
-            item.price! * item.quantity!,
-            item.taxAmount,
-            item.total
-          ]);
-        })
-        .values
-        .toList();
+    var dataList = _getPrintDataList();
 
-    final columns = [
-      '',
-      'name'.tr,
-      'quantity'.tr,
-      'unit'.tr,
-      'price'.tr,
-      'sub_total'.tr,
-      'tax_amount'.tr,
-      'total'.tr
-    ];
+    final columns = _getPrintDataListColumns();
     Font? font = await context.read<PrintingBloc>().getCustomFont();
 
     Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
@@ -234,33 +210,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   }
 
   Future<void> printA4Invoice(BuildContext context) async {
-    var dataList = _invoiceEntity.invoiceItems!
-        .asMap()
-        .map((index, item) {
-          return MapEntry(index, [
-            (index + 1).toString(),
-            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
-            item.quantity,
-            item.productUnit!.unit!.arName!,
-            item.price,
-            item.price! * item.quantity!,
-            item.taxAmount,
-            item.total
-          ]);
-        })
-        .values
-        .toList();
+    List<List<Object?>> dataList = _getPrintDataList();
 
-    final columns = [
-      '',
-      'name'.tr,
-      'quantity'.tr,
-      'unit'.tr,
-      'price'.tr,
-      'sub_total'.tr,
-      'tax_amount'.tr,
-      'total'.tr
-    ];
+    List<String> columns = _getPrintDataListColumns();
     Font? font = await context.read<PrintingBloc>().getCustomFont();
 
     Document pdf = await A4Page.buildCustomA4Page(
@@ -271,16 +223,16 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: font);
     var fileBytes = pdf.save();
     if (context.mounted) {
-      Printer? p = await Printing.pickPrinter(context: context);
-      await Printing.directPrintPdf(
-        printer: p!,
-        onLayout: (format) => fileBytes,
-      );
-      // await Printing.layoutPdf(
-      //   onLayout: (format) {
-      //     return fileBytes;
-      //   },
+      // Printer? p = await Printing.pickPrinter(context: context);
+      // await Printing.directPrintPdf(
+      //   printer: p!,
+      //   onLayout: (format) => fileBytes,
       // );
+      await Printing.layoutPdf(
+        onLayout: (format) {
+          return fileBytes;
+        },
+      );
     }
   }
 
@@ -328,5 +280,39 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       printer: context.read<PrintingBloc>().receiptPrinter!,
       onLayout: (format) => fileBytes,
     );
+  }
+
+  List<String> _getPrintDataListColumns() {
+    final columns = [
+      '',
+      'name',
+      'quantity',
+      'unit',
+      'price',
+      'sub_total',
+      'tax_amount',
+      'total'
+    ];
+    return columns;
+  }
+
+  List<List<Object?>> _getPrintDataList() {
+    var dataList = _invoiceEntity.invoiceItems!
+        .asMap()
+        .map((index, item) {
+          return MapEntry(index, [
+            (index + 1).toString(),
+            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
+            item.quantity,
+            item.productUnit!.unit!.arName!,
+            item.price,
+            item.price! * item.quantity!,
+            item.taxAmount,
+            item.total
+          ]);
+        })
+        .values
+        .toList();
+    return dataList;
   }
 }
