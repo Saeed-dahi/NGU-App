@@ -209,7 +209,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         printer: context.read<PrintingBloc>().taxInvoicePrinter!,
         onLayout: (format) => fileBytes,
       );
-      // await Printing.sharePdf(bytes: await fileBytes);
+      await Printing.sharePdf(bytes: await fileBytes);
     }
   }
 

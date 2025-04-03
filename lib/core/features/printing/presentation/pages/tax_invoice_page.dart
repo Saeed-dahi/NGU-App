@@ -16,14 +16,19 @@ class TaxInvoicePage {
       MultiPage(
         pageTheme: const PageTheme(
           textDirection: TextDirection.rtl,
-          margin: EdgeInsets.only(left: 10),
+          margin: EdgeInsets.only(left: 16),
         ),
         footer: (context) {
           return footer;
         },
+        header: (context) {
+          return Container(
+              margin: const EdgeInsets.only(
+                  bottom: PdfPageFormat.cm * 0.5, top: PdfPageFormat.cm * 4.5),
+              child: customContent);
+        },
         build: (Context context) {
           List<Widget> content = [];
-          content.add(customContent);
           content.add(Container(
             child: TableHelper.fromTextArray(
                 headers: [],

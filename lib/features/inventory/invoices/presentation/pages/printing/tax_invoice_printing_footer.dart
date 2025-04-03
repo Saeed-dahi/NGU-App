@@ -12,11 +12,12 @@ class CustomInvoicePrintingFooter {
       margin: const pw.EdgeInsets.only(
           left: PdfPageFormat.cm * 5,
           right: PdfPageFormat.cm * 1,
-          bottom: PdfPageFormat.cm * 3),
+          bottom: PdfPageFormat.cm * 5),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
           pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.center,
             children: [
               pw.Text(
                 invoice.subTotal.toString(),

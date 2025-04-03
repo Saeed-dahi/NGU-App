@@ -8,48 +8,44 @@ import 'package:pdf/widgets.dart';
 class CustomInvoicePrintingHeader {
   static pw.Widget getCustomContent(
       {required Font? ttf, required InvoiceEntity invoice}) {
-    // Here you can define any custom content
     return pw.Container(
       margin: const pw.EdgeInsets.only(
-          left: PdfPageFormat.cm * 3.5, right: PdfPageFormat.cm * 2),
-      child: pw.Column(
+          right: PdfPageFormat.cm * 1.5, left: PdfPageFormat.cm * 5),
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.SizedBox(height: PdfPageFormat.cm * 4.5),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text(
                 invoice.invoiceNumber.toString(),
                 style: pw.TextStyle(
                     fontSize: Dimensions.printingLargeTextSize, font: ttf),
               ),
-              pw.Text(
-                '${invoice.account!.arName!} - ${invoice.account!.enName!}',
-                style: pw.TextStyle(
-                    fontSize: Dimensions.printingLargeTextSize, font: ttf),
-              ),
-            ],
-          ),
-          pw.SizedBox(height: PdfPageFormat.cm * 0.5),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.end,
-            children: [
-              pw.Text(
-                invoice.address!,
-                style: pw.TextStyle(
-                    fontSize: Dimensions.printingLargeTextSize, font: ttf),
-              ),
-            ],
-          ),
-          pw.SizedBox(height: PdfPageFormat.cm * 0.5),
-          pw.Row(
-            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-            children: [
+              pw.SizedBox(height: PdfPageFormat.cm * 0.5),
               pw.Text(
                 invoice.date!,
                 style: pw.TextStyle(
                     fontSize: Dimensions.printingLargeTextSize, font: ttf),
               ),
+            ],
+          ),
+          pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+              pw.Text(
+                '${invoice.account!.arName!} - ${invoice.account!.enName!}',
+                style: pw.TextStyle(
+                    fontSize: Dimensions.printingLargeTextSize, font: ttf),
+              ),
+              pw.SizedBox(height: PdfPageFormat.cm * 0.25),
+              pw.Text(
+                invoice.address!,
+                style: pw.TextStyle(
+                    fontSize: Dimensions.printingLargeTextSize, font: ttf),
+              ),
+              pw.SizedBox(height: PdfPageFormat.cm * 0.25),
               pw.Text(
                 '123456789987654321',
                 style: pw.TextStyle(
@@ -57,7 +53,6 @@ class CustomInvoicePrintingHeader {
               ),
             ],
           ),
-          pw.SizedBox(height: PdfPageFormat.cm * 1),
         ],
       ),
     );
