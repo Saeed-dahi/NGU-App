@@ -7,7 +7,9 @@ class TaxInvoicePage {
       {required List columns,
       required data,
       required Font ttf,
-      required Widget customContent}) async {
+      required Widget customContent,
+      required Widget footer,
+      Map<int, TableColumnWidth>? columnWidths}) async {
     final pdf = Document();
 
     pdf.addPage(
@@ -16,18 +18,21 @@ class TaxInvoicePage {
           textDirection: TextDirection.rtl,
           margin: EdgeInsets.only(left: 10),
         ),
+        footer: (context) {
+          return footer;
+        },
         build: (Context context) {
           List<Widget> content = [];
           content.add(customContent);
-          content.add(
-            TableHelper.fromTextArray(
+          content.add(Container(
+            child: TableHelper.fromTextArray(
                 headers: [],
                 border: TableBorder.all(width: 0, color: PdfColors.white),
                 data: data,
                 cellStyle: TextStyle(
                     fontSize: Dimensions.printingSecondaryTextSize, font: ttf),
-                columnWidths: {1: const FixedColumnWidth(120)}),
-          );
+                columnWidths: columnWidths),
+          ));
 
           return content;
         },

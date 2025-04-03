@@ -21,6 +21,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/A4_printing_header.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/tax_invoice_printing_footer.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/tax_invoice_printing_header.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
@@ -196,7 +197,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: font,
         columns: columns,
         data: dataList,
+        columnWidths: {1: const pw.FixedColumnWidth(150)},
         customContent: CustomInvoicePrintingHeader.getCustomContent(
+            ttf: font, invoice: _invoiceEntity),
+        footer: CustomInvoicePrintingFooter.getCustomContent(
             ttf: font, invoice: _invoiceEntity));
 
     var fileBytes = pdf.save();
@@ -223,11 +227,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         ttf: font);
     var fileBytes = pdf.save();
     if (context.mounted) {
-      // Printer? p = await Printing.pickPrinter(context: context);
-      // await Printing.directPrintPdf(
-      //   printer: p!,
-      //   onLayout: (format) => fileBytes,
-      // );
       await Printing.layoutPdf(
         onLayout: (format) {
           return fileBytes;
@@ -302,7 +301,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         .map((index, item) {
           return MapEntry(index, [
             (index + 1).toString(),
-            '${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
+            '${item.productUnit!.product!.arName!} ${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
             item.quantity,
             item.productUnit!.unit!.arName!,
             item.price,

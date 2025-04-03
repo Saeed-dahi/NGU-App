@@ -39,8 +39,8 @@ class PrintingBloc extends Bloc<PrintingEvent, PrintingState> {
   }
 
   Future<Font> getCustomFont() async {
-    final fontData =
-        await rootBundle.load('assets/fonts/tajawal/Tajawal-ExtraBold.ttf');
+    final fontData = await rootBundle
+        .load('assets/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-Bold.ttf');
     final ttf = pw.Font.ttf(fontData);
 
     return ttf;
