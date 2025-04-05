@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  charset_converter
   printing
   screen_retriever_windows
   url_launcher_windows

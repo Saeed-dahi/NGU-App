@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -203,6 +205,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         footer: CustomInvoicePrintingFooter.getCustomContent(
             ttf: font, invoice: _invoiceEntity));
 
+    // Append blank page or space at the end
+    final pdfDoc = pw.Document();
+    pdfDoc.addPage(pw.MultiPage(
+      build: (_) => [pw.SizedBox(height: 50)], // Small spacer at end
+    ));
+
     var fileBytes = pdf.save();
     if (context.mounted) {
       await Printing.directPrintPdf(
@@ -211,6 +219,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       );
       await Printing.sharePdf(bytes: await fileBytes);
     }
+    await resetPrinterPaper();
   }
 
   Future<void> printA4Invoice(BuildContext context) async {
@@ -313,5 +322,23 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         .values
         .toList();
     return dataList;
+  }
+
+  Future<void> resetPrinterPaper() async {
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm80, profile);
+
+    List<int> bytes = [];
+
+    bytes += generator.feed(5); // Advance paper by 5 lines
+    bytes += generator.cut(); // Cut the paper
+
+    final printer = NetworkPrinter(PaperSize.mm80, profile);
+
+    final isConnected = await printer.connect('192.168.1.100', port: 9100);
+    if (isConnected == PosPrintResult.success) {
+      printer.rawBytes(bytes);
+      printer.disconnect();
+    }
   }
 }
