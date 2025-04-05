@@ -30,6 +30,9 @@ import 'package:pdf/widgets.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:printing/printing.dart';
+import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
+    as usb_esc_printer_windows;
+
 part 'invoice_event.dart';
 part 'invoice_state.dart';
 
@@ -213,13 +216,13 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     var fileBytes = pdf.save();
     if (context.mounted) {
-      await Printing.directPrintPdf(
+      bool printed = await Printing.directPrintPdf(
         printer: context.read<PrintingBloc>().taxInvoicePrinter!,
         onLayout: (format) => fileBytes,
       );
-      await Printing.sharePdf(bytes: await fileBytes);
+
+      await resetPrinter(context.read<PrintingBloc>().taxInvoicePrinter!);
     }
-    await resetPrinterPaper();
   }
 
   Future<void> printA4Invoice(BuildContext context) async {
@@ -324,21 +327,17 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     return dataList;
   }
 
-  Future<void> resetPrinterPaper() async {
+  Future<void> resetPrinter(Printer? p) async {
     final profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
 
     List<int> bytes = [];
+    Future.delayed(const Duration(seconds: 10));
+    bytes += generator.text('');
+    bytes += generator.text('');
+    bytes += generator.text('');
+    bytes += generator.text('');
 
-    bytes += generator.feed(5); // Advance paper by 5 lines
-    bytes += generator.cut(); // Cut the paper
-
-    final printer = NetworkPrinter(PaperSize.mm80, profile);
-
-    final isConnected = await printer.connect('192.168.1.100', port: 9100);
-    if (isConnected == PosPrintResult.success) {
-      printer.rawBytes(bytes);
-      printer.disconnect();
-    }
+    await usb_esc_printer_windows.sendPrintRequest(bytes, p!.name);
   }
 }
