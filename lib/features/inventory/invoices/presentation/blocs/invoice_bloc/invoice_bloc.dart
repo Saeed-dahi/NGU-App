@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
@@ -208,20 +209,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         footer: CustomInvoicePrintingFooter.getCustomContent(
             ttf: font, invoice: _invoiceEntity));
 
-    // Append blank page or space at the end
-    final pdfDoc = pw.Document();
-    pdfDoc.addPage(pw.MultiPage(
-      build: (_) => [pw.SizedBox(height: 50)], // Small spacer at end
-    ));
-
     var fileBytes = pdf.save();
     if (context.mounted) {
-      bool printed = await Printing.directPrintPdf(
-        printer: context.read<PrintingBloc>().taxInvoicePrinter!,
-        onLayout: (format) => fileBytes,
-      );
+      // await Printing.directPrintPdf(
+      //   printer: context.read<PrintingBloc>().taxInvoicePrinter!,
+      //   onLayout: (format) => fileBytes,
+      // );
 
-      await resetPrinter(context.read<PrintingBloc>().taxInvoicePrinter!);
+      await sendPrintCommand(context.read<PrintingBloc>().taxInvoicePrinter!);
     }
   }
 
@@ -327,17 +322,14 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     return dataList;
   }
 
-  Future<void> resetPrinter(Printer? p) async {
+  Future<void> sendPrintCommand(Printer? printer) async {
     final profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm80, profile);
 
     List<int> bytes = [];
-    Future.delayed(const Duration(seconds: 10));
-    bytes += generator.text('');
-    bytes += generator.text('');
-    bytes += generator.text('');
-    bytes += generator.text('');
 
-    await usb_esc_printer_windows.sendPrintRequest(bytes, p!.name);
+    bytes += generator.rawBytes([0x0c]);
+
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printer!.name);
   }
 }
