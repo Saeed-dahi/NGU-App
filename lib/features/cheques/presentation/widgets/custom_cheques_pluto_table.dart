@@ -10,11 +10,11 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dar
 import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomAccountStatementPlutoTable extends StatelessWidget {
+class CustomChequesPlutoTable extends StatelessWidget {
   final AccountStatementEntity accountStatement;
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  CustomAccountStatementPlutoTable({
+  CustomChequesPlutoTable({
     super.key,
     required this.accountStatement,
   });

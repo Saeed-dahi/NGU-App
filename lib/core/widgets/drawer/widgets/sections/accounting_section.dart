@@ -11,6 +11,7 @@ import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
+import 'package:ngu_app/features/cheques/presentation/pages/cheques_table_page.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_account_statement_dialog.dart';
@@ -191,7 +192,7 @@ class AccountingSection extends StatelessWidget {
 
 _cheques(BuildContext context) {
   return CustomExpansionTile(
-    title: 'post_dated_cheque'.tr,
+    title: 'post_dated_cheques'.tr,
     icon: Icons.money,
     children: [
       BasicListTile(
@@ -201,6 +202,9 @@ _cheques(BuildContext context) {
       BasicListTile(
         title: 'cheques_table'.tr,
         icon: Icons.table_chart_outlined,
+        onTap: () => context.read<TabCubit>().addNewTab(
+            content: const ChequesTablePage(accountId: 1),
+            title: 'cheques_table'.tr),
       ),
     ],
   );
