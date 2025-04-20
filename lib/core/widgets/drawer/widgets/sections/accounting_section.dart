@@ -38,6 +38,7 @@ class AccountingSection extends StatelessWidget {
               _buildAccountsRecord(context),
               _buildVouchers(context),
               _detailedReports(context),
+              _cheques(context),
               _totalReports(context),
               _currencies(),
               _closingVouchers(context)
@@ -186,4 +187,21 @@ class AccountingSection extends StatelessWidget {
       ],
     );
   }
+}
+
+_cheques(BuildContext context) {
+  return CustomExpansionTile(
+    title: 'post_dated_cheque'.tr,
+    icon: Icons.money,
+    children: [
+      BasicListTile(
+        title: 'cheque_card'.tr,
+        image: Image.asset('assets/images/cheque.png', width: 30),
+      ),
+      BasicListTile(
+        title: 'cheques_table'.tr,
+        icon: Icons.table_chart_outlined,
+      ),
+    ],
+  );
 }

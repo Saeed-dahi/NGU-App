@@ -5,7 +5,8 @@ import 'package:ngu_app/app/app_config/constant.dart';
 
 class CustomExpansionTile extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final IconData? icon;
+  final Image? image;
   final List<Widget> children;
   final Color backgroundColor;
   final Color collapsedIconColor;
@@ -16,7 +17,8 @@ class CustomExpansionTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.children,
-    required this.icon,
+    this.icon,
+    this.image,
     this.initiallyExpanded = false,
     this.backgroundColor = const Color.fromARGB(163, 255, 255, 255),
     this.collapsedIconColor = AppColors.white,
@@ -36,10 +38,11 @@ class CustomExpansionTile extends StatelessWidget {
       childrenPadding: const EdgeInsets.only(
           left: Dimensions.primaryPadding,
           right: Dimensions.primaryPadding + 10),
-      leading: Icon(
-        icon,
-        size: Dimensions.iconSize,
-      ),
+      leading: image ??
+          Icon(
+            icon,
+            size: Dimensions.iconSize,
+          ),
       title: Text(title),
       children: children,
     );

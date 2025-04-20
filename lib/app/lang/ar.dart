@@ -54,6 +54,15 @@ Map<String, String> ar = {
   'total': 'الإجمالية',
   'trail_balance': 'ميزان المراجعة',
 
+  // Cheques
+  'cheque': 'شيك',
+  'cheques': 'شيكات',
+  'post_dated_cheques': 'الشيكات المؤجلة',
+  'incoming_cheques': 'الشيكات الواردة',
+  'outgoing_cheques': 'الشيكات الصادرة',
+  'cheque_card': 'بطاقة شيك',
+  'cheques_table': 'جدول الشيكات',
+
   // Currencies
   'currencies': 'العملات',
   'currencies_prices': 'أسعار العملات',

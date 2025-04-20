@@ -54,6 +54,15 @@ Map<String, String> en = {
   'total': 'Total',
   'trail_balance': 'Trail Balance',
 
+  // Cheques
+  'cheque': 'Cheque',
+  'cheques': 'Cheques',
+  'post_dated_cheques': 'Post Dated Cheques',
+  'incoming_cheques': 'Incoming Cheques',
+  'outgoing_cheques': 'Outgoing Cheques',
+  'cheque_card': 'Cheque Card',
+  'cheques_table': 'Cheques Table',
+
   // Currencies
   'currencies': 'Currencies',
   'currencies_prices': 'Currencies Prices',

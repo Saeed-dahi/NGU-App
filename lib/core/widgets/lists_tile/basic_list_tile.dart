@@ -4,15 +4,17 @@ import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 class BasicListTile extends StatelessWidget {
   final String title;
   final Widget trailing;
-  final IconData icon;
+  final IconData? icon;
+  final Image? image;
   final VoidCallback? onTap;
   final Color hoverColor;
   const BasicListTile(
       {super.key,
       required this.title,
       this.trailing = const SizedBox(),
-      required this.icon,
+      this.icon,
       this.onTap,
+      this.image,
       this.hoverColor = AppColors.primaryColor});
 
   @override
@@ -22,9 +24,10 @@ class BasicListTile extends StatelessWidget {
         title: Text(
           title,
         ),
-        leading: Icon(
-          icon,
-        ),
+        leading: image ??
+            Icon(
+              icon,
+            ),
         onTap: onTap,
         trailing: trailing);
   }
