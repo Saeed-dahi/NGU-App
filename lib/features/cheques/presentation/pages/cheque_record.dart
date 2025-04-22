@@ -11,6 +11,7 @@ import 'package:ngu_app/core/widgets/custom_file_picker/file_picker_controller.d
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/features/cheques/presentation/widgets/cheque_toolbar.dart';
 
 class ChequeRecord extends StatefulWidget {
   const ChequeRecord({super.key});
@@ -56,6 +57,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: Dimensions.primaryTextSize),
           ),
+          ChequeToolbar(enableEditing: _enableEditing),
           const SizedBox(
             height: 10,
           ),
