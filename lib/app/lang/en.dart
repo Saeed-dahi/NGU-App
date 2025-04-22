@@ -16,6 +16,7 @@ Map<String, String> en = {
   'required': 'Required Filed',
   'success': 'The operation has completed successfully',
   'options': 'Options',
+  'date': 'Date',
   'created_at': 'Created At',
   'updated_at': 'Updated At',
   'due_date': 'Due Date',
@@ -62,6 +63,13 @@ Map<String, String> en = {
   'outgoing_cheques': 'Outgoing Cheques',
   'cheque_card': 'Cheque Card',
   'cheques_table': 'Cheques Table',
+  'cheque_amount': 'Cheque Amount',
+  'cheque_number': 'Cheque Number',
+  'issued_from_account': 'Issued From Account',
+  'issued_to_account': 'Issued To Account',
+  'cheque_nature': 'Cheque Nature',
+  'target_bank_account': 'Target Bank Account',
+  'cheque_info': 'Cheque Information',
 
   // Currencies
   'currencies': 'Currencies',

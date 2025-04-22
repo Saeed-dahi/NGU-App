@@ -16,6 +16,7 @@ Map<String, String> ar = {
   'required': 'حقل مطلوب',
   'success': 'تمت العملية بنجاح',
   'options': 'خيارات',
+  'date': 'التاريخ',
   'created_at': 'تاريخ الحفظ',
   'updated_at': 'تاريخ التعديل',
   'due_date': 'تاريخ الاستحقاق',
@@ -62,6 +63,13 @@ Map<String, String> ar = {
   'outgoing_cheques': 'الشيكات الصادرة',
   'cheque_card': 'بطاقة شيك',
   'cheques_table': 'جدول الشيكات',
+  'cheque_number': 'رقم الشيك',
+  'cheque_amount': 'قيمة الشيك',
+  'issued_from_account': 'الحساب الصادر منه',
+  'issued_to_account': 'الحساب الصادر له',
+  'cheque_nature': 'طبيعة الشيك',
+  'target_bank_account': 'الحساب البنكي المستهدف',
+  'cheque_info': ' معلومات الشيك',
 
   // Currencies
   'currencies': 'العملات',

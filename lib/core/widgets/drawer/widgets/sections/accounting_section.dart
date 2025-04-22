@@ -11,6 +11,7 @@ import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
+import 'package:ngu_app/features/cheques/presentation/pages/cheque_record.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/cheques_table_page.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 
@@ -196,15 +197,18 @@ _cheques(BuildContext context) {
     icon: Icons.money,
     children: [
       BasicListTile(
-        title: 'cheque_card'.tr,
-        image: Image.asset('assets/images/cheque.png', width: 30),
-      ),
+          title: 'cheque_card'.tr,
+          image: Image.asset('assets/images/cheque.png', width: 30),
+          onTap: () => ShowDialog.showCustomDialog(
+              height: 0.5,
+              width: 0.7,
+              content: const ChequeRecord(),
+              context: context)),
       BasicListTile(
         title: 'cheques_table'.tr,
         icon: Icons.table_chart_outlined,
         onTap: () => context.read<TabCubit>().addNewTab(
-            content: const ChequesTablePage(accountId: 1),
-            title: 'cheques_table'.tr),
+            content: const ChequesTablePage(), title: 'cheques_table'.tr),
       ),
     ],
   );

@@ -1,8 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:esc_pos_printer_plus/esc_pos_printer_plus.dart';
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -211,10 +211,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     var fileBytes = pdf.save();
     if (context.mounted) {
-      // await Printing.directPrintPdf(
-      //   printer: context.read<PrintingBloc>().taxInvoicePrinter!,
-      //   onLayout: (format) => fileBytes,
-      // );
+      await Printing.directPrintPdf(
+        printer: context.read<PrintingBloc>().taxInvoicePrinter!,
+        onLayout: (format) => fileBytes,
+      );
 
       await sendPrintCommand(context.read<PrintingBloc>().taxInvoicePrinter!);
     }

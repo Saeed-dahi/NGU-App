@@ -2,21 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
-
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-import 'package:ngu_app/features/accounts/domain/entities/account_statement_entity.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomChequesPlutoTable extends StatelessWidget {
-  final AccountStatementEntity accountStatement;
   late PlutoGridController _plutoGridController = PlutoGridController();
 
   CustomChequesPlutoTable({
     super.key,
-    required this.accountStatement,
   });
 
   @override
@@ -45,10 +41,10 @@ class CustomChequesPlutoTable extends StatelessWidget {
         field: 'debit',
         type: PlutoColumnType.text(),
         footerRenderer: (context) {
-          return Center(
+          return const Center(
             child: Text(
-              accountStatement.debitBalance.toString(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              '',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
           );
         },
@@ -58,10 +54,10 @@ class CustomChequesPlutoTable extends StatelessWidget {
           field: 'credit',
           type: PlutoColumnType.text(),
           footerRenderer: (context) {
-            return Center(
+            return const Center(
               child: Text(
-                accountStatement.creditBalance.toString(),
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                '',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             );
           }),
@@ -72,7 +68,7 @@ class CustomChequesPlutoTable extends StatelessWidget {
           footerRenderer: (context) {
             return Center(
               child: Text(
-                '${'balance'.tr}: ${accountStatement.debitBalance - accountStatement.creditBalance}',
+                '${'balance'.tr}: ',
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             );
@@ -96,7 +92,7 @@ class CustomChequesPlutoTable extends StatelessWidget {
   }
 
   Iterable<PlutoRow> _buildRows() {
-    return accountStatement.transactions.map(
+    return [].map(
       (sts) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
