@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/features/cheques/presentation/pages/create_cheque.dart';
 
 class ChequeToolbar extends StatelessWidget {
   final bool enableEditing;
@@ -101,5 +104,11 @@ class ChequeToolbar extends StatelessWidget {
 
   void _close(BuildContext context) {}
 
-  void _add(BuildContext context) {}
+  void _add(BuildContext context) {
+    ShowDialog.showCustomDialog(
+        context: context,
+        content: const CreateCheque(),
+        height: 0.5,
+        width: 0.7);
+  }
 }
