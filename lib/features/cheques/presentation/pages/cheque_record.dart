@@ -116,7 +116,12 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     controller: TextEditingController(),
                     helper: 'cheque_amount'.tr,
                   ),
-                  const SizedBox()
+                  CustomInputField(
+                    enabled: _enableEditing,
+                    helper: 'cheque_number'.tr,
+                    controller: TextEditingController(),
+                    error: _errors['cheque_number']?.join('\n'),
+                  ),
                 ],
               ),
               TableRow(
@@ -146,11 +151,11 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ),
               TableRow(
                 children: [
-                  CustomInputField(
+                  CustomDatePicker(
+                    dateInput: TextEditingController(),
+                    labelText: 'description'.tr,
+                    required: false,
                     enabled: _enableEditing,
-                    helper: 'cheque_number'.tr,
-                    controller: TextEditingController(),
-                    error: _errors['cheque_number']?.join('\n'),
                   ),
                   CustomDatePicker(
                     dateInput: TextEditingController(),
@@ -159,9 +164,10 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     enabled: _enableEditing,
                   ),
                   CustomDropdown(
-                    dropdownValue: getEnumValues(AccountType.values),
+                    dropdownValue: getEnumValues(ChequeNature.values),
                     helper: 'cheque_nature'.tr,
                     enabled: _enableEditing,
+                    onChanged: (value) {},
                   ),
                 ],
               ),

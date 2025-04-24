@@ -26,6 +26,10 @@ enum InvoiceType { sales, purchase }
 
 enum PrinterType { receipt, tax_invoice }
 
+enum ChequeNature { incoming, outgoing }
+
+enum ChequeStatus { received, deposited, bounced, canceled }
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }
