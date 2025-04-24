@@ -27,6 +27,9 @@ class APIList {
   static const String invoice = "invoice";
   static const String previewInvoiceItem = "get-invoice-item-data";
 
+  static const String cheque = "cheque";
+  static const String depositCheque = "deposit-cheque";
+
   static Future<void> saveBaseUrl(String url) async {
     final prefs = sl<SharedPreferences>();
     await prefs.setString('baseUrl', '$url:8000');
