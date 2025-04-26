@@ -23,14 +23,14 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
       required this.createChequeUseCase,
       required this.updateChequeUseCase})
       : super(ChequeInitial()) {
-    on<ShowAccountEvent>(_onShowCheque);
+    on<ShowChequeEvent>(_onShowCheque);
     on<GetAllChequesEvent>(_onGetAllCheques);
     on<CreateChequeEvent>(_onCreateCheque);
     on<UpdateChequeEvent>(_onUpdateCheque);
   }
 
   FutureOr<void> _onShowCheque(
-      ShowAccountEvent event, Emitter<ChequeState> emit) async {
+      ShowChequeEvent event, Emitter<ChequeState> emit) async {
     var result = await showChequeUseCase(event.id, event.direction);
 
     result.fold((failure) {

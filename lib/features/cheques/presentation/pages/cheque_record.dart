@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
@@ -10,7 +12,10 @@ import 'package:ngu_app/core/widgets/custom_file_picker/custom_file_picker.dart'
 import 'package:ngu_app/core/widgets/custom_file_picker/file_picker_controller.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
-import 'package:ngu_app/features/accounts/domain/entities/account_entity.dart';
+import 'package:ngu_app/core/widgets/loaders.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
+import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
+import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_toolbar.dart';
 
 class ChequeRecord extends StatefulWidget {
@@ -24,13 +29,36 @@ class _ChequeRecordState extends State<ChequeRecord> {
   final _basicChequeFormKey = GlobalKey<FormState>();
   final _moreInfoChequeFormKey = GlobalKey<FormState>();
 
+  late final ChequeBloc _chequeBloc;
+
   late bool _enableEditing;
 
   late Map<String, dynamic> _errors;
+
+  // Form Fields
+  late TextEditingController _dateController,
+      _amountController,
+      _numberController,
+      _descriptionController,
+      _dueDateController,
+      _notesController;
+  late FilePickerController _imageController;
+  String? _chequeNature;
+
   @override
   void initState() {
     _errors = {};
     _enableEditing = false;
+    _chequeBloc = sl<ChequeBloc>()..add(const ShowChequeEvent(id: 1));
+
+    _dateController = TextEditingController();
+    _amountController = TextEditingController();
+    _numberController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _dueDateController = TextEditingController();
+    _notesController = TextEditingController();
+
+    _imageController = FilePickerController();
 
     super.initState();
   }
@@ -42,7 +70,31 @@ class _ChequeRecordState extends State<ChequeRecord> {
 
   @override
   Widget build(BuildContext context) {
-    return _pageBody(context);
+    return BlocProvider(
+      create: (context) => _chequeBloc,
+      child: BlocBuilder<ChequeBloc, ChequeState>(
+        builder: (context, state) {
+          if (state is LoadedChequeState) {
+            _updateTextEditingController(state.cheque);
+            _enableEditing = state.enableEditing;
+            _errors = {};
+            return _pageBody(context);
+          }
+
+          if (state is ValidationChequeState) {
+            _errors = state.errors;
+            return _pageBody(context);
+          }
+
+          if (state is ErrorChequeState) {
+            return MessageScreen(
+              text: state.message,
+            );
+          }
+          return Loaders.loading();
+        },
+      ),
+    );
   }
 
   DefaultTabController _pageBody(
@@ -105,7 +157,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
               TableRow(
                 children: [
                   CustomDatePicker(
-                    dateInput: TextEditingController(),
+                    dateInput: _dateController,
                     labelText: 'date'.tr,
                     required: false,
                     enabled: _enableEditing,
@@ -113,13 +165,13 @@ class _ChequeRecordState extends State<ChequeRecord> {
                   CustomInputField(
                     inputType: TextInputType.name,
                     enabled: _enableEditing,
-                    controller: TextEditingController(),
+                    controller: _amountController,
                     helper: 'cheque_amount'.tr,
                   ),
                   CustomInputField(
                     enabled: _enableEditing,
                     helper: 'cheque_number'.tr,
-                    controller: TextEditingController(),
+                    controller: _numberController,
                     error: _errors['cheque_number']?.join('\n'),
                   ),
                 ],
@@ -151,20 +203,21 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ),
               TableRow(
                 children: [
-                  CustomDatePicker(
-                    dateInput: TextEditingController(),
-                    labelText: 'description'.tr,
+                  CustomInputField(
+                    controller: _descriptionController,
+                    label: 'description'.tr,
                     required: false,
                     enabled: _enableEditing,
                   ),
                   CustomDatePicker(
-                    dateInput: TextEditingController(),
+                    dateInput: _dueDateController,
                     labelText: 'due_date'.tr,
                     required: false,
                     enabled: _enableEditing,
                   ),
                   CustomDropdown(
                     dropdownValue: getEnumValues(ChequeNature.values),
+                    value: _chequeNature,
                     helper: 'cheque_nature'.tr,
                     enabled: _enableEditing,
                     onChanged: (value) {},
@@ -202,15 +255,15 @@ class _ChequeRecordState extends State<ChequeRecord> {
           Table(
             children: [
               TableRow(children: [
-                CustomDatePicker(
-                  dateInput: TextEditingController(),
-                  labelText: 'notes'.tr,
+                CustomInputField(
+                  controller: _notesController,
+                  label: 'notes'.tr,
                   required: false,
                   enabled: _enableEditing,
                 ),
                 CustomFilePicker(
                   enableEditing: _enableEditing,
-                  controller: FilePickerController(),
+                  controller: _imageController,
                   error: _errors['file']?.join('\n'),
                 ),
               ])
@@ -236,7 +289,19 @@ class _ChequeRecordState extends State<ChequeRecord> {
     );
   }
 
-  void _updateTextEditingController(AccountEntity account) {}
+  void _updateTextEditingController(ChequeEntity cheque) {
+    _dateController = TextEditingController(text: cheque.date);
+    _amountController = TextEditingController(text: cheque.amount.toString());
+    _numberController =
+        TextEditingController(text: cheque.chequeNumber.toString());
+    _descriptionController = TextEditingController(text: cheque.notes);
+    _dueDateController = TextEditingController(text: cheque.dueDate);
+    _notesController = TextEditingController(text: cheque.notes);
+
+    _imageController = FilePickerController(initialFiles: [cheque.image!]);
+
+    _chequeNature = cheque.nature;
+  }
 
   void _onSave(BuildContext context) {
     if (_basicChequeFormKey.currentState!.validate()) {}

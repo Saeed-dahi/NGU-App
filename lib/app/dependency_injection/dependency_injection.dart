@@ -31,6 +31,14 @@ import 'package:ngu_app/features/accounts/domain/use_cases/search_in_accounts_us
 import 'package:ngu_app/features/accounts/domain/use_cases/show_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/update_account_use_case.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
+import 'package:ngu_app/features/cheques/data/data_sources/cheque_data_source.dart';
+import 'package:ngu_app/features/cheques/data/repositories/cheque_repository_impl.dart';
+import 'package:ngu_app/features/cheques/domain/repositories/cheque_repository.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/show_cheque_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/update_cheque_use_case.dart';
+import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_account_data_source.dart';
 import 'package:ngu_app/features/closing_accounts/data/repositories/closing_account_repository_impl.dart';
 import 'package:ngu_app/features/closing_accounts/domain/repositories/closing_account_repository.dart';
@@ -122,6 +130,8 @@ Future<void> init() async {
   _product();
 
   _invoice();
+
+  _cheque();
 
   _printing();
 
@@ -383,6 +393,25 @@ void _invoice() {
 
   sl.registerLazySingleton<InvoiceDataSource>(
       () => InvoiceDataSourceImpl(networkConnection: sl()));
+}
+
+void _cheque() {
+  sl.registerFactory(() => ChequeBloc(
+      showChequeUseCase: sl(),
+      getAllChequesUseCase: sl(),
+      createChequeUseCase: sl(),
+      updateChequeUseCase: sl()));
+
+  sl.registerLazySingleton(() => ShowChequeUseCase(chequeRepository: sl()));
+  sl.registerLazySingleton(() => GetAllChequesUseCase(chequeRepository: sl()));
+  sl.registerLazySingleton(() => CreateChequeUseCase(chequeRepository: sl()));
+  sl.registerLazySingleton(() => UpdateChequeUseCase(chequeRepository: sl()));
+
+  sl.registerLazySingleton<ChequeRepository>(
+      () => ChequeRepositoryImpl(apiHelper: sl(), chequeDataSource: sl()));
+
+  sl.registerLazySingleton<ChequeDataSource>(
+      () => ChequeDataSourceWithHttp(networkConnection: sl()));
 }
 
 void _printing() {

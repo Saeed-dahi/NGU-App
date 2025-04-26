@@ -43,8 +43,6 @@ class _AccountInformationState extends State<AccountInformation> {
 
   late FilePickerController _fileController;
 
-  late List<File>? files;
-
   late Map<String, dynamic> _errors;
 
   @override

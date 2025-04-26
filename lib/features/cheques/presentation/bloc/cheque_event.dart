@@ -7,14 +7,14 @@ sealed class ChequeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ShowAccountEvent extends ChequeEvent {
+class ShowChequeEvent extends ChequeEvent {
   final int id;
-  final String direction;
+  final String? direction;
 
-  const ShowAccountEvent({required this.id, required this.direction});
+  const ShowChequeEvent({required this.id, this.direction});
 
   @override
-  List<Object> get props => [id, direction];
+  List<Object> get props => [id];
 }
 
 class GetAllChequesEvent extends ChequeEvent {}
