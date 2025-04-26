@@ -6,14 +6,14 @@ import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomChequesPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
+  final List<ChequeEntity> cheques;
 
-  CustomChequesPlutoTable({
-    super.key,
-  });
+  CustomChequesPlutoTable({super.key, required this.cheques});
 
   @override
   Widget build(BuildContext context) {
@@ -62,50 +62,56 @@ class CustomChequesPlutoTable extends StatelessWidget {
             );
           }),
       PlutoColumn(
-          title: 'balance'.tr,
-          field: 'account_new_balance',
-          type: PlutoColumnType.text(),
-          footerRenderer: (context) {
-            return Center(
-              child: Text(
-                '${'balance'.tr}: ',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            );
-          }),
+        title: 'issued_from_account'.tr,
+        field: 'issued_from_account',
+        type: PlutoColumnType.text(),
+      ),
+      PlutoColumn(
+        title: 'target_bank_account'.tr,
+        field: 'target_bank_account',
+        type: PlutoColumnType.text(),
+      ),
+      PlutoColumn(
+        title: 'issued_to_account'.tr,
+        field: 'issued_to_account',
+        type: PlutoColumnType.text(),
+      ),
       PlutoColumn(
         title: 'description'.tr,
         field: 'description',
         type: PlutoColumnType.text(),
       ),
       PlutoColumn(
-        title: 'document_number'.tr,
-        field: 'document_number',
-        type: PlutoColumnType.text(),
-      ),
-      PlutoColumn(
-        title: 'created_at'.tr,
-        field: 'created_at',
+        title: 'due_date'.tr,
+        field: 'due_date',
         type: PlutoColumnType.date(),
       ),
     ];
   }
 
   Iterable<PlutoRow> _buildRows() {
-    return [].map(
-      (sts) {
+    return cheques.map(
+      (cheque) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: sts.id,
+          data: cheque.id,
           cells: {
             'debit': PlutoCell(
-                value: sts.type == AccountNature.debit.name ? sts.amount : ''),
+                value: cheque.nature == ChequeNature.incoming.name
+                    ? cheque.amount
+                    : ''),
             'credit': PlutoCell(
-                value: sts.type == AccountNature.credit.name ? sts.amount : ''),
-            'account_new_balance': PlutoCell(value: sts.accountNewBalance),
-            'description': PlutoCell(value: sts.description),
-            'document_number': PlutoCell(value: sts.documentNumber),
-            'created_at': PlutoCell(value: sts.date),
+                value: cheque.nature == ChequeNature.outgoing.name
+                    ? cheque.amount
+                    : ''),
+            'issued_from_account':
+                PlutoCell(value: cheque.issuedFromAccount!.arName),
+            'target_bank_account':
+                PlutoCell(value: cheque.targetBankAccount!.arName),
+            'issued_to_account':
+                PlutoCell(value: cheque.issuedToAccount!.arName),
+            'description': PlutoCell(value: cheque.notes),
+            'due_date': PlutoCell(value: cheque.dueDate),
           },
         );
       },
