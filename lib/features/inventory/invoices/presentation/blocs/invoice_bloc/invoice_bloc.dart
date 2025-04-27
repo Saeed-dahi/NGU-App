@@ -50,12 +50,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
   bool isSavedInvoice = false;
 
-  Map<String, dynamic> _accountsName = {};
-  Map<String, dynamic> get accountsName => _accountsName;
-
-  List<String> _accountsNameList = [];
-  List<String> get accountsNameList => _accountsNameList;
-
   Map<String, dynamic> _validationErrors = {};
   Map<String, dynamic> get getValidationErrors => _validationErrors;
 
@@ -89,7 +83,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     on<CreateInvoiceEvent>(_createInvoice);
     on<UpdateInvoiceEvent>(_updateInvoice);
     on<GetCreateInvoiceFormData>(_createFormData);
-    on<GetAccountsNameEvent>(_getAccountNameEvent);
   }
 
   FutureOr<void> _getAllInvoices(
@@ -134,24 +127,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     _createAndUpdateFoldResult(result, event, emit);
   }
 
-  FutureOr<void> _getAccountNameEvent(
-      GetAccountsNameEvent event, Emitter emit) async {
-    final result = await getAccountsNameUseCase();
-
-    result.fold((failure) {
-      emit(ErrorInvoiceState(error: AppStrings.unKnown.tr));
-    }, (data) {
-      _accountsName = data;
-      _accountsNameList = data.entries
-          .map(
-            (e) => !e.key.startsWith('id')
-                ? '${e.key} - ${e.value.toString()}'
-                : '',
-          )
-          .toList();
-    });
-  }
-
   void _createAndUpdateFoldResult(Either<Failure, InvoiceEntity> result, event,
       Emitter<InvoiceState> emit) {
     result.fold((failure) {
@@ -183,15 +158,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     });
   }
 
-  int getDesiredId(
-    String value,
-  ) {
-    var spitedValue = value.split('-');
-    var desiredId =
-        int.parse(accountsName['id_${spitedValue[0].removeAllWhitespace}']);
-
-    return desiredId;
-  }
+  
 
   Future<void> printTaxInvoice(BuildContext context) async {
     var dataList = _getPrintDataList();

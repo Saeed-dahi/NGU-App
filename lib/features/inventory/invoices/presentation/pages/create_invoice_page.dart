@@ -36,7 +36,6 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   @override
   void initState() {
     _invoiceBloc = sl<InvoiceBloc>()
-      ..add(GetAccountsNameEvent())
       ..add(GetCreateInvoiceFormData(type: widget.type));
 
     _invoiceFormCubit =

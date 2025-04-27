@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
-import 'package:ngu_app/core/widgets/custom_auto_complete.dart';
+import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
@@ -61,17 +61,10 @@ class CustomInvoiceFields extends StatelessWidget {
           ),
           TableRow(
             children: [
-              CustomAutoComplete(
-                data: invoiceBloc.accountsNameList,
-                label: 'account'.tr,
+              CustomAccountAutoComplete(
                 enabled: enable,
-                initialValue: TextEditingValue(
-                    text: invoiceFormCubit.accountController.arName ?? ''),
-                onSelected: (value) {
-                  invoiceFormCubit.accountController =
-                      invoiceFormCubit.accountController.copyWith(
-                          arName: value, id: invoiceBloc.getDesiredId(value));
-                },
+                initialValue: invoiceFormCubit.accountController.arName ?? '',
+                accountController: invoiceFormCubit.accountController,
                 error: errors['account_id']?.join('\n'),
               ),
               CustomInputField(
@@ -81,17 +74,11 @@ class CustomInvoiceFields extends StatelessWidget {
                 error: errors['address']?.join('\n'),
                 required: false,
               ),
-              CustomAutoComplete(
-                data: invoiceBloc.accountsNameList,
-                label: 'goods_account'.tr,
+              CustomAccountAutoComplete(
                 enabled: enable,
-                initialValue: TextEditingValue(
-                    text: invoiceFormCubit.goodsAccountController.arName ?? ''),
-                onSelected: (value) {
-                  invoiceFormCubit.goodsAccountController =
-                      invoiceFormCubit.goodsAccountController.copyWith(
-                          arName: value, id: invoiceBloc.getDesiredId(value));
-                },
+                initialValue:
+                    invoiceFormCubit.goodsAccountController.arName ?? '',
+                accountController: invoiceFormCubit.goodsAccountController,
                 error: errors['goods_account_id']?.join('\n'),
               ),
               const SizedBox(),

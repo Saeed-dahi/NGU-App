@@ -232,4 +232,14 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     }
     return nodes;
   }
+
+  int getDesiredId(
+    String value,
+  ) {
+    var spitedValue = value.split('-');
+    var desiredId =
+        int.parse(_accountsNameMap['id_${spitedValue[0].removeAllWhitespace}']);
+
+    return desiredId;
+  }
 }
