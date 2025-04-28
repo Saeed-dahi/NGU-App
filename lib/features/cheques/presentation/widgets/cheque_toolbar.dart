@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
+import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
+import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/create_cheque.dart';
 
 class ChequeToolbar extends StatelessWidget {
   final bool enableEditing;
   final VoidCallback? onSave;
-  const ChequeToolbar({
-    super.key,
-    required this.enableEditing,
-    this.onSave,
-  });
+  final ChequeEntity? chequeEntity;
+  const ChequeToolbar(
+      {super.key, required this.enableEditing, this.onSave, this.chequeEntity});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,9 @@ class ChequeToolbar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.edit,
           tooltip: 'edit'.tr,
-          onPressed: () {},
+          onPressed: () => context
+              .read<ChequeBloc>()
+              .add(const ToggleEditingEvent(enableEditing: true)),
         ),
         CustomIconButton(
           icon: Icons.check,
@@ -99,9 +102,17 @@ class ChequeToolbar extends StatelessWidget {
     );
   }
 
-  void _navigate(BuildContext context, String direction) {}
+  void _navigate(BuildContext context, String direction) {
+    context
+        .read<ChequeBloc>()
+        .add(ShowChequeEvent(id: chequeEntity!.id!, direction: direction));
+  }
 
-  void _close(BuildContext context) {}
+  void _close(BuildContext context) {
+    context
+        .read<ChequeBloc>()
+        .add(const ToggleEditingEvent(enableEditing: false));
+  }
 
   void _add(BuildContext context) {
     ShowDialog.showCustomDialog(

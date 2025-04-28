@@ -36,3 +36,9 @@ class UpdateChequeEvent extends ChequeEvent {
   @override
   List<Object> get props => [cheque];
 }
+
+class ToggleEditingEvent extends ChequeEvent {
+  final bool enableEditing;
+
+  const ToggleEditingEvent({required this.enableEditing});
+}

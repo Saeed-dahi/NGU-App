@@ -82,6 +82,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
           }
 
           if (state is ValidationChequeState) {
+            _updateTextEditingController(_chequeBloc.chequeEntity);
             _errors = state.errors;
             return _pageBody(context);
           }
@@ -109,7 +110,10 @@ class _ChequeRecordState extends State<ChequeRecord> {
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: Dimensions.primaryTextSize),
           ),
-          ChequeToolbar(enableEditing: _enableEditing),
+          ChequeToolbar(
+            enableEditing: _enableEditing,
+            chequeEntity: _chequeBloc.chequeEntity,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -144,13 +148,12 @@ class _ChequeRecordState extends State<ChequeRecord> {
     );
   }
 
-  Form _chequeBasicInfoForm(
+  Widget _chequeBasicInfoForm(
     BuildContext context,
   ) {
     return Form(
       key: _basicChequeFormKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: ListView(
         children: [
           Table(
             children: [
@@ -246,11 +249,10 @@ class _ChequeRecordState extends State<ChequeRecord> {
     );
   }
 
-  Form _chequeMoreInfoForm(BuildContext context) {
+  Widget _chequeMoreInfoForm(BuildContext context) {
     return Form(
       key: _moreInfoChequeFormKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: ListView(
         children: [
           Table(
             children: [
@@ -307,5 +309,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
     if (_basicChequeFormKey.currentState!.validate()) {}
   }
 
-  Future<void> _refresh() async {}
+  Future<void> _refresh() async {
+    _chequeBloc.add(ShowChequeEvent(id: _chequeBloc.chequeEntity.id));
+  }
 }

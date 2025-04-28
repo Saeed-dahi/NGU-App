@@ -12,6 +12,10 @@ part 'cheque_event.dart';
 part 'cheque_state.dart';
 
 class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
+  late ChequeEntity _chequeEntity;
+  get chequeEntity => _chequeEntity;
+  set chequeEntity(value) => _chequeEntity = value;
+
   final ShowChequeUseCase showChequeUseCase;
   final GetAllChequesUseCase getAllChequesUseCase;
   final CreateChequeUseCase createChequeUseCase;
@@ -27,15 +31,18 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
     on<GetAllChequesEvent>(_onGetAllCheques);
     on<CreateChequeEvent>(_onCreateCheque);
     on<UpdateChequeEvent>(_onUpdateCheque);
+    on<ToggleEditingEvent>(_onToggleEditing);
   }
 
   FutureOr<void> _onShowCheque(
       ShowChequeEvent event, Emitter<ChequeState> emit) async {
+    emit(LoadingChequeState());
     var result = await showChequeUseCase(event.id, event.direction);
 
     result.fold((failure) {
       emit(ErrorChequeState(message: failure.errors['error']));
     }, (data) {
+      _chequeEntity = data;
       emit(LoadedChequeState(enableEditing: false, cheque: data));
     });
   }
@@ -54,6 +61,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   FutureOr<void> _onCreateCheque(
       CreateChequeEvent event, Emitter<ChequeState> emit) async {
     emit(LoadingChequeState());
+    chequeEntity = event.cheque;
     var result = await createChequeUseCase(event.cheque);
 
     result.fold((failure) {
@@ -66,6 +74,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   FutureOr<void> _onUpdateCheque(
       UpdateChequeEvent event, Emitter<ChequeState> emit) async {
     emit(LoadingChequeState());
+    chequeEntity = event.cheque;
     var result = await updateChequeUseCase(event.cheque);
 
     result.fold((failure) {
@@ -73,5 +82,15 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
     }, (data) {
       emit(LoadedChequeState(enableEditing: false, cheque: data));
     });
+  }
+
+  FutureOr<void> _onToggleEditing(
+      ToggleEditingEvent event, Emitter<ChequeState> emit) {
+    final currentState = state as LoadedChequeState;
+
+    emit(LoadedChequeState(
+      cheque: currentState.cheque,
+      enableEditing: event.enableEditing,
+    ));
   }
 }
