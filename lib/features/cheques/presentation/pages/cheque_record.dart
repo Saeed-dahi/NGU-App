@@ -5,6 +5,7 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
@@ -121,6 +122,13 @@ class _ChequeRecordState extends State<ChequeRecord> {
           const SizedBox(
             height: 10,
           ),
+          Text(
+            _chequeBloc.chequeEntity.status!.tr,
+            style: const TextStyle(
+              color: AppColors.green,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Expanded(
             child: TabBarView(
               children: [
@@ -162,11 +170,11 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     inputType: TextInputType.name,
                     enabled: _enableEditing,
                     controller: _chequeFormCubit.amountController,
-                    helper: 'cheque_amount'.tr,
+                    label: 'cheque_amount'.tr,
                   ),
                   CustomInputField(
                     enabled: _enableEditing,
-                    helper: 'cheque_number'.tr,
+                    label: 'cheque_number'.tr,
                     controller: _chequeFormCubit.numberController,
                     error: _chequeFormCubit.errors['cheque_number']?.join('\n'),
                   ),
@@ -174,27 +182,29 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ),
               TableRow(
                 children: [
-                  CustomInputField(
-                    inputType: TextInputType.name,
+                  CustomAccountAutoComplete(
                     enabled: _enableEditing,
-                    helper: 'issued_from_account'.tr,
-                    controller: TextEditingController(),
+                    label: 'issued_from_account',
+                    controller: _chequeFormCubit.issuedFromAccount,
+                    initialValue:
+                        _chequeFormCubit.issuedFromAccount.arName ?? '',
                     error: _chequeFormCubit.errors['issued_from_account']
                         ?.join('\n'),
                   ),
-                  CustomInputField(
-                    inputType: TextInputType.name,
+                  CustomAccountAutoComplete(
                     enabled: _enableEditing,
-                    controller: TextEditingController(),
-                    helper: 'issued_to_account'.tr,
+                    controller: _chequeFormCubit.issuedToAccount,
+                    label: 'issued_to_account',
+                    initialValue: _chequeFormCubit.issuedToAccount.arName ?? '',
                     error: _chequeFormCubit.errors['issued_to_account']
                         ?.join('\n'),
                   ),
-                  CustomInputField(
-                    inputType: TextInputType.name,
+                  CustomAccountAutoComplete(
                     enabled: _enableEditing,
-                    controller: TextEditingController(),
-                    helper: 'target_bank_account'.tr,
+                    controller: _chequeFormCubit.targetBankAccount,
+                    label: 'target_bank_account',
+                    initialValue:
+                        _chequeFormCubit.targetBankAccount.arName ?? '',
                     error: _chequeFormCubit.errors['target_bank_account']
                         ?.join('\n'),
                   ),
@@ -219,7 +229,9 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     value: _chequeFormCubit.chequeNature,
                     helper: 'cheque_nature'.tr,
                     enabled: _enableEditing,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      _chequeFormCubit.chequeNature = value;
+                    },
                   ),
                 ],
               ),
@@ -292,6 +304,6 @@ class _ChequeRecordState extends State<ChequeRecord> {
   }
 
   Future<void> _refresh() async {
-    _chequeBloc.add(ShowChequeEvent(id: _chequeBloc.chequeEntity.id));
+    _chequeBloc.add(ShowChequeEvent(id: _chequeBloc.chequeEntity.id!));
   }
 }

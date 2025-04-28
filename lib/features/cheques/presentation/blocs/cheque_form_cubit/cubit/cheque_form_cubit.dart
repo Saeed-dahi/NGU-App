@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/widgets/custom_file_picker/file_picker_controller.dart';
+import 'package:ngu_app/features/cheques/domain/entities/cheque_account_entity.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 
 part 'cheque_form_state.dart';
@@ -16,6 +17,10 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
   TextEditingController notesController = TextEditingController();
   FilePickerController imageController = FilePickerController();
   String? chequeNature;
+
+  late ChequeAccountEntity issuedFromAccount;
+  late ChequeAccountEntity issuedToAccount;
+  late ChequeAccountEntity targetBankAccount;
 
   Map<String, dynamic> errors = {};
 
@@ -42,5 +47,9 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     imageController = FilePickerController(initialFiles: [cheque.image!]);
 
     chequeNature = cheque.nature;
+
+    issuedFromAccount = cheque.issuedFromAccount!;
+    issuedToAccount = cheque.issuedToAccount!;
+    targetBankAccount = cheque.targetBankAccount!;
   }
 }

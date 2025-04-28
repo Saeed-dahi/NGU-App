@@ -31,7 +31,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               initialValue:
                   invoiceFormCubit.goodsAccountController.arName ?? '',
               error: errors['goods_account']?.join('\n'),
-              accountController: invoiceFormCubit.goodsAccountController,
+              controller: invoiceFormCubit.goodsAccountController,
             ),
             CustomInputField(
               label: 'description'.tr,
@@ -47,7 +47,7 @@ class InvoiceOptionsPage extends StatelessWidget {
             CustomAccountAutoComplete(
               enabled: enableEditing,
               initialValue: invoiceFormCubit.taxAccountController.arName ?? '',
-              accountController: invoiceFormCubit.taxAccountController,
+              controller: invoiceFormCubit.taxAccountController,
               error: errors['total_tax_account']?.join('\n'),
             ),
             CustomInputField(
@@ -73,7 +73,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               enabled: enableEditing,
               initialValue:
                   invoiceFormCubit.discountAccountController.arName ?? '',
-              accountController: invoiceFormCubit.discountAccountController,
+              controller: invoiceFormCubit.discountAccountController,
               error: errors['total_discount_account']?.join('\n'),
             ),
             CustomInputField(

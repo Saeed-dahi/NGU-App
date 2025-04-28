@@ -70,6 +70,10 @@ Map<String, String> en = {
   'cheque_nature': 'Cheque Nature',
   'target_bank_account': 'Target Bank Account',
   'cheque_info': 'Cheque Information',
+  'received': 'Received',
+  'deposited': 'Deposited',
+  'bounced': 'Bounced',
+  'canceled': 'Canceled',
 
   // Currencies
   'currencies': 'Currencies',

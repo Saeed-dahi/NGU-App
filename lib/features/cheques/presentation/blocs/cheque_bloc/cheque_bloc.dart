@@ -13,7 +13,7 @@ part 'cheque_state.dart';
 
 class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   late ChequeEntity _chequeEntity;
-  get chequeEntity => _chequeEntity;
+  ChequeEntity get chequeEntity => _chequeEntity;
   set chequeEntity(value) => _chequeEntity = value;
 
   final ShowChequeUseCase showChequeUseCase;

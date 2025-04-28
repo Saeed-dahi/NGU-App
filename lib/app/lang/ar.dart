@@ -70,6 +70,10 @@ Map<String, String> ar = {
   'cheque_nature': 'طبيعة الشيك',
   'target_bank_account': 'الحساب البنكي المستهدف',
   'cheque_info': ' معلومات الشيك',
+  'received': 'مستلم',
+  'deposited': 'مُودع',
+  'bounced': 'مرتجع',
+  'canceled': 'ملغي',
 
   // Currencies
   'currencies': 'العملات',

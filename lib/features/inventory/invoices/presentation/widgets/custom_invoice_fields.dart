@@ -64,7 +64,7 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomAccountAutoComplete(
                 enabled: enable,
                 initialValue: invoiceFormCubit.accountController.arName ?? '',
-                accountController: invoiceFormCubit.accountController,
+                controller: invoiceFormCubit.accountController,
                 error: errors['account_id']?.join('\n'),
               ),
               CustomInputField(
@@ -78,7 +78,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 enabled: enable,
                 initialValue:
                     invoiceFormCubit.goodsAccountController.arName ?? '',
-                accountController: invoiceFormCubit.goodsAccountController,
+                controller: invoiceFormCubit.goodsAccountController,
                 error: errors['goods_account_id']?.join('\n'),
               ),
               const SizedBox(),

@@ -9,15 +9,16 @@ class CustomAccountAutoComplete extends StatefulWidget {
   final bool enabled;
   final String initialValue;
   final String? error;
-
-  dynamic accountController;
+  final String label;
+  dynamic controller;
 
   CustomAccountAutoComplete(
       {super.key,
       required this.enabled,
       required this.initialValue,
       this.error,
-      required this.accountController});
+      required this.controller,
+      this.label = 'account'});
 
   @override
   State<CustomAccountAutoComplete> createState() =>
@@ -42,15 +43,12 @@ class _CustomAccountAutoCompleteState extends State<CustomAccountAutoComplete> {
           if (state is GetAllAccountsState) {
             return CustomAutoComplete(
               data: _accountsBloc.accountsNameList,
-              label: 'account'.tr,
+              label: widget.label.tr,
               enabled: widget.enabled,
               initialValue: TextEditingValue(text: widget.initialValue),
               onSelected: (value) {
-                // widget.accountController = widget.accountController.copyWith(
-                //     arName: value, id: _accountsBloc.getDesiredId(value));
-
-                widget.accountController.arName = value;
-                widget.accountController.id = _accountsBloc.getDesiredId(value);
+                widget.controller.arName = value;
+                widget.controller.id = _accountsBloc.getDesiredId(value);
               },
               error: widget.error,
             );
