@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 import 'package:ngu_app/core/widgets/custom_file_picker/file_picker_controller.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_account_entity.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
@@ -51,5 +52,20 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     issuedFromAccount = cheque.issuedFromAccount!;
     issuedToAccount = cheque.issuedToAccount!;
     targetBankAccount = cheque.targetBankAccount!;
+  }
+
+  ChequeEntity getCheque(int? id, String status) {
+    return ChequeEntity(
+        id: id,
+        amount: FormatterClass.doubleFormatter(amountController.text),
+        chequeNumber: int.parse(numberController.text),
+        date: dateController.text,
+        status: status,
+        dueDate: dueDateController.text,
+        nature: chequeNature,
+        notes: notesController.text,
+        issuedFromAccount: issuedFromAccount,
+        issuedToAccount: issuedToAccount,
+        targetBankAccount: targetBankAccount);
   }
 }

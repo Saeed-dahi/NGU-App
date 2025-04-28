@@ -188,7 +188,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     controller: _chequeFormCubit.issuedFromAccount,
                     initialValue:
                         _chequeFormCubit.issuedFromAccount.arName ?? '',
-                    error: _chequeFormCubit.errors['issued_from_account']
+                    error: _chequeFormCubit.errors['issued_from_account_id']
                         ?.join('\n'),
                   ),
                   CustomAccountAutoComplete(
@@ -196,7 +196,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     controller: _chequeFormCubit.issuedToAccount,
                     label: 'issued_to_account',
                     initialValue: _chequeFormCubit.issuedToAccount.arName ?? '',
-                    error: _chequeFormCubit.errors['issued_to_account']
+                    error: _chequeFormCubit.errors['issued_to_account_id']
                         ?.join('\n'),
                   ),
                   CustomAccountAutoComplete(
@@ -205,7 +205,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     label: 'target_bank_account',
                     initialValue:
                         _chequeFormCubit.targetBankAccount.arName ?? '',
-                    error: _chequeFormCubit.errors['target_bank_account']
+                    error: _chequeFormCubit.errors['target_bank_account_id']
                         ?.join('\n'),
                   ),
                 ],
@@ -300,7 +300,11 @@ class _ChequeRecordState extends State<ChequeRecord> {
   }
 
   void _onSave(BuildContext context) {
-    if (_basicChequeFormKey.currentState!.validate()) {}
+    if (_basicChequeFormKey.currentState!.validate()) {
+      _chequeBloc.add(UpdateChequeEvent(
+          cheque: _chequeFormCubit.getCheque(
+              _chequeBloc.chequeEntity.id, ChequeStatus.received.name)));
+    }
   }
 
   Future<void> _refresh() async {

@@ -20,17 +20,17 @@ class ChequeEntity extends Equatable {
   final ChequeAccountEntity? targetBankAccount;
 
   const ChequeEntity(
-      {required this.id,
+      {this.id,
       required this.amount,
       required this.chequeNumber,
-      required this.status,
+      this.status,
       required this.date,
       required this.dueDate,
       required this.nature,
-      required this.image,
+      this.image,
       required this.notes,
-      required this.createdAt,
-      required this.updatedAt,
+      this.createdAt,
+      this.updatedAt,
       required this.issuedFromAccount,
       required this.issuedToAccount,
       required this.targetBankAccount});

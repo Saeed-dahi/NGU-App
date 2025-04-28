@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
@@ -61,11 +62,15 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   FutureOr<void> _onCreateCheque(
       CreateChequeEvent event, Emitter<ChequeState> emit) async {
     emit(LoadingChequeState());
-    chequeEntity = event.cheque;
+    // _chequeEntity = event.cheque;
     var result = await createChequeUseCase(event.cheque);
 
     result.fold((failure) {
-      emit(ErrorChequeState(message: failure.errors['error']));
+      if (failure is ValidationFailure) {
+        emit(ValidationChequeState(errors: failure.errors));
+      } else {
+        emit(ErrorChequeState(message: failure.errors['errors']));
+      }
     }, (data) {
       emit(LoadedChequeState(enableEditing: false, cheque: data));
     });
@@ -74,11 +79,14 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   FutureOr<void> _onUpdateCheque(
       UpdateChequeEvent event, Emitter<ChequeState> emit) async {
     emit(LoadingChequeState());
-    chequeEntity = event.cheque;
     var result = await updateChequeUseCase(event.cheque);
 
     result.fold((failure) {
-      emit(ErrorChequeState(message: failure.errors['error']));
+      if (failure is ValidationFailure) {
+        emit(ValidationChequeState(errors: failure.errors));
+      } else {
+        emit(ErrorChequeState(message: failure.errors['errors']));
+      }
     }, (data) {
       emit(LoadedChequeState(enableEditing: false, cheque: data));
     });

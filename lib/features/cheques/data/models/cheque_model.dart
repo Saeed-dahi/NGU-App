@@ -51,9 +51,11 @@ class ChequeModel extends ChequeEntity {
       if (notes != null) 'notes': notes,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
-      if (issuedFromAccount != null) 'issued_from_account': issuedFromAccount,
-      if (issuedToAccount != null) 'issued_to_account': issuedToAccount,
-      if (targetBankAccount != null) 'target_bank_account': targetBankAccount,
+      if (issuedFromAccount != null)
+        'issued_from_account_id': issuedFromAccount!.id,
+      if (issuedToAccount != null) 'issued_to_account_id': issuedToAccount!.id,
+      if (targetBankAccount != null)
+        'target_bank_account_id': targetBankAccount!.id,
     };
   }
 }
