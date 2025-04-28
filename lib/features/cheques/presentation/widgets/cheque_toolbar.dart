@@ -5,7 +5,7 @@ import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
-import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
+import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/create_cheque.dart';
 
 class ChequeToolbar extends StatelessWidget {

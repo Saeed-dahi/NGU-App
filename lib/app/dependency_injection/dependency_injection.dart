@@ -38,7 +38,7 @@ import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/show_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/update_cheque_use_case.dart';
-import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
+import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/closing_accounts/data/data_sources/closing_account_data_source.dart';
 import 'package:ngu_app/features/closing_accounts/data/repositories/closing_account_repository_impl.dart';
 import 'package:ngu_app/features/closing_accounts/domain/repositories/closing_account_repository.dart';

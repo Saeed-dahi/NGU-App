@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
-import 'package:ngu_app/features/cheques/presentation/bloc/cheque_bloc.dart';
+import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/custom_cheques_pluto_table.dart';
 
 class ChequesTablePage extends StatefulWidget {
