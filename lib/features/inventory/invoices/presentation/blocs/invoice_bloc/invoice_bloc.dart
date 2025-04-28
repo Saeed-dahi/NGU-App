@@ -7,7 +7,6 @@ import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/accounts/domain/use_cases/get_accounts_name_use_case.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
@@ -157,8 +156,6 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       emit(LoadedInvoiceState(invoice: data));
     });
   }
-
-  
 
   Future<void> printTaxInvoice(BuildContext context) async {
     var dataList = _getPrintDataList();

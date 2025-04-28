@@ -231,4 +231,6 @@ class CustomJournalVouchersPlutoTable extends StatelessWidget {
       },
     );
   }
+
+
 }

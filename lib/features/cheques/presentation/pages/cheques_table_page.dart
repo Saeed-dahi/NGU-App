@@ -28,7 +28,9 @@ class _ChequesTablePageState extends State<ChequesTablePage> {
     super.dispose();
   }
 
-  Future<void> _refresh() async {}
+  Future<void> _refresh() async {
+    _chequeBloc.add(GetAllChequesEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,12 @@ class _ChequesTablePageState extends State<ChequesTablePage> {
                     cheques: state.cheques,
                   );
                 }
-                return Loaders.loading();
+                return SizedBox(
+                  height: MediaQuery.sizeOf(context).height * 0.5,
+                  child: Center(
+                    child: Loaders.loading(),
+                  ),
+                );
               },
             ),
           ],

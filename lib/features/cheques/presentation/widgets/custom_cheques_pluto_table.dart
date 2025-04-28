@@ -36,57 +36,47 @@ class CustomChequesPlutoTable extends StatelessWidget {
 
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
-      PlutoColumn(
-        title: 'debit'.tr,
-        field: 'debit',
-        type: PlutoColumnType.text(),
-        footerRenderer: (context) {
-          return const Center(
+      _buildCustomColumn('debit', showSum: true),
+      _buildCustomColumn('credit', showSum: true),
+      _buildCustomColumn('issued_from_account'),
+      _buildCustomColumn('target_bank_account'),
+      _buildCustomColumn('issued_to_account'),
+      _buildCustomColumn('description'),
+      _buildCustomColumn('due_date'),
+    ];
+  }
+
+  PlutoColumn _buildCustomColumn(String title,
+      {bool readOnly = false,
+      bool enableEditingMode = true,
+      bool showSum = false,
+      PlutoColumnType? type}) {
+    return PlutoColumn(
+      title: title.tr,
+      field: title,
+      type: type ?? PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.center,
+      enableSorting: false,
+      enableContextMenu: false,
+      enableFilterMenuItem: false,
+      enableEditingMode: enableEditingMode,
+      readOnly: readOnly,
+      footerRenderer: (context) {
+        if (showSum) {
+          return Center(
             child: Text(
-              '',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              _plutoGridController
+                  .columnSum(
+                    context.column.field,
+                  )
+                  .toString(),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           );
-        },
-      ),
-      PlutoColumn(
-          title: 'credit'.tr,
-          field: 'credit',
-          type: PlutoColumnType.text(),
-          footerRenderer: (context) {
-            return const Center(
-              child: Text(
-                '',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            );
-          }),
-      PlutoColumn(
-        title: 'issued_from_account'.tr,
-        field: 'issued_from_account',
-        type: PlutoColumnType.text(),
-      ),
-      PlutoColumn(
-        title: 'target_bank_account'.tr,
-        field: 'target_bank_account',
-        type: PlutoColumnType.text(),
-      ),
-      PlutoColumn(
-        title: 'issued_to_account'.tr,
-        field: 'issued_to_account',
-        type: PlutoColumnType.text(),
-      ),
-      PlutoColumn(
-        title: 'description'.tr,
-        field: 'description',
-        type: PlutoColumnType.text(),
-      ),
-      PlutoColumn(
-        title: 'due_date'.tr,
-        field: 'due_date',
-        type: PlutoColumnType.date(),
-      ),
-    ];
+        }
+        return const SizedBox();
+      },
+    );
   }
 
   Iterable<PlutoRow> _buildRows() {

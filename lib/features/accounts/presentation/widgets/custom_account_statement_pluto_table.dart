@@ -69,6 +69,7 @@ class CustomAccountStatementPlutoTable extends StatelessWidget {
           title: 'balance'.tr,
           field: 'account_new_balance',
           type: PlutoColumnType.text(),
+          
           footerRenderer: (context) {
             return Center(
               child: Text(
