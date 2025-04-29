@@ -61,9 +61,9 @@ class ChequeToolbar extends StatelessWidget {
         CustomIconButton(
           icon: Icons.check,
           tooltip: 'post'.tr,
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: () => context
+              .read<ChequeBloc>()
+              .add(DepositChequeEvent(id: chequeEntity!.id!)),
         ),
         CustomIconButton(
           icon: Icons.print,

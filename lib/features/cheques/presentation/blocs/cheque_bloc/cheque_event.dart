@@ -37,6 +37,15 @@ class UpdateChequeEvent extends ChequeEvent {
   List<Object> get props => [cheque];
 }
 
+class DepositChequeEvent extends ChequeEvent {
+  final int id;
+
+  const DepositChequeEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}
+
 class ToggleEditingEvent extends ChequeEvent {
   final bool enableEditing;
 

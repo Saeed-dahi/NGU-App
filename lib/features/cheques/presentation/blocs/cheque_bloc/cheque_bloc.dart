@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/deposit_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/show_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/update_cheque_use_case.dart';
@@ -22,18 +23,21 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   final GetAllChequesUseCase getAllChequesUseCase;
   final CreateChequeUseCase createChequeUseCase;
   final UpdateChequeUseCase updateChequeUseCase;
+  final DepositChequeUseCase depositChequeUseCase;
 
   ChequeBloc(
       {required this.showChequeUseCase,
       required this.getAllChequesUseCase,
       required this.createChequeUseCase,
-      required this.updateChequeUseCase})
+      required this.updateChequeUseCase,
+      required this.depositChequeUseCase})
       : super(ChequeInitial()) {
     on<ShowChequeEvent>(_onShowCheque);
     on<GetAllChequesEvent>(_onGetAllCheques);
     on<CreateChequeEvent>(_onCreateCheque);
     on<UpdateChequeEvent>(_onUpdateCheque);
     on<ToggleEditingEvent>(_onToggleEditing);
+    on<DepositChequeEvent>(_depositEvent);
   }
 
   FutureOr<void> _onShowCheque(
@@ -90,7 +94,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
         emit(ErrorChequeState(message: failure.errors['errors']));
       }
     }, (data) {
-      emit(LoadedChequeState(enableEditing: false, cheque: data));
+      add(ShowChequeEvent(id: event.cheque.id!));
     });
   }
 
@@ -102,5 +106,17 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
       cheque: currentState.cheque,
       enableEditing: event.enableEditing,
     ));
+  }
+
+  FutureOr<void> _depositEvent(
+      DepositChequeEvent event, Emitter<ChequeState> emit) async {
+    emit(LoadingChequeState());
+    var result = await depositChequeUseCase(event.id);
+
+    result.fold((failure) {
+      emit(ErrorChequeState(message: failure.errors['errors']));
+    }, (data) {
+      add(ShowChequeEvent(id: event.id));
+    });
   }
 }
