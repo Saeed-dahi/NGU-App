@@ -37,6 +37,7 @@ import 'package:ngu_app/features/cheques/domain/repositories/cheque_repository.d
 import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/deposit_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/get_cheques_per_account_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/show_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/update_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
@@ -399,11 +400,13 @@ void _invoice() {
 void _cheque() {
   sl.registerFactory(
     () => ChequeBloc(
-        showChequeUseCase: sl(),
-        getAllChequesUseCase: sl(),
-        createChequeUseCase: sl(),
-        updateChequeUseCase: sl(),
-        depositChequeUseCase: sl()),
+      showChequeUseCase: sl(),
+      getAllChequesUseCase: sl(),
+      createChequeUseCase: sl(),
+      updateChequeUseCase: sl(),
+      depositChequeUseCase: sl(),
+      getChequesPerAccountUseCase: sl(),
+    ),
   );
 
   sl.registerLazySingleton(() => ShowChequeUseCase(chequeRepository: sl()));
@@ -411,6 +414,8 @@ void _cheque() {
   sl.registerLazySingleton(() => CreateChequeUseCase(chequeRepository: sl()));
   sl.registerLazySingleton(() => UpdateChequeUseCase(chequeRepository: sl()));
   sl.registerLazySingleton(() => DepositChequeUseCase(chequeRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetChequesPerAccountUseCase(chequeRepository: sl()));
 
   sl.registerLazySingleton<ChequeRepository>(
       () => ChequeRepositoryImpl(apiHelper: sl(), chequeDataSource: sl()));

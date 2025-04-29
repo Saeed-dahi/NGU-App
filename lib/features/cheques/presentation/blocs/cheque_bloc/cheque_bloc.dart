@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/deposit_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/get_cheques_per_account_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/show_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/update_cheque_use_case.dart';
 
@@ -24,20 +24,23 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   final CreateChequeUseCase createChequeUseCase;
   final UpdateChequeUseCase updateChequeUseCase;
   final DepositChequeUseCase depositChequeUseCase;
+  final GetChequesPerAccountUseCase getChequesPerAccountUseCase;
 
-  ChequeBloc(
-      {required this.showChequeUseCase,
-      required this.getAllChequesUseCase,
-      required this.createChequeUseCase,
-      required this.updateChequeUseCase,
-      required this.depositChequeUseCase})
-      : super(ChequeInitial()) {
+  ChequeBloc({
+    required this.showChequeUseCase,
+    required this.getAllChequesUseCase,
+    required this.createChequeUseCase,
+    required this.updateChequeUseCase,
+    required this.depositChequeUseCase,
+    required this.getChequesPerAccountUseCase,
+  }) : super(ChequeInitial()) {
     on<ShowChequeEvent>(_onShowCheque);
     on<GetAllChequesEvent>(_onGetAllCheques);
     on<CreateChequeEvent>(_onCreateCheque);
     on<UpdateChequeEvent>(_onUpdateCheque);
     on<ToggleEditingEvent>(_onToggleEditing);
     on<DepositChequeEvent>(_depositEvent);
+    on<GetChequesPerAccountEvent>(_chequesPerAccount);
   }
 
   FutureOr<void> _onShowCheque(
@@ -56,6 +59,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   FutureOr<void> _onGetAllCheques(
       GetAllChequesEvent event, Emitter<ChequeState> emit) async {
     emit(LoadingChequeState());
+
     var result = await getAllChequesUseCase();
 
     result.fold((failure) {
@@ -117,6 +121,19 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
       emit(ErrorChequeState(message: failure.errors['errors']));
     }, (data) {
       add(ShowChequeEvent(id: event.id));
+    });
+  }
+
+  FutureOr<void> _chequesPerAccount(
+      GetChequesPerAccountEvent event, Emitter<ChequeState> emit) async {
+    emit(LoadingChequeState());
+
+    var result = await getChequesPerAccountUseCase(event.accountId);
+
+    result.fold((failure) {
+      emit(ErrorChequeState(message: failure.errors['error']));
+    }, (data) {
+      emit(LoadedChequesState(cheques: data));
     });
   }
 }

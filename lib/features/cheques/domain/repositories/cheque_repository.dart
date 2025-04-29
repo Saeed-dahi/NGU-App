@@ -8,4 +8,5 @@ abstract class ChequeRepository {
   Future<Either<Failure, ChequeEntity>> createCheque(ChequeEntity cheque);
   Future<Either<Failure, ChequeEntity>> updateCheque(ChequeEntity cheque);
   Future<Either<Failure, ChequeEntity>> depositCheque(int id);
+  Future<Either<Failure, List<ChequeEntity>>> getChequesPerAccount(int accountId);
 }

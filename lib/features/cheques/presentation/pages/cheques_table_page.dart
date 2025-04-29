@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
+import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/custom_cheques_pluto_table.dart';
 
 class ChequesTablePage extends StatefulWidget {
-  const ChequesTablePage({super.key});
+  final int? accountId;
+  const ChequesTablePage({super.key, this.accountId});
 
   @override
   State<ChequesTablePage> createState() => _ChequesTablePageState();
@@ -18,8 +20,17 @@ class _ChequesTablePageState extends State<ChequesTablePage> {
 
   @override
   void initState() {
-    _chequeBloc = sl<ChequeBloc>()..add(GetAllChequesEvent());
+    _chequeBloc = sl<ChequeBloc>();
+    _initBloc();
     super.initState();
+  }
+
+  void _initBloc() {
+    if (widget.accountId != null) {
+      _chequeBloc.add(GetChequesPerAccountEvent(accountId: widget.accountId!));
+    } else {
+      _chequeBloc.add(GetAllChequesEvent());
+    }
   }
 
   @override
@@ -29,7 +40,7 @@ class _ChequesTablePageState extends State<ChequesTablePage> {
   }
 
   Future<void> _refresh() async {
-    _chequeBloc.add(GetAllChequesEvent());
+    _initBloc();
   }
 
   @override
@@ -45,6 +56,9 @@ class _ChequesTablePageState extends State<ChequesTablePage> {
                   return CustomChequesPlutoTable(
                     cheques: state.cheques,
                   );
+                }
+                if (state is ErrorChequeState) {
+                  return MessageScreen(text: state.message);
                 }
                 return SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.5,

@@ -19,6 +19,12 @@ class ShowChequeEvent extends ChequeEvent {
 
 class GetAllChequesEvent extends ChequeEvent {}
 
+class GetChequesPerAccountEvent extends ChequeEvent {
+  final int accountId;
+
+  const GetChequesPerAccountEvent({required this.accountId});
+}
+
 class CreateChequeEvent extends ChequeEvent {
   final ChequeEntity cheque;
 

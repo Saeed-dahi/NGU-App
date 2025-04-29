@@ -84,7 +84,7 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
                   onRefresh: () => _refresh(),
                 ),
               ),
-              const ChequesTablePage(),
+              ChequesTablePage(accountId: widget.accountId),
             ]),
           ),
         ],

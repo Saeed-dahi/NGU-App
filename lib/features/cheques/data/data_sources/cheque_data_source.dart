@@ -11,6 +11,7 @@ abstract class ChequeDataSource {
   Future<ChequeModel> createCheque(ChequeModel cheque);
   Future<ChequeModel> updateCheque(ChequeModel cheque);
   Future<ChequeModel> depositCheque(int id);
+  Future<List<ChequeModel>> getChequesPerAccount(int accountId);
 }
 
 class ChequeDataSourceWithHttp extends ChequeDataSource {
@@ -82,5 +83,20 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
     ChequeModel chequeModel = ChequeModel.fromJson(decodedJson['data']);
 
     return chequeModel;
+  }
+
+  @override
+  Future<List<ChequeModel>> getChequesPerAccount(int accountId) async {
+    final response =
+        await networkConnection.get('account-cheques/$accountId', {});
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    List<ChequeModel> cheques = decodedJson['data']
+        .map<ChequeModel>((cheque) => ChequeModel.fromJson(cheque))
+        .toList();
+
+    return cheques;
   }
 }

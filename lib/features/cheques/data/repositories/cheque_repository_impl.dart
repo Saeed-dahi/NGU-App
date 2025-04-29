@@ -43,4 +43,11 @@ class ChequeRepositoryImpl implements ChequeRepository {
     return await apiHelper
         .safeApiCall(() => chequeDataSource.depositCheque(id));
   }
+
+  @override
+  Future<Either<Failure, List<ChequeEntity>>> getChequesPerAccount(
+      int accountId) async {
+    return await apiHelper
+        .safeApiCall(() => chequeDataSource.getChequesPerAccount(accountId));
+  }
 }
