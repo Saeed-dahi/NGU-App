@@ -74,6 +74,8 @@ Map<String, String> ar = {
   'deposited': 'مُودع',
   'bounced': 'مرتجع',
   'canceled': 'ملغي',
+  'incoming': ' وارد',
+  'outgoing': ' صادر',
 
   // Currencies
   'currencies': 'العملات',

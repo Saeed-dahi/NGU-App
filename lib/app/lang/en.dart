@@ -74,6 +74,8 @@ Map<String, String> en = {
   'deposited': 'Deposited',
   'bounced': 'Bounced',
   'canceled': 'Canceled',
+  'incoming': 'Incoming',
+  'outgoing': 'Outgoing',
 
   // Currencies
   'currencies': 'Currencies',

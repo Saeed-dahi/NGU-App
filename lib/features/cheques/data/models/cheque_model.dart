@@ -28,7 +28,7 @@ class ChequeModel extends ChequeEntity {
         dueDate: json['due_date'] ?? '',
         nature: json['nature'] ?? '',
         image: json['image'] ?? '',
-        notes: json['notes'],
+        notes: json['notes'] ?? '',
         createdAt: json['created_at'],
         updatedAt: json['updated_at'],
         issuedFromAccount:

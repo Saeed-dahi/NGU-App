@@ -60,7 +60,7 @@ class ChequeToolbar extends StatelessWidget {
         ),
         CustomIconButton(
           icon: Icons.check,
-          tooltip: 'deposit'.tr,
+          tooltip: 'post'.tr,
           onPressed: () {
             Get.back();
           },
@@ -117,7 +117,10 @@ class ChequeToolbar extends StatelessWidget {
   void _add(BuildContext context) {
     ShowDialog.showCustomDialog(
         context: context,
-        content: const CreateCheque(),
+        content: BlocProvider.value(
+          value: context.read<ChequeBloc>(),
+          child: const CreateCheque(),
+        ),
         height: 0.5,
         width: 0.7);
   }

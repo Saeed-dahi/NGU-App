@@ -19,9 +19,9 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
   FilePickerController imageController = FilePickerController();
   String? chequeNature;
 
-  late ChequeAccountEntity issuedFromAccount;
-  late ChequeAccountEntity issuedToAccount;
-  late ChequeAccountEntity targetBankAccount;
+  ChequeAccountEntity issuedFromAccount = ChequeAccountEntity();
+  ChequeAccountEntity issuedToAccount = ChequeAccountEntity();
+  ChequeAccountEntity targetBankAccount = ChequeAccountEntity();
 
   Map<String, dynamic> errors = {};
 
@@ -54,7 +54,7 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     targetBankAccount = cheque.targetBankAccount!;
   }
 
-  ChequeEntity getCheque(int? id, String status) {
+  ChequeEntity getCheque({int? id, String? status}) {
     return ChequeEntity(
         id: id,
         amount: FormatterClass.doubleFormatter(amountController.text),

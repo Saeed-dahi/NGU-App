@@ -39,6 +39,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
   void initState() {
     _enableEditing = false;
     _chequeBloc = sl<ChequeBloc>()..add(const ShowChequeEvent(id: 1));
+    _chequeFormCubit = ChequeFormCubit();
     super.initState();
   }
 
@@ -49,7 +50,6 @@ class _ChequeRecordState extends State<ChequeRecord> {
   @override
   void dispose() {
     _chequeBloc.close();
-    _chequeFormCubit.disposeController();
     _chequeFormCubit.close();
 
     super.dispose();
@@ -303,7 +303,8 @@ class _ChequeRecordState extends State<ChequeRecord> {
     if (_basicChequeFormKey.currentState!.validate()) {
       _chequeBloc.add(UpdateChequeEvent(
           cheque: _chequeFormCubit.getCheque(
-              _chequeBloc.chequeEntity.id, ChequeStatus.received.name)));
+              id: _chequeBloc.chequeEntity.id,
+              status: ChequeStatus.received.name)));
     }
   }
 

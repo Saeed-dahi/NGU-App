@@ -43,6 +43,7 @@ class CustomChequesPlutoTable extends StatelessWidget {
       _buildCustomColumn('issued_to_account'),
       _buildCustomColumn('description'),
       _buildCustomColumn('due_date'),
+      _buildCustomColumn('date'),
     ];
   }
 
@@ -102,6 +103,7 @@ class CustomChequesPlutoTable extends StatelessWidget {
                 PlutoCell(value: cheque.issuedToAccount!.arName),
             'description': PlutoCell(value: cheque.notes),
             'due_date': PlutoCell(value: cheque.dueDate),
+            'date': PlutoCell(value: cheque.date),
           },
         );
       },
