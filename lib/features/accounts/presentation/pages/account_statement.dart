@@ -41,23 +41,23 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        children: [
-          TabBar(
-            labelColor: Colors.black,
-            indicatorColor: AppColors.primaryColor,
-            tabs: [
-              Tab(text: 'account_sts'.tr),
-              Tab(text: 'post_dated_cheques'.tr),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(children: [
-              BlocProvider(
-                create: (context) => _accountsBloc,
-                child: CustomRefreshIndicator(
+    return BlocProvider(
+      create: (context) => _accountsBloc,
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            TabBar(
+              labelColor: Colors.black,
+              indicatorColor: AppColors.primaryColor,
+              tabs: [
+                Tab(text: 'account_sts'.tr),
+                Tab(text: 'post_dated_cheques'.tr),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(children: [
+                CustomRefreshIndicator(
                   child: ListView(
                     children: [
                       BlocBuilder<AccountsBloc, AccountsState>(
@@ -83,11 +83,11 @@ class _AccountStatementPageState extends State<AccountStatementPage> {
                   ),
                   onRefresh: () => _refresh(),
                 ),
-              ),
-              ChequesTablePage(accountId: widget.accountId),
-            ]),
-          ),
-        ],
+                ChequesTablePage(accountId: widget.accountId),
+              ]),
+            ),
+          ],
+        ),
       ),
     );
   }
