@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
+import 'package:ngu_app/features/cheques/presentation/pages/cheque_record.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomChequesPlutoTable extends StatelessWidget {
@@ -24,6 +26,14 @@ class CustomChequesPlutoTable extends StatelessWidget {
         controller: _plutoGridController,
         mode: PlutoGridMode.readOnly,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
+        onRowDoubleTap: (p0) {
+          ShowDialog.showCustomDialog(
+            context: context,
+            content: ChequeRecord(accountId: p0.row.data),
+            height: 0.5,
+            width: 0.7,
+          );
+        },
         columns: _buildColumns(context),
         rows: _buildRows().toList(),
         onLoaded: (PlutoGridOnLoadedEvent event) {

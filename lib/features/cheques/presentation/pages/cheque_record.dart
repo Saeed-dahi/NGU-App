@@ -20,7 +20,8 @@ import 'package:ngu_app/features/cheques/presentation/blocs/cheque_form_cubit/cu
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_toolbar.dart';
 
 class ChequeRecord extends StatefulWidget {
-  const ChequeRecord({super.key});
+  final int accountId;
+  const ChequeRecord({super.key, this.accountId = 1});
 
   @override
   State<ChequeRecord> createState() => _ChequeRecordState();
@@ -38,7 +39,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
   @override
   void initState() {
     _enableEditing = false;
-    _chequeBloc = sl<ChequeBloc>()..add(const ShowChequeEvent(id: 1));
+    _chequeBloc = sl<ChequeBloc>()..add(ShowChequeEvent(id: widget.accountId));
     _chequeFormCubit = ChequeFormCubit();
     super.initState();
   }
