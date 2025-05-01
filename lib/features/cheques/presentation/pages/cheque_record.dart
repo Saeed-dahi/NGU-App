@@ -84,8 +84,15 @@ class _ChequeRecordState extends State<ChequeRecord> {
           }
 
           if (state is ErrorChequeState) {
-            return MessageScreen(
-              text: state.message,
+            return Column(
+              children: [
+                ChequeToolbar(
+                  enableEditing: _enableEditing,
+                ),
+                MessageScreen(
+                  text: state.message,
+                ),
+              ],
             );
           }
           return Loaders.loading();

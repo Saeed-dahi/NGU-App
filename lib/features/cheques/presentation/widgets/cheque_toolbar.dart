@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
@@ -17,35 +18,30 @@ class ChequeToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Visibility(
-        visible: !enableEditing,
-        replacement: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomIconButton(
-                icon: Icons.close,
-                tooltip: 'close'.tr,
-                onPressed: () => _close(context)),
-          ],
-        ),
-        child: Visibility(
-          visible: chequeEntity != null,
-          replacement: CustomIconButton(
-            icon: Icons.add,
-            tooltip: 'add'.tr,
-            onPressed: () => _add(context),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _navigateActions(context),
-              _crudActions(context),
-            ],
-          ),
-        ),
+    return Visibility(
+      visible: !enableEditing,
+      replacement: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomIconButton(
+              icon: Icons.close,
+              tooltip: 'close'.tr,
+              onPressed: () => _close(context)),
+        ],
       ),
+      child: chequeEntity != null
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _crudActions(context),
+                _navigateActions(context),
+              ],
+            )
+          : CustomIconButton(
+              icon: Icons.add,
+              tooltip: 'add'.tr,
+              onPressed: () => _add(context),
+            ),
     );
   }
 
@@ -132,7 +128,7 @@ class ChequeToolbar extends StatelessWidget {
     ShowDialog.showCustomDialog(
         context: context,
         content: BlocProvider.value(
-          value: context.read<ChequeBloc>(),
+          value: sl<ChequeBloc>(),
           child: const CreateCheque(),
         ),
         height: 0.5,

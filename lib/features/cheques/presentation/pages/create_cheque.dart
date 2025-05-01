@@ -35,7 +35,6 @@ class _CreateChequeState extends State<CreateCheque> {
   @override
   void initState() {
     _enableEditing = true;
-
     _chequeFormCubit = ChequeFormCubit();
     super.initState();
   }
