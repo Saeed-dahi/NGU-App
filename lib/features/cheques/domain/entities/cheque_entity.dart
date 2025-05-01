@@ -11,7 +11,7 @@ class ChequeEntity extends Equatable {
   final String? date;
   final String? dueDate;
   final String? nature;
-  final String? image;
+  final List<String>? images;
   final String? notes;
   final String? createdAt;
   final String? updatedAt;
@@ -27,7 +27,7 @@ class ChequeEntity extends Equatable {
       required this.date,
       required this.dueDate,
       required this.nature,
-      this.image,
+      this.images,
       required this.notes,
       this.createdAt,
       this.updatedAt,
@@ -44,7 +44,7 @@ class ChequeEntity extends Equatable {
         date: date,
         dueDate: dueDate,
         nature: nature,
-        image: image,
+        images: images,
         notes: notes,
         createdAt: createdAt,
         updatedAt: updatedAt,
@@ -62,7 +62,7 @@ class ChequeEntity extends Equatable {
         date,
         dueDate,
         nature,
-        image,
+        images,
         notes,
         createdAt,
         updatedAt,

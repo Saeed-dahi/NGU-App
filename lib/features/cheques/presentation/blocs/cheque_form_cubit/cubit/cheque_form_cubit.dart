@@ -45,7 +45,7 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     dueDateController = TextEditingController(text: cheque.dueDate);
     notesController = TextEditingController(text: cheque.notes);
 
-    imageController = FilePickerController(initialFiles: [cheque.image!]);
+    imageController = FilePickerController(initialFiles: cheque.images);
 
     chequeNature = cheque.nature;
 
