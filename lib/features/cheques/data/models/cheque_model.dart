@@ -3,20 +3,20 @@ import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 
 class ChequeModel extends ChequeEntity {
   const ChequeModel(
-      {required super.id,
-      required super.amount,
-      required super.chequeNumber,
-      required super.status,
-      required super.date,
-      required super.dueDate,
-      required super.nature,
-      required super.images,
-      required super.notes,
-      required super.createdAt,
-      required super.updatedAt,
-      required super.issuedFromAccount,
-      required super.issuedToAccount,
-      required super.targetBankAccount});
+      {super.id,
+      super.amount,
+      super.chequeNumber,
+      super.status,
+      super.date,
+      super.dueDate,
+      super.nature,
+      super.images,
+      super.notes,
+      super.createdAt,
+      super.updatedAt,
+      super.issuedFromAccount,
+      super.issuedToAccount,
+      super.targetBankAccount});
 
   factory ChequeModel.fromJson(Map<String, dynamic> json) {
     return ChequeModel(

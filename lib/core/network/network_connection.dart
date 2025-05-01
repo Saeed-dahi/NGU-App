@@ -15,7 +15,7 @@ abstract class NetworkConnection {
     String apiURL,
     List<File?> file,
     String key,
-    Map data,
+    Map<String, dynamic> data,
     List<String> filesToDelete,
   );
 }
@@ -83,7 +83,7 @@ class HttpConnection implements NetworkConnection {
     String apiURL,
     List<File?> files,
     String key,
-    Map data,
+    Map<String, dynamic> data,
     List<String> filesToDelete,
   ) async {
     var uri = Uri.http(APIList.baseUrl, APIList.api + apiURL);
@@ -101,7 +101,7 @@ class HttpConnection implements NetworkConnection {
     }
 
     data.forEach((key, value) {
-      request.fields[key] = value;
+      request.fields[key] = value.toString();
     });
 
     if (filesToDelete.isNotEmpty) {

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
@@ -263,7 +264,10 @@ class _CreateChequeState extends State<CreateCheque> {
     if (_basicChequeFormKey.currentState!.validate()) {
       context.read<ChequeBloc>().add(CreateChequeEvent(
           cheque:
-              _chequeFormCubit.getCheque(status: ChequeStatus.received.name)));
+              _chequeFormCubit.getCheque(status: ChequeStatus.received.name),
+          fileUploadEntity: FileUploadEntity(
+              files: _chequeFormCubit.imageController.files,
+              filesToDelete: _chequeFormCubit.imageController.filesToDelete)));
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ngu_app/core/error/failures.dart';
+import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/cheques/data/data_sources/cheque_data_source.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
@@ -26,16 +27,16 @@ class ChequeRepositoryImpl implements ChequeRepository {
 
   @override
   Future<Either<Failure, ChequeEntity>> createCheque(
-      ChequeEntity cheque) async {
-    return await apiHelper
-        .safeApiCall(() => chequeDataSource.createCheque(cheque.toModel()));
+      ChequeEntity cheque, FileUploadEntity files) async {
+    return await apiHelper.safeApiCall(
+        () => chequeDataSource.createCheque(cheque.toModel(), files.toModel()));
   }
 
   @override
   Future<Either<Failure, ChequeEntity>> updateCheque(
-      ChequeEntity cheque) async {
-    return await apiHelper
-        .safeApiCall(() => chequeDataSource.updateCheque(cheque.toModel()));
+      ChequeEntity cheque, FileUploadEntity files) async {
+    return await apiHelper.safeApiCall(
+        () => chequeDataSource.updateCheque(cheque.toModel(), files.toModel()));
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_date_picker.dart';
@@ -302,10 +303,16 @@ class _ChequeRecordState extends State<ChequeRecord> {
 
   void _onSave(BuildContext context) {
     if (_basicChequeFormKey.currentState!.validate()) {
-      _chequeBloc.add(UpdateChequeEvent(
-          cheque: _chequeFormCubit.getCheque(
+      _chequeBloc.add(
+        UpdateChequeEvent(
+            cheque: _chequeFormCubit.getCheque(
               id: _chequeBloc.chequeEntity.id,
-              status: ChequeStatus.received.name)));
+              status: ChequeStatus.received.name,
+            ),
+            fileUploadEntity: FileUploadEntity(
+                files: _chequeFormCubit.imageController.files,
+                filesToDelete: _chequeFormCubit.imageController.filesToDelete)),
+      );
     }
   }
 

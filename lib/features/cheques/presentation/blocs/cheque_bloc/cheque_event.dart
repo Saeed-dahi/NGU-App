@@ -27,8 +27,12 @@ class GetChequesPerAccountEvent extends ChequeEvent {
 
 class CreateChequeEvent extends ChequeEvent {
   final ChequeEntity cheque;
+  final FileUploadEntity fileUploadEntity;
 
-  const CreateChequeEvent({required this.cheque});
+  const CreateChequeEvent({
+    required this.cheque,
+    required this.fileUploadEntity,
+  });
 
   @override
   List<Object> get props => [cheque];
@@ -36,8 +40,10 @@ class CreateChequeEvent extends ChequeEvent {
 
 class UpdateChequeEvent extends ChequeEvent {
   final ChequeEntity cheque;
+  final FileUploadEntity fileUploadEntity;
 
-  const UpdateChequeEvent({required this.cheque});
+  const UpdateChequeEvent(
+      {required this.cheque, required this.fileUploadEntity});
 
   @override
   List<Object> get props => [cheque];

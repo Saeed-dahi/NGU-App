@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
+import 'package:ngu_app/core/features/upload/data/file_upload_model.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/cheques/data/models/cheque_model.dart';
 
 abstract class ChequeDataSource {
   Future<ChequeModel> showCheque(int id, String? direction);
   Future<List<ChequeModel>> getAllCheques();
-  Future<ChequeModel> createCheque(ChequeModel cheque);
-  Future<ChequeModel> updateCheque(ChequeModel cheque);
+  Future<ChequeModel> createCheque(ChequeModel cheque, FileUploadModel files);
+  Future<ChequeModel> updateCheque(ChequeModel cheque, FileUploadModel files);
   Future<ChequeModel> depositCheque(int id);
   Future<List<ChequeModel>> getChequesPerAccount(int accountId);
 }
@@ -47,10 +48,16 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
   }
 
   @override
-  Future<ChequeModel> createCheque(ChequeModel cheque) async {
-    final response =
-        await networkConnection.post(APIList.cheque, cheque.toJson());
-    var decodedJson = jsonDecode(response.body);
+  Future<ChequeModel> createCheque(
+      ChequeModel cheque, FileUploadModel files) async {
+    final response = await networkConnection.httpPostMultipartRequestWithFields(
+        APIList.cheque,
+        files.files,
+        'image[]',
+        cheque.toJson(),
+        files.filesToDelete);
+    var responseBody = await response.stream.bytesToString();
+    var decodedJson = jsonDecode(responseBody);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
@@ -60,16 +67,20 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
   }
 
   @override
-  Future<ChequeModel> updateCheque(ChequeModel cheque) async {
-    final response = await networkConnection.put(
-        '${APIList.cheque}/${cheque.id}', cheque.toJson());
-    var decodedJson = jsonDecode(response.body);
+  Future<ChequeModel> updateCheque(
+      ChequeModel cheque, FileUploadModel files) async {
+    final response = await networkConnection.httpPostMultipartRequestWithFields(
+        '${APIList.cheque}/${cheque.id}',
+        files.files,
+        'image[]',
+        cheque.toJson(),
+        files.filesToDelete);
+    var responseBody = await response.stream.bytesToString();
+    var decodedJson = jsonDecode(responseBody);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    ChequeModel chequeModel = ChequeModel.fromJson(decodedJson['data']);
-
-    return chequeModel;
+    return const ChequeModel();
   }
 
   @override
