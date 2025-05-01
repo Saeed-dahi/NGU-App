@@ -109,6 +109,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
           ChequeToolbar(
             enableEditing: _enableEditing,
             chequeEntity: _chequeBloc.chequeEntity,
+            onSave: () => _onSave(context),
           ),
           const SizedBox(
             height: 10,
@@ -146,6 +147,21 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ],
             ),
           ),
+          Visibility(
+            visible: _enableEditing,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomElevatedButton(
+                  color: AppColors.primaryColorLow,
+                  text: 'save',
+                  onPressed: () {
+                    _onSave(context);
+                  },
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -239,21 +255,6 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ),
             ],
           ),
-          Visibility(
-            visible: _enableEditing,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomElevatedButton(
-                  color: AppColors.primaryColorLow,
-                  text: 'save',
-                  onPressed: () {
-                    _onSave(context);
-                  },
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
@@ -281,39 +282,22 @@ class _ChequeRecordState extends State<ChequeRecord> {
               ])
             ],
           ),
-          Visibility(
-            visible: _enableEditing,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomElevatedButton(
-                  color: AppColors.primaryColorLow,
-                  text: 'save',
-                  onPressed: () {
-                    _onSave(context);
-                  },
-                ),
-              ],
-            ),
-          )
         ],
       ),
     );
   }
 
   void _onSave(BuildContext context) {
-    if (_basicChequeFormKey.currentState!.validate()) {
-      _chequeBloc.add(
-        UpdateChequeEvent(
-            cheque: _chequeFormCubit.getCheque(
-              id: _chequeBloc.chequeEntity.id,
-              status: ChequeStatus.received.name,
-            ),
-            fileUploadEntity: FileUploadEntity(
-                files: _chequeFormCubit.imageController.files,
-                filesToDelete: _chequeFormCubit.imageController.filesToDelete)),
-      );
-    }
+    _chequeBloc.add(
+      UpdateChequeEvent(
+          cheque: _chequeFormCubit.getCheque(
+            id: _chequeBloc.chequeEntity.id,
+            status: ChequeStatus.received.name,
+          ),
+          fileUploadEntity: FileUploadEntity(
+              files: _chequeFormCubit.imageController.files,
+              filesToDelete: _chequeFormCubit.imageController.filesToDelete)),
+    );
   }
 
   Future<void> _refresh() async {

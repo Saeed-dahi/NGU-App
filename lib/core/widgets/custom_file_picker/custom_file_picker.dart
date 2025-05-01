@@ -106,10 +106,10 @@ class _CustomFilePickerState extends State<CustomFilePicker> {
           inputType: TextInputType.name,
           enabled: widget.enableEditing,
           label: 'file'.tr,
-
           onTap: () => pickFile(),
           autofocus: false,
           error: widget.error,
+          required: false,
           // error: _errors['phone']?.join('\n'),
         ),
       ],

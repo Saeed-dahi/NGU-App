@@ -24,20 +24,26 @@ class ChequeToolbar extends StatelessWidget {
         replacement: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // CustomIconButton(
-            //     icon: Icons.save, tooltip: 'save'.tr, onPressed: onSave),
             CustomIconButton(
                 icon: Icons.close,
                 tooltip: 'close'.tr,
                 onPressed: () => _close(context)),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _navigateActions(context),
-            _crudActions(context),
-          ],
+        child: Visibility(
+          visible: chequeEntity != null,
+          replacement: CustomIconButton(
+            icon: Icons.add,
+            tooltip: 'add'.tr,
+            onPressed: () => _add(context),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _navigateActions(context),
+              _crudActions(context),
+            ],
+          ),
         ),
       ),
     );
@@ -58,12 +64,20 @@ class ChequeToolbar extends StatelessWidget {
               .read<ChequeBloc>()
               .add(const ToggleEditingEvent(enableEditing: true)),
         ),
-        CustomIconButton(
-          icon: Icons.check,
-          tooltip: 'post'.tr,
-          onPressed: () => context
-              .read<ChequeBloc>()
-              .add(DepositChequeEvent(id: chequeEntity!.id!)),
+        Visibility(
+          visible: chequeEntity!.status != ChequeStatus.deposited.name,
+          replacement: CustomIconButton(
+            icon: Icons.unarchive,
+            tooltip: 'un_post'.tr,
+            onPressed: onSave!,
+          ),
+          child: CustomIconButton(
+            icon: Icons.check,
+            tooltip: 'post'.tr,
+            onPressed: () => context
+                .read<ChequeBloc>()
+                .add(DepositChequeEvent(id: chequeEntity!.id!)),
+          ),
         ),
         CustomIconButton(
           icon: Icons.print,
