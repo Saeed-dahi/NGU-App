@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
@@ -196,12 +197,14 @@ class _ChequeRecordState extends State<ChequeRecord> {
                     enabled: _enableEditing,
                     controller: _chequeFormCubit.amountController,
                     label: 'cheque_amount'.tr,
+                    format: FilteringTextInputFormatter.digitsOnly,
                   ),
                   CustomInputField(
                     enabled: _enableEditing,
                     label: 'cheque_number'.tr,
                     controller: _chequeFormCubit.numberController,
                     error: _chequeFormCubit.errors['cheque_number']?.join('\n'),
+                    format: FilteringTextInputFormatter.digitsOnly,
                   ),
                 ],
               ),
