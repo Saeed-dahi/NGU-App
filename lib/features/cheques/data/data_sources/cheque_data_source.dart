@@ -78,9 +78,11 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
     var responseBody = await response.stream.bytesToString();
     var decodedJson = jsonDecode(responseBody);
 
+    ChequeModel chequeModel = ChequeModel.fromJson(decodedJson['data']);
+
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
 
-    return const ChequeModel();
+    return chequeModel;
   }
 
   @override

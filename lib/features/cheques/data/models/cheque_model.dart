@@ -20,22 +20,23 @@ class ChequeModel extends ChequeEntity {
 
   factory ChequeModel.fromJson(Map<String, dynamic> json) {
     return ChequeModel(
-        id: json['id'],
-        amount: double.tryParse(json['amount'].toString()),
-        chequeNumber: json['cheque_number'],
-        status: json['status'],
-        date: json['date'] ?? '',
-        dueDate: json['due_date'] ?? '',
-        nature: json['nature'] ?? '',
-        images: json['image'] != null ? List<String>.from(json['image']) : null,
-        notes: json['notes'] ?? '',
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at'],
-        issuedFromAccount:
-            ChequeAccountModel.fromJson(json['issued_from_account']),
-        issuedToAccount: ChequeAccountModel.fromJson(json['issued_to_account']),
-        targetBankAccount:
-            ChequeAccountModel.fromJson(json['target_bank_account']));
+      id: json['id'],
+      amount: double.tryParse(json['amount'].toString()),
+      chequeNumber: int.tryParse(json['cheque_number'].toString()),
+      status: json['status'],
+      date: json['date'] ?? '',
+      dueDate: json['due_date'] ?? '',
+      nature: json['nature'] ?? '',
+      images: json['image'] != null ? List<String>.from(json['image']) : null,
+      notes: json['notes'] ?? '',
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+      issuedFromAccount:
+          ChequeAccountModel.fromJson(json['issued_from_account']),
+      issuedToAccount: ChequeAccountModel.fromJson(json['issued_to_account']),
+      targetBankAccount:
+          ChequeAccountModel.fromJson(json['target_bank_account']),
+    );
   }
 
   Map<String, dynamic> toJson() {

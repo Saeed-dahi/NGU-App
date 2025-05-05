@@ -18,30 +18,33 @@ class ChequeToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: !enableEditing,
-      replacement: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CustomIconButton(
-              icon: Icons.close,
-              tooltip: 'close'.tr,
-              onPressed: () => _close(context)),
-        ],
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Visibility(
+        visible: !enableEditing,
+        replacement: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomIconButton(
+                icon: Icons.close,
+                tooltip: 'close'.tr,
+                onPressed: () => _close(context)),
+          ],
+        ),
+        child: chequeEntity != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _navigateActions(context),
+                  _crudActions(context),
+                ],
+              )
+            : CustomIconButton(
+                icon: Icons.add,
+                tooltip: 'add'.tr,
+                onPressed: () => _add(context),
+              ),
       ),
-      child: chequeEntity != null
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _crudActions(context),
-                _navigateActions(context),
-              ],
-            )
-          : CustomIconButton(
-              icon: Icons.add,
-              tooltip: 'add'.tr,
-              onPressed: () => _add(context),
-            ),
     );
   }
 

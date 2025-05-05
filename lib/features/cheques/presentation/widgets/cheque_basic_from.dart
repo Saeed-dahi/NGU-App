@@ -36,6 +36,7 @@ class ChequeBasicForm extends StatelessWidget {
                     labelText: 'date'.tr,
                     required: false,
                     enabled: enableEditing,
+                    autofocus: true,
                   ),
                   CustomInputField(
                     inputType: TextInputType.name,

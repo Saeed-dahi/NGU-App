@@ -83,8 +83,10 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
         emit(ErrorChequeState(message: failure.errors['error']));
       }
     }, (data) {
-      Get.back();
-      add(ShowChequeEvent(id: data.id!));
+      
+      // print(data.id);
+      // add(ShowChequeEvent(id: data.id!));
+      emit(LoadedChequeState(enableEditing: false, cheque: data));
     });
   }
 
@@ -101,7 +103,8 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
         emit(ErrorChequeState(message: failure.errors['error']));
       }
     }, (data) {
-      add(ShowChequeEvent(id: event.cheque.id!));
+      // add(ShowChequeEvent(id: event.cheque.id!));
+      emit(LoadedChequeState(enableEditing: false, cheque: data));
     });
   }
 
