@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
@@ -83,7 +82,6 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
         emit(ErrorChequeState(message: failure.errors['error']));
       }
     }, (data) {
-      
       // print(data.id);
       // add(ShowChequeEvent(id: data.id!));
       emit(LoadedChequeState(enableEditing: false, cheque: data));

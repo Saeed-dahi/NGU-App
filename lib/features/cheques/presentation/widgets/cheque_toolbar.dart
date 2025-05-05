@@ -134,7 +134,7 @@ class ChequeToolbar extends StatelessWidget {
           value: sl<ChequeBloc>(),
           child: const CreateCheque(),
         ),
-        height: 0.5,
+        height: 0.55,
         width: 0.7);
   }
 }

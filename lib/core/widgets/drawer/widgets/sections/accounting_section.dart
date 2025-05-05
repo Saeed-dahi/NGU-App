@@ -200,7 +200,7 @@ _cheques(BuildContext context) {
           title: 'cheque_card'.tr,
           image: Image.asset('assets/images/cheque.png', width: 30),
           onTap: () => ShowDialog.showCustomDialog(
-              height: 0.5,
+              height: 0.55,
               width: 0.7,
               content: const ChequeRecord(),
               context: context)),

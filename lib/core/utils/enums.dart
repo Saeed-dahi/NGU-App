@@ -30,6 +30,14 @@ enum ChequeNature { incoming, outgoing }
 
 enum ChequeStatus { received, deposited, bounced, canceled }
 
+enum ChequePaymentCases {
+  monthly,
+  each_four_weeks,
+  each_week,
+  specific_days,
+  specific_months
+}
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

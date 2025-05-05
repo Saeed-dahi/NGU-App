@@ -76,6 +76,15 @@ Map<String, String> ar = {
   'canceled': 'ملغي',
   'incoming': ' وارد',
   'outgoing': ' صادر',
+  'monthly': 'شهري',
+  'each_four_weeks': 'كل أربعة أسابيع',
+  'each_week': 'كل أسبوع',
+  'specific_days': 'أيام محددة',
+  'specific_months': 'أشهر محددة',
+  'each_payment': 'كل دفعة',
+  'first_payment': 'الدفعة الأولى',
+  'last_payment': 'الدفعة الأخيرة',
+  'multiple_cheques': 'شيكات متعددة',
 
   // Currencies
   'currencies': 'العملات',

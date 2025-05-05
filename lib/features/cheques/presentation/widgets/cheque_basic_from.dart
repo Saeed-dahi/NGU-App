@@ -25,89 +25,83 @@ class ChequeBasicForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       key: basicChequeFormKey,
-      child: ListView(
+      child: Table(
         children: [
-          Table(
+          TableRow(
             children: [
-              TableRow(
-                children: [
-                  CustomDatePicker(
-                    dateInput: chequeFormCubit.dateController,
-                    labelText: 'date'.tr,
-                    required: false,
-                    enabled: enableEditing,
-                    autofocus: true,
-                  ),
-                  CustomInputField(
-                    inputType: TextInputType.name,
-                    enabled: enableEditing,
-                    controller: chequeFormCubit.amountController,
-                    label: 'cheque_amount'.tr,
-                    format: FilteringTextInputFormatter.digitsOnly,
-                  ),
-                  CustomInputField(
-                    enabled: enableEditing,
-                    label: 'cheque_number'.tr,
-                    controller: chequeFormCubit.numberController,
-                    error: chequeFormCubit.errors['cheque_number']?.join('\n'),
-                    format: FilteringTextInputFormatter.digitsOnly,
-                  ),
-                ],
+              CustomDatePicker(
+                dateInput: chequeFormCubit.dateController,
+                labelText: 'date'.tr,
+                required: false,
+                enabled: enableEditing,
+                autofocus: true,
               ),
-              TableRow(
-                children: [
-                  CustomAccountAutoComplete(
-                    enabled: enableEditing,
-                    label: 'issued_from_account',
-                    controller: chequeFormCubit.issuedFromAccount,
-                    initialValue:
-                        chequeFormCubit.issuedFromAccount.arName ?? '',
-                    error: chequeFormCubit.errors['issued_from_account_id']
-                        ?.join('\n'),
-                  ),
-                  CustomAccountAutoComplete(
-                    enabled: enableEditing,
-                    controller: chequeFormCubit.issuedToAccount,
-                    label: 'issued_to_account',
-                    initialValue: chequeFormCubit.issuedToAccount.arName ?? '',
-                    error: chequeFormCubit.errors['issued_to_account_id']
-                        ?.join('\n'),
-                  ),
-                  CustomAccountAutoComplete(
-                    enabled: enableEditing,
-                    controller: chequeFormCubit.targetBankAccount,
-                    label: 'target_bank_account',
-                    initialValue:
-                        chequeFormCubit.targetBankAccount.arName ?? '',
-                    error: chequeFormCubit.errors['target_bank_account_id']
-                        ?.join('\n'),
-                  ),
-                ],
+              CustomInputField(
+                inputType: TextInputType.name,
+                enabled: enableEditing,
+                controller: chequeFormCubit.amountController,
+                label: 'cheque_amount'.tr,
+                format: FilteringTextInputFormatter.digitsOnly,
               ),
-              TableRow(
-                children: [
-                  CustomInputField(
-                    controller: chequeFormCubit.descriptionController,
-                    label: 'description'.tr,
-                    required: false,
-                    enabled: enableEditing,
-                  ),
-                  CustomDatePicker(
-                    dateInput: chequeFormCubit.dueDateController,
-                    labelText: 'due_date'.tr,
-                    required: false,
-                    enabled: enableEditing,
-                  ),
-                  CustomDropdown(
-                    dropdownValue: getEnumValues(ChequeNature.values),
-                    value: chequeFormCubit.chequeNature,
-                    helper: 'cheque_nature'.tr,
-                    enabled: enableEditing,
-                    onChanged: (value) {
-                      chequeFormCubit.chequeNature = value;
-                    },
-                  ),
-                ],
+              CustomInputField(
+                enabled: enableEditing,
+                label: 'cheque_number'.tr,
+                controller: chequeFormCubit.numberController,
+                error: chequeFormCubit.errors['cheque_number']?.join('\n'),
+                format: FilteringTextInputFormatter.digitsOnly,
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              CustomAccountAutoComplete(
+                enabled: enableEditing,
+                label: 'issued_from_account',
+                controller: chequeFormCubit.issuedFromAccount,
+                initialValue: chequeFormCubit.issuedFromAccount.arName ?? '',
+                error: chequeFormCubit.errors['issued_from_account_id']
+                    ?.join('\n'),
+              ),
+              CustomAccountAutoComplete(
+                enabled: enableEditing,
+                controller: chequeFormCubit.issuedToAccount,
+                label: 'issued_to_account',
+                initialValue: chequeFormCubit.issuedToAccount.arName ?? '',
+                error:
+                    chequeFormCubit.errors['issued_to_account_id']?.join('\n'),
+              ),
+              CustomAccountAutoComplete(
+                enabled: enableEditing,
+                controller: chequeFormCubit.targetBankAccount,
+                label: 'target_bank_account',
+                initialValue: chequeFormCubit.targetBankAccount.arName ?? '',
+                error: chequeFormCubit.errors['target_bank_account_id']
+                    ?.join('\n'),
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              CustomInputField(
+                controller: chequeFormCubit.descriptionController,
+                label: 'description'.tr,
+                required: false,
+                enabled: enableEditing,
+              ),
+              CustomDatePicker(
+                dateInput: chequeFormCubit.dueDateController,
+                labelText: 'due_date'.tr,
+                required: false,
+                enabled: enableEditing,
+              ),
+              CustomDropdown(
+                dropdownValue: getEnumValues(ChequeNature.values),
+                value: chequeFormCubit.chequeNature,
+                helper: 'cheque_nature'.tr,
+                enabled: enableEditing,
+                onChanged: (value) {
+                  chequeFormCubit.chequeNature = value;
+                },
               ),
             ],
           ),

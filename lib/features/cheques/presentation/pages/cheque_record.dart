@@ -6,6 +6,7 @@ import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_accordion.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -14,8 +15,10 @@ import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_form_cubit/cubit/cheque_form_cubit.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_basic_from.dart';
+
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_info_form.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_toolbar.dart';
+import 'package:ngu_app/features/cheques/presentation/widgets/multiple_cheques_form.dart';
 
 class ChequeRecord extends StatefulWidget {
   final int accountId;
@@ -115,9 +118,6 @@ class _ChequeRecordState extends State<ChequeRecord> {
             chequeEntity: _chequeBloc.chequeEntity,
             onSave: () => _onSave(context),
           ),
-          const SizedBox(
-            height: 10,
-          ),
           TabBar(
             labelColor: Colors.black,
             indicatorColor: AppColors.primaryColor,
@@ -127,7 +127,7 @@ class _ChequeRecordState extends State<ChequeRecord> {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 2,
           ),
           Text(
             _chequeBloc.chequeEntity.status!.tr,
@@ -139,14 +139,22 @@ class _ChequeRecordState extends State<ChequeRecord> {
           Expanded(
             child: TabBarView(
               children: [
-                // General Account info
                 CustomRefreshIndicator(
                   onRefresh: _refresh,
-                  child: ChequeBasicForm(
-                      basicChequeFormKey: _basicChequeFormKey,
-                      chequeFormCubit: _chequeFormCubit,
-                      enableEditing: _enableEditing,
-                      context: context),
+                  child: ListView(
+                    children: [
+                      ChequeBasicForm(
+                          basicChequeFormKey: _basicChequeFormKey,
+                          chequeFormCubit: _chequeFormCubit,
+                          enableEditing: _enableEditing,
+                          context: context),
+                      CustomAccordion(
+                          isOpen: false,
+                          title: 'multiple_cheques'.tr,
+                          icon: Icons.my_library_add_rounded,
+                          contentWidget: const MultipleChequesForm()),
+                    ],
+                  ),
                 ),
                 CustomRefreshIndicator(
                   onRefresh: _refresh,

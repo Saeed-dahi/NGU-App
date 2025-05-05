@@ -76,6 +76,15 @@ Map<String, String> en = {
   'canceled': 'Canceled',
   'incoming': 'Incoming',
   'outgoing': 'Outgoing',
+  'monthly': 'Monthly',
+  'each_four_weeks': 'Each Four Weeks',
+  'each_week': 'Each Week',
+  'specific_days': 'Specific Days',
+  'specific_months': 'Specific Months',
+  'each_payment': 'Each Payment',
+  'first_payment': 'First Payment',
+  'last_payment': 'Last Payment',
+  'multiple_cheques': 'Multiple Cheques',
 
   // Currencies
   'currencies': 'Currencies',
