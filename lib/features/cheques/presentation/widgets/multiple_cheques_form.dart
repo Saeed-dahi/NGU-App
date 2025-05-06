@@ -10,7 +10,11 @@ import 'package:ngu_app/features/cheques/presentation/blocs/multiple_cheques_cub
 
 class MultipleChequesForm extends StatelessWidget {
   final MultipleChequesCubit multipleChequesCubit;
-  const MultipleChequesForm({super.key, required this.multipleChequesCubit});
+
+  const MultipleChequesForm({
+    super.key,
+    required this.multipleChequesCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,24 +33,28 @@ class MultipleChequesForm extends StatelessWidget {
                         controller: multipleChequesCubit.chequesCountController,
                         label: 'cheques_count'.tr,
                         format: FilteringTextInputFormatter.digitsOnly,
+                        onChanged: (v) => multipleChequesCubit.changeAnyField(),
                       ),
                       CustomInputField(
                         inputType: TextInputType.name,
                         controller: multipleChequesCubit.eachPaymentController,
                         label: 'each_payment'.tr,
                         format: FilteringTextInputFormatter.digitsOnly,
+                        onChanged: (v) => multipleChequesCubit.changeAnyField(),
                       ),
                       CustomInputField(
                         inputType: TextInputType.name,
                         controller: multipleChequesCubit.firstPaymentController,
                         label: 'first_payment'.tr,
                         format: FilteringTextInputFormatter.digitsOnly,
+                        onChanged: (v) => multipleChequesCubit.changeAnyField(),
                       ),
                       CustomInputField(
                         inputType: TextInputType.name,
                         controller: multipleChequesCubit.lastPaymentController,
                         label: 'last_payment'.tr,
                         format: FilteringTextInputFormatter.digitsOnly,
+                        onChanged: (v) => multipleChequesCubit.changeAnyField(),
                       ),
                     ],
                   ),

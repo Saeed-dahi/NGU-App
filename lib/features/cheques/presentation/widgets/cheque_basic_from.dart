@@ -7,10 +7,12 @@ import 'package:ngu_app/core/widgets/custom_date_picker.dart';
 import 'package:ngu_app/core/widgets/custom_dropdown.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_form_cubit/cubit/cheque_form_cubit.dart';
+import 'package:ngu_app/features/cheques/presentation/blocs/multiple_cheques_cubit/multiple_cheques_cubit.dart';
 
 class ChequeBasicForm extends StatelessWidget {
   final GlobalKey<FormState> basicChequeFormKey;
   final ChequeFormCubit chequeFormCubit;
+  final MultipleChequesCubit? multipleChequesCubit;
   final bool enableEditing;
   final BuildContext context;
 
@@ -18,6 +20,7 @@ class ChequeBasicForm extends StatelessWidget {
       {super.key,
       required this.basicChequeFormKey,
       required this.chequeFormCubit,
+      this.multipleChequesCubit,
       required this.enableEditing,
       required this.context});
 
@@ -42,6 +45,13 @@ class ChequeBasicForm extends StatelessWidget {
                 controller: chequeFormCubit.amountController,
                 label: 'cheque_amount'.tr,
                 format: FilteringTextInputFormatter.digitsOnly,
+                onChanged: (value) {
+                  if (multipleChequesCubit != null) {
+                    multipleChequesCubit!.chequeAmount =
+                        double.tryParse(value) ?? 0;
+                    multipleChequesCubit!.changeAnyField();
+                  }
+                },
               ),
               CustomInputField(
                 enabled: enableEditing,

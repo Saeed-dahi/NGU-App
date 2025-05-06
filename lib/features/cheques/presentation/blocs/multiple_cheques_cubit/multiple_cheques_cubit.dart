@@ -14,9 +14,11 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
   String? paymentWay;
   TextEditingController paymentWayCountController = TextEditingController();
 
+  double chequeAmount = 0;
+
   MultipleChequesCubit() : super(MultipleChequesInitial());
 
-  changeSelectedPaymentWay(String selectedValue) {
+  void changeSelectedPaymentWay(String selectedValue) {
     paymentWay = selectedValue;
 
     paymentWayCountController.text = '';
@@ -26,5 +28,15 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
     }
 
     emit(ChangeSelectedPaymentWay(selectedValue: selectedValue));
+  }
+
+  void changeAnyField() {
+    double chequesCount = double.tryParse(chequesCountController.text) ?? 1;
+    double eachPayment = double.tryParse(eachPaymentController.text) ?? 0;
+    double firstPayment = double.tryParse(firstPaymentController.text) ?? 0;
+    double lastPayment = double.tryParse(lastPaymentController.text) ?? 0;
+
+    eachPayment = (chequeAmount - firstPayment - lastPayment) / chequesCount;
+    eachPaymentController.text = eachPayment.toString();
   }
 }

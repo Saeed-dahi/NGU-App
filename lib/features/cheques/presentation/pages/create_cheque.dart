@@ -100,6 +100,7 @@ class _CreateChequeState extends State<CreateCheque> {
                     ChequeBasicForm(
                       basicChequeFormKey: _basicChequeFormKey,
                       chequeFormCubit: _chequeFormCubit,
+                      multipleChequesCubit: _multipleChequesCubit,
                       context: context,
                       enableEditing: _enableEditing,
                     ),
