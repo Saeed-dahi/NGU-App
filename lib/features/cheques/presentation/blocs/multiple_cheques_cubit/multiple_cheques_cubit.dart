@@ -36,7 +36,9 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
     double firstPayment = double.tryParse(firstPaymentController.text) ?? 0;
     double lastPayment = double.tryParse(lastPaymentController.text) ?? 0;
 
-    eachPayment = (chequeAmount - firstPayment - lastPayment) / chequesCount;
-    eachPaymentController.text = eachPayment.toString();
+    if (chequeAmount != 0) {
+      eachPayment = (chequeAmount - firstPayment - lastPayment) / chequesCount;
+      eachPaymentController.text = eachPayment.toString();
+    }
   }
 }
