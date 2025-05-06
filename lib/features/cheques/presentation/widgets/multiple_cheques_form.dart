@@ -19,6 +19,12 @@ class MultipleChequesForm extends StatelessWidget {
               CustomInputField(
                 inputType: TextInputType.name,
                 // controller: chequeFormCubit.amountController,
+                label: 'cheques_count'.tr,
+                format: FilteringTextInputFormatter.digitsOnly,
+              ),
+              CustomInputField(
+                inputType: TextInputType.name,
+                // controller: chequeFormCubit.amountController,
                 label: 'each_payment'.tr,
                 format: FilteringTextInputFormatter.digitsOnly,
               ),
@@ -38,6 +44,7 @@ class MultipleChequesForm extends StatelessWidget {
           ),
           CustomRadioButton(
             data: getEnumValues(ChequePaymentCases.values),
+            label: 'payment_way'.tr,
           ),
         ]),
       ],

@@ -85,6 +85,8 @@ Map<String, String> ar = {
   'first_payment': 'الدفعة الأولى',
   'last_payment': 'الدفعة الأخيرة',
   'multiple_cheques': 'شيكات متعددة',
+  'cheques_count': 'عدد الشيكات',
+  'payment_way': 'طريقة الدفع',
 
   // Currencies
   'currencies': 'العملات',
