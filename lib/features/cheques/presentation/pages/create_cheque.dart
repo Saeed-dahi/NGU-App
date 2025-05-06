@@ -5,14 +5,17 @@ import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_accordion.dart';
 import 'package:ngu_app/core/widgets/custom_elevated_button.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_bloc/cheque_bloc.dart';
 import 'package:ngu_app/features/cheques/presentation/blocs/cheque_form_cubit/cubit/cheque_form_cubit.dart';
+import 'package:ngu_app/features/cheques/presentation/blocs/multiple_cheques_cubit/multiple_cheques_cubit.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_basic_from.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_info_form.dart';
 import 'package:ngu_app/features/cheques/presentation/widgets/cheque_toolbar.dart';
+import 'package:ngu_app/features/cheques/presentation/widgets/multiple_cheques_form.dart';
 
 class CreateCheque extends StatefulWidget {
   const CreateCheque({super.key});
@@ -28,11 +31,13 @@ class _CreateChequeState extends State<CreateCheque> {
   late bool _enableEditing;
 
   late ChequeFormCubit _chequeFormCubit;
+  late MultipleChequesCubit _multipleChequesCubit;
 
   @override
   void initState() {
     _enableEditing = true;
     _chequeFormCubit = ChequeFormCubit();
+    _multipleChequesCubit = MultipleChequesCubit();
     super.initState();
   }
 
@@ -75,9 +80,6 @@ class _CreateChequeState extends State<CreateCheque> {
             style: const TextStyle(fontSize: Dimensions.primaryTextSize),
           ),
           ChequeToolbar(enableEditing: _enableEditing),
-          const SizedBox(
-            height: 10,
-          ),
           TabBar(
             labelColor: Colors.black,
             indicatorColor: AppColors.primaryColor,
@@ -87,17 +89,29 @@ class _CreateChequeState extends State<CreateCheque> {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 2,
           ),
           Expanded(
             child: TabBarView(
               children: [
-                // General Account info
-                ChequeBasicForm(
-                  basicChequeFormKey: _basicChequeFormKey,
-                  chequeFormCubit: _chequeFormCubit,
-                  context: context,
-                  enableEditing: _enableEditing,
+                ListView(
+                  children: [
+                    // General Account info
+                    ChequeBasicForm(
+                      basicChequeFormKey: _basicChequeFormKey,
+                      chequeFormCubit: _chequeFormCubit,
+                      context: context,
+                      enableEditing: _enableEditing,
+                    ),
+                    CustomAccordion(
+                      isOpen: false,
+                      title: 'multiple_cheques'.tr,
+                      icon: Icons.my_library_add_rounded,
+                      contentWidget: MultipleChequesForm(
+                        multipleChequesCubit: _multipleChequesCubit,
+                      ),
+                    ),
+                  ],
                 ),
                 ChequeInfoFrom(
                   moreInfoChequeFormKey: _moreInfoChequeFormKey,
