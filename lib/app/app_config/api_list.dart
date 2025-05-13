@@ -29,6 +29,8 @@ class APIList {
 
   static const String cheque = "cheque";
   static const String depositCheque = "deposit-cheque";
+  static const String accountCheques = "account-cheques";
+  static const String createMultipleCheques = "create-multiple-cheques";
 
   static Future<void> saveBaseUrl(String url) async {
     final prefs = sl<SharedPreferences>();

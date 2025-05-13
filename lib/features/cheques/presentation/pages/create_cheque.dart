@@ -145,12 +145,24 @@ class _CreateChequeState extends State<CreateCheque> {
 
   void _onSave(BuildContext context) {
     if (_basicChequeFormKey.currentState!.validate()) {
-      context.read<ChequeBloc>().add(CreateChequeEvent(
-          cheque:
-              _chequeFormCubit.getCheque(status: ChequeStatus.received.name),
-          fileUploadEntity: FileUploadEntity(
-              files: _chequeFormCubit.imageController.files,
-              filesToDelete: _chequeFormCubit.imageController.filesToDelete)));
+      if (_multipleChequesCubit.paymentWay != null) {
+        context.read<ChequeBloc>().add(CreateMultipleChequeEvent(
+            cheque:
+                _chequeFormCubit.getCheque(status: ChequeStatus.received.name),
+            chequesParamsEntity:
+                _multipleChequesCubit.getMultipleChequeParamsEntity()));
+      } else {
+        context.read<ChequeBloc>().add(
+              CreateChequeEvent(
+                cheque: _chequeFormCubit.getCheque(
+                    status: ChequeStatus.received.name),
+                fileUploadEntity: FileUploadEntity(
+                    files: _chequeFormCubit.imageController.files,
+                    filesToDelete:
+                        _chequeFormCubit.imageController.filesToDelete),
+              ),
+            );
+      }
     }
   }
 }

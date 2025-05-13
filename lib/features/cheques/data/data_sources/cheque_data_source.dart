@@ -104,7 +104,7 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
   @override
   Future<List<ChequeModel>> getChequesPerAccount(int accountId) async {
     final response =
-        await networkConnection.get('account-cheques/$accountId', {});
+        await networkConnection.get('${APIList.accountCheques}/$accountId', {});
     var decodedJson = jsonDecode(response.body);
 
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -119,7 +119,8 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
   @override
   Future<bool> createMultipleCheques(ChequeModel cheque,
       MultipleChequesParamsModel multipleChequesParamsEntity) async {
-    final response = await networkConnection.post(APIList.account, {
+    final response =
+        await networkConnection.post(APIList.createMultipleCheques, {
       'cheque': cheque.toJson(),
       'multiple_cheques_params': multipleChequesParamsEntity.toJson()
     });
