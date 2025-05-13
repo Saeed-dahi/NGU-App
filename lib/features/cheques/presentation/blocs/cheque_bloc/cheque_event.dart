@@ -49,6 +49,17 @@ class UpdateChequeEvent extends ChequeEvent {
   List<Object> get props => [cheque];
 }
 
+class CreateMultipleChequeEvent extends ChequeEvent {
+  final ChequeEntity cheque;
+  final MultipleChequesParamsEntity chequesParamsEntity;
+
+  const CreateMultipleChequeEvent(
+      {required this.cheque, required this.chequesParamsEntity});
+
+  @override
+  List<Object> get props => [cheque, chequesParamsEntity];
+}
+
 class DepositChequeEvent extends ChequeEvent {
   final int id;
 

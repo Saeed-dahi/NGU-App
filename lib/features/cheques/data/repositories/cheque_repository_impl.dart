@@ -4,6 +4,7 @@ import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/cheques/data/data_sources/cheque_data_source.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
+import 'package:ngu_app/features/cheques/domain/entities/params/multiple_cheques_params_entity.dart';
 import 'package:ngu_app/features/cheques/domain/repositories/cheque_repository.dart';
 
 class ChequeRepositoryImpl implements ChequeRepository {
@@ -50,5 +51,13 @@ class ChequeRepositoryImpl implements ChequeRepository {
       int accountId) async {
     return await apiHelper
         .safeApiCall(() => chequeDataSource.getChequesPerAccount(accountId));
+  }
+
+  @override
+  Future<Either<Failure, bool>> createMultipleCheques(ChequeEntity cheque,
+      MultipleChequesParamsEntity multipleChequesParamsEntity) async {
+    return await apiHelper.safeApiCall(() =>
+        chequeDataSource.createMultipleCheques(
+            cheque.toModel(), multipleChequesParamsEntity.toModel()));
   }
 }

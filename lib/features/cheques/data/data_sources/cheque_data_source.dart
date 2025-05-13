@@ -5,6 +5,7 @@ import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/features/upload/data/file_upload_model.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/cheques/data/models/cheque_model.dart';
+import 'package:ngu_app/features/cheques/data/models/parmas/multiple_cheques_params_model.dart';
 
 abstract class ChequeDataSource {
   Future<ChequeModel> showCheque(int id, String? direction);
@@ -13,6 +14,8 @@ abstract class ChequeDataSource {
   Future<ChequeModel> updateCheque(ChequeModel cheque, FileUploadModel files);
   Future<ChequeModel> depositCheque(int id);
   Future<List<ChequeModel>> getChequesPerAccount(int accountId);
+  Future<bool> createMultipleCheques(ChequeModel cheque,
+      MultipleChequesParamsModel multipleChequesParamsEntity);
 }
 
 class ChequeDataSourceWithHttp extends ChequeDataSource {
@@ -111,5 +114,21 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
         .toList();
 
     return cheques;
+  }
+
+  @override
+  Future<bool> createMultipleCheques(ChequeModel cheque,
+      MultipleChequesParamsModel multipleChequesParamsEntity) async {
+    final response = await networkConnection.post(APIList.account, {
+      'cheque': cheque.toJson(),
+      'multiple_cheques_params': multipleChequesParamsEntity.toJson()
+    });
+    var decodedJson = jsonDecode(response.body);
+
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    var status = decodedJson != null ? true : false;
+
+    return status;
   }
 }

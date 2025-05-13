@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/features/upload/domain/entities/file_upload_entity.dart';
 import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
+import 'package:ngu_app/features/cheques/domain/entities/params/multiple_cheques_params_entity.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/create_cheque_use_case.dart';
+import 'package:ngu_app/features/cheques/domain/use_cases/create_multiple_cheques_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/deposit_cheque_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_all_cheques_use_case.dart';
 import 'package:ngu_app/features/cheques/domain/use_cases/get_cheques_per_account_use_case.dart';
@@ -22,6 +24,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
   final ShowChequeUseCase showChequeUseCase;
   final GetAllChequesUseCase getAllChequesUseCase;
   final CreateChequeUseCase createChequeUseCase;
+  final CreateMultipleChequesUseCase createMultipleChequesUseCase;
   final UpdateChequeUseCase updateChequeUseCase;
   final DepositChequeUseCase depositChequeUseCase;
   final GetChequesPerAccountUseCase getChequesPerAccountUseCase;
@@ -30,6 +33,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
     required this.showChequeUseCase,
     required this.getAllChequesUseCase,
     required this.createChequeUseCase,
+    required this.createMultipleChequesUseCase,
     required this.updateChequeUseCase,
     required this.depositChequeUseCase,
     required this.getChequesPerAccountUseCase,
@@ -37,6 +41,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
     on<ShowChequeEvent>(_onShowCheque);
     on<GetAllChequesEvent>(_onGetAllCheques);
     on<CreateChequeEvent>(_onCreateCheque);
+    on<CreateMultipleChequeEvent>(_onCreateMultipleCheques);
     on<UpdateChequeEvent>(_onUpdateCheque);
     on<ToggleEditingEvent>(_onToggleEditing);
     on<DepositChequeEvent>(_depositEvent);
@@ -139,5 +144,20 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
     }, (data) {
       emit(LoadedChequesState(cheques: data));
     });
+  }
+
+  FutureOr<void> _onCreateMultipleCheques(
+      CreateMultipleChequeEvent event, Emitter<ChequeState> emit) async {
+    emit(LoadingChequeState());
+    var result = await createMultipleChequesUseCase(
+        event.cheque, event.chequesParamsEntity);
+
+    result.fold((failure) {
+      if (failure is ValidationFailure) {
+        emit(ValidationChequeState(errors: failure.errors));
+      } else {
+        emit(ErrorChequeState(message: failure.errors['error']));
+      }
+    }, (data) {});
   }
 }
