@@ -121,7 +121,7 @@ class ChequeDataSourceWithHttp extends ChequeDataSource {
       MultipleChequesParamsModel multipleChequesParamsEntity) async {
     final response =
         await networkConnection.post(APIList.createMultipleCheques, {
-      'cheque': cheque.toJson(),
+      ...cheque.toJson(),
       'multiple_cheques_params': multipleChequesParamsEntity.toJson()
     });
     var decodedJson = jsonDecode(response.body);

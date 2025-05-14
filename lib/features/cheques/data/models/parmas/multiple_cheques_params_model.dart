@@ -11,12 +11,12 @@ class MultipleChequesParamsModel extends MultipleChequesParamsEntity {
 
   Map<String, dynamic> toJson() {
     return {
-      'chequesCount': chequesCount,
-      'eachPayment': eachPayment,
-      'firstPayment': firstPayment,
-      'lastPayment': lastPayment,
-      'paymentWay': paymentWay,
-      'paymentWayCount': paymentWayCount
+      'cheques_count': chequesCount,
+      'each_payment': eachPayment,
+      'first_payment': firstPayment,
+      'last_payment': lastPayment,
+      'payment_way': paymentWay,
+      'payment_way_count': paymentWayCount
     };
   }
 }

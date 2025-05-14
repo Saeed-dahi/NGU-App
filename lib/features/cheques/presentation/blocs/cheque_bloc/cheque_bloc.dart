@@ -148,7 +148,7 @@ class ChequeBloc extends Bloc<ChequeEvent, ChequeState> {
 
   FutureOr<void> _onCreateMultipleCheques(
       CreateMultipleChequeEvent event, Emitter<ChequeState> emit) async {
-    emit(LoadingChequeState());
+    // emit(LoadingChequeState());
     var result = await createMultipleChequesUseCase(
         event.cheque, event.chequesParamsEntity);
 
