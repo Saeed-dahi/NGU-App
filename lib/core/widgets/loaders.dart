@@ -6,13 +6,10 @@ class Loaders {
     double strokeAlign = 8,
     double strokeWidth = 8,
   }) {
-    return Container(
-      color: AppColors.lightBgGrayColor.withOpacity(0.5),
-      child: CircularProgressIndicator(
-        color: AppColors.primaryColor,
-        strokeAlign: strokeAlign,
-        strokeWidth: strokeWidth,
-      ),
+    return CircularProgressIndicator(
+      color: AppColors.primaryColor,
+      strokeAlign: strokeAlign,
+      strokeWidth: strokeWidth,
     );
   }
 }

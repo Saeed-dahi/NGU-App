@@ -7,16 +7,17 @@ import 'package:ngu_app/features/cheques/domain/entities/params/multiple_cheques
 part 'multiple_cheques_state.dart';
 
 class MultipleChequesCubit extends Cubit<MultipleChequesState> {
-  TextEditingController chequesCountController = TextEditingController();
-  TextEditingController eachPaymentController = TextEditingController();
+  TextEditingController chequesCountController =
+      TextEditingController(text: '1');
+  TextEditingController eachPaymentController =
+      TextEditingController(text: '0');
   TextEditingController firstPaymentController =
       TextEditingController(text: '0');
   TextEditingController lastPaymentController =
       TextEditingController(text: '0');
 
   String? paymentWay;
-  TextEditingController paymentWayCountController =
-      TextEditingController(text: '0');
+  TextEditingController paymentWayCountController = TextEditingController();
 
   double chequeAmount = 0;
 
@@ -41,7 +42,11 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
     double lastPayment = double.tryParse(lastPaymentController.text) ?? 0;
 
     if (chequeAmount != 0) {
-      eachPayment = (chequeAmount - firstPayment - lastPayment) / chequesCount;
+      var n = 0;
+      if (firstPayment != 0) n++;
+      if (lastPayment != 0) n++;
+      eachPayment =
+          (chequeAmount - firstPayment - lastPayment) / (chequesCount - n);
       eachPaymentController.text = eachPayment.toString();
     }
   }
@@ -53,6 +58,6 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
         firstPayment: double.parse(firstPaymentController.text),
         lastPayment: double.parse(lastPaymentController.text),
         paymentWay: paymentWay!,
-        paymentWayCount: double.parse(paymentWayCountController.text));
+        paymentWayCount: double.tryParse(paymentWayCountController.text) ?? 0);
   }
 }

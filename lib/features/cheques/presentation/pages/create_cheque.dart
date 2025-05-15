@@ -48,22 +48,32 @@ class _CreateChequeState extends State<CreateCheque> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChequeBloc, ChequeState>(
-      builder: (context, state) {
-        if (state is LoadingChequeState) {
-          return Loaders.loading();
-        }
-        if (state is ValidationChequeState) {
-          _chequeFormCubit.errors = state.errors;
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => _multipleChequesCubit,
+        ),
+        BlocProvider(
+          create: (context) => _chequeFormCubit,
+        ),
+      ],
+      child: BlocBuilder<ChequeBloc, ChequeState>(
+        builder: (context, state) {
+          if (state is LoadingChequeState) {
+            return Loaders.loading();
+          }
+          if (state is ValidationChequeState) {
+            _chequeFormCubit.errors = state.errors;
+            return _pageBody(context);
+          }
+          if (state is ErrorChequeState) {
+            return MessageScreen(
+              text: state.message,
+            );
+          }
           return _pageBody(context);
-        }
-        if (state is ErrorChequeState) {
-          return MessageScreen(
-            text: state.message,
-          );
-        }
-        return _pageBody(context);
-      },
+        },
+      ),
     );
   }
 
