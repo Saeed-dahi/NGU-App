@@ -127,10 +127,11 @@ class StockControlSection extends StatelessWidget {
         icon: Icons.table_chart,
         onTap: () {
           context.read<TabCubit>().addNewTab(
-              title: type.tr,
-              content: InvoicesPage(
-                type: type,
-              ));
+                title: type.tr,
+                content: InvoicesPage(
+                  type: type,
+                ),
+              );
         },
       ),
       BasicListTile(
@@ -149,7 +150,14 @@ class StockControlSection extends StatelessWidget {
       BasicListTile(
         title: 'returns'.tr,
         icon: Icons.autorenew,
-        onTap: () {},
+        onTap: () {
+          context.read<TabCubit>().addNewTab(
+                title: '${'returns'.tr} ${type.tr}',
+                content: InvoicePage(
+                  type: '${type}_return',
+                ),
+              );
+        },
       ),
       BasicListTile(
         title: 'returns_table'.tr,

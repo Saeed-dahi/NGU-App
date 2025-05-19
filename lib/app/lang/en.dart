@@ -165,6 +165,8 @@ Map<String, String> en = {
   'ready_invoices_table': 'Ready Invoices Table',
   'tax_invoices_table': 'Tax Invoices Table',
   'returns': 'Returns',
+  'sales_return': 'Sales Return',
+  'purchase_return': 'Purchase Return',
   'returns_table': ' Returns Table',
   'tax_returns_table': 'Tax Returns Table',
   'goods_account': 'Goods Account',

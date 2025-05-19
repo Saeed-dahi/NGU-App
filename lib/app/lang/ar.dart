@@ -165,6 +165,8 @@ Map<String, String> ar = {
   'ready_invoices_table': 'جدول الفواتير الجاهزة',
   'tax_invoices_table': 'جدول ضريبة الفواتير',
   'returns': 'مرتجعات',
+  'sales_return': 'مرتجع مبيعات',
+  'purchase_return': 'مرتجع مشتريات',
   'returns_table': 'جدول المرتجعات',
   'tax_returns_table': 'جدول ضريبة المرتجعات',
   'goods_account': 'حساب البضاعة',

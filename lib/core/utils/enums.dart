@@ -22,7 +22,7 @@ enum ProductType {
   service
 }
 
-enum InvoiceType { sales, purchase }
+enum InvoiceType { sales, purchase, sales_return, purchase_return }
 
 enum PrinterType { receipt, tax_invoice }
 

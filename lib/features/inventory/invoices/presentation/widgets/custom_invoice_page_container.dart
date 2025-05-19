@@ -25,7 +25,7 @@ class CustomInvoicePageContainer extends StatelessWidget {
             right: Dimensions.primaryPadding, left: Dimensions.primaryPadding),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.borderRadius),
-          color: _getBackgroundColor(type).withOpacity(0.05),
+          color: _getBackgroundColor(type).withAlpha(20),
         ),
         child: child);
   }

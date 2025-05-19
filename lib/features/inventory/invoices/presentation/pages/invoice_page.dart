@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
@@ -195,20 +195,22 @@ class _InvoicePageState extends State<InvoicePage> {
   }
 
   Widget _invoiceTabWidgets(bool isSavedInvoice) {
-    return ListView(
-      children: [
-        CustomInvoiceFields(
-          enable: !isSavedInvoice,
-          invoiceBloc: _invoiceBloc,
-          invoiceFormCubit: _invoiceFormCubit,
-          errors: _invoiceBloc.getValidationErrors,
-        ),
-        _statusHint(),
-        CustomInvoicePlutoTable(
-          invoice: _invoiceBloc.getInvoiceEntity,
-          readOnly: isSavedInvoice,
-        ),
-      ],
+    return CustomSavedTab(
+      child: ListView(
+        children: [
+          CustomInvoiceFields(
+            enable: !isSavedInvoice,
+            invoiceBloc: _invoiceBloc,
+            invoiceFormCubit: _invoiceFormCubit,
+            errors: _invoiceBloc.getValidationErrors,
+          ),
+          _statusHint(),
+          CustomInvoicePlutoTable(
+            invoice: _invoiceBloc.getInvoiceEntity,
+            readOnly: isSavedInvoice,
+          ),
+        ],
+      ),
     );
   }
 
@@ -232,22 +234,22 @@ class _InvoicePageState extends State<InvoicePage> {
     );
   }
 
-  Widget _buildCustomFooter(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(Dimensions.primaryPadding),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal! * _invoiceBloc.getInvoiceEntity.totalTax! / 100).toString()}',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          Text(
-            '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity.total).toString()}',
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildCustomFooter(BuildContext context) {
+  //   return Padding(
+  //     padding: const EdgeInsets.all(Dimensions.primaryPadding),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         Text(
+  //           '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal! * _invoiceBloc.getInvoiceEntity.totalTax! / 100).toString()}',
+  //           style: const TextStyle(fontWeight: FontWeight.w600),
+  //         ),
+  //         Text(
+  //           '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity.total).toString()}',
+  //           style: const TextStyle(fontWeight: FontWeight.w600),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
@@ -172,19 +173,21 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
   }
 
   Widget _invoiceTabWidgets(bool isSavedInvoice) {
-    return ListView(
-      children: [
-        CustomInvoiceFields(
-          enable: !isSavedInvoice,
-          invoiceBloc: _invoiceBloc,
-          invoiceFormCubit: _invoiceFormCubit,
-          errors: _invoiceBloc.getValidationErrors,
-        ),
-        CustomInvoicePlutoTable(
-          readOnly: isSavedInvoice,
-          invoice: _invoiceBloc.getInvoiceEntity,
-        ),
-      ],
+    return CustomSavedTab(
+      child: ListView(
+        children: [
+          CustomInvoiceFields(
+            enable: !isSavedInvoice,
+            invoiceBloc: _invoiceBloc,
+            invoiceFormCubit: _invoiceFormCubit,
+            errors: _invoiceBloc.getValidationErrors,
+          ),
+          CustomInvoicePlutoTable(
+            readOnly: isSavedInvoice,
+            invoice: _invoiceBloc.getInvoiceEntity,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -46,7 +46,7 @@ class CustomListTile extends StatelessWidget {
                   ),
             )
           : null,
-      splashColor: AppColors.white.withOpacity(0.3),
+      splashColor: AppColors.white.withAlpha(128),
       onTap: () {
         onTap();
       },

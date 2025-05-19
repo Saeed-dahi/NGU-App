@@ -42,6 +42,7 @@ class MultipleChequesCubit extends Cubit<MultipleChequesState> {
     double lastPayment = double.tryParse(lastPaymentController.text) ?? 0;
 
     if (chequeAmount != 0) {
+      // To include the first and last payment as cheque correctly 
       var n = 0;
       if (firstPayment != 0) n++;
       if (lastPayment != 0) n++;
