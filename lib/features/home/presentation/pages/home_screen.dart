@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
+import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/dialogs/confirm_dialog.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/drawer/app_drawer.dart';
@@ -13,7 +14,6 @@ import 'package:ngu_app/core/widgets/short_cut/global_key_listener.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
 import 'package:ngu_app/features/home/presentation/cubits/home_cubit/home_cubit.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
-import 'package:ngu_app/features/home/presentation/widgets/tab_content.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -159,8 +159,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             .map(
               (tab) => Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TabContent(
-                    key: PageStorageKey(tab.title), content: tab.content),
+                child: CustomSavedTab(
+                    key: PageStorageKey(tab.title), child: tab.content),
               ),
             )
             .toList(),

@@ -15,6 +15,12 @@ class CustomInvoicePageContainer extends StatelessWidget {
     if (InvoiceType.sales.name == type) {
       return Colors.blue;
     }
+    if (InvoiceType.sales_return.name == type) {
+      return Colors.red;
+    }
+    if (InvoiceType.purchase_return.name == type) {
+      return Colors.purple;
+    }
     return Colors.white;
   }
 

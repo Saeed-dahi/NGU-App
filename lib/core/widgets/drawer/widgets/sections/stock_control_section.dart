@@ -148,22 +148,21 @@ class StockControlSection extends StatelessWidget {
         color: AppColors.primaryColor,
       ),
       BasicListTile(
-        title: 'returns'.tr,
-        icon: Icons.autorenew,
-        onTap: () {
-          context.read<TabCubit>().addNewTab(
-                title: '${'returns'.tr} ${type.tr}',
-                content: InvoicePage(
-                  type: '${type}_return',
-                ),
-              );
-        },
-      ),
+          title: 'returns'.tr,
+          icon: Icons.autorenew,
+          onTap: () => context.read<TabCubit>().addNewTab(
+              title: '${'returns'.tr} ${type.tr}',
+              content: InvoicePage(
+                type: '${type}_return',
+              ))),
       BasicListTile(
-        title: 'returns_table'.tr,
-        icon: Icons.table_chart,
-        onTap: () {},
-      ),
+          title: 'returns_table'.tr,
+          icon: Icons.table_chart,
+          onTap: () => context.read<TabCubit>().addNewTab(
+              title: '${'returns'.tr} ${type.tr}',
+              content: InvoicesPage(
+                type: '${type}_return',
+              ))),
       BasicListTile(
         title: 'tax_returns_table'.tr,
         icon: Icons.request_quote,
