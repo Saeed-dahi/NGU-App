@@ -8,7 +8,6 @@ class CustomDatePicker extends StatefulWidget {
   final TextEditingController dateInput;
   final String labelText;
   Function? onPressed = () {};
-
   final bool enabled;
   final bool required;
   final bool readOnly;
@@ -32,17 +31,18 @@ class CustomDatePicker extends StatefulWidget {
 }
 
 class _CustomDatePicker extends State<CustomDatePicker> {
-  @override
-  void initState() {
+  void _initController() {
     if (widget.dateInput.text.isNotEmpty) {
       widget.dateInput.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.parse(widget.dateInput.text));
+    } else {
+      widget.dateInput.text = DateTime.now().toString().substring(0, 10);
     }
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    _initController();
     return CustomInputField(
       controller: widget.dateInput,
       inputType: TextInputType.datetime,
@@ -61,7 +61,6 @@ class _CustomDatePicker extends State<CustomDatePicker> {
 
         if (pickedDate != null) {
           String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-
           setState(() {
             widget.dateInput.text = formattedDate;
             FocusScope.of(context).nextFocus();

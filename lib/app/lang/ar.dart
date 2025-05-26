@@ -206,8 +206,9 @@ Map<String, String> ar = {
   'contact_person_name': 'اسم شخص للتواصل',
   'address': 'العنوان',
   'barcode': 'الباركود',
+  'tax_number': 'الرقم الضريبي',
   'info_in_invoice': 'معلومات في الفاتورة',
-  'description': 'الوصف',
+  'description': 'الوصف (البيان)',
   'file': 'ملف مرفق',
   'debit_balance': 'الرصيد الدائن',
   'credit_balance': 'الرصيد المدين',
@@ -239,7 +240,7 @@ Map<String, String> ar = {
   'sub': 'فرعي',
 
   // Account statement
-  'document_number': 'المستند',
+  'document_number': 'رقم الوثيقة',
 
   // Language
   'en': 'الانجليزية',

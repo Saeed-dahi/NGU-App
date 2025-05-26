@@ -39,7 +39,8 @@ class _AccountInformationState extends State<AccountInformation> {
       _addressController,
       _barcodeController,
       _descriptionController,
-      _invoiceInformationController;
+      _invoiceInformationController,
+      _taxNumberController;
 
   late FilePickerController _fileController;
 
@@ -62,6 +63,7 @@ class _AccountInformationState extends State<AccountInformation> {
     _barcodeController = TextEditingController();
     _descriptionController = TextEditingController();
     _invoiceInformationController = TextEditingController();
+    _taxNumberController = TextEditingController();
 
     super.initState();
   }
@@ -78,6 +80,7 @@ class _AccountInformationState extends State<AccountInformation> {
     _barcodeController.dispose();
     _descriptionController.dispose();
     _invoiceInformationController.dispose();
+    _taxNumberController.dispose();
     super.dispose();
   }
 
@@ -206,6 +209,14 @@ class _AccountInformationState extends State<AccountInformation> {
                   error: _errors['info_in_invoice']?.join('\n'),
                   autofocus: false,
                 ),
+                CustomInputField(
+                  inputType: TextInputType.name,
+                  enabled: widget.enableEditing,
+                  controller: _taxNumberController,
+                  helper: 'tax_number'.tr,
+                  error: _errors['tax_number']?.join('\n'),
+                  autofocus: false,
+                ),
                 CustomFilePicker(
                   enableEditing: widget.enableEditing,
                   controller: _fileController,
@@ -247,6 +258,7 @@ class _AccountInformationState extends State<AccountInformation> {
             address: _addressController.text,
             description: _descriptionController.text,
             infoInInvoice: _invoiceInformationController.text,
+            taxNumber: _taxNumberController.text,
             barcode: _barcodeController.text,
           ),
           files: _fileController.files,
@@ -265,5 +277,6 @@ class _AccountInformationState extends State<AccountInformation> {
     _barcodeController = TextEditingController(text: account.barcode);
     _invoiceInformationController =
         TextEditingController(text: account.infoInInvoice);
+    _taxNumberController = TextEditingController(text: account.taxNumber);
   }
 }

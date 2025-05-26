@@ -92,6 +92,7 @@ class CustomInputField extends StatelessWidget {
             label: isCenterLabel ? Center(child: Text(label)) : Text(label),
             hintText: hint,
             prefixText: prefix,
+            prefixStyle: const TextStyle(color: AppColors.primaryColorLow),
             suffixText: suffix,
             helperText: helper,
             errorText: error,

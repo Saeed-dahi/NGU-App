@@ -206,6 +206,7 @@ Map<String, String> en = {
   'contact_person_name': 'Contact Person Name',
   'address': 'Address',
   'barcode': 'Barcode',
+  'tax_number': 'Tax Number',
   'info_in_invoice': 'Info in Invoice',
   'description': 'Description',
   'file': 'File',

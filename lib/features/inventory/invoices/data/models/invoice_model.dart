@@ -41,7 +41,7 @@ class InvoiceModel extends InvoiceEntity {
       account: InvoiceAccountModel.fromJson(json['account']),
       goodsAccount: InvoiceAccountModel.fromJson(json['goods_account']),
       taxAccount: InvoiceAccountModel.fromJson(json['tax_account']),
-      totalTax: double.tryParse(json['total_tax'].toString()),
+      totalTax: double.tryParse(json['total_tax'].toString()) ?? 0.0,
       discountAccount: InvoiceAccountModel.fromJson(json['discount_account']),
       totalDiscount: double.tryParse(json['total_discount'].toString()),
       invoiceItems: json['items']

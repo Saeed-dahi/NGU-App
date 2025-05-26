@@ -13,6 +13,7 @@ class AccountInformationEntity extends Equatable {
   final String? description;
   final String? infoInInvoice;
   final String? barcode;
+  final String? taxNumber;
   final List<String>? files;
 
   const AccountInformationEntity(
@@ -27,6 +28,7 @@ class AccountInformationEntity extends Equatable {
       this.description,
       this.infoInInvoice,
       this.barcode,
+      this.taxNumber,
       this.files});
 
   AccountInformationModel toModel() {
@@ -41,6 +43,7 @@ class AccountInformationEntity extends Equatable {
         description: description,
         infoInInvoice: infoInInvoice,
         barcode: barcode,
+        taxNumber: taxNumber,
         files: files);
   }
 
@@ -57,6 +60,7 @@ class AccountInformationEntity extends Equatable {
         description,
         infoInInvoice,
         barcode,
+        taxNumber,
         files
       ];
 }

@@ -13,6 +13,7 @@ class AccountInformationModel extends AccountInformationEntity {
       required super.description,
       required super.infoInInvoice,
       required super.barcode,
+      required super.taxNumber,
       required super.files});
 
   factory AccountInformationModel.fromJson(Map<String, dynamic> json) {
@@ -27,7 +28,9 @@ class AccountInformationModel extends AccountInformationEntity {
       closingAccountName: json['closing_account'] ?? '',
       description: json['description'] ?? '',
       infoInInvoice: json['info_in_invoice'] ?? '',
+      taxNumber: json['tax_number'],
       barcode: json['barcode'] ?? '',
+      
       files: json['file'] != null ? List<String>.from(json['file']) : null,
     );
   }
@@ -44,6 +47,7 @@ class AccountInformationModel extends AccountInformationEntity {
       if (description != null) 'description': description,
       if (infoInInvoice != null) 'info_in_invoice': infoInInvoice,
       if (barcode != null) 'barcode': barcode,
+      if (taxNumber != null) 'tax_number': taxNumber,
       if (files != null) 'file': files
     };
   }
