@@ -17,7 +17,7 @@ Map<String, String> ar = {
   'success': 'تمت العملية بنجاح',
   'options': 'خيارات',
   'date': 'التاريخ',
-  'created_at': 'تاريخ الحفظ',
+  'created_at': 'تاريخ الإصدار',
   'updated_at': 'تاريخ التعديل',
   'due_date': 'تاريخ الاستحقاق',
   'are_you_sure': 'هل أنت متأكد',
