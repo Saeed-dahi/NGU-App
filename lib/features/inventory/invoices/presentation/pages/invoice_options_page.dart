@@ -57,7 +57,7 @@ class InvoiceOptionsPage extends StatelessWidget {
           children: [
             CustomInputField(
               label: 'description'.tr,
-              controller: invoiceFormCubit.taxAccountDescriptionController,
+              controller: invoiceFormCubit.descriptionController,
               enabled: enableEditing,
               error: errors['tax_account_description']?.join('\n'),
               required: false,

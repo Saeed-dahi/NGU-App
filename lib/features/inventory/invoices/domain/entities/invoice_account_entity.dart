@@ -5,7 +5,7 @@ class InvoiceAccountEntity extends Equatable {
   String? code;
   String? arName;
   String? enName;
-  String? description;
+  
   get getId => id;
 
   set setId(id) => this.id = id;
@@ -22,12 +22,10 @@ class InvoiceAccountEntity extends Equatable {
 
   set setEnName(enName) => this.enName = enName;
 
-  get getDescription => description;
-
-  set setDescription(description) => this.description = description;
+  
 
   InvoiceAccountEntity(
-      {this.id, this.code, this.arName, this.enName, this.description});
+      {this.id, this.code, this.arName, this.enName});
 
   InvoiceAccountEntity copyWith(
       {int? id,
@@ -40,10 +38,10 @@ class InvoiceAccountEntity extends Equatable {
       code: code ?? this.code,
       arName: arName ?? this.arName,
       enName: enName ?? this.enName,
-      description: description ?? this.description,
+      
     );
   }
 
   @override
-  List<Object?> get props => [id, code, arName, enName, description];
+  List<Object?> get props => [id, code, arName, enName,];
 }

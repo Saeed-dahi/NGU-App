@@ -16,6 +16,7 @@ class InvoiceEntity extends Equatable {
   final double? subTotal;
   final double? total;
   final String? notes;
+  final String? description;
   final InvoiceAccountEntity? account;
   final InvoiceAccountEntity? goodsAccount;
   final InvoiceAccountEntity? taxAccount;
@@ -37,6 +38,7 @@ class InvoiceEntity extends Equatable {
       this.subTotal,
       this.total,
       this.notes,
+      this.description,
       this.account,
       this.goodsAccount,
       this.taxAccount,
@@ -59,6 +61,7 @@ class InvoiceEntity extends Equatable {
         subTotal: subTotal,
         total: total,
         notes: notes,
+        description: description,
         account: account,
         goodsAccount: goodsAccount,
         taxAccount: taxAccount,
@@ -82,6 +85,7 @@ class InvoiceEntity extends Equatable {
         subTotal,
         total,
         notes,
+        description,
         account,
         goodsAccount,
         taxAccount,

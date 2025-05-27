@@ -18,21 +18,16 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   late TextEditingController dueDateController = TextEditingController();
   late TextEditingController notesController = TextEditingController();
   late TextEditingController addressController = TextEditingController();
+  late TextEditingController descriptionController = TextEditingController();
   late InvoiceAccountEntity accountController;
 
   late InvoiceAccountEntity goodsAccountController;
-  late TextEditingController goodsAccountDescriptionController =
-      TextEditingController();
 
   late InvoiceAccountEntity taxAccountController;
   late TextEditingController taxAmountController = TextEditingController();
-  late TextEditingController taxAccountDescriptionController =
-      TextEditingController();
 
   late InvoiceAccountEntity discountAccountController;
   late TextEditingController discountAmountController = TextEditingController();
-  late TextEditingController discountAccountDescriptionController =
-      TextEditingController();
 
   String? natureController;
 
@@ -48,22 +43,18 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     notesController = TextEditingController(text: invoice.notes);
     accountController = invoice.account!;
     addressController = TextEditingController(text: invoice.address);
+    descriptionController = TextEditingController(text: invoice.description);
 
     goodsAccountController = invoice.goodsAccount!;
-    goodsAccountDescriptionController =
-        TextEditingController(text: invoice.goodsAccount!.description);
 
     taxAccountController = invoice.taxAccount!;
-    taxAccountDescriptionController =
-        TextEditingController(text: invoice.taxAccount!.description);
+
     taxAmountController =
         TextEditingController(text: invoice.totalTax.toString());
 
     discountAccountController = invoice.discountAccount!;
     discountAmountController =
         TextEditingController(text: invoice.totalDiscount.toString());
-    discountAccountDescriptionController =
-        TextEditingController(text: invoice.discountAccount!.description);
   }
 
   disposeControllers() {
@@ -72,11 +63,9 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     notesController.dispose();
     numberController.dispose();
     addressController.dispose();
-    goodsAccountDescriptionController.dispose();
-    taxAccountDescriptionController.dispose();
+    descriptionController.dispose();
     taxAmountController.dispose();
     discountAmountController.dispose();
-    discountAccountDescriptionController.dispose();
   }
 
   InvoiceEntity invoiceEntity(Enum status) {
@@ -90,6 +79,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       invoiceNature: natureController,
       address: addressController.text,
       notes: notesController.text,
+      description: descriptionController.text,
       account: accountController,
       goodsAccount: goodsAccountController,
       taxAccount: taxAccountController,
