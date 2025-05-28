@@ -1,8 +1,9 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
+import 'package:ngu_app/core/widgets/snack_bar.dart';
 
 class CustomDatePicker extends StatefulWidget {
   final TextEditingController dateInput;
@@ -44,29 +45,56 @@ class _CustomDatePicker extends State<CustomDatePicker> {
   Widget build(BuildContext context) {
     _initController();
     return CustomInputField(
-      controller: widget.dateInput,
-      inputType: TextInputType.datetime,
-      autofocus: widget.autofocus,
-      label: widget.labelText,
-      readOnly: widget.readOnly,
-      enabled: widget.enabled,
-      required: widget.required,
-      error: widget.error,
-      onTap: () async {
-        DateTime? pickedDate = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2020),
-            lastDate: DateTime(2050));
+        controller: widget.dateInput,
+        inputType: TextInputType.datetime,
+        autofocus: widget.autofocus,
+        label: widget.labelText,
+        format: FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+        readOnly: widget.readOnly,
+        enabled: widget.enabled,
+        required: widget.required,
+        error: widget.error,
+        onChanged: (value) => _onChange(value),
+        onTap: () async {
+          DateTime? date = await _pickDate(context);
+          _updateUiAfterChangeDate(date);
+        },
+        onEditingComplete: () {
+          try {
+            DateFormat format = DateFormat('dd-MM-yyyy');
+            DateTime date = format.parseStrict(widget.dateInput.text);
+            _updateUiAfterChangeDate(date);
+          } catch (e) {
+            ShowSnackBar.showValidationSnackbar(messages: ['error_date'.tr]);
+            FocusScope.of(context).previousFocus();
+          }
+        });
+  }
 
-        if (pickedDate != null) {
-          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-          setState(() {
-            widget.dateInput.text = formattedDate;
-            FocusScope.of(context).nextFocus();
-          });
-        } else {}
-      },
-    );
+  _onChange(String value) {
+    if (value.length == 2) {
+      widget.dateInput.text += '-';
+    }
+    if (value.length == 5) {
+      widget.dateInput.text += '-';
+    }
+  }
+
+  void _updateUiAfterChangeDate(DateTime? date) {
+    if (date != null) {
+      String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+
+      setState(() {
+        widget.dateInput.text = formattedDate;
+      });
+    }
+  }
+
+  Future<DateTime?> _pickDate(BuildContext context) {
+    return showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2020),
+        lastDate: DateTime(2050));
   }
 }
