@@ -69,6 +69,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               helper: '%',
               format: FilteringTextInputFormatter.digitsOnly,
               error: errors['tax_amount']?.join('\n'),
+              readOnly: true,
             ),
             CustomDropdown(
               dropdownValue: getEnumValues(AccountNature.values),

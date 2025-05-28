@@ -6,6 +6,7 @@ import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_item
 class InvoiceEntity extends Equatable {
   final int? id;
   final int? invoiceNumber;
+  final String? documentNumber;
   final String? invoiceType;
   final String? date;
   final String? dueDate;
@@ -28,6 +29,7 @@ class InvoiceEntity extends Equatable {
   const InvoiceEntity(
       {this.id,
       this.invoiceNumber,
+      this.documentNumber,
       this.invoiceType,
       this.date,
       this.dueDate,
@@ -51,6 +53,7 @@ class InvoiceEntity extends Equatable {
     return InvoiceModel(
         id: id,
         invoiceNumber: invoiceNumber,
+        documentNumber: documentNumber,
         invoiceType: invoiceType,
         date: date,
         dueDate: dueDate,
@@ -75,6 +78,7 @@ class InvoiceEntity extends Equatable {
   List<Object?> get props => [
         id,
         invoiceNumber,
+        documentNumber,
         invoiceType,
         date,
         dueDate,

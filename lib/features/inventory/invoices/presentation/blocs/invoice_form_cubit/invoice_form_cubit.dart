@@ -12,8 +12,10 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   final String invoiceType;
 
   TextEditingController numberController = TextEditingController();
+  TextEditingController documentNumberController = TextEditingController();
   final TextEditingController invoiceSearchNumController =
       TextEditingController();
+
   late TextEditingController dateController = TextEditingController();
   late TextEditingController dueDateController = TextEditingController();
   late TextEditingController notesController = TextEditingController();
@@ -38,6 +40,8 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   initControllers(InvoiceEntity invoice) {
     numberController =
         TextEditingController(text: invoice.invoiceNumber.toString());
+    documentNumberController =
+        TextEditingController(text: invoice.documentNumber.toString());
     dateController = TextEditingController(text: invoice.date);
     dueDateController = TextEditingController(text: invoice.dueDate);
     notesController = TextEditingController(text: invoice.notes);
@@ -62,6 +66,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     dueDateController.dispose();
     notesController.dispose();
     numberController.dispose();
+    documentNumberController.dispose();
     addressController.dispose();
     descriptionController.dispose();
     taxAmountController.dispose();
@@ -72,6 +77,9 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     return InvoiceEntity(
       id: invoiceBloc.getInvoiceEntity.id,
       invoiceNumber: int.parse(numberController.text),
+      documentNumber: documentNumberController.text == ''
+          ? numberController.text
+          : documentNumberController.text,
       invoiceType: invoiceType,
       date: dateController.text,
       dueDate: dueDateController.text,
@@ -85,7 +93,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       taxAccount: taxAccountController,
       totalTax: double.tryParse(taxAmountController.text) ?? 5,
       discountAccount: discountAccountController,
-      totalDiscount: double.tryParse(taxAmountController.text) ?? 0,
+      totalDiscount: double.tryParse(discountAmountController.text) ?? 0,
     );
   }
 

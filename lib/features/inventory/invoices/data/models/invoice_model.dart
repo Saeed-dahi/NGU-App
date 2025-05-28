@@ -6,6 +6,7 @@ class InvoiceModel extends InvoiceEntity {
   const InvoiceModel(
       {super.id,
       super.invoiceNumber,
+      super.documentNumber,
       super.invoiceType,
       super.date,
       super.dueDate,
@@ -29,6 +30,7 @@ class InvoiceModel extends InvoiceEntity {
     return InvoiceModel(
       id: json['id'],
       invoiceNumber: json['invoice_number'],
+      documentNumber: json['document_number'] ?? '',
       invoiceType: json['type'] ?? '',
       date: json['date'] ?? '',
       dueDate: json['due_date'] ?? '',
@@ -57,6 +59,7 @@ class InvoiceModel extends InvoiceEntity {
     return {
       'id': id,
       'invoice_number': invoiceNumber,
+      'document_number': documentNumber,
       'type': invoiceType,
       'date': date,
       'due_date': dueDate,

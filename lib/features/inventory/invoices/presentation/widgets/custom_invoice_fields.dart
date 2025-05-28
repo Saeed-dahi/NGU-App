@@ -38,7 +38,7 @@ class CustomInvoiceFields extends StatelessWidget {
               CustomInputField(
                 label: 'document_number'.tr,
                 enabled: enable,
-                controller: invoiceFormCubit.addressController,
+                controller: invoiceFormCubit.documentNumberController,
                 error: errors['document_number']?.join('\n'),
                 required: false,
               ),
