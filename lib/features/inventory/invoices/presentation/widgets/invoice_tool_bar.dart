@@ -39,7 +39,7 @@ class InvoiceToolBar extends StatelessWidget {
                   context.read<InvoiceFormCubit>().invoiceSearchNumController,
               enable: true,
               width: 0.1,
-              hint: 'Search',
+              hint: 'search'.tr,
               onEditingComplete: onInvoiceSearch),
           _crudActions(context),
         ],

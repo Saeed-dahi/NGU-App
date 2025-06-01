@@ -174,6 +174,7 @@ Map<String, String> ar = {
   'tax_amount': 'قيمة الضريبة',
   'discount_account': 'حساب الحسم',
   'discount_amount': 'قيمة الحسم',
+  'constant_value': 'قيمة ثابتة',
   'quantity': 'الكمية',
   'discount': 'الحسم',
   'price': 'السعر',

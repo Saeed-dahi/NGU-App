@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
@@ -209,6 +211,7 @@ class _InvoicePageState extends State<InvoicePage> {
             invoice: _invoiceBloc.getInvoiceEntity,
             readOnly: isSavedInvoice,
           ),
+          _buildCustomFooter(context),
         ],
       ),
     );
@@ -234,22 +237,55 @@ class _InvoicePageState extends State<InvoicePage> {
     );
   }
 
-  // Widget _buildCustomFooter(BuildContext context) {
-  //   return Padding(
-  //     padding: const EdgeInsets.all(Dimensions.primaryPadding),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(
-  //           '${'tax_amount'.tr} (${_invoiceBloc.getInvoiceEntity.totalTax}%): ${(_invoiceBloc.getInvoiceEntity.subTotal! * _invoiceBloc.getInvoiceEntity.totalTax! / 100).toString()}',
-  //           style: const TextStyle(fontWeight: FontWeight.w600),
-  //         ),
-  //         Text(
-  //           '${'total'.tr}: ${(_invoiceBloc.getInvoiceEntity.total).toString()}',
-  //           style: const TextStyle(fontWeight: FontWeight.w600),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildCustomFooter(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.all(
+          Radius.circular(Dimensions.borderRadius),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: Dimensions.primaryPadding,
+            children: [
+              Text(
+                'discount_amount'.tr,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              CustomEditableText(
+                controller: TextEditingController(),
+                helper: '%',
+                enable: true,
+              ),
+              CustomEditableText(
+                controller: TextEditingController(),
+                helper: 'constant_value'.tr,
+                enable: true,
+              )
+            ],
+          ),
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: Dimensions.primaryPadding,
+            children: [
+              Text(
+                'total'.tr,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              CustomEditableText(
+                controller: TextEditingController(),
+                helper: '%',
+                enable: true,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

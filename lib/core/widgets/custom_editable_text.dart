@@ -6,6 +6,7 @@ class CustomEditableText extends StatelessWidget {
   final TextEditingController controller;
   final double width;
   final String hint;
+  final String helper;
   void Function()? onEditingComplete;
   void Function(String)? onChanged;
   final bool enable;
@@ -16,35 +17,39 @@ class CustomEditableText extends StatelessWidget {
       required this.controller,
       this.width = 0.05,
       this.hint = '',
+      this.helper = '',
       this.enable = false});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: enable ? AppColors.white : AppColors.secondaryColor,
-        border: Border.all(
-            color:
-                enable ? AppColors.secondaryColor : AppColors.primaryColorLow),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(Dimensions.primaryRadius),
-        ),
-      ),
-      width: MediaQuery.sizeOf(context).width * width,
-      child: Stack(
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Positioned(
-            right: 0,
-            top: 1,
-            child: Text(
-              hint,
-              style: const TextStyle(color: Colors.grey),
-            ),
+          Text(
+            hint,
+            style: const TextStyle(
+                color: Colors.grey, fontSize: Dimensions.numberTextSize),
           ),
-          EditableText(
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color: enable
+                  ? AppColors.primaryColorLow.withAlpha(51)
+                  : AppColors.secondaryColor,
+              border: Border.all(
+                  color: enable ? AppColors.black : AppColors.primaryColorLow,
+                  width: 0.6),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(Dimensions.primaryRadius),
+              ),
+            ),
+            width: MediaQuery.sizeOf(context).width * width,
+            child: EditableText(
               controller: controller,
               focusNode: FocusNode(),
+              autofocus: true,
               maxLines: 1,
               readOnly: !enable,
               style: const TextStyle(color: AppColors.black),
@@ -52,7 +57,15 @@ class CustomEditableText extends StatelessWidget {
               selectionColor: AppColors.primaryColorLow,
               onEditingComplete: onEditingComplete,
               onChanged: onChanged,
-              backgroundCursorColor: AppColors.primaryColor),
+              backgroundCursorColor: AppColors.primaryColor,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            helper,
+            style: const TextStyle(
+                color: Colors.grey, fontSize: Dimensions.numberTextSize),
+          ),
         ],
       ),
     );

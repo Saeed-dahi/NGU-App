@@ -174,6 +174,7 @@ Map<String, String> en = {
   'tax_amount': 'Tax Amount',
   'discount_account': 'Discount Account',
   'discount_amount': 'Discount Amount',
+  'constant_value': 'Constant Value',
   'quantity': 'Quantity',
   'discount': 'Discount',
   'price': 'Price',
