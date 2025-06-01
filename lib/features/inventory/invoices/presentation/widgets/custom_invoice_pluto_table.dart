@@ -8,6 +8,7 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
@@ -22,7 +23,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.5,
+      height: MediaQuery.sizeOf(context).height * 0.45,
       child: CustomPlutoTable(
         controller: _plutoGridController,
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
@@ -38,6 +39,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
           context
               .read<PreviewInvoiceItemCubit>()
               .onColumnChange(context, _plutoGridController.stateManager);
+
+          context
+              .read<InvoiceFormCubit>()
+              .initDiscountsController(_plutoGridController);
         },
         customSpaceKeyAction: () {
           context.read<PreviewInvoiceItemCubit>().handleUnitColumnChange(
@@ -46,7 +51,8 @@ class CustomInvoicePlutoTable extends StatelessWidget {
         onLoaded: (event) {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
-          context.read<InvoiceBloc>().setStateManager = event.stateManager;
+          context.read<InvoiceBloc>().setPlutoGridController =
+              _plutoGridController;
         },
       ),
     );

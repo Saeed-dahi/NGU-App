@@ -14,6 +14,7 @@ import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
 import 'package:ngu_app/core/features/printing/presentation/pages/tax_invoice_page.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/preview_invoice_item_entity.dart';
@@ -28,7 +29,6 @@ import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
 
-import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:printing/printing.dart';
 import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
     as usb_esc_printer_windows;
@@ -52,12 +52,13 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   Map<String, dynamic> _validationErrors = {};
   Map<String, dynamic> get getValidationErrors => _validationErrors;
 
-  late PlutoGridStateManager _stateManager;
-  PlutoGridStateManager get getStateManger => _stateManager;
-  set setStateManager(PlutoGridStateManager sts) => _stateManager = sts;
+  late PlutoGridController _plutoGridController;
+  PlutoGridController get getPlutoGridController => _plutoGridController;
+  set setPlutoGridController(PlutoGridController sts) =>
+      _plutoGridController = sts;
 
   List<InvoiceItemsEntityParams> get invoiceItems {
-    return _stateManager.rows.where((row) {
+    return _plutoGridController.stateManager!.rows.where((row) {
       final data = row.data;
       return data != null;
     }).map((row) {

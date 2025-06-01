@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:ngu_app/core/helper/formatter_class.dart';
+import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
@@ -29,7 +30,13 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   late TextEditingController taxAmountController = TextEditingController();
 
   late InvoiceAccountEntity discountAccountController;
-  late TextEditingController discountAmountController = TextEditingController();
+  late TextEditingController discountPercentageController =
+      TextEditingController();
+  late TextEditingController discountConstantValueController =
+      TextEditingController();
+  late TextEditingController totalController = TextEditingController();
+  late TextEditingController subTotalAfterDiscountController =
+      TextEditingController();
 
   String? natureController;
 
@@ -57,8 +64,12 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
         TextEditingController(text: invoice.totalTax.toString());
 
     discountAccountController = invoice.discountAccount!;
-    discountAmountController =
+    discountPercentageController =
         TextEditingController(text: invoice.totalDiscount.toString());
+    discountConstantValueController =
+        TextEditingController(text: invoice.totalDiscount.toString());
+    totalController.text = invoice.total.toString();
+    subTotalAfterDiscountController.text = '0';
   }
 
   disposeControllers() {
@@ -70,7 +81,9 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     addressController.dispose();
     descriptionController.dispose();
     taxAmountController.dispose();
-    discountAmountController.dispose();
+    discountPercentageController.dispose();
+    discountConstantValueController.dispose();
+    totalController.dispose();
   }
 
   InvoiceEntity invoiceEntity(Enum status) {
@@ -93,7 +106,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       taxAccount: taxAccountController,
       totalTax: double.tryParse(taxAmountController.text) ?? 5,
       discountAccount: discountAccountController,
-      totalDiscount: double.tryParse(discountAmountController.text) ?? 0,
+      totalDiscount: double.tryParse(discountPercentageController.text) ?? 0,
     );
   }
 
@@ -107,5 +120,34 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       return false;
     }
     return true;
+  }
+
+  initDiscountsController(PlutoGridController plutoGridController) async {
+    totalController.text = plutoGridController.columnSum('total').toString();
+    plutoGridController.stateManager!.notifyListeners();
+  }
+
+  onChangeDiscountValue(
+      bool isPercentage, PlutoGridController plutoGridController) {
+    double subTotal = plutoGridController.columnSum('sub_total');
+    double discountAmount = 0;
+    if (isPercentage) {
+      discountAmount = FormatterClass.getDiscountMultiplier(
+          discountPercentageController.text);
+
+      subTotalAfterDiscountController.text =
+          (subTotal * discountAmount).toString();
+      discountConstantValueController.text = '0';
+    } else {
+      discountAmount =
+          double.tryParse(discountConstantValueController.text) ?? 0;
+      subTotalAfterDiscountController.text =
+          (subTotal - discountAmount).toString();
+      discountPercentageController.text = '0';
+    }
+
+    totalController.text = FormatterClass.calculateTax(
+            taxAmountController.text, subTotalAfterDiscountController.text)
+        .toString();
   }
 }

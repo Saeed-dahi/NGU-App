@@ -13,6 +13,16 @@ class FormatterClass {
         : double.tryParse(value.replaceAll(",", ""));
   }
 
+  static double getDiscountMultiplier(dynamic value) {
+    double discount = double.tryParse(value.toString()) ?? 0;
+    return (100 - discount) / 100;
+  }
+
+  static double calculateTax(dynamic taxRate, dynamic baseAmount) {
+    double base = double.tryParse(baseAmount.toString()) ?? 0;
+    return base * ((double.parse(taxRate) / 100) + 1);
+  }
+
   static String normalizeArabic(String query) {
     // Normalize Arabic letters
     query = query
