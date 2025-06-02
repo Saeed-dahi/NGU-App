@@ -21,9 +21,9 @@ class InvoiceModel extends InvoiceEntity {
       super.account,
       super.goodsAccount,
       super.taxAccount,
-      super.totalTax,
+      super.taxAmount,
       super.discountAccount,
-      super.totalDiscount,
+      super.discountAmount,
       super.discountType,
       super.invoiceItems});
 
@@ -39,16 +39,16 @@ class InvoiceModel extends InvoiceEntity {
       invoiceNature: json['invoice_nature'],
       address: json['address'] ?? '',
       currency: json['currency'] ?? '',
-      subTotal: double.tryParse(json['sub_total'].toString()),
+      subTotal: double.tryParse(json['sub_total'].toString()) ?? 0,
       total: double.tryParse(json['total'].toString()),
       notes: json['notes'] ?? '',
       description: json['description'],
       account: InvoiceAccountModel.fromJson(json['account']),
       goodsAccount: InvoiceAccountModel.fromJson(json['goods_account']),
       taxAccount: InvoiceAccountModel.fromJson(json['tax_account']),
-      totalTax: double.tryParse(json['total_tax'].toString()) ?? 0.0,
+      taxAmount: double.tryParse(json['tax_amount'].toString()) ?? 0.0,
       discountAccount: InvoiceAccountModel.fromJson(json['discount_account']),
-      totalDiscount: double.tryParse(json['total_discount'].toString()),
+      discountAmount: double.tryParse(json['discount_amount'].toString()),
       discountType: json['discount_type'] ?? '',
       invoiceItems: json['items']
           ?.map<InvoiceItemModel>(
@@ -73,9 +73,9 @@ class InvoiceModel extends InvoiceEntity {
       'description': description,
       'account_id': account!.id,
       'goods_account_id': goodsAccount!.id,
-      'total_tax_account': taxAccount!.id,
-      'total_discount_account': discountAccount!.id,
-      'total_discount': totalDiscount,
+      'tax_account_id': taxAccount!.id,
+      'discount_account_id': discountAccount!.id,
+      'discount_amount': discountAmount,
       'discount_type': discountType
     };
   }

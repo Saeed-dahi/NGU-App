@@ -40,7 +40,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               enabled: enableEditing,
               initialValue: invoiceFormCubit.taxAccountController.arName ?? '',
               controller: invoiceFormCubit.taxAccountController,
-              error: errors['total_tax_account']?.join('\n'),
+              error: errors['tax_account_id']?.join('\n'),
               label: 'tax_account',
             ),
             CustomAccountAutoComplete(
@@ -48,7 +48,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               initialValue:
                   invoiceFormCubit.discountAccountController.arName ?? '',
               controller: invoiceFormCubit.discountAccountController,
-              error: errors['total_discount_account']?.join('\n'),
+              error: errors['discount_account_id']?.join('\n'),
               label: 'discount_account',
             ),
           ],

@@ -61,11 +61,11 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
     taxAccountController = invoice.taxAccount!;
 
     taxAmountController =
-        TextEditingController(text: invoice.totalTax.toString());
+        TextEditingController(text: invoice.taxAmount.toString());
 
     discountAccountController = invoice.discountAccount!;
     totalController.text = invoice.total.toString();
-    subTotalAfterDiscountController.text = invoice.subTotal!.toString();
+    subTotalAfterDiscountController.text = invoice.subTotal.toString();
 
     initDiscountsController(invoice);
   }
@@ -102,9 +102,9 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
         account: accountController,
         goodsAccount: goodsAccountController,
         taxAccount: taxAccountController,
-        totalTax: double.tryParse(taxAmountController.text) ?? 5,
+        taxAmount: double.tryParse(taxAmountController.text) ?? 5,
         discountAccount: discountAccountController,
-        totalDiscount: getDiscountValue(),
+        discountAmount: getDiscountValue(),
         discountType: getDiscountType());
   }
 
@@ -129,10 +129,10 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   initDiscountsController(InvoiceEntity invoice) async {
     if (invoice.discountType == DiscountType.amount.name) {
       discountAmountController =
-          TextEditingController(text: invoice.totalDiscount.toString());
+          TextEditingController(text: invoice.discountAmount.toString());
     } else {
       discountPercentageController =
-          TextEditingController(text: invoice.totalDiscount.toString());
+          TextEditingController(text: invoice.discountAmount.toString());
     }
   }
 

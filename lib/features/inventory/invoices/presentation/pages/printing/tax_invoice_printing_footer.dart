@@ -25,7 +25,7 @@ class CustomInvoicePrintingFooter {
                     fontSize: Dimensions.printingLargeTextSize, font: ttf),
               ),
               pw.Text(
-                invoice.totalTax.toString(),
+                invoice.taxAmount.toString(),
                 style: pw.TextStyle(
                     fontSize: Dimensions.printingLargeTextSize, font: ttf),
               ),

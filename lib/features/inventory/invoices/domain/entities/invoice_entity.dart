@@ -21,9 +21,9 @@ class InvoiceEntity extends Equatable {
   final InvoiceAccountEntity? account;
   final InvoiceAccountEntity? goodsAccount;
   final InvoiceAccountEntity? taxAccount;
-  final double? totalTax;
+  final double? taxAmount;
   final InvoiceAccountEntity? discountAccount;
-  final double? totalDiscount;
+  final double? discountAmount;
   final String? discountType;
   final List<InvoiceItemEntity>? invoiceItems;
 
@@ -45,9 +45,9 @@ class InvoiceEntity extends Equatable {
       this.account,
       this.goodsAccount,
       this.taxAccount,
-      this.totalTax,
+      this.taxAmount,
       this.discountAccount,
-      this.totalDiscount,
+      this.discountAmount,
       this.discountType,
       this.invoiceItems});
 
@@ -70,9 +70,9 @@ class InvoiceEntity extends Equatable {
         account: account,
         goodsAccount: goodsAccount,
         taxAccount: taxAccount,
-        totalTax: totalTax,
+        taxAmount: taxAmount,
         discountAccount: discountAccount,
-        totalDiscount: totalDiscount,
+        discountAmount: discountAmount,
         discountType: discountType,
         invoiceItems: invoiceItems);
   }
@@ -96,9 +96,9 @@ class InvoiceEntity extends Equatable {
         account,
         goodsAccount,
         taxAccount,
-        totalTax,
+        taxAmount,
         discountAccount,
-        totalDiscount,
+        discountAmount,
         discountType,
         invoiceItems
       ];
