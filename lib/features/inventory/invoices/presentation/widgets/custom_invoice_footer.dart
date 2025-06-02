@@ -49,7 +49,7 @@ class CustomInvoiceFooter extends StatelessWidget {
                 },
               ),
               CustomEditableText(
-                controller: invoiceFormCubit.discountConstantValueController,
+                controller: invoiceFormCubit.discountAmountController,
                 helper: 'constant_value'.tr,
                 enable: enableEditing,
                 onChanged: (p0) {

@@ -24,6 +24,7 @@ class InvoiceEntity extends Equatable {
   final double? totalTax;
   final InvoiceAccountEntity? discountAccount;
   final double? totalDiscount;
+  final String? discountType;
   final List<InvoiceItemEntity>? invoiceItems;
 
   const InvoiceEntity(
@@ -47,6 +48,7 @@ class InvoiceEntity extends Equatable {
       this.totalTax,
       this.discountAccount,
       this.totalDiscount,
+      this.discountType,
       this.invoiceItems});
 
   InvoiceModel toModel() {
@@ -71,6 +73,7 @@ class InvoiceEntity extends Equatable {
         totalTax: totalTax,
         discountAccount: discountAccount,
         totalDiscount: totalDiscount,
+        discountType: discountType,
         invoiceItems: invoiceItems);
   }
 
@@ -96,6 +99,7 @@ class InvoiceEntity extends Equatable {
         totalTax,
         discountAccount,
         totalDiscount,
+        discountType,
         invoiceItems
       ];
 }

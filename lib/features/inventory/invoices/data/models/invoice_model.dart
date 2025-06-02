@@ -24,6 +24,7 @@ class InvoiceModel extends InvoiceEntity {
       super.totalTax,
       super.discountAccount,
       super.totalDiscount,
+      super.discountType,
       super.invoiceItems});
 
   factory InvoiceModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +49,7 @@ class InvoiceModel extends InvoiceEntity {
       totalTax: double.tryParse(json['total_tax'].toString()) ?? 0.0,
       discountAccount: InvoiceAccountModel.fromJson(json['discount_account']),
       totalDiscount: double.tryParse(json['total_discount'].toString()),
+      discountType: json['discount_type'] ?? '',
       invoiceItems: json['items']
           ?.map<InvoiceItemModel>(
               (invoice) => InvoiceItemModel.fromJson(invoice))
@@ -72,7 +74,9 @@ class InvoiceModel extends InvoiceEntity {
       'account_id': account!.id,
       'goods_account_id': goodsAccount!.id,
       'total_tax_account': taxAccount!.id,
-      'total_discount_account': discountAccount!.id
+      'total_discount_account': discountAccount!.id,
+      'total_discount': totalDiscount,
+      'discount_type': discountType
     };
   }
 }

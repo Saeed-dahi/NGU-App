@@ -42,7 +42,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
 
           context
               .read<InvoiceFormCubit>()
-              .initDiscountsController(_plutoGridController);
+              .updateTotalController(_plutoGridController);
         },
         customSpaceKeyAction: () {
           context.read<PreviewInvoiceItemCubit>().handleUnitColumnChange(

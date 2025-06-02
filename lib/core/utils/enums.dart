@@ -38,6 +38,8 @@ enum ChequePaymentCases {
   specific_months
 }
 
+enum DiscountType { percentage, amount }
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

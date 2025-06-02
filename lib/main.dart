@@ -15,7 +15,7 @@ import 'package:ngu_app/features/splash/presentation/screens/splash_screen.dart'
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
   // dependency injection
   await di.init();
 
