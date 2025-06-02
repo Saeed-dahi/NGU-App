@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
+import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -17,6 +18,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_o
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/invoice_print_page_settings.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_footer.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_page_container.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_pluto_table.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/invoice_tool_bar.dart';
@@ -87,6 +89,12 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
         ),
         BlocProvider(
           create: (context) => sl<PreviewInvoiceItemCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<PrintingBloc>()
+            ..add(GetPrinterEvent(printerType: PrinterType.receipt.name))
+            ..add(GetPrinterEvent(printerType: PrinterType.tax_invoice.name)),
+          lazy: false,
         ),
       ],
       child: BlocConsumer<InvoiceBloc, InvoiceState>(
@@ -185,6 +193,11 @@ class _CreateInvoicePageState extends State<CreateInvoicePage> {
           CustomInvoicePlutoTable(
             readOnly: isSavedInvoice,
             invoice: _invoiceBloc.getInvoiceEntity,
+          ),
+          CustomInvoiceFooter(
+            invoiceFormCubit: _invoiceFormCubit,
+            invoiceBloc: _invoiceBloc,
+            enableEditing: true,
           ),
         ],
       ),

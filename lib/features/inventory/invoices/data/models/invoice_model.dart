@@ -40,7 +40,7 @@ class InvoiceModel extends InvoiceEntity {
       address: json['address'] ?? '',
       currency: json['currency'] ?? '',
       subTotal: double.tryParse(json['sub_total'].toString()) ?? 0,
-      total: double.tryParse(json['total'].toString()),
+      total: double.tryParse(json['total'].toString()) ?? 0.0,
       notes: json['notes'] ?? '',
       description: json['description'],
       account: InvoiceAccountModel.fromJson(json['account']),
@@ -48,7 +48,8 @@ class InvoiceModel extends InvoiceEntity {
       taxAccount: InvoiceAccountModel.fromJson(json['tax_account']),
       taxAmount: double.tryParse(json['tax_amount'].toString()) ?? 0.0,
       discountAccount: InvoiceAccountModel.fromJson(json['discount_account']),
-      discountAmount: double.tryParse(json['discount_amount'].toString()),
+      discountAmount:
+          double.tryParse(json['discount_amount'].toString()) ?? 0.0,
       discountType: json['discount_type'] ?? '',
       invoiceItems: json['items']
           ?.map<InvoiceItemModel>(
