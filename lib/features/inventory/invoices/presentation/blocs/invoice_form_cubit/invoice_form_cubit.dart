@@ -65,7 +65,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
 
     discountAccountController = invoice.discountAccount!;
     totalController.text = invoice.total.toString();
-    subTotalAfterDiscountController.text = '0';
+    subTotalAfterDiscountController.text = invoice.subTotal!.toString();
 
     initDiscountsController(invoice);
   }
@@ -104,7 +104,7 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
         taxAccount: taxAccountController,
         totalTax: double.tryParse(taxAmountController.text) ?? 5,
         discountAccount: discountAccountController,
-        totalDiscount: double.tryParse(discountPercentageController.text) ?? 0,
+        totalDiscount: getDiscountValue(),
         discountType: getDiscountType());
   }
 
@@ -139,18 +139,11 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
   onChangeDiscountValue(
       bool isPercentage, PlutoGridController plutoGridController) {
     double subTotal = plutoGridController.columnSum('sub_total');
-    double discountAmount = 0;
     if (isPercentage) {
-      discountAmount = FormatterClass.getDiscountMultiplier(
-          discountPercentageController.text);
-
-      subTotalAfterDiscountController.text =
-          (subTotal * discountAmount).toString();
+      getSubTotalAfterDiscount(isPercentage, subTotal);
       discountAmountController.text = '0';
     } else {
-      discountAmount = double.tryParse(discountAmountController.text) ?? 0;
-      subTotalAfterDiscountController.text =
-          (subTotal - discountAmount).toString();
+      getSubTotalAfterDiscount(isPercentage, subTotal);
       discountPercentageController.text = '0';
     }
 
@@ -167,5 +160,32 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       return DiscountType.percentage.name;
     }
     return null;
+  }
+
+  double? getDiscountValue() {
+    if (discountPercentageController.text == '0') {
+      return double.tryParse(discountAmountController.text);
+    }
+    if (discountAmountController.text == '0') {
+      return double.tryParse(discountPercentageController.text);
+    }
+    return 0;
+  }
+
+  double getSubTotalAfterDiscount(bool isPercentage, double subTotal) {
+    double discountAmount = 0;
+    if (isPercentage) {
+      discountAmount = FormatterClass.getDiscountMultiplier(
+          discountPercentageController.text);
+
+      subTotalAfterDiscountController.text =
+          (subTotal * discountAmount).toString();
+    } else {
+      discountAmount = double.tryParse(discountAmountController.text) ?? 0;
+      subTotalAfterDiscountController.text =
+          (subTotal - discountAmount).toString();
+    }
+
+    return double.tryParse(subTotalAfterDiscountController.text) ?? 0;
   }
 }
