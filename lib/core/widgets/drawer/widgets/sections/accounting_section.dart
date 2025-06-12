@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
+import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_expansion_tile.dart';
 import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 
@@ -11,6 +12,8 @@ import 'package:ngu_app/features/accounts/presentation/pages/account_record.dart
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_tree.dart';
 import 'package:ngu_app/features/accounts/presentation/widgets/account_statement_dialog.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/pages/adjustment_note_page.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/pages/adjustment_notes_page.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/cheque_record.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/cheques_table_page.dart';
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
@@ -222,16 +225,19 @@ class AccountingSection extends StatelessWidget {
         BasicListTile(
             title: 'credit_note'.tr,
             image: Image.asset('assets/images/credit_note.png', width: 30),
-            onTap: () => ShowDialog.showCustomDialog(
-                height: 0.55,
-                width: 0.7,
-                content: const ChequeRecord(),
-                context: context)),
+            onTap: () => context.read<TabCubit>().addNewTab(
+                content: AdjustmentNotePage(
+                  type: AccountNature.credit.name,
+                ),
+                title: 'credit_note'.tr)),
         BasicListTile(
           title: 'credit_notes_table'.tr,
           icon: Icons.table_chart_outlined,
           onTap: () => context.read<TabCubit>().addNewTab(
-              content: const ChequesTablePage(), title: 'cheques_table'.tr),
+              content: AdjustmentNotesPage(
+                type: AccountNature.credit.name,
+              ),
+              title: 'credit_notes_table'.tr),
         ),
         const Divider(
           color: AppColors.primaryColor,
@@ -239,16 +245,19 @@ class AccountingSection extends StatelessWidget {
         BasicListTile(
             title: 'debit_note'.tr,
             image: Image.asset('assets/images/debit_note.png', width: 30),
-            onTap: () => ShowDialog.showCustomDialog(
-                height: 0.55,
-                width: 0.7,
-                content: const ChequeRecord(),
-                context: context)),
+            onTap: () => context.read<TabCubit>().addNewTab(
+                content: AdjustmentNotePage(
+                  type: AccountNature.debit.name,
+                ),
+                title: 'debit_note'.tr)),
         BasicListTile(
           title: 'debit_notes_table'.tr,
           icon: Icons.table_chart_outlined,
           onTap: () => context.read<TabCubit>().addNewTab(
-              content: const ChequesTablePage(), title: 'cheques_table'.tr),
+              content: AdjustmentNotesPage(
+                type: AccountNature.debit.name,
+              ),
+              title: 'debit_notes_table'.tr),
         ),
       ],
     );

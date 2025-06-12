@@ -31,6 +31,17 @@ import 'package:ngu_app/features/accounts/domain/use_cases/search_in_accounts_us
 import 'package:ngu_app/features/accounts/domain/use_cases/show_account_use_case.dart';
 import 'package:ngu_app/features/accounts/domain/use_cases/update_account_use_case.dart';
 import 'package:ngu_app/features/accounts/presentation/blocs/accounts_bloc.dart';
+import 'package:ngu_app/features/adjustment_notes/data/data_sources/adjustemnt_note_data_source.dart';
+import 'package:ngu_app/features/adjustment_notes/data/repositories/adjustment_note_repository_impl.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/repositories/adjustment_note_repository.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/create_adjustment_note_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/get_all_adjustment_notes_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/get_create_adjustment_note_form_data_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/preview_adjustment_note_item_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/show_adjustment_note_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/domain/use_cases/update_adjustment_note_use_case.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_bloc/adjustment_note_bloc.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:ngu_app/features/cheques/data/data_sources/cheque_data_source.dart';
 import 'package:ngu_app/features/cheques/data/repositories/cheque_repository_impl.dart';
 import 'package:ngu_app/features/cheques/domain/repositories/cheque_repository.dart';
@@ -140,6 +151,8 @@ Future<void> init() async {
 
   // External
   await _external();
+
+  _adjustmentNote();
 }
 
 Future<void> _external() async {
@@ -451,4 +464,38 @@ void _printing() {
   sl.registerLazySingleton<PrintingDataSource>(
       () => PrintingDataSourceImpl(printingDataBase: sl()));
   sl.registerLazySingleton<PrintingDataBase>(() => PrintingDataBaseImpl());
+}
+
+void _adjustmentNote() {
+  sl.registerFactory(
+    () => AdjustmentNoteBloc(
+      getAllAdjustmentNotesUseCase: sl(),
+      showAdjustmentNoteUseCase: sl(),
+      createAdjustmentNoteUseCase: sl(),
+      updateAdjustmentNoteUseCase: sl(),
+      getAccountsNameUseCase: sl(),
+      getCreateAdjustmentNoteFormDataUseCase: sl(),
+    ),
+  );
+
+  sl.registerFactory(() => PreviewAdjustmentNoteItemCubit(sl()));
+
+  sl.registerLazySingleton(
+      () => GetAllAdjustmentNotesUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => ShowAdjustmentNoteUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => CreateAdjustmentNoteUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => UpdateAdjustmentNoteUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetCreateAdjustmentNoteFormDataUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => PreviewAdjustmentNoteItemUseCase(invoiceRepository: sl()));
+
+  sl.registerLazySingleton<AdjustmentNoteRepository>(() =>
+      AdjustmentNoteRepositoryImpl(apiHelper: sl(), invoiceDataSource: sl()));
+
+  sl.registerLazySingleton<AdjustmentNoteDataSource>(
+      () => AdjustmentNoteDataSourceImpl(networkConnection: sl()));
 }
