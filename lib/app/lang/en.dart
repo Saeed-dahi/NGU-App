@@ -103,6 +103,15 @@ Map<String, String> en = {
   'process': 'Processing',
   'completed_product_value': 'Completed Product Value',
 
+  // Adjustment Notes
+  'adjustment_note': 'Adjustment Note',
+  'adjustment_note_table': 'Adjustment Note Table',
+  'adjustment_notes': 'Adjustment Notes',
+  'credit_note': 'Credit Note',
+  'credit_notes_table': 'Credit Notes Table',
+  'debit_note': 'Debit Note',
+  'debit_notes_table': 'Debit Notes Table',
+
   // Stock
   'stock_control': 'ٍStock Control',
   'products': 'Products',

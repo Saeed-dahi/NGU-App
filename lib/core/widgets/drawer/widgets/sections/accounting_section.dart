@@ -43,7 +43,8 @@ class AccountingSection extends StatelessWidget {
               _cheques(context),
               _totalReports(context),
               _currencies(),
-              _closingVouchers(context)
+              _closingVouchers(context),
+              _adjustmentNote(context)
             ],
           ),
         ],
@@ -189,27 +190,67 @@ class AccountingSection extends StatelessWidget {
       ],
     );
   }
-}
 
-_cheques(BuildContext context) {
-  return CustomExpansionTile(
-    title: 'post_dated_cheques'.tr,
-    icon: Icons.money,
-    children: [
-      BasicListTile(
-          title: 'cheque_card'.tr,
-          image: Image.asset('assets/images/cheque.png', width: 30),
-          onTap: () => ShowDialog.showCustomDialog(
-              height: 0.55,
-              width: 0.7,
-              content: const ChequeRecord(),
-              context: context)),
-      BasicListTile(
-        title: 'cheques_table'.tr,
-        icon: Icons.table_chart_outlined,
-        onTap: () => context.read<TabCubit>().addNewTab(
-            content: const ChequesTablePage(), title: 'cheques_table'.tr),
-      ),
-    ],
-  );
+  CustomExpansionTile _cheques(BuildContext context) {
+    return CustomExpansionTile(
+      title: 'post_dated_cheques'.tr,
+      icon: Icons.money,
+      children: [
+        BasicListTile(
+            title: 'cheque_card'.tr,
+            image: Image.asset('assets/images/cheque.png', width: 30),
+            onTap: () => ShowDialog.showCustomDialog(
+                height: 0.55,
+                width: 0.7,
+                content: const ChequeRecord(),
+                context: context)),
+        BasicListTile(
+          title: 'cheques_table'.tr,
+          icon: Icons.table_chart_outlined,
+          onTap: () => context.read<TabCubit>().addNewTab(
+              content: const ChequesTablePage(), title: 'cheques_table'.tr),
+        ),
+      ],
+    );
+  }
+
+  CustomExpansionTile _adjustmentNote(BuildContext context) {
+    return CustomExpansionTile(
+      title: 'adjustment_note'.tr,
+      icon: Icons.note_alt_sharp,
+      children: [
+        BasicListTile(
+            title: 'credit_note'.tr,
+            image: Image.asset('assets/images/credit_note.png', width: 30),
+            onTap: () => ShowDialog.showCustomDialog(
+                height: 0.55,
+                width: 0.7,
+                content: const ChequeRecord(),
+                context: context)),
+        BasicListTile(
+          title: 'credit_notes_table'.tr,
+          icon: Icons.table_chart_outlined,
+          onTap: () => context.read<TabCubit>().addNewTab(
+              content: const ChequesTablePage(), title: 'cheques_table'.tr),
+        ),
+        const Divider(
+          color: AppColors.primaryColor,
+        ),
+        BasicListTile(
+            title: 'debit_note'.tr,
+            image: Image.asset('assets/images/debit_note.png', width: 30),
+            onTap: () => ShowDialog.showCustomDialog(
+                height: 0.55,
+                width: 0.7,
+                content: const ChequeRecord(),
+                context: context)),
+        BasicListTile(
+          title: 'debit_notes_table'.tr,
+          icon: Icons.table_chart_outlined,
+          onTap: () => context.read<TabCubit>().addNewTab(
+              content: const ChequesTablePage(), title: 'cheques_table'.tr),
+        ),
+      ],
+    );
+  }
 }

@@ -103,6 +103,15 @@ Map<String, String> ar = {
   'process': 'معالجة',
   'completed_product_value': 'بضاعة آخر المدة',
 
+  // Adjustment Notes
+  'adjustment_note': 'مذكرة تسوية مالية',
+  'adjustment_note_table': 'جدول مذكرات التسوية المالية',
+  'adjustment_notes': 'مذكرات التسوية المالية',
+  'credit_note': 'مذكرة ائتمان',
+  'credit_notes_table': 'جدول مذكرات الائتمان',
+  'debit_note': 'مذكرة خصم',
+  'debit_notes_table': 'جدول مذكرات الخصم',
+
   // Stock
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',
