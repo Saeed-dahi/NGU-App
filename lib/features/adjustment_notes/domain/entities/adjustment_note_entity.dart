@@ -5,13 +5,13 @@ import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_not
 
 class AdjustmentNoteEntity extends Equatable {
   final int? id;
-  final int? invoiceNumber;
+  final int? adjustmentNoteNumber;
   final String? documentNumber;
-  final String? invoiceType;
+  final String? adjustmentNoteType;
   final String? date;
   final String? dueDate;
   final String? status;
-  final String? invoiceNature;
+  final String? adjustmentNoteNature;
   final String? address;
   final String? currency;
   final double? subTotal;
@@ -25,17 +25,17 @@ class AdjustmentNoteEntity extends Equatable {
   final AdjustmentNoteAccountEntity? discountAccount;
   final double? discountAmount;
   final String? discountType;
-  final List<AdjustmentNoteItemEntity>? invoiceItems;
+  final List<AdjustmentNoteItemEntity>? adjustmentNoteItems;
 
   const AdjustmentNoteEntity(
       {this.id,
-      this.invoiceNumber,
+      this.adjustmentNoteNumber,
       this.documentNumber,
-      this.invoiceType,
+      this.adjustmentNoteType,
       this.date,
       this.dueDate,
       this.status,
-      this.invoiceNature,
+      this.adjustmentNoteNature,
       this.address,
       this.currency,
       this.subTotal,
@@ -49,18 +49,18 @@ class AdjustmentNoteEntity extends Equatable {
       this.discountAccount,
       this.discountAmount,
       this.discountType,
-      this.invoiceItems});
+      this.adjustmentNoteItems});
 
   AdjustmentNoteModel toModel() {
     return AdjustmentNoteModel(
         id: id,
-        invoiceNumber: invoiceNumber,
+        adjustmentNoteNumber: adjustmentNoteNumber,
         documentNumber: documentNumber,
-        invoiceType: invoiceType,
+        adjustmentNoteType: adjustmentNoteType,
         date: date,
         dueDate: dueDate,
         status: status,
-        invoiceNature: invoiceNature,
+        adjustmentNoteNature: adjustmentNoteNature,
         address: address,
         currency: currency,
         subTotal: subTotal,
@@ -74,19 +74,19 @@ class AdjustmentNoteEntity extends Equatable {
         discountAccount: discountAccount,
         discountAmount: discountAmount,
         discountType: discountType,
-        invoiceItems: invoiceItems);
+        adjustmentNoteItems: adjustmentNoteItems);
   }
 
   @override
   List<Object?> get props => [
         id,
-        invoiceNumber,
+        adjustmentNoteNumber,
         documentNumber,
-        invoiceType,
+        adjustmentNoteType,
         date,
         dueDate,
         status,
-        invoiceNature,
+        adjustmentNoteNature,
         address,
         currency,
         subTotal,
@@ -100,6 +100,6 @@ class AdjustmentNoteEntity extends Equatable {
         discountAccount,
         discountAmount,
         discountType,
-        invoiceItems
+        adjustmentNoteItems
       ];
 }

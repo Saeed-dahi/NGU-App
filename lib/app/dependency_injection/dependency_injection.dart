@@ -41,7 +41,7 @@ import 'package:ngu_app/features/adjustment_notes/domain/use_cases/preview_adjus
 import 'package:ngu_app/features/adjustment_notes/domain/use_cases/show_adjustment_note_use_case.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/use_cases/update_adjustment_note_use_case.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_bloc/adjustment_note_bloc.dart';
-import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_invoice_item_cubit.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_adjustment_note_item_cubit.dart';
 import 'package:ngu_app/features/cheques/data/data_sources/cheque_data_source.dart';
 import 'package:ngu_app/features/cheques/data/repositories/cheque_repository_impl.dart';
 import 'package:ngu_app/features/cheques/domain/repositories/cheque_repository.dart';

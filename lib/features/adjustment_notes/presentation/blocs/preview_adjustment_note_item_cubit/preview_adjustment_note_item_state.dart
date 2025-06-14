@@ -1,4 +1,4 @@
-part of 'preview_invoice_item_cubit.dart';
+part of 'preview_adjustment_note_item_cubit.dart';
 
 sealed class PreviewAdjustmentNoteItemState extends Equatable {
   const PreviewAdjustmentNoteItemState();

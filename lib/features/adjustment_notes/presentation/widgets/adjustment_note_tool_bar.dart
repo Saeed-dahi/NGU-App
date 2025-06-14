@@ -36,7 +36,7 @@ class AdjustmentNoteToolBar extends StatelessWidget {
           CustomEditableText(
               controller: context
                   .read<AdjustmentNoteFormCubit>()
-                  .invoiceSearchNumController,
+                  .adjustmentNoteSearchNumController,
               enable: true,
               width: 0.1,
               hint: 'search'.tr,
@@ -125,10 +125,11 @@ class AdjustmentNoteToolBar extends StatelessWidget {
     );
   }
 
-  void _navigate(BuildContext context, int? invoiceId, String? direction) {
+  void _navigate(
+      BuildContext context, int? adjustmentNoteId, String? direction) {
     context.read<AdjustmentNoteBloc>().add(ShowAdjustmentNoteEvent(
-        adjustmentNoteQuery: invoiceId ?? 1,
+        adjustmentNoteQuery: adjustmentNoteId ?? 1,
         direction: direction,
-        type: adjustmentNote!.invoiceType!));
+        type: adjustmentNote!.adjustmentNoteType!));
   }
 }

@@ -14,7 +14,7 @@ import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_
 
 import 'package:ngu_app/features/inventory/products/presentation/pages/products_table.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
-part 'preview_invoice_item_state.dart';
+part 'preview_adjustment_note_item_state.dart';
 
 class PreviewAdjustmentNoteItemCubit
     extends Cubit<PreviewAdjustmentNoteItemState> {
@@ -39,7 +39,7 @@ class PreviewAdjustmentNoteItemCubit
 
     if (previewAdjustmentNoteItem == null) return;
 
-    // Update the invoice item and grid
+    // Update the adjustmentNote item and grid
     _updateUiAfterColumnChange(row, previewAdjustmentNoteItem, stateManager);
 
     context.mounted ? context.read<PlutoGridCubit>().onChangeFunction() : ();
@@ -180,9 +180,9 @@ class PreviewAdjustmentNoteItemCubit
     row.cells[cell]!.value = value;
   }
 
-  PreviewAdjustmentNoteItemEntity invoiceItemToPreviewAdjustmentNoteItem(
+  PreviewAdjustmentNoteItemEntity adjustmentNoteItemToPreviewAdjustmentNoteItem(
       AdjustmentNoteProductEntity? product,
-      AdjustmentNoteItemEntity invoiceItem,
+      AdjustmentNoteItemEntity adjustmentNoteItem,
       AdjustmentNoteUnitEntity? unit) {
     PreviewAdjustmentNoteItemEntity previewAdjustmentNoteItem = PreviewAdjustmentNoteItemEntity(
         id: product!.id!,
@@ -190,14 +190,14 @@ class PreviewAdjustmentNoteItemCubit
         enName: product.enName!,
         code: product.code!,
         productUnit: PreviewProductUnitEntity(
-            id: invoiceItem.productUnit!.id!,
+            id: adjustmentNoteItem.productUnit!.id!,
             arName: unit!.arName!,
             enName: unit.enName!,
             unitId: unit.id!,
-            price: invoiceItem.price!,
-            taxAmount: invoiceItem.taxAmount!,
-            subTotal: invoiceItem.total!,
-            total: invoiceItem.total! + invoiceItem.taxAmount!));
+            price: adjustmentNoteItem.price!,
+            taxAmount: adjustmentNoteItem.taxAmount!,
+            subTotal: adjustmentNoteItem.total!,
+            total: adjustmentNoteItem.total! + adjustmentNoteItem.taxAmount!));
     return previewAdjustmentNoteItem;
   }
 

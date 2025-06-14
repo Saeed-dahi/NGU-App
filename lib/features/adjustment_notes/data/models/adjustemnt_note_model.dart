@@ -5,13 +5,13 @@ import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_not
 class AdjustmentNoteModel extends AdjustmentNoteEntity {
   const AdjustmentNoteModel(
       {super.id,
-      super.invoiceNumber,
+      super.adjustmentNoteNumber,
       super.documentNumber,
-      super.invoiceType,
+      super.adjustmentNoteType,
       super.date,
       super.dueDate,
       super.status,
-      super.invoiceNature,
+      super.adjustmentNoteNature,
       super.address,
       super.currency,
       super.subTotal,
@@ -25,18 +25,18 @@ class AdjustmentNoteModel extends AdjustmentNoteEntity {
       super.discountAccount,
       super.discountAmount,
       super.discountType,
-      super.invoiceItems});
+      super.adjustmentNoteItems});
 
   factory AdjustmentNoteModel.fromJson(Map<String, dynamic> json) {
     return AdjustmentNoteModel(
       id: json['id'],
-      invoiceNumber: json['invoice_number'],
+      adjustmentNoteNumber: json['adjustmentNote_number'],
       documentNumber: json['document_number'] ?? '',
-      invoiceType: json['type'] ?? '',
+      adjustmentNoteType: json['type'] ?? '',
       date: json['date'] ?? '',
       dueDate: json['due_date'] ?? '',
       status: json['status'] ?? '',
-      invoiceNature: json['invoice_nature'],
+      adjustmentNoteNature: json['adjustmentNote_nature'],
       address: json['address'] ?? '',
       currency: json['currency'] ?? '',
       subTotal: double.tryParse(json['sub_total'].toString()) ?? 0,
@@ -52,9 +52,9 @@ class AdjustmentNoteModel extends AdjustmentNoteEntity {
       discountAmount:
           double.tryParse(json['discount_amount'].toString()) ?? 0.0,
       discountType: json['discount_type'] ?? '',
-      invoiceItems: json['items']
+      adjustmentNoteItems: json['items']
           ?.map<AdjustmentNoteItemModel>(
-              (invoice) => AdjustmentNoteItemModel.fromJson(invoice))
+              (adjustmentNote) => AdjustmentNoteItemModel.fromJson(adjustmentNote))
           .toList(),
     );
   }
@@ -62,13 +62,13 @@ class AdjustmentNoteModel extends AdjustmentNoteEntity {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'invoice_number': invoiceNumber,
+      'adjustmentNote_number': adjustmentNoteNumber,
       'document_number': documentNumber,
-      'type': invoiceType,
+      'type': adjustmentNoteType,
       'date': date,
       'due_date': dueDate,
       'status': status,
-      'invoice_nature': invoiceNature,
+      'adjustmentNote_nature': adjustmentNoteNature,
       'address': address,
       'currency': 'AED',
       'notes': notes,

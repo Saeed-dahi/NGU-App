@@ -11,11 +11,11 @@ import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_
 part 'adjustment_note_form_state.dart';
 
 class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
-  final String invoiceType;
+  final String adjustmentNoteType;
 
   TextEditingController numberController = TextEditingController();
   TextEditingController documentNumberController = TextEditingController();
-  final TextEditingController invoiceSearchNumController =
+  final TextEditingController adjustmentNoteSearchNumController =
       TextEditingController();
 
   late TextEditingController dateController = TextEditingController();
@@ -40,35 +40,36 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
 
   String? natureController;
 
-  final AdjustmentNoteBloc invoiceBloc;
+  final AdjustmentNoteBloc adjustmentNoteBloc;
   AdjustmentNoteFormCubit(
-      {required this.invoiceBloc, required this.invoiceType})
+      {required this.adjustmentNoteBloc, required this.adjustmentNoteType})
       : super(AdjustmentNoteFormInitial());
 
-  initControllers(AdjustmentNoteEntity invoice) {
+  initControllers(AdjustmentNoteEntity adjustmentNote) {
     numberController =
-        TextEditingController(text: invoice.invoiceNumber.toString());
+        TextEditingController(text: adjustmentNote.adjustmentNoteNumber.toString());
     documentNumberController =
-        TextEditingController(text: invoice.documentNumber.toString());
-    dateController = TextEditingController(text: invoice.date);
-    dueDateController = TextEditingController(text: invoice.dueDate);
-    notesController = TextEditingController(text: invoice.notes);
-    accountController = invoice.account!;
-    addressController = TextEditingController(text: invoice.address);
-    descriptionController = TextEditingController(text: invoice.description);
+        TextEditingController(text: adjustmentNote.documentNumber.toString());
+    dateController = TextEditingController(text: adjustmentNote.date);
+    dueDateController = TextEditingController(text: adjustmentNote.dueDate);
+    notesController = TextEditingController(text: adjustmentNote.notes);
+    accountController = adjustmentNote.account!;
+    addressController = TextEditingController(text: adjustmentNote.address);
+    descriptionController =
+        TextEditingController(text: adjustmentNote.description);
 
-    goodsAccountController = invoice.goodsAccount!;
+    goodsAccountController = adjustmentNote.goodsAccount!;
 
-    taxAccountController = invoice.taxAccount!;
+    taxAccountController = adjustmentNote.taxAccount!;
 
     taxAmountController =
-        TextEditingController(text: invoice.taxAmount.toString());
+        TextEditingController(text: adjustmentNote.taxAmount.toString());
 
-    discountAccountController = invoice.discountAccount!;
-    totalController.text = invoice.total.toString();
-    subTotalAfterDiscountController.text = invoice.subTotal.toString();
+    discountAccountController = adjustmentNote.discountAccount!;
+    totalController.text = adjustmentNote.total.toString();
+    subTotalAfterDiscountController.text = adjustmentNote.subTotal.toString();
 
-    initDiscountsController(invoice);
+    initDiscountsController(adjustmentNote);
   }
 
   disposeControllers() {
@@ -85,18 +86,18 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
     totalController.dispose();
   }
 
-  AdjustmentNoteEntity invoiceEntity(Enum status) {
+  AdjustmentNoteEntity adjustmentNoteEntity(Enum status) {
     return AdjustmentNoteEntity(
-        id: invoiceBloc.getAdjustmentNoteEntity.id,
-        invoiceNumber: int.parse(numberController.text),
+        id: adjustmentNoteBloc.getAdjustmentNoteEntity.id,
+        adjustmentNoteNumber: int.parse(numberController.text),
         documentNumber: documentNumberController.text == ''
             ? numberController.text
             : documentNumberController.text,
-        invoiceType: invoiceType,
+        adjustmentNoteType: adjustmentNoteType,
         date: dateController.text,
         dueDate: dueDateController.text,
         status: status.name,
-        invoiceNature: natureController,
+        adjustmentNoteNature: natureController,
         address: addressController.text,
         notes: notesController.text,
         description: descriptionController.text,
@@ -127,13 +128,13 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
     plutoGridController.stateManager!.notifyListeners();
   }
 
-  initDiscountsController(AdjustmentNoteEntity invoice) async {
-    if (invoice.discountType == DiscountType.amount.name) {
+  initDiscountsController(AdjustmentNoteEntity adjustmentNote) async {
+    if (adjustmentNote.discountType == DiscountType.amount.name) {
       discountAmountController =
-          TextEditingController(text: invoice.discountAmount.toString());
+          TextEditingController(text: adjustmentNote.discountAmount.toString());
     } else {
       discountPercentageController =
-          TextEditingController(text: invoice.discountAmount.toString());
+          TextEditingController(text: adjustmentNote.discountAmount.toString());
     }
   }
 

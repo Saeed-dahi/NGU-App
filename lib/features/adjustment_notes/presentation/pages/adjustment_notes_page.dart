@@ -16,29 +16,29 @@ class AdjustmentNotesPage extends StatefulWidget {
 }
 
 class _AdjustmentNotesPageState extends State<AdjustmentNotesPage> {
-  late final AdjustmentNoteBloc _invoiceBloc;
+  late final AdjustmentNoteBloc _adjustmentNoteBloc;
 
   @override
   void initState() {
-    _invoiceBloc = sl<AdjustmentNoteBloc>()
+    _adjustmentNoteBloc = sl<AdjustmentNoteBloc>()
       ..add(GetAllAdjustmentNoteEvent(type: widget.type));
     super.initState();
   }
 
   @override
   void dispose() {
-    _invoiceBloc.close();
+    _adjustmentNoteBloc.close();
     super.dispose();
   }
 
   Future<void> _refresh() async {
-    _invoiceBloc.add(GetAllAdjustmentNoteEvent(type: widget.type));
+    _adjustmentNoteBloc.add(GetAllAdjustmentNoteEvent(type: widget.type));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _invoiceBloc,
+      create: (context) => _adjustmentNoteBloc,
       child: CustomRefreshIndicator(
         child: ListView(
           children: [
@@ -46,7 +46,7 @@ class _AdjustmentNotesPageState extends State<AdjustmentNotesPage> {
               builder: (context, state) {
                 if (state is LoadedAllAdjustmentNotesState) {
                   return CustomAdjustmentNotesPlutoTable(
-                    invoices: state.adjustmentNotes,
+                    adjustmentNotes: state.adjustmentNotes,
                   );
                 }
                 if (state is ErrorAdjustmentNoteState) {

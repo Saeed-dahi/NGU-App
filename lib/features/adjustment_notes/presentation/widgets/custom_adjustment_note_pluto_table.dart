@@ -9,16 +9,16 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dar
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_entity.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_bloc/adjustment_note_bloc.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_form_cubit/adjustment_note_form_cubit.dart';
-import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_invoice_item_cubit.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_adjustment_note_item_cubit.dart';
 
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomAdjustmentNotePlutoTable extends StatelessWidget {
-  final AdjustmentNoteEntity? invoice;
+  final AdjustmentNoteEntity? adjustmentNote;
   final bool readOnly;
 
   CustomAdjustmentNotePlutoTable(
-      {super.key, this.invoice, this.readOnly = false});
+      {super.key, this.adjustmentNote, this.readOnly = false});
 
   late PlutoGridController _plutoGridController = PlutoGridController();
 
@@ -31,7 +31,7 @@ class CustomAdjustmentNotePlutoTable extends StatelessWidget {
         mode: readOnly ? PlutoGridMode.readOnly : PlutoGridMode.normal,
         noRowsWidget: MessageScreen(text: AppStrings.notFound.tr),
         columns: _buildColumns(),
-        rows: invoice!.invoiceItems == null
+        rows: adjustmentNote!.adjustmentNoteItems == null
             ? _buildEmptyRows().toList()
             : _buildFilledRows(context).toList(),
         showDefaultHeader: true,
@@ -105,27 +105,27 @@ class CustomAdjustmentNotePlutoTable extends StatelessWidget {
   }
 
   Iterable<PlutoRow> _buildFilledRows(BuildContext context) {
-    return invoice!.invoiceItems!.map(
-      (invoiceItem) {
-        var product = invoiceItem.productUnit!.product;
-        var unit = invoiceItem.productUnit!.unit;
+    return adjustmentNote!.adjustmentNoteItems!.map(
+      (adjustmentNoteItem) {
+        var product = adjustmentNoteItem.productUnit!.product;
+        var unit = adjustmentNoteItem.productUnit!.unit;
         var data = context
             .read<PreviewAdjustmentNoteItemCubit>()
-            .invoiceItemToPreviewAdjustmentNoteItem(product, invoiceItem, unit);
+            .adjustmentNoteItemToPreviewAdjustmentNoteItem(product, adjustmentNoteItem, unit);
 
         return PlutoRow(
           data: data,
           cells: {
             'code': PlutoCell(value: product!.code),
             'name': PlutoCell(value: '${product.arName} - ${product.enName}'),
-            'quantity': PlutoCell(value: invoiceItem.quantity),
+            'quantity': PlutoCell(value: adjustmentNoteItem.quantity),
             'unit': PlutoCell(value: unit!.arName),
-            'price': PlutoCell(value: invoiceItem.price),
-            'sub_total': PlutoCell(value: invoiceItem.total),
-            'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
+            'price': PlutoCell(value: adjustmentNoteItem.price),
+            'sub_total': PlutoCell(value: adjustmentNoteItem.total),
+            'tax_amount': PlutoCell(value: adjustmentNoteItem.taxAmount),
             'total':
-                PlutoCell(value: invoiceItem.total! + invoiceItem.taxAmount!),
-            'notes': PlutoCell(value: invoiceItem.description),
+                PlutoCell(value: adjustmentNoteItem.total! + adjustmentNoteItem.taxAmount!),
+            'notes': PlutoCell(value: adjustmentNoteItem.description),
           },
         );
       },

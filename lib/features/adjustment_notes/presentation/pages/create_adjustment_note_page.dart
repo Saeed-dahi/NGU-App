@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
-import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
+
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -12,7 +12,7 @@ import 'package:ngu_app/core/widgets/snack_bar.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_entity.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_bloc/adjustment_note_bloc.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_form_cubit/adjustment_note_form_cubit.dart';
-import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_invoice_item_cubit.dart';
+import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_adjustment_note_item_cubit.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/pages/adjustment_note_options_page.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/pages/adjustment_note_page.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/adjustment_note_tool_bar.dart';
@@ -32,46 +32,49 @@ class CreateAdjustmentNotePage extends StatefulWidget {
 }
 
 class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
-  late final AdjustmentNoteBloc _invoiceBloc;
+  late final AdjustmentNoteBloc _adjustmentNoteBloc;
 
-  late final AdjustmentNoteFormCubit _invoiceFormCubit;
+  late final AdjustmentNoteFormCubit _adjustmentNoteFormCubit;
 
   @override
   void initState() {
-    _invoiceBloc = sl<AdjustmentNoteBloc>()
+    _adjustmentNoteBloc = sl<AdjustmentNoteBloc>()
       ..add(GetCreateAdjustmentNoteFormData(type: widget.type));
 
-    _invoiceFormCubit = AdjustmentNoteFormCubit(
-        invoiceBloc: _invoiceBloc, invoiceType: widget.type);
+    _adjustmentNoteFormCubit = AdjustmentNoteFormCubit(
+        adjustmentNoteBloc: _adjustmentNoteBloc,
+        adjustmentNoteType: widget.type);
 
     super.initState();
   }
 
-  _initControllers(AdjustmentNoteEntity invoice) {
-    _invoiceFormCubit.initControllers(invoice);
+  _initControllers(AdjustmentNoteEntity adjustmentNote) {
+    _adjustmentNoteFormCubit.initControllers(adjustmentNote);
   }
 
   @override
   void dispose() {
-    _invoiceBloc.close();
-    _invoiceFormCubit.disposeControllers();
+    _adjustmentNoteBloc.close();
+    _adjustmentNoteFormCubit.disposeControllers();
 
     super.dispose();
   }
 
   void onSaveAsDraft() {
-    if (_invoiceFormCubit.validateForm()) {
-      _invoiceBloc.add(CreateAdjustmentNoteEvent(
-          adjustmentNote: _invoiceFormCubit.invoiceEntity(Status.draft)));
+    if (_adjustmentNoteFormCubit.validateForm()) {
+      _adjustmentNoteBloc.add(CreateAdjustmentNoteEvent(
+          adjustmentNote:
+              _adjustmentNoteFormCubit.adjustmentNoteEntity(Status.draft)));
     } else {
       ShowSnackBar.showValidationSnackbar(messages: ['required'.tr]);
     }
   }
 
   void onSaveAsSaved() {
-    if (_invoiceFormCubit.validateForm()) {
-      _invoiceBloc.add(CreateAdjustmentNoteEvent(
-          adjustmentNote: _invoiceFormCubit.invoiceEntity(Status.saved)));
+    if (_adjustmentNoteFormCubit.validateForm()) {
+      _adjustmentNoteBloc.add(CreateAdjustmentNoteEvent(
+          adjustmentNote:
+              _adjustmentNoteFormCubit.adjustmentNoteEntity(Status.saved)));
     } else {
       ShowSnackBar.showValidationSnackbar(messages: ['required'.tr]);
     }
@@ -82,19 +85,13 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => _invoiceBloc,
+          create: (context) => _adjustmentNoteBloc,
         ),
         BlocProvider(
-          create: (context) => _invoiceFormCubit,
+          create: (context) => _adjustmentNoteFormCubit,
         ),
         BlocProvider(
           create: (context) => sl<PreviewAdjustmentNoteItemCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => sl<PrintingBloc>()
-            ..add(GetPrinterEvent(printerType: PrinterType.receipt.name))
-            ..add(GetPrinterEvent(printerType: PrinterType.tax_invoice.name)),
-          lazy: false,
         ),
       ],
       child: BlocConsumer<AdjustmentNoteBloc, AdjustmentNoteState>(
@@ -105,7 +102,8 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
                 title: widget.type.tr,
                 content: AdjustmentNotePage(
                   type: widget.type,
-                  invoiceId: _invoiceBloc.getAdjustmentNoteEntity.id!,
+                  adjustmentNoteId:
+                      _adjustmentNoteBloc.getAdjustmentNoteEntity.id!,
                 ));
           }
         },
@@ -114,7 +112,7 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
             return Center(child: MessageScreen(text: state.error));
           }
           if (state is LoadedAdjustmentNoteState) {
-            _initControllers(_invoiceBloc.getAdjustmentNoteEntity);
+            _initControllers(_adjustmentNoteBloc.getAdjustmentNoteEntity);
 
             return DefaultTabController(
               length: 3,
@@ -132,18 +130,17 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
         title: widget.type.tr,
         content: AdjustmentNotePage(
             type: widget.type,
-            invoiceId:
-                int.parse(_invoiceFormCubit.invoiceSearchNumController.text)));
+            adjustmentNoteId: int.parse(_adjustmentNoteFormCubit
+                .adjustmentNoteSearchNumController.text)));
   }
 
   Widget _pageBody() {
     return CustomAdjustmentNotePageContainer(
-      type: _invoiceBloc.getAdjustmentNoteEntity.invoiceType!,
+      type: _adjustmentNoteBloc.getAdjustmentNoteEntity.adjustmentNoteType!,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AdjustmentNoteToolBar(
-            // invoice: _invoiceBloc.getAdjustmentNoteEntity,
             onSaveAsDraft: onSaveAsDraft,
             onSaveAsSaved: onSaveAsSaved,
             adjustmentNoteType: widget.type,
@@ -153,7 +150,7 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
             labelColor: AppColors.black,
             indicatorColor: AppColors.primaryColor,
             tabs: [
-              Tab(text: '${'invoice'.tr} ${widget.type.tr}'),
+              Tab(text: '${'adjustment_note'.tr} ${widget.type.tr}'),
               Tab(text: 'options'.tr),
               Tab(text: 'print'.tr),
             ],
@@ -161,9 +158,9 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
           const SizedBox(height: 10),
           Expanded(
             child: TabBarView(children: [
-              _invoiceTabWidgets(false),
-              _invoiceOptionPage(false),
-              SizedBox(),
+              _adjustmentNoteTabWidgets(false),
+              _adjustmentNoteOptionPage(false),
+              const SizedBox(),
             ]),
           ),
         ],
@@ -171,32 +168,33 @@ class _CreateAdjustmentNotePageState extends State<CreateAdjustmentNotePage> {
     );
   }
 
-  AdjustmentNoteOptionsPage _invoiceOptionPage(bool isSavedAdjustmentNote) {
+  AdjustmentNoteOptionsPage _adjustmentNoteOptionPage(
+      bool isSavedAdjustmentNote) {
     return AdjustmentNoteOptionsPage(
       enableEditing: !isSavedAdjustmentNote,
-      invoiceBloc: _invoiceBloc,
-      invoiceFormCubit: _invoiceFormCubit,
-      errors: _invoiceBloc.getValidationErrors,
+      adjustmentNoteBloc: _adjustmentNoteBloc,
+      adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
+      errors: _adjustmentNoteBloc.getValidationErrors,
     );
   }
 
-  Widget _invoiceTabWidgets(bool isSavedAdjustmentNote) {
+  Widget _adjustmentNoteTabWidgets(bool isSavedAdjustmentNote) {
     return CustomSavedTab(
       child: ListView(
         children: [
           CustomAdjustmentNoteFields(
             enable: !isSavedAdjustmentNote,
-            adjustmentNoteBloc: _invoiceBloc,
-            adjustmentNoteFormCubit: _invoiceFormCubit,
-            errors: _invoiceBloc.getValidationErrors,
+            adjustmentNoteBloc: _adjustmentNoteBloc,
+            adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
+            errors: _adjustmentNoteBloc.getValidationErrors,
           ),
           CustomAdjustmentNotePlutoTable(
             readOnly: isSavedAdjustmentNote,
-            invoice: _invoiceBloc.getAdjustmentNoteEntity,
+            adjustmentNote: _adjustmentNoteBloc.getAdjustmentNoteEntity,
           ),
           CustomAdjustmentNoteFooter(
-            adjustmentNoteFormCubit: _invoiceFormCubit,
-            adjustmentNoteBloc: _invoiceBloc,
+            adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
+            adjustmentNoteBloc: _adjustmentNoteBloc,
             enableEditing: true,
           ),
         ],

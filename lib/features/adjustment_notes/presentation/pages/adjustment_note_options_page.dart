@@ -10,8 +10,8 @@ import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_
 
 class AdjustmentNoteOptionsPage extends StatelessWidget {
   final bool enableEditing;
-  final AdjustmentNoteFormCubit invoiceFormCubit;
-  final AdjustmentNoteBloc invoiceBloc;
+  final AdjustmentNoteFormCubit adjustmentNoteFormCubit;
+  final AdjustmentNoteBloc adjustmentNoteBloc;
 
   final Map<String, dynamic> errors;
 
@@ -19,8 +19,8 @@ class AdjustmentNoteOptionsPage extends StatelessWidget {
       {super.key,
       required this.enableEditing,
       required this.errors,
-      required this.invoiceBloc,
-      required this.invoiceFormCubit});
+      required this.adjustmentNoteBloc,
+      required this.adjustmentNoteFormCubit});
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +31,25 @@ class AdjustmentNoteOptionsPage extends StatelessWidget {
             CustomAccountAutoComplete(
               enabled: enableEditing,
               initialValue:
-                  invoiceFormCubit.goodsAccountController.arName ?? '',
+                  adjustmentNoteFormCubit.goodsAccountController.arName ?? '',
               error: errors['goods_account']?.join('\n'),
-              controller: invoiceFormCubit.goodsAccountController,
+              controller: adjustmentNoteFormCubit.goodsAccountController,
               label: 'goods_account',
             ),
             CustomAccountAutoComplete(
               enabled: enableEditing,
-              initialValue: invoiceFormCubit.taxAccountController.arName ?? '',
-              controller: invoiceFormCubit.taxAccountController,
+              initialValue:
+                  adjustmentNoteFormCubit.taxAccountController.arName ?? '',
+              controller: adjustmentNoteFormCubit.taxAccountController,
               error: errors['tax_account_id']?.join('\n'),
               label: 'tax_account',
             ),
             CustomAccountAutoComplete(
               enabled: enableEditing,
               initialValue:
-                  invoiceFormCubit.discountAccountController.arName ?? '',
-              controller: invoiceFormCubit.discountAccountController,
+                  adjustmentNoteFormCubit.discountAccountController.arName ??
+                      '',
+              controller: adjustmentNoteFormCubit.discountAccountController,
               error: errors['discount_account_id']?.join('\n'),
               label: 'discount_account',
             ),
@@ -57,7 +59,7 @@ class AdjustmentNoteOptionsPage extends StatelessWidget {
           children: [
             CustomInputField(
               label: 'description'.tr,
-              controller: invoiceFormCubit.descriptionController,
+              controller: adjustmentNoteFormCubit.descriptionController,
               enabled: enableEditing,
               error: errors['tax_account_description']?.join('\n'),
               required: false,
@@ -65,7 +67,7 @@ class AdjustmentNoteOptionsPage extends StatelessWidget {
             CustomInputField(
               label: 'tax_amount'.tr,
               enabled: enableEditing,
-              controller: invoiceFormCubit.taxAmountController,
+              controller: adjustmentNoteFormCubit.taxAmountController,
               helper: '%',
               format: FilteringTextInputFormatter.digitsOnly,
               error: errors['tax_amount']?.join('\n'),
@@ -74,11 +76,11 @@ class AdjustmentNoteOptionsPage extends StatelessWidget {
             CustomDropdown(
               dropdownValue: getEnumValues(AccountNature.values),
               onChanged: (value) {
-                invoiceFormCubit.natureController = value;
+                adjustmentNoteFormCubit.natureController = value;
               },
-              label: 'invoice_nature'.tr,
-              value: invoiceFormCubit.natureController,
-              error: errors['invoice_nature']?.join('\n'),
+              label: 'adjustment_note_nature'.tr,
+              value: adjustmentNoteFormCubit.natureController,
+              error: errors['adjustment_note_nature']?.join('\n'),
             ),
           ],
         ),

@@ -10,12 +10,12 @@ import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_not
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomAdjustmentNotesPlutoTable extends StatelessWidget {
-  final List<AdjustmentNoteEntity> invoices;
+  final List<AdjustmentNoteEntity> adjustmentNotes;
   late PlutoGridController _plutoGridController = PlutoGridController();
 
   CustomAdjustmentNotesPlutoTable({
     super.key,
-    required this.invoices,
+    required this.adjustmentNotes,
   });
 
   @override
@@ -39,7 +39,7 @@ class CustomAdjustmentNotesPlutoTable extends StatelessWidget {
 
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
-      _buildCustomColumn('invoice_number'),
+      _buildCustomColumn('adjustment_note_number'),
       _buildCustomColumn('status'),
       _buildCustomColumn('date'),
       _buildCustomColumn('account_name'),
@@ -54,20 +54,21 @@ class CustomAdjustmentNotesPlutoTable extends StatelessWidget {
   }
 
   Iterable<PlutoRow> _buildRows() {
-    return invoices.map(
-      (invoice) {
+    return adjustmentNotes.map(
+      (adjustmentNote) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
-          data: invoice.id,
+          data: adjustmentNote.id,
           cells: {
-            'invoice_number': PlutoCell(value: invoice.invoiceNumber),
-            'status': PlutoCell(value: invoice.status!.tr),
-            'date': PlutoCell(value: invoice.date),
+            'adjustmentNote_number':
+                PlutoCell(value: adjustmentNote.adjustmentNoteNumber),
+            'status': PlutoCell(value: adjustmentNote.status!.tr),
+            'date': PlutoCell(value: adjustmentNote.date),
             'account_name': PlutoCell(
                 value:
-                    '${invoice.account!.arName} - ${invoice.account!.enName}'),
-            'sub_total': PlutoCell(value: invoice.subTotal),
-            'total': PlutoCell(value: invoice.total),
+                    '${adjustmentNote.account!.arName} - ${adjustmentNote.account!.enName}'),
+            'sub_total': PlutoCell(value: adjustmentNote.subTotal),
+            'total': PlutoCell(value: adjustmentNote.total),
           },
         );
       },
