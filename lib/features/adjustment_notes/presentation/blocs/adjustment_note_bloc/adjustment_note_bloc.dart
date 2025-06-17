@@ -31,8 +31,8 @@ class AdjustmentNoteBloc
   final GetCreateAdjustmentNoteFormDataUseCase
       getCreateAdjustmentNoteFormDataUseCase;
 
-  AdjustmentNoteEntity _invoiceEntity = const AdjustmentNoteEntity();
-  AdjustmentNoteEntity get getAdjustmentNoteEntity => _invoiceEntity;
+  AdjustmentNoteEntity _adjustmentNoteEntity = const AdjustmentNoteEntity();
+  AdjustmentNoteEntity get getAdjustmentNoteEntity => _adjustmentNoteEntity;
 
   bool isSavedAdjustmentNote = false;
 
@@ -44,7 +44,7 @@ class AdjustmentNoteBloc
   set setPlutoGridController(PlutoGridController sts) =>
       _plutoGridController = sts;
 
-  List<AdjustmentNoteItemsEntityParams> get invoiceItems {
+  List<AdjustmentNoteItemsEntityParams> get adjustmentItems {
     return _plutoGridController.stateManager!.rows.where((row) {
       final data = row.data;
       return data != null;
@@ -88,14 +88,15 @@ class AdjustmentNoteBloc
 
   FutureOr<void> _showAdjustmentNote(
       ShowAdjustmentNoteEvent event, Emitter<AdjustmentNoteState> emit) async {
+    _validationErrors = {};
     emit(LoadingAdjustmentNoteState());
     final result = await showAdjustmentNoteUseCase(
         event.adjustmentNoteQuery, event.direction, event.type, event.getBy);
     result.fold((failure) {
       emit(ErrorAdjustmentNoteState(error: failure.errors['error']));
     }, (data) {
-      _invoiceEntity = data;
-      emit(LoadedAdjustmentNoteState(adjustmentNote: _invoiceEntity));
+      _adjustmentNoteEntity = data;
+      emit(LoadedAdjustmentNoteState(adjustmentNote: _adjustmentNoteEntity));
     });
   }
 
@@ -103,8 +104,8 @@ class AdjustmentNoteBloc
       Emitter<AdjustmentNoteState> emit) async {
     emit(LoadingAdjustmentNoteState());
 
-    final result =
-        await createAdjustmentNoteUseCase(event.adjustmentNote, invoiceItems);
+    final result = await createAdjustmentNoteUseCase(
+        event.adjustmentNote, adjustmentItems);
     _createAndUpdateFoldResult(result, event, emit);
   }
 
@@ -112,8 +113,8 @@ class AdjustmentNoteBloc
       Emitter<AdjustmentNoteState> emit) async {
     emit(LoadingAdjustmentNoteState());
 
-    final result =
-        await updateAdjustmentNoteUseCase(event.adjustmentNote, invoiceItems);
+    final result = await updateAdjustmentNoteUseCase(
+        event.adjustmentNote, adjustmentItems);
 
     _createAndUpdateFoldResult(result, event, emit);
   }
@@ -123,15 +124,15 @@ class AdjustmentNoteBloc
     result.fold((failure) {
       if (failure is ValidationFailure) {
         _validationErrors = failure.errors;
-        _invoiceEntity = event.invoice;
+        _adjustmentNoteEntity = event.adjustmentNote;
 
         ShowSnackBar.showValidationSnackbar(messages: ['error'.tr]);
-        emit(LoadedAdjustmentNoteState(adjustmentNote: event.invoice));
+        emit(LoadedAdjustmentNoteState(adjustmentNote: event.adjustmentNote));
       } else {
         emit(ErrorAdjustmentNoteState(error: failure.errors['error']));
       }
     }, (data) {
-      _invoiceEntity = data;
+      _adjustmentNoteEntity = data;
       _validationErrors = {};
       emit(CreatedAdjustmentNoteState());
       emit(LoadedAdjustmentNoteState(adjustmentNote: data));
@@ -143,7 +144,7 @@ class AdjustmentNoteBloc
     final result = await getCreateAdjustmentNoteFormDataUseCase(event.type);
 
     result.fold((failure) {}, (data) {
-      _invoiceEntity = data;
+      _adjustmentNoteEntity = data;
 
       emit(LoadedAdjustmentNoteState(adjustmentNote: data));
     });

@@ -67,18 +67,18 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                     CustomInputField(
                       label: 'sub_total'.tr,
                       enabled: enableEditing,
-                      controller: adjustmentNoteFormCubit.notesController,
+                      controller: adjustmentNoteFormCubit.subTotalController,
                       error: errors['sub_total']?.join('\n'),
                       required: false,
                     ),
                     CustomAccountAutoComplete(
                       enabled: enableEditing,
                       initialValue: adjustmentNoteFormCubit
-                              .goodsAccountController.arName ??
+                              .primaryAccountController.arName ??
                           '',
                       error: errors['primary_account_id']?.join('\n'),
                       controller:
-                          adjustmentNoteFormCubit.goodsAccountController,
+                          adjustmentNoteFormCubit.primaryAccountController,
                       label: '${'account'.tr} (${'credit'.tr})',
                     ),
                     if (adjustmentNoteType == 'credit') const SizedBox(),
@@ -91,20 +91,18 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                     if (adjustmentNoteType == 'debit') const SizedBox(),
                     CustomInputField(
                       label: 'tax_amount'.tr,
-                      enabled: enableEditing,
+                      enabled: false,
                       controller: adjustmentNoteFormCubit.taxAmountController,
                       helper: '%',
                       format: FilteringTextInputFormatter.digitsOnly,
                       error: errors['tax_amount']?.join('\n'),
-                      readOnly: true,
                     ),
                     CustomAccountAutoComplete(
                       enabled: enableEditing,
-                      initialValue: adjustmentNoteFormCubit
-                              .discountAccountController.arName ??
-                          '',
-                      controller:
-                          adjustmentNoteFormCubit.discountAccountController,
+                      initialValue:
+                          adjustmentNoteFormCubit.taxAccountController.arName ??
+                              '',
+                      controller: adjustmentNoteFormCubit.taxAccountController,
                       error: errors['tax_account_id']?.join('\n'),
                       label: 'tax_account',
                     ),
@@ -117,16 +115,17 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                   CustomInputField(
                     label: 'total'.tr,
                     enabled: enableEditing,
-                    controller: adjustmentNoteFormCubit.notesController,
+                    controller: adjustmentNoteFormCubit.totalController,
                     error: errors['total']?.join('\n'),
                     required: false,
                   ),
                   CustomAccountAutoComplete(
                     enabled: enableEditing,
-                    initialValue:
-                        adjustmentNoteFormCubit.taxAccountController.arName ??
-                            '',
-                    controller: adjustmentNoteFormCubit.taxAccountController,
+                    initialValue: adjustmentNoteFormCubit
+                            .secondaryAccountController.arName ??
+                        '',
+                    controller:
+                        adjustmentNoteFormCubit.secondaryAccountController,
                     error: errors['secondary_account_id']?.join('\n'),
                     label: '${'account'.tr} (${'debit'.tr})',
                   ),

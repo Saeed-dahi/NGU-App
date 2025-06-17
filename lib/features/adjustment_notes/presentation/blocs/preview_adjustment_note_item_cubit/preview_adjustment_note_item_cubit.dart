@@ -55,22 +55,23 @@ class PreviewAdjustmentNoteItemCubit
       case 'code':
         return await _handleCodeColumnChange(context);
       default:
-        return await _handleDefaultColumnChange(previewAdjustmentNoteItem, context);
+        return await _handleDefaultColumnChange(
+            previewAdjustmentNoteItem, context);
     }
   }
 
   /// Handles changes when the "code" column is updated
   Future<PreviewAdjustmentNoteItemEntity?> _handleCodeColumnChange(
       BuildContext context) async {
-    var previewAdjustmentNoteItem =
-        await _previewAdjustmentNoteItem(context: context, query: query, row: row);
+    var previewAdjustmentNoteItem = await _previewAdjustmentNoteItem(
+        context: context, query: query, row: row);
 
     if (previewAdjustmentNoteItem == null && context.mounted) {
       final result = await _openProductsDialog(context);
       if (result.isNotEmpty && context.mounted) {
         query = result['code'];
-        previewAdjustmentNoteItem =
-            await _previewAdjustmentNoteItem(context: context, query: query, row: row);
+        previewAdjustmentNoteItem = await _previewAdjustmentNoteItem(
+            context: context, query: query, row: row);
       }
     }
     return previewAdjustmentNoteItem;
@@ -106,12 +107,13 @@ class PreviewAdjustmentNoteItemCubit
       BuildContext context, PlutoGridStateManager? stateManager) async {
     PlutoRow? row = stateManager!.currentRow;
     PreviewAdjustmentNoteItemEntity currentAdjustmentNoteItem = row!.data;
-    PreviewAdjustmentNoteItemEntity? previewAdjustmentNoteItem = await _previewAdjustmentNoteItem(
-        context: context,
-        query: currentAdjustmentNoteItem.code.toString(),
-        productUnitId: currentAdjustmentNoteItem.productUnit.id,
-        row: row,
-        changeUnit: true);
+    PreviewAdjustmentNoteItemEntity? previewAdjustmentNoteItem =
+        await _previewAdjustmentNoteItem(
+            context: context,
+            query: currentAdjustmentNoteItem.code.toString(),
+            productUnitId: currentAdjustmentNoteItem.productUnit.id,
+            row: row,
+            changeUnit: true);
     if (previewAdjustmentNoteItem != null) {
       _updateUiAfterColumnChange(row, previewAdjustmentNoteItem, stateManager);
     }
@@ -126,15 +128,17 @@ class PreviewAdjustmentNoteItemCubit
     bool? changeUnit,
   }) async {
     AdjustmentNoteAccountEntity? account =
-        context.read<AdjustmentNoteFormCubit>().accountController;
+        context.read<AdjustmentNoteFormCubit>().primaryAccountController;
 
-    PreviewAdjustmentNoteItemEntityParams params = PreviewAdjustmentNoteItemEntityParams(
-        query: query,
-        accountId: account.id,
-        productUnitId: productUnitId,
-        price: price ?? double.tryParse(row.cells['price']!.value.toString()),
-        quantity: double.tryParse(row.cells['quantity']!.value.toString()),
-        changeUnit: changeUnit);
+    PreviewAdjustmentNoteItemEntityParams params =
+        PreviewAdjustmentNoteItemEntityParams(
+            query: query,
+            accountId: account.id,
+            productUnitId: productUnitId,
+            price:
+                price ?? double.tryParse(row.cells['price']!.value.toString()),
+            quantity: double.tryParse(row.cells['quantity']!.value.toString()),
+            changeUnit: changeUnit);
 
     final data = await previewAdjustmentNoteItem(params);
     return data;
@@ -156,7 +160,8 @@ class PreviewAdjustmentNoteItemCubit
 
   /// Generates a map of updates for the grid cells
   Map<String, dynamic> _generateUpdateMap(
-      PreviewAdjustmentNoteItemEntity previewAdjustmentNoteItem, PlutoRow<dynamic> row) {
+      PreviewAdjustmentNoteItemEntity previewAdjustmentNoteItem,
+      PlutoRow<dynamic> row) {
     var currentQuantity = row.cells['quantity']!.value;
     return {
       'code': previewAdjustmentNoteItem.code,
@@ -184,20 +189,22 @@ class PreviewAdjustmentNoteItemCubit
       AdjustmentNoteProductEntity? product,
       AdjustmentNoteItemEntity adjustmentNoteItem,
       AdjustmentNoteUnitEntity? unit) {
-    PreviewAdjustmentNoteItemEntity previewAdjustmentNoteItem = PreviewAdjustmentNoteItemEntity(
-        id: product!.id!,
-        arName: product.arName!,
-        enName: product.enName!,
-        code: product.code!,
-        productUnit: PreviewProductUnitEntity(
-            id: adjustmentNoteItem.productUnit!.id!,
-            arName: unit!.arName!,
-            enName: unit.enName!,
-            unitId: unit.id!,
-            price: adjustmentNoteItem.price!,
-            taxAmount: adjustmentNoteItem.taxAmount!,
-            subTotal: adjustmentNoteItem.total!,
-            total: adjustmentNoteItem.total! + adjustmentNoteItem.taxAmount!));
+    PreviewAdjustmentNoteItemEntity previewAdjustmentNoteItem =
+        PreviewAdjustmentNoteItemEntity(
+            id: product!.id!,
+            arName: product.arName!,
+            enName: product.enName!,
+            code: product.code!,
+            productUnit: PreviewProductUnitEntity(
+                id: adjustmentNoteItem.productUnit!.id!,
+                arName: unit!.arName!,
+                enName: unit.enName!,
+                unitId: unit.id!,
+                price: adjustmentNoteItem.price!,
+                taxAmount: adjustmentNoteItem.taxAmount!,
+                subTotal: adjustmentNoteItem.total!,
+                total:
+                    adjustmentNoteItem.total! + adjustmentNoteItem.taxAmount!));
     return previewAdjustmentNoteItem;
   }
 

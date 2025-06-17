@@ -66,7 +66,7 @@ class CustomAdjustmentNotesPlutoTable extends StatelessWidget {
             'date': PlutoCell(value: adjustmentNote.date),
             'account_name': PlutoCell(
                 value:
-                    '${adjustmentNote.account!.arName} - ${adjustmentNote.account!.enName}'),
+                    '${adjustmentNote.primaryAccount!.arName} - ${adjustmentNote.primaryAccount!.enName}'),
             'sub_total': PlutoCell(value: adjustmentNote.subTotal),
             'total': PlutoCell(value: adjustmentNote.total),
           },

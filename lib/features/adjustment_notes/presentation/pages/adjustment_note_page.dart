@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
 import 'package:ngu_app/core/utils/enums.dart';
+import 'package:ngu_app/core/widgets/custom_accordion.dart';
 import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
@@ -15,7 +16,6 @@ import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adj
 import 'package:ngu_app/features/adjustment_notes/presentation/pages/create_adjustment_note_page.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/adjustment_note_tool_bar.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/custom_adjustment_note_fields.dart';
-import 'package:ngu_app/features/adjustment_notes/presentation/widgets/custom_adjustment_note_footer.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/custom_adjustment_note_page_container.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/custom_adjustment_note_pluto_table.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
@@ -182,14 +182,14 @@ class _AdjustmentNotePageState extends State<AdjustmentNotePage> {
             errors: _adjustmentNoteBloc.getValidationErrors,
           ),
           _statusHint(),
-          CustomAdjustmentNotePlutoTable(
-            adjustmentNote: _adjustmentNoteBloc.getAdjustmentNoteEntity,
-            readOnly: isSavedAdjustmentNote,
-          ),
-          CustomAdjustmentNoteFooter(
-            adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
-            adjustmentNoteBloc: _adjustmentNoteBloc,
-            enableEditing: !isSavedAdjustmentNote,
+          CustomAccordion(
+            icon: Icons.table_chart_outlined,
+            isOpen: false,
+            title: 'inventory'.tr,
+            contentWidget: CustomAdjustmentNotePlutoTable(
+              adjustmentNote: _adjustmentNoteBloc.getAdjustmentNoteEntity,
+              readOnly: isSavedAdjustmentNote,
+            ),
           ),
         ],
       ),

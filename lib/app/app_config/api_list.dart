@@ -27,6 +27,9 @@ class APIList {
   static const String invoice = "invoice";
   static const String previewInvoiceItem = "get-invoice-item-data";
 
+  static const String adjustmentNote = "adjustment-note";
+  static const String previewAdjustmentNoteItem = "get-adjustment-note-item-data";
+
   static const String cheque = "cheque";
   static const String depositCheque = "deposit-cheque";
   static const String accountCheques = "account-cheques";

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ngu_app/features/adjustment_notes/data/models/adjustemnt_note_model.dart';
+import 'package:ngu_app/features/adjustment_notes/data/models/adjustment_note_model.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_account_entity.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_item_entity.dart';
 
@@ -11,20 +11,15 @@ class AdjustmentNoteEntity extends Equatable {
   final String? date;
   final String? dueDate;
   final String? status;
-  final String? adjustmentNoteNature;
-  final String? address;
-  final String? currency;
   final double? subTotal;
   final double? total;
-  final String? notes;
   final String? description;
-  final AdjustmentNoteAccountEntity? account;
-  final AdjustmentNoteAccountEntity? goodsAccount;
+  final AdjustmentNoteAccountEntity? primaryAccount;
+  final AdjustmentNoteAccountEntity? secondaryAccount;
   final AdjustmentNoteAccountEntity? taxAccount;
   final double? taxAmount;
-  final AdjustmentNoteAccountEntity? discountAccount;
-  final double? discountAmount;
-  final String? discountType;
+  final int? chequeId;
+
   final List<AdjustmentNoteItemEntity>? adjustmentNoteItems;
 
   const AdjustmentNoteEntity(
@@ -35,21 +30,15 @@ class AdjustmentNoteEntity extends Equatable {
       this.date,
       this.dueDate,
       this.status,
-      this.adjustmentNoteNature,
-      this.address,
-      this.currency,
       this.subTotal,
       this.total,
-      this.notes,
       this.description,
-      this.account,
-      this.goodsAccount,
+      this.primaryAccount,
+      this.secondaryAccount,
       this.taxAccount,
       this.taxAmount,
-      this.discountAccount,
-      this.discountAmount,
-      this.discountType,
-      this.adjustmentNoteItems});
+      this.adjustmentNoteItems,
+      this.chequeId});
 
   AdjustmentNoteModel toModel() {
     return AdjustmentNoteModel(
@@ -60,20 +49,13 @@ class AdjustmentNoteEntity extends Equatable {
         date: date,
         dueDate: dueDate,
         status: status,
-        adjustmentNoteNature: adjustmentNoteNature,
-        address: address,
-        currency: currency,
         subTotal: subTotal,
         total: total,
-        notes: notes,
         description: description,
-        account: account,
-        goodsAccount: goodsAccount,
+        primaryAccount: primaryAccount,
+        secondaryAccount: secondaryAccount,
         taxAccount: taxAccount,
         taxAmount: taxAmount,
-        discountAccount: discountAccount,
-        discountAmount: discountAmount,
-        discountType: discountType,
         adjustmentNoteItems: adjustmentNoteItems);
   }
 
@@ -86,20 +68,14 @@ class AdjustmentNoteEntity extends Equatable {
         date,
         dueDate,
         status,
-        adjustmentNoteNature,
-        address,
-        currency,
         subTotal,
         total,
-        notes,
         description,
-        account,
-        goodsAccount,
+        primaryAccount,
+        secondaryAccount,
         taxAccount,
         taxAmount,
-        discountAccount,
-        discountAmount,
-        discountType,
-        adjustmentNoteItems
+        adjustmentNoteItems,
+        chequeId
       ];
 }
