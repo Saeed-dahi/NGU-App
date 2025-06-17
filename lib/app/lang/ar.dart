@@ -111,8 +111,12 @@ Map<String, String> ar = {
   'credit_notes_table': 'جدول مذكرات الائتمان',
   'debit_note': 'مذكرة خصم',
   'debit_notes_table': 'جدول مذكرات الخصم',
+  'primary_account': 'الحساب الرئيسي',
+  'secondary_account': 'الحساب الفرعي',
+  'adjustment_note_number': 'رقم مذكرة التسوية',
 
   // Stock
+  'inventory': 'المخزون',
   'stock_control': 'إدارة المخزون',
   'products': 'المواد',
   'product': 'مادة',

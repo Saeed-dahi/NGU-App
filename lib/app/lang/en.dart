@@ -111,8 +111,12 @@ Map<String, String> en = {
   'credit_notes_table': 'Credit Notes Table',
   'debit_note': 'Debit Note',
   'debit_notes_table': 'Debit Notes Table',
+  'primary_account': 'Primary Account',
+  'secondary_account': 'Secondary Account',
+  'adjustment_note_number': 'Adjustment Note Number',
 
   // Stock
+  'inventory': 'Inventory',
   'stock_control': 'ٍStock Control',
   'products': 'Products',
   'product': 'Product',

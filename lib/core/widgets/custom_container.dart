@@ -10,6 +10,7 @@ class CustomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
+      padding: const EdgeInsets.all(Dimensions.primaryPadding),
       decoration: const BoxDecoration(
         color: AppColors.secondaryColor,
         boxShadow: [

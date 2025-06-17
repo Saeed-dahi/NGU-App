@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_management/theme/app_colors.dart';
 import 'package:ngu_app/app/dependency_injection/dependency_injection.dart';
-
 import 'package:ngu_app/core/utils/enums.dart';
 import 'package:ngu_app/core/widgets/custom_saved_tab.dart';
 import 'package:ngu_app/core/widgets/loaders.dart';
@@ -13,7 +12,6 @@ import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_not
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_bloc/adjustment_note_bloc.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/adjustment_note_form_cubit/adjustment_note_form_cubit.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/blocs/preview_adjustment_note_item_cubit/preview_adjustment_note_item_cubit.dart';
-import 'package:ngu_app/features/adjustment_notes/presentation/pages/adjustment_note_options_page.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/pages/create_adjustment_note_page.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/adjustment_note_tool_bar.dart';
 import 'package:ngu_app/features/adjustment_notes/presentation/widgets/custom_adjustment_note_fields.dart';
@@ -136,10 +134,7 @@ class _AdjustmentNotePageState extends State<AdjustmentNotePage> {
 
           if (state is LoadedAdjustmentNoteState) {
             _initControllers(_adjustmentNoteBloc.getAdjustmentNoteEntity);
-            return DefaultTabController(
-              length: 3,
-              child: _pageBody(),
-            );
+            return _pageBody();
           }
           return Center(child: Loaders.loading());
         },
@@ -166,37 +161,13 @@ class _AdjustmentNotePageState extends State<AdjustmentNotePage> {
             adjustmentNoteType: widget.type,
             onAdjustmentNoteSearch: onAdjustmentNoteSearch,
           ),
-          TabBar(
-            labelColor: AppColors.black,
-            indicatorColor: AppColors.primaryColor,
-            tabs: [
-              Tab(text: '${'adjustment_note'.tr} ${widget.type.tr}'),
-              Tab(text: 'options'.tr),
-              Tab(text: 'print'.tr),
-            ],
-          ),
           const SizedBox(height: 10),
           Expanded(
-            child: TabBarView(children: [
-              _adjustmentNoteTabWidgets(
-                  _adjustmentNoteBloc.isSavedAdjustmentNote),
-              _adjustmentNoteOptionPage(
-                  _adjustmentNoteBloc.isSavedAdjustmentNote),
-              const SizedBox()
-            ]),
+            child: _adjustmentNoteTabWidgets(
+                _adjustmentNoteBloc.isSavedAdjustmentNote),
           ),
         ],
       ),
-    );
-  }
-
-  AdjustmentNoteOptionsPage _adjustmentNoteOptionPage(
-      bool isSavedAdjustmentNote) {
-    return AdjustmentNoteOptionsPage(
-      enableEditing: !isSavedAdjustmentNote,
-      adjustmentNoteBloc: _adjustmentNoteBloc,
-      adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
-      errors: _adjustmentNoteBloc.getValidationErrors,
     );
   }
 
@@ -205,7 +176,7 @@ class _AdjustmentNotePageState extends State<AdjustmentNotePage> {
       child: ListView(
         children: [
           CustomAdjustmentNoteFields(
-            enable: !isSavedAdjustmentNote,
+            enableEditing: !isSavedAdjustmentNote,
             adjustmentNoteBloc: _adjustmentNoteBloc,
             adjustmentNoteFormCubit: _adjustmentNoteFormCubit,
             errors: _adjustmentNoteBloc.getValidationErrors,
