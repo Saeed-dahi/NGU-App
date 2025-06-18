@@ -151,7 +151,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       GetCreateInvoiceFormData event, Emitter<InvoiceState> emit) async {
     final result = await getCreateInvoiceFormDataUseCase(event.type);
 
-    result.fold((failure) {}, (data) {
+    result.fold((failure) {
+      emit(ErrorInvoiceState(error: failure.errors.toString()));
+    }, (data) {
       _invoiceEntity = data;
 
       emit(LoadedInvoiceState(invoice: data));
