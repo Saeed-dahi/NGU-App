@@ -147,8 +147,8 @@ class InvoiceFormCubit extends Cubit<InvoiceFormState> {
       discountPercentageController.text = '0';
     }
 
-    totalController.text = FormatterClass.calculateTax(
-            taxAmountController.text, subTotalAfterDiscountController.text)
+    totalController.text = FormatterClass.calculateTotalWithTax(
+            subTotalAfterDiscountController.text)
         .toString();
   }
 

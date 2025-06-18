@@ -85,7 +85,7 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
       primaryAccount: primaryAccountController,
       secondaryAccount: secondaryAccountController,
       taxAccount: taxAccountController,
-      taxAmount: double.tryParse(taxAmountController.text) ?? 5,
+      taxAmount: double.tryParse(taxAmountController.text),
       subTotal: double.parse(subTotalController.text),
       total: double.parse(totalController.text),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 
 import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_container.dart';
@@ -93,7 +94,7 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                       label: 'tax_amount'.tr,
                       enabled: false,
                       controller: adjustmentNoteFormCubit.taxAmountController,
-                      helper: '%',
+                      helper: '${Constant.taxRate}%',
                       format: FilteringTextInputFormatter.digitsOnly,
                       error: errors['tax_amount']?.join('\n'),
                     ),

@@ -60,3 +60,7 @@ class Dimensions {
   static const double mediumDividerHeight = 16;
   static const double largeDividerHeight = 18;
 }
+
+class Constant {
+  static const double taxRate = 5;
+}

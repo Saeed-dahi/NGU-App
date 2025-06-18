@@ -15,7 +15,6 @@ class InvoiceItemsModelParams extends InvoiceItemsEntityParams {
       'description': description,
       'quantity': quantity,
       'price': price,
-      if (taxAmount != null) 'tax_account': taxAmount,
       if (discountAmount != null) 'discount_amount': discountAmount
     };
   }

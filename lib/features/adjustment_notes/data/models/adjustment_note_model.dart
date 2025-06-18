@@ -60,7 +60,6 @@ class AdjustmentNoteModel extends AdjustmentNoteEntity {
       'tax_account_id': taxAccount!.id,
       'sub_total': subTotal,
       'total': total,
-      'tax_amount': taxAmount
     };
   }
 }

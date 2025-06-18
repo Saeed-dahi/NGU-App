@@ -33,7 +33,6 @@ class InvoiceItemModel extends InvoiceItemEntity {
       if (description != null) 'description': description,
       'quantity': quantity,
       'price': price,
-      'tax_amount': taxAmount,
       'discount_amount': discountAmount
     };
   }

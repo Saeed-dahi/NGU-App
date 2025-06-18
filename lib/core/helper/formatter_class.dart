@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:ngu_app/app/app_config/constant.dart';
 
 class FormatterClass {
   static String numberFormatter(dynamic value) {
@@ -18,9 +19,18 @@ class FormatterClass {
     return (100 - discount) / 100;
   }
 
-  static double calculateTax(dynamic taxRate, dynamic baseAmount) {
-    double base = double.tryParse(baseAmount.toString()) ?? 0;
-    return base * ((double.parse(taxRate) / 100) + 1);
+  static double calculateTaxAmount(dynamic amount) {
+    return amount * (Constant.taxRate / 100);
+  }
+
+  static double calculateTotalWithTax(dynamic amount) {
+    double base = double.tryParse(amount.toString()) ?? 0;
+    return base * calculateTaxMultiplier();
+  }
+
+  static double calculateTaxMultiplier() {
+    double multiplier = 1 + (Constant.taxRate / 100);
+    return multiplier;
   }
 
   static String normalizeArabic(String query) {

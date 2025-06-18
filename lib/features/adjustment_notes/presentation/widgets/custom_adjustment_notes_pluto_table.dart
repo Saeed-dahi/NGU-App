@@ -60,7 +60,7 @@ class CustomAdjustmentNotesPlutoTable extends StatelessWidget {
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: adjustmentNote.id,
           cells: {
-            'adjustmentNote_number':
+            'adjustment_note_number':
                 PlutoCell(value: adjustmentNote.adjustmentNoteNumber),
             'status': PlutoCell(value: adjustmentNote.status!.tr),
             'date': PlutoCell(value: adjustmentNote.date),

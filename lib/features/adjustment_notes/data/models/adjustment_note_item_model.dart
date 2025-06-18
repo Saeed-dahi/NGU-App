@@ -32,7 +32,6 @@ class AdjustmentNoteItemModel extends AdjustmentNoteItemEntity {
       if (description != null) 'description': description,
       'quantity': quantity,
       'price': price,
-      'tax_amount': taxAmount,
     };
   }
 }
