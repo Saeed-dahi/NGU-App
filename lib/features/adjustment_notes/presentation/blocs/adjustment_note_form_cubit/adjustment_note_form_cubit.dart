@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/helper/formatter_class.dart';
 
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_account_entity.dart';
@@ -108,14 +109,12 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
     plutoGridController.stateManager!.notifyListeners();
   }
 
-  double getSubTotalAfterDiscount(bool isPercentage, double subTotal) {
-    double discountAmount = 0;
-    if (isPercentage) {
-      subTotalController.text = (subTotal * discountAmount).toString();
-    } else {
-      subTotalController.text = (subTotal - discountAmount).toString();
-    }
+  void onUpdateSubController(subTotal) {
+    subTotal = double.tryParse(subTotal) ?? 0;
+    double taxAmount = FormatterClass.calculateTaxAmount(subTotal);
+    taxAmountController.text = taxAmount.toString();
 
-    return double.tryParse(subTotalController.text) ?? 0;
+    double total = FormatterClass.calculateTotalWithTax(subTotal);
+    totalController.text = total.toString();
   }
 }

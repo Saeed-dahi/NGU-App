@@ -64,12 +64,10 @@ class InvoiceOptionsPage extends StatelessWidget {
             ),
             CustomInputField(
               label: 'tax_amount'.tr,
-              enabled: enableEditing,
+              enabled: false,
               controller: invoiceFormCubit.taxAmountController,
-              helper: '%',
               format: FilteringTextInputFormatter.digitsOnly,
               error: errors['tax_amount']?.join('\n'),
-              readOnly: true,
             ),
             CustomDropdown(
               dropdownValue: getEnumValues(AccountNature.values),

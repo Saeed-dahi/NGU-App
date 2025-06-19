@@ -71,6 +71,8 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                       controller: adjustmentNoteFormCubit.subTotalController,
                       error: errors['sub_total']?.join('\n'),
                       required: false,
+                      onChanged: (value) => adjustmentNoteFormCubit
+                          .onUpdateSubController(value),
                     ),
                     CustomAccountAutoComplete(
                       enabled: enableEditing,
