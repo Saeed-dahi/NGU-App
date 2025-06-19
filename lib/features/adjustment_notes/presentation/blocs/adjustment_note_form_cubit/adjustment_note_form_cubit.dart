@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ngu_app/core/helper/formatter_class.dart';
-
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_account_entity.dart';
 import 'package:ngu_app/features/adjustment_notes/domain/entities/adjustment_note_entity.dart';
@@ -31,6 +30,8 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
 
   late TextEditingController totalController = TextEditingController();
   late TextEditingController subTotalController = TextEditingController();
+
+  bool createCheque = false;
 
   final AdjustmentNoteBloc adjustmentNoteBloc;
   AdjustmentNoteFormCubit(
@@ -116,5 +117,21 @@ class AdjustmentNoteFormCubit extends Cubit<AdjustmentNoteFormState> {
 
     double total = FormatterClass.calculateTotalWithTax(subTotal);
     totalController.text = total.toString();
+  }
+
+  void onUpdateTotalController(newValue) {
+    double total = double.tryParse(newValue) ?? 0;
+    double subTotal =
+        total / FormatterClass.calculateTaxMultiplier(); // or 1 + taxRate
+    double taxAmount = total - subTotal;
+
+    subTotalController.text = subTotal.toString();
+    taxAmountController.text = taxAmount.toString();
+  }
+
+  void checkedCreateCheque(bool value) {
+    createCheque = value;
+
+    emit(CheckedCreateChequeState(createCheque: createCheque));
   }
 }

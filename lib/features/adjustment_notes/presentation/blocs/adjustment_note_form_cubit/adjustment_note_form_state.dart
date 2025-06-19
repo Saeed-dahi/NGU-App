@@ -8,3 +8,12 @@ sealed class AdjustmentNoteFormState extends Equatable {
 }
 
 final class AdjustmentNoteFormInitial extends AdjustmentNoteFormState {}
+
+class CheckedCreateChequeState extends AdjustmentNoteFormState {
+  final bool createCheque;
+
+  const CheckedCreateChequeState({required this.createCheque});
+
+  @override
+  List<Object> get props => [createCheque];
+}
