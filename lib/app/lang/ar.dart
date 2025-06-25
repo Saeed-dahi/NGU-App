@@ -87,6 +87,8 @@ Map<String, String> ar = {
   'multiple_cheques': 'شيكات متعددة',
   'cheques_count': 'عدد الشيكات',
   'payment_way': 'طريقة الدفع',
+  'client_account': 'حساب العميل',
+  'post_dated_cheques_account': 'حساب الشيكات المؤحلة',
 
   // Currencies
   'currencies': 'العملات',

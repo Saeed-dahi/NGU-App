@@ -107,6 +107,7 @@ class CustomInvoicePlutoTable extends StatelessWidget {
       (invoiceItem) {
         var product = invoiceItem.productUnit!.product;
         var unit = invoiceItem.productUnit!.unit;
+
         var data = context
             .read<PreviewInvoiceItemCubit>()
             .invoiceItemToPreviewInvoiceItem(product, invoiceItem, unit);
@@ -119,10 +120,10 @@ class CustomInvoicePlutoTable extends StatelessWidget {
             'quantity': PlutoCell(value: invoiceItem.quantity),
             'unit': PlutoCell(value: unit!.arName),
             'price': PlutoCell(value: invoiceItem.price),
-            'sub_total': PlutoCell(value: invoiceItem.total),
+            'sub_total':
+                PlutoCell(value: invoiceItem.price! * invoiceItem.quantity!),
             'tax_amount': PlutoCell(value: invoiceItem.taxAmount),
-            'total':
-                PlutoCell(value: invoiceItem.total! + invoiceItem.taxAmount!),
+            'total': PlutoCell(value: invoiceItem.total!),
             'notes': PlutoCell(value: invoiceItem.description),
           },
         );

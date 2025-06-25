@@ -66,7 +66,7 @@ class ChequeBasicForm extends StatelessWidget {
             children: [
               CustomAccountAutoComplete(
                 enabled: enableEditing,
-                label: 'issued_from_account',
+                label: 'client_account'.tr,
                 controller: chequeFormCubit.issuedFromAccount,
                 initialValue: chequeFormCubit.issuedFromAccount.arName ?? '',
                 error: chequeFormCubit.errors['issued_from_account_id']
@@ -75,7 +75,7 @@ class ChequeBasicForm extends StatelessWidget {
               CustomAccountAutoComplete(
                 enabled: enableEditing,
                 controller: chequeFormCubit.issuedToAccount,
-                label: 'issued_to_account',
+                label: 'post_dated_cheques_account'.tr,
                 initialValue: chequeFormCubit.issuedToAccount.arName ?? '',
                 error:
                     chequeFormCubit.errors['issued_to_account_id']?.join('\n'),

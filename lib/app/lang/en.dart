@@ -87,6 +87,8 @@ Map<String, String> en = {
   'multiple_cheques': 'Multiple Cheques',
   'cheques_count': 'Cheques Count',
   'payment_way': 'Payment Way',
+  'client_account': 'Client Account',
+  'post_dated_cheques_account': 'Post Dated Cheques Account',
 
   // Currencies
   'currencies': 'Currencies',
