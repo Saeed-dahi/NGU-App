@@ -6,7 +6,6 @@ class ChequeEntity extends Equatable {
   final int? id;
   final double? amount;
   final int? chequeNumber;
-
   final String? status;
   final String? date;
   final String? dueDate;
@@ -18,22 +17,29 @@ class ChequeEntity extends Equatable {
   final ChequeAccountEntity? issuedFromAccount;
   final ChequeAccountEntity? issuedToAccount;
   final ChequeAccountEntity? targetBankAccount;
+  final ChequeAccountEntity? discountAccount;
+  final double? discountAmount;
+  final String? discountType;
 
-  const ChequeEntity(
-      {this.id,
-      required this.amount,
-      required this.chequeNumber,
-      this.status,
-      required this.date,
-      required this.dueDate,
-      required this.nature,
-      this.images,
-      required this.notes,
-      this.createdAt,
-      this.updatedAt,
-      required this.issuedFromAccount,
-      required this.issuedToAccount,
-      required this.targetBankAccount});
+  const ChequeEntity({
+    this.id,
+    required this.amount,
+    required this.chequeNumber,
+    this.status,
+    required this.date,
+    required this.dueDate,
+    required this.nature,
+    this.images,
+    required this.notes,
+    this.createdAt,
+    this.updatedAt,
+    required this.issuedFromAccount,
+    required this.issuedToAccount,
+    required this.targetBankAccount,
+    this.discountAccount,
+    this.discountType,
+    this.discountAmount,
+  });
 
   ChequeModel toModel() {
     return ChequeModel(
@@ -50,7 +56,10 @@ class ChequeEntity extends Equatable {
         updatedAt: updatedAt,
         issuedFromAccount: issuedFromAccount,
         issuedToAccount: issuedToAccount,
-        targetBankAccount: targetBankAccount);
+        targetBankAccount: targetBankAccount,
+        discountAccount: discountAccount,
+        discountAmount: discountAmount,
+        discountType: discountType);
   }
 
   @override
@@ -68,6 +77,9 @@ class ChequeEntity extends Equatable {
         updatedAt,
         issuedFromAccount,
         issuedToAccount,
-        targetBankAccount
+        targetBankAccount,
+        discountAccount,
+        discountAmount,
+        discountType,
       ];
 }

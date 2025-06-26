@@ -23,6 +23,10 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
   ChequeAccountEntity issuedToAccount = ChequeAccountEntity();
   ChequeAccountEntity targetBankAccount = ChequeAccountEntity();
 
+  ChequeAccountEntity discountAccount = ChequeAccountEntity();
+  TextEditingController discountAmountController = TextEditingController();
+  String? discountType;
+
   Map<String, dynamic> errors = {};
 
   ChequeFormCubit() : super(ChequeFormInitial());
@@ -34,6 +38,7 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     descriptionController.dispose();
     dueDateController.dispose();
     notesController.dispose();
+    discountAmountController.dispose();
   }
 
   void initControllers(ChequeEntity cheque) {
@@ -52,6 +57,11 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
     issuedFromAccount = cheque.issuedFromAccount!;
     issuedToAccount = cheque.issuedToAccount!;
     targetBankAccount = cheque.targetBankAccount!;
+
+    discountAccount = cheque.discountAccount!;
+    discountAmountController =
+        TextEditingController(text: cheque.discountAmount.toString());
+    discountType = cheque.discountType;
   }
 
   ChequeEntity getCheque({int? id, String? status}) {
@@ -66,6 +76,10 @@ class ChequeFormCubit extends Cubit<ChequeFormState> {
         notes: notesController.text,
         issuedFromAccount: issuedFromAccount,
         issuedToAccount: issuedToAccount,
-        targetBankAccount: targetBankAccount);
+        targetBankAccount: targetBankAccount,
+        discountAccount: discountAccount,
+        discountAmount:
+            FormatterClass.doubleFormatter(discountAmountController.text),
+        discountType: discountType);
   }
 }

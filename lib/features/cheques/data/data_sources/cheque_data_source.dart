@@ -5,7 +5,8 @@ import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/features/upload/data/file_upload_model.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
 import 'package:ngu_app/features/cheques/data/models/cheque_model.dart';
-import 'package:ngu_app/features/cheques/data/models/parmas/multiple_cheques_params_model.dart';
+import 'package:ngu_app/features/cheques/data/models/params/multiple_cheques_params_model.dart';
+
 
 abstract class ChequeDataSource {
   Future<ChequeModel> showCheque(int id, String? direction);

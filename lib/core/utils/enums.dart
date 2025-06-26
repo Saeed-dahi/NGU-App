@@ -38,6 +38,8 @@ enum ChequePaymentCases {
   specific_months
 }
 
+enum ChequeDiscountType { received, allowed }
+
 enum DiscountType { percentage, amount }
 
 getEnumValues<T extends Enum>(List<T> enumValues) {

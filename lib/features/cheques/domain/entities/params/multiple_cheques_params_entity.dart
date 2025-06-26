@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:ngu_app/features/cheques/data/models/parmas/multiple_cheques_params_model.dart';
+import 'package:ngu_app/features/cheques/data/models/params/multiple_cheques_params_model.dart';
 
 class MultipleChequesParamsEntity extends Equatable {
   final double chequesCount;

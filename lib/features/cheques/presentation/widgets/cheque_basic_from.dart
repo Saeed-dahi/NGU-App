@@ -97,12 +97,14 @@ class ChequeBasicForm extends StatelessWidget {
                 label: 'description'.tr,
                 required: false,
                 enabled: enableEditing,
+                error: chequeFormCubit.errors['description']?.join('\n'),
               ),
               CustomDatePicker(
                 dateInput: chequeFormCubit.dueDateController,
                 labelText: 'due_date'.tr,
                 required: false,
                 enabled: enableEditing,
+                error: chequeFormCubit.errors['due_date']?.join('\n'),
               ),
               CustomDropdown(
                 dropdownValue: getEnumValues(ChequeNature.values),
@@ -112,6 +114,35 @@ class ChequeBasicForm extends StatelessWidget {
                 onChanged: (value) {
                   chequeFormCubit.chequeNature = value;
                 },
+                error: chequeFormCubit.errors['nature']?.join('\n'),
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              CustomAccountAutoComplete(
+                initialValue: chequeFormCubit.discountAccount.arName ?? '',
+                controller: chequeFormCubit.discountAccount,
+                label: 'discount_account'.tr,
+                enabled: enableEditing,
+                error: chequeFormCubit.errors['discount_account']?.join('\n'),
+              ),
+              CustomInputField(
+                controller: chequeFormCubit.discountAmountController,
+                label: 'discount_amount'.tr,
+                required: false,
+                enabled: enableEditing,
+                error: chequeFormCubit.errors['due_date']?.join('\n'),
+              ),
+              CustomDropdown(
+                dropdownValue: getEnumValues(ChequeDiscountType.values),
+                value: chequeFormCubit.discountType,
+                helper: 'discount_type'.tr,
+                enabled: enableEditing,
+                onChanged: (value) {
+                  chequeFormCubit.discountType = value;
+                },
+                error: chequeFormCubit.errors['discount_type']?.join('\n'),
               ),
             ],
           ),
