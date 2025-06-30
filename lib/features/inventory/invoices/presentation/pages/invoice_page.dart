@@ -15,6 +15,7 @@ import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_b
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_form_cubit/invoice_form_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/create_invoice_page.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_cost_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/invoice_options_page.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/invoice_print_page_settings.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/widgets/custom_invoice_fields.dart';
@@ -139,7 +140,10 @@ class _InvoicePageState extends State<InvoicePage> {
           if (state is LoadedInvoiceState) {
             _initControllers(_invoiceBloc.getInvoiceEntity);
             return DefaultTabController(
-              length: 3,
+              length: _invoiceBloc.getInvoiceEntity.invoiceType ==
+                      InvoiceType.sales.name
+                  ? 4
+                  : 3,
               child: _pageBody(),
             );
           }
@@ -169,6 +173,9 @@ class _InvoicePageState extends State<InvoicePage> {
             indicatorColor: AppColors.primaryColor,
             tabs: [
               Tab(text: '${'invoice'.tr} ${widget.type.tr}'),
+              if (_invoiceBloc.getInvoiceEntity.invoiceType ==
+                  InvoiceType.sales.name)
+                Tab(text: 'invoice_cost'.tr),
               Tab(text: 'options'.tr),
               Tab(text: 'print'.tr),
             ],
@@ -177,6 +184,9 @@ class _InvoicePageState extends State<InvoicePage> {
           Expanded(
             child: TabBarView(children: [
               _invoiceTabWidgets(_invoiceBloc.isSavedInvoice),
+              if (_invoiceBloc.getInvoiceEntity.invoiceType ==
+                  InvoiceType.sales.name)
+                _invoiceCostPage(_invoiceBloc.isSavedInvoice),
               _invoiceOptionPage(_invoiceBloc.isSavedInvoice),
               const InvoicePrintPageSettings()
             ]),
@@ -192,6 +202,14 @@ class _InvoicePageState extends State<InvoicePage> {
       invoiceBloc: _invoiceBloc,
       invoiceFormCubit: _invoiceFormCubit,
       errors: _invoiceBloc.getValidationErrors,
+    );
+  }
+
+  InvoiceCostPage _invoiceCostPage(bool isSavedInvoice) {
+    return InvoiceCostPage(
+      enableEditing: !isSavedInvoice,
+      errors: _invoiceBloc.getValidationErrors,
+      invoiceId: _invoiceBloc.getInvoiceEntity.id!,
     );
   }
 

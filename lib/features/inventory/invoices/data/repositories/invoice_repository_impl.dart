@@ -3,6 +3,7 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_data_source.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_cost_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/preview_invoice_item_entity_params.dart';
@@ -56,6 +57,13 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
       PreviewInvoiceItemEntityParams params) async {
     return await apiHelper.safeApiCall(
         () => invoiceDataSource.previewInvoiceItem(params.toModel()));
+  }
+
+  @override
+  Future<Either<Failure, InvoiceCostEntity>> getInvoiceCost(
+      int invoiceId) async {
+    return await apiHelper
+        .safeApiCall(() => invoiceDataSource.getInvoiceCost(invoiceId));
   }
 
   List<InvoiceItemsModelParams> _getItemsModel(

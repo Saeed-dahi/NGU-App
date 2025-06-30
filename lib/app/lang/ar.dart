@@ -197,6 +197,15 @@ Map<String, String> ar = {
   'invoice_nature': 'طبيعة الفاتورة',
   'invoice_printer': 'طابعة الفواتير',
   'receipt_printer': 'طابعة الإيصالات',
+  'last_purchase_price': 'آخر سعر شراء',
+  'last_purchase_date': 'آخر تاريخ شراء',
+  'invoice_cost': 'تكلفة الفاتورة',
+  'difference': 'الفرق',
+  'agent_account': 'حساب الوكيل',
+  'commission_account': 'حساب العمولة',
+  'commission_type': 'نوع العمولة',
+  'commission_rate': 'نسبة العمولة',
+  'commission_amount': 'قيمة العمولة',
 
   // Account Record
   'account': 'الحساب',

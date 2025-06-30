@@ -64,7 +64,6 @@ class CustomDropdown extends StatelessWidget {
           helperText: helper,
           enabled: enabled,
           errorText: error,
-
           // icon: Text(helper),
           hintStyle: const TextStyle(fontSize: Dimensions.primaryTextSize),
         ),

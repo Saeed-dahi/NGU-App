@@ -42,6 +42,8 @@ enum ChequeDiscountType { received, allowed }
 
 enum DiscountType { percentage, amount }
 
+enum InvoiceCommissionType { profit, total }
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

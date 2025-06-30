@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
+import 'package:ngu_app/features/inventory/invoices/data/models/invoice_cost_model.dart';
 
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
@@ -22,6 +23,8 @@ abstract class InvoiceDataSource {
 
   Future<PreviewInvoiceItemModel> previewInvoiceItem(
       PreviewInvoiceItemModelParams params);
+
+  Future<InvoiceCostModel> getInvoiceCost(int invoiceId);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -118,5 +121,19 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
         PreviewInvoiceItemModel.toJson(decodedJson['data']);
 
     return invoiceItem;
+  }
+
+  @override
+  Future<InvoiceCostModel> getInvoiceCost(int invoiceId) async {
+    final response =
+        await networkConnection.get('get-invoice-cost/$invoiceId', {});
+
+    var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+
+    InvoiceCostModel invoiceCostModel =
+        InvoiceCostModel.fromJson(decodedJson['data']);
+
+    return invoiceCostModel;
   }
 }

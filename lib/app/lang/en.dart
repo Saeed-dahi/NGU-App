@@ -197,6 +197,15 @@ Map<String, String> en = {
   'invoice_nature': 'Invoice Nature',
   'invoice_printer': 'Invoice Printer',
   'receipt_printer': 'Receipt Printer',
+  'last_purchase_price': 'Last Purchase Price',
+  'last_purchase_date': 'Last Purchase Date',
+  'invoice_cost': 'Invoice Cost',
+  'difference': 'Difference',
+  'agent_account': 'Agent Account',
+  'commission_account': 'Commission Account',
+  'commission_type': 'Commission Type',
+  'commission_rate': 'Commission Rate',
+  'commission_amount': 'Commission Amount',
 
   // Account Record
   'account': 'Account',

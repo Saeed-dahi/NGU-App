@@ -77,6 +77,7 @@ class InvoiceOptionsPage extends StatelessWidget {
               label: 'invoice_nature'.tr,
               value: invoiceFormCubit.natureController,
               error: errors['invoice_nature']?.join('\n'),
+              enabled: enableEditing,
             ),
           ],
         ),
