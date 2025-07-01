@@ -2,7 +2,7 @@ part of 'invoice_commission_bloc.dart';
 
 sealed class InvoiceCommissionState extends Equatable {
   const InvoiceCommissionState();
-  
+
   @override
   List<Object> get props => [];
 }
@@ -26,4 +26,13 @@ class LoadedInvoiceCommissionState extends InvoiceCommissionState {
 
   @override
   List<Object> get props => [invoiceCommission];
+}
+
+class ValidationErrorState extends InvoiceCommissionState {
+  final Map<String, dynamic> validationErrors;
+
+  const ValidationErrorState({required this.validationErrors});
+
+  @override
+  List<Object> get props => [validationErrors];
 }

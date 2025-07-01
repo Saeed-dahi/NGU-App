@@ -11,6 +11,9 @@ class GetInvoiceCommissionEvent extends InvoiceCommissionEvent {
   final int invoiceId;
 
   const GetInvoiceCommissionEvent({required this.invoiceId});
+
+  @override
+  List<Object> get props => [invoiceId];
 }
 
 class CreateInvoiceCommissionEvent extends InvoiceCommissionEvent {
@@ -19,4 +22,7 @@ class CreateInvoiceCommissionEvent extends InvoiceCommissionEvent {
 
   const CreateInvoiceCommissionEvent(
       {required this.invoiceId, required this.invoiceCommissionEntity});
+
+  @override
+  List<Object> get props => [invoiceId, invoiceCommissionEntity];
 }

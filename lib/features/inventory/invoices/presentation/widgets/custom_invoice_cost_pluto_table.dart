@@ -21,7 +21,7 @@ class CustomInvoiceCostPlutoTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.sizeOf(context).height * 0.5,
+      height: MediaQuery.sizeOf(context).height * 0.6,
       margin: const EdgeInsets.all(Dimensions.primaryPadding),
       child: CustomPlutoTable(
         controller: _plutoGridController,

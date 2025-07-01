@@ -56,7 +56,10 @@ class _InvoiceCostPageState extends State<InvoiceCostPage> {
   ListView _pageBody(LoadedInvoiceCostState state) {
     return ListView(
       children: [
-        InvoiceCommissionFields(enableEditing: widget.enableEditing),
+        InvoiceCommissionFields(
+          enableEditing: widget.enableEditing,
+          invoiceId: widget.invoiceId,
+        ),
         CustomInvoiceCostPlutoTable(
             invoiceCostItems: state.invoiceCostEntity.items!),
       ],

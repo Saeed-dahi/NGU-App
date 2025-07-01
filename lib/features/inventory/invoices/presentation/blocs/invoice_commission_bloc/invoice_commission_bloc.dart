@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_account_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_commission_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_commission_use_case.dart';
@@ -15,10 +16,13 @@ class InvoiceCommissionBloc
   final GetInvoiceCommissionUseCase getInvoiceCommissionUseCase;
   final CreateInvoiceCommissionUseCase createInvoiceCommissionUseCase;
 
-  late InvoiceCommissionEntity _commissionEntity;
+  Map<String, dynamic> _validationErrors = {};
+  Map<String, dynamic> get getValidationErrors => _validationErrors;
 
-  late InvoiceAccountEntity agentAccount;
-  late InvoiceAccountEntity commissionAccount;
+  InvoiceCommissionEntity? _commissionEntity;
+
+  late InvoiceAccountEntity agentAccount = InvoiceAccountEntity();
+  late InvoiceAccountEntity commissionAccount = InvoiceAccountEntity();
   String? type;
   late TextEditingController rate = TextEditingController();
   late TextEditingController amount = TextEditingController();
@@ -48,7 +52,12 @@ class InvoiceCommissionBloc
         event.invoiceId, event.invoiceCommissionEntity);
 
     result.fold((failure) {
-      emit(ErrorInvoiceCommissionState(error: failure.errors['error']));
+      if (failure is ValidationFailure) {
+        _validationErrors = failure.errors;
+        emit(ValidationErrorState(validationErrors: _validationErrors));
+      } else {
+        emit(ErrorInvoiceCommissionState(error: failure.errors['error']));
+      }
     }, (data) {
       // emit(CreatedInvoiceCommissionState());
       _commissionEntity = data;
@@ -57,10 +66,13 @@ class InvoiceCommissionBloc
   }
 
   initControllers() {
-    rate = TextEditingController(text: _commissionEntity.rate.toString());
-    amount = TextEditingController(text: _commissionEntity.amount.toString());
-    agentAccount = _commissionEntity.agentAccount;
-    commissionAccount = _commissionEntity.commissionAccount;
-    type = _commissionEntity.type;
+    if (_commissionEntity != null) {
+      rate = TextEditingController(text: _commissionEntity!.rate.toString());
+      amount =
+          TextEditingController(text: _commissionEntity!.amount.toString());
+      agentAccount = _commissionEntity!.agentAccount;
+      commissionAccount = _commissionEntity!.commissionAccount;
+      type = _commissionEntity!.type;
+    }
   }
 }
