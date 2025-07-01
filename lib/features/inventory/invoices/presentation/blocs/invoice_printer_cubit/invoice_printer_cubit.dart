@@ -1,0 +1,170 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:equatable/equatable.dart';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:ngu_app/core/features/printing/presentation/bloc/printing_bloc.dart';
+import 'package:ngu_app/core/features/printing/presentation/pages/a4_page.dart';
+import 'package:ngu_app/core/features/printing/presentation/pages/roll_page.dart';
+import 'package:ngu_app/core/features/printing/presentation/pages/tax_invoice_page.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/A4_printing_header.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/tax_invoice_printing_footer.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/pages/printing/tax_invoice_printing_header.dart';
+import 'package:pdf/widgets.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:usb_esc_printer_windows/usb_esc_printer_windows.dart'
+    as usb_esc_printer_windows;
+import 'package:printing/printing.dart';
+part 'invoice_printer_state.dart';
+
+class InvoicePrinterCubit extends Cubit<InvoicePrinterState> {
+  late InvoiceEntity _invoiceEntity;
+  InvoiceEntity get getInvoiceEntity => _invoiceEntity;
+  set setInvoiceEntity(InvoiceEntity invoiceEntity) =>
+      _invoiceEntity = invoiceEntity;
+
+  InvoicePrinterCubit() : super(InvoicePrinterInitial());
+
+  Future<void> printTaxInvoice(BuildContext context) async {
+    var dataList = _getPrintDataList();
+
+    final columns = _getPrintDataListColumns();
+    Font? font = await context.read<PrintingBloc>().getCustomFont();
+
+    Document pdf = await TaxInvoicePage.buildCustomTaxInvoicePage(
+        ttf: font,
+        columns: columns,
+        data: dataList,
+        columnWidths: {1: const pw.FixedColumnWidth(150)},
+        customContent: CustomInvoicePrintingHeader.getCustomContent(
+            ttf: font, invoice: _invoiceEntity),
+        footer: CustomInvoicePrintingFooter.getCustomContent(
+            ttf: font, invoice: _invoiceEntity));
+
+    var fileBytes = pdf.save();
+    if (context.mounted) {
+      await Printing.directPrintPdf(
+        printer: context.read<PrintingBloc>().taxInvoicePrinter!,
+        onLayout: (format) => fileBytes,
+      );
+
+      await sendPrintCommand(context.read<PrintingBloc>().taxInvoicePrinter!);
+    }
+  }
+
+  Future<void> printA4Invoice(BuildContext context) async {
+    List<List<Object?>> dataList = _getPrintDataList();
+
+    List<String> columns = _getPrintDataListColumns();
+    Font? font = await context.read<PrintingBloc>().getCustomFont();
+
+    Document pdf = await A4Page.buildCustomA4Page(
+        columns: columns,
+        data: dataList,
+        customContent: A4PrintingHeader.getCustomContent(
+            ttf: font, invoice: _invoiceEntity),
+        ttf: font);
+    var fileBytes = pdf.save();
+    if (context.mounted) {
+      await Printing.layoutPdf(
+        onLayout: (format) {
+          return fileBytes;
+        },
+      );
+    }
+  }
+
+  Future<void> printReceipt(BuildContext context) async {
+    var dataList = _invoiceEntity.invoiceItems!.map((item) {
+      return [
+        item.productUnit!.product!.arName!,
+        item.quantity,
+        item.productUnit!.unit!.arName!,
+      ];
+    }).toList();
+
+    Font font = await context.read<PrintingBloc>().getCustomFont();
+
+    final columns = [
+      'name'.tr,
+      'quantity'.tr,
+      'unit'.tr,
+    ];
+
+    Document pdf = await RollPage.buildCustomRollPage(
+      columns: columns,
+      data: dataList,
+      ttf: font,
+      columnWidths: {},
+      customPageHeader: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          pw.Text(
+            _invoiceEntity.account!.arName!,
+            textDirection: TextDirection.rtl,
+            style: pw.TextStyle(fontSize: 8, font: font),
+          ),
+          pw.Text(
+            '${_invoiceEntity.date}    -  ${'invoice_number'.tr}: (${_invoiceEntity.invoiceNumber})',
+            textDirection: TextDirection.rtl,
+            style: pw.TextStyle(fontSize: 8, font: font),
+          ),
+        ],
+      ),
+    );
+    var fileBytes = pdf.save();
+
+    await Printing.directPrintPdf(
+      printer: context.read<PrintingBloc>().receiptPrinter!,
+      onLayout: (format) => fileBytes,
+    );
+  }
+
+  List<String> _getPrintDataListColumns() {
+    final columns = [
+      '',
+      'name',
+      'quantity',
+      'unit',
+      'price',
+      'sub_total',
+      'tax_amount',
+      'total'
+    ];
+    return columns;
+  }
+
+  List<List<Object?>> _getPrintDataList() {
+    var dataList = _invoiceEntity.invoiceItems!
+        .asMap()
+        .map((index, item) {
+          return MapEntry(index, [
+            (index + 1).toString(),
+            '${item.productUnit!.product!.arName!} ${item.productUnit!.product!.arName!} - ${item.productUnit!.product!.enName!.substring(0, 20)}',
+            item.quantity,
+            item.productUnit!.unit!.arName!,
+            item.price,
+            item.price! * item.quantity!,
+            item.taxAmount,
+            item.total
+          ]);
+        })
+        .values
+        .toList();
+    return dataList;
+  }
+
+  Future<void> sendPrintCommand(Printer? printer) async {
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm80, profile);
+
+    List<int> bytes = [];
+
+    bytes += generator.rawBytes([0x0c]);
+
+    await usb_esc_printer_windows.sendPrintRequest(bytes, printer!.name);
+  }
+}

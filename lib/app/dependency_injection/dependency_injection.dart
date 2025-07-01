@@ -73,14 +73,17 @@ import 'package:ngu_app/features/inventory/categories/presentation/bloc/category
 import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_data_source.dart';
 import 'package:ngu_app/features/inventory/invoices/data/repositories/invoice_repository_impl.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/repositories/invoice_repository.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_commission_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/create_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_all_invoices_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_create_invoice_form_data_use_case.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_invoice_commission_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/get_invoice_cost_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/preview_invoice_item_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/show_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/use_cases/update_invoice_use_case.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_bloc/invoice_bloc.dart';
+import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_commission_bloc/invoice_commission_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/invoice_cost_bloc/invoice_cost_bloc.dart';
 import 'package:ngu_app/features/inventory/invoices/presentation/blocs/preview_invoice_item_cubit/preview_invoice_item_cubit.dart';
 import 'package:ngu_app/features/inventory/products/data/data_sources/product_data_source.dart';
@@ -383,18 +386,21 @@ void _product() {
 }
 
 void _invoice() {
-  sl.registerFactory(
-    () => InvoiceBloc(
-      getAllInvoicesUseCase: sl(),
-      showInvoiceUseCase: sl(),
-      createInvoiceUseCase: sl(),
-      updateInvoiceUseCase: sl(),
-      getAccountsNameUseCase: sl(),
-      getCreateInvoiceFormDataUseCase: sl(),
-    ),
-  );
+  sl.registerFactory(() => InvoiceBloc(
+        getAllInvoicesUseCase: sl(),
+        showInvoiceUseCase: sl(),
+        createInvoiceUseCase: sl(),
+        updateInvoiceUseCase: sl(),
+        getAccountsNameUseCase: sl(),
+        getCreateInvoiceFormDataUseCase: sl(),
+      ));
 
   sl.registerFactory(() => InvoiceCostBloc(getInvoiceCostUseCase: sl()));
+  sl.registerFactory(
+    () => InvoiceCommissionBloc(
+        createInvoiceCommissionUseCase: sl(),
+        getInvoiceCommissionUseCase: sl()),
+  );
 
   sl.registerFactory(() => PreviewInvoiceItemCubit(sl()));
 
@@ -409,6 +415,10 @@ void _invoice() {
       () => PreviewInvoiceItemUseCase(invoiceRepository: sl()));
   sl.registerLazySingleton(
       () => GetInvoiceCostUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => GetInvoiceCommissionUseCase(invoiceRepository: sl()));
+  sl.registerLazySingleton(
+      () => CreateInvoiceCommissionUseCase(invoiceRepository: sl()));
 
   sl.registerLazySingleton<InvoiceRepository>(
       () => InvoiceRepositoryImpl(apiHelper: sl(), invoiceDataSource: sl()));

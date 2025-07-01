@@ -3,6 +3,7 @@ import 'package:ngu_app/core/error/failures.dart';
 import 'package:ngu_app/core/helper/api_helper.dart';
 import 'package:ngu_app/features/inventory/invoices/data/data_sources/invoice_data_source.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/params/invoice_items_model_params.dart';
+import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_commission_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_cost_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/invoice_entity.dart';
 import 'package:ngu_app/features/inventory/invoices/domain/entities/params/invoice_items_entity_params.dart';
@@ -64,6 +65,20 @@ class InvoiceRepositoryImpl implements InvoiceRepository {
       int invoiceId) async {
     return await apiHelper
         .safeApiCall(() => invoiceDataSource.getInvoiceCost(invoiceId));
+  }
+
+  @override
+  Future<Either<Failure, InvoiceCommissionEntity>> getInvoiceCommission(
+      int invoiceId) {
+    return apiHelper
+        .safeApiCall(() => invoiceDataSource.getInvoiceCommission(invoiceId));
+  }
+
+  @override
+  Future<Either<Failure, InvoiceCommissionEntity>> createInvoiceCommission(
+      int invoiceId, InvoiceCommissionEntity invoiceCommissionEntity) {
+    return apiHelper.safeApiCall(() => invoiceDataSource
+        .createInvoiceCommission(invoiceId, invoiceCommissionEntity.toModel()));
   }
 
   List<InvoiceItemsModelParams> _getItemsModel(

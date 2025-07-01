@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ngu_app/app/app_config/api_list.dart';
 import 'package:ngu_app/core/error/error_handler.dart';
 import 'package:ngu_app/core/network/network_connection.dart';
+import 'package:ngu_app/features/inventory/invoices/data/models/invoice_commission_model.dart';
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_cost_model.dart';
 
 import 'package:ngu_app/features/inventory/invoices/data/models/invoice_model.dart';
@@ -25,6 +26,10 @@ abstract class InvoiceDataSource {
       PreviewInvoiceItemModelParams params);
 
   Future<InvoiceCostModel> getInvoiceCost(int invoiceId);
+
+  Future<InvoiceCommissionModel> getInvoiceCommission(int invoiceId);
+  Future<InvoiceCommissionModel> createInvoiceCommission(
+      int invoiceId, InvoiceCommissionModel invoiceCommissionModel);
 }
 
 class InvoiceDataSourceImpl implements InvoiceDataSource {
@@ -126,7 +131,7 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
   @override
   Future<InvoiceCostModel> getInvoiceCost(int invoiceId) async {
     final response =
-        await networkConnection.get('get-invoice-cost/$invoiceId', {});
+        await networkConnection.get('invoice/$invoiceId/${APIList.cost}', {});
 
     var decodedJson = jsonDecode(response.body);
     ErrorHandler.handleResponse(response.statusCode, decodedJson);
@@ -135,5 +140,33 @@ class InvoiceDataSourceImpl implements InvoiceDataSource {
         InvoiceCostModel.fromJson(decodedJson['data']);
 
     return invoiceCostModel;
+  }
+
+  @override
+  Future<InvoiceCommissionModel> getInvoiceCommission(int invoiceId) async {
+    final response = await networkConnection.get(
+      '${APIList.invoice}/$invoiceId/${APIList.commission}',
+      {},
+    );
+
+    var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+    InvoiceCommissionModel invoiceCommission =
+        InvoiceCommissionModel.fromJson(decodedJson['data']);
+    return invoiceCommission;
+  }
+
+  @override
+  Future<InvoiceCommissionModel> createInvoiceCommission(
+      int invoiceId, InvoiceCommissionModel invoiceCommissionModel) async {
+    final response = await networkConnection.post(
+      '${APIList.invoice}/$invoiceId/${APIList.commission}',
+      invoiceCommissionModel.toJson(),
+    );
+    var decodedJson = jsonDecode(response.body);
+    ErrorHandler.handleResponse(response.statusCode, decodedJson);
+    InvoiceCommissionModel invoiceCommission =
+        InvoiceCommissionModel.fromJson(decodedJson['data']);
+    return invoiceCommission;
   }
 }

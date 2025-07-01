@@ -43,3 +43,4 @@ class GetCreateInvoiceFormData extends InvoiceEvent {
 
   const GetCreateInvoiceFormData({required this.type});
 }
+
