@@ -47,7 +47,7 @@ class _InvoiceCostPageState extends State<InvoiceCostPage> {
           if (state is ErrorInvoiceCostState) {
             return MessageScreen(text: state.message);
           }
-          return Loaders.loading();
+          return Center(child: Loaders.loading());
         },
       ),
     );

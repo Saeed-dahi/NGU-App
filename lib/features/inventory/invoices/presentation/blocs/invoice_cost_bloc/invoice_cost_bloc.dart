@@ -10,6 +10,12 @@ part 'invoice_cost_state.dart';
 
 class InvoiceCostBloc extends Bloc<InvoiceCostEvent, InvoiceCostState> {
   final GetInvoiceCostUseCase getInvoiceCostUseCase;
+  late InvoiceCostEntity _invoiceCostEntity;
+
+  InvoiceCostEntity get invoiceCostEntity => _invoiceCostEntity;
+
+  set invoiceCostEntity(value) => _invoiceCostEntity = value;
+
   InvoiceCostBloc({required this.getInvoiceCostUseCase})
       : super(InvoiceCostInitial()) {
     on<GetInvoiceCostEvent>(_getInvoiceCost);
@@ -22,6 +28,7 @@ class InvoiceCostBloc extends Bloc<InvoiceCostEvent, InvoiceCostState> {
     result.fold((failure) {
       emit(ErrorInvoiceCostState(message: failure.errors['error']));
     }, (data) {
+      _invoiceCostEntity = data;
       emit(LoadedInvoiceCostState(invoiceCostEntity: data));
     });
   }

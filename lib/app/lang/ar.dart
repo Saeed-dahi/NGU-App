@@ -206,6 +206,7 @@ Map<String, String> ar = {
   'commission_type': 'نوع العمولة',
   'commission_rate': 'نسبة العمولة',
   'commission_amount': 'قيمة العمولة',
+  'error_commission': '😒 قيمة العمولة أكبر من ربح الفاتورة 😒',
 
   // Account Record
   'account': 'الحساب',

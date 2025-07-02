@@ -206,6 +206,7 @@ Map<String, String> en = {
   'commission_type': 'Commission Type',
   'commission_rate': 'Commission Rate',
   'commission_amount': 'Commission Amount',
+  'error_commission': '😒 Commission value is greater than the invoice profit 😒',
 
   // Account Record
   'account': 'Account',
