@@ -50,7 +50,6 @@ class InvoiceCommissionBloc
       Emitter<InvoiceCommissionState> emit) async {
     final result = await createInvoiceCommissionUseCase(
         event.invoiceId, event.invoiceCommissionEntity);
-
     result.fold((failure) {
       if (failure is ValidationFailure) {
         _validationErrors = failure.errors;
@@ -59,7 +58,6 @@ class InvoiceCommissionBloc
         emit(ErrorInvoiceCommissionState(error: failure.errors['error']));
       }
     }, (data) {
-      // emit(CreatedInvoiceCommissionState());
       _commissionEntity = data;
       emit(LoadedInvoiceCommissionState(invoiceCommission: data));
     });
@@ -74,5 +72,15 @@ class InvoiceCommissionBloc
       commissionAccount = _commissionEntity!.commissionAccount;
       type = _commissionEntity!.type;
     }
+  }
+
+  InvoiceCommissionEntity getCommissionEntity() {
+    return InvoiceCommissionEntity(
+      agentAccount: agentAccount,
+      commissionAccount: commissionAccount,
+      rate: double.tryParse(rate.text) ?? 0.0,
+      amount: double.tryParse(amount.text) ?? 0.0,
+      type: type!,
+    );
   }
 }

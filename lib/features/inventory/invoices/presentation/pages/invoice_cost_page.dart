@@ -60,8 +60,7 @@ class _InvoiceCostPageState extends State<InvoiceCostPage> {
           enableEditing: widget.enableEditing,
           invoiceId: widget.invoiceId,
         ),
-        CustomInvoiceCostPlutoTable(
-            invoiceCostItems: state.invoiceCostEntity.items!),
+        CustomInvoiceCostPlutoTable(invoiceCost: state.invoiceCostEntity),
       ],
     );
   }

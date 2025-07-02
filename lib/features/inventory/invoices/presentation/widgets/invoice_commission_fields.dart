@@ -29,7 +29,7 @@ class _InvoiceCommissionFieldsState extends State<InvoiceCommissionFields> {
   @override
   void initState() {
     _invoiceCommissionBloc = sl<InvoiceCommissionBloc>()
-      ..add(const GetInvoiceCommissionEvent(invoiceId: 1));
+      ..add(GetInvoiceCommissionEvent(invoiceId: widget.invoiceId));
     super.initState();
   }
 
@@ -50,7 +50,7 @@ class _InvoiceCommissionFieldsState extends State<InvoiceCommissionFields> {
             return _pageBody(context);
           }
           if (state is ErrorInvoiceCommissionState) {
-            return _pageBody(context, isCreate: true);
+            return _pageBody(context);
           }
 
           return Center(child: Loaders.loading());
@@ -59,7 +59,9 @@ class _InvoiceCommissionFieldsState extends State<InvoiceCommissionFields> {
     );
   }
 
-  Table _pageBody(BuildContext context, {bool isCreate = false}) {
+  Table _pageBody(
+    BuildContext context,
+  ) {
     _invoiceCommissionBloc.initControllers();
     return Table(
       children: [
@@ -110,26 +112,19 @@ class _InvoiceCommissionFieldsState extends State<InvoiceCommissionFields> {
               required: false,
               controller: _invoiceCommissionBloc.amount,
             ),
-            if (!isCreate)
-              CustomIconButton(
-                color: AppColors.primaryColor,
-                tooltip: 'refresh'.tr,
-                onPressed: () {
-                  _invoiceCommissionBloc.add(
-                      GetInvoiceCommissionEvent(invoiceId: widget.invoiceId));
-                },
-                icon: Icons.refresh_outlined,
-              ),
-            if (isCreate)
-              CustomIconButton(
-                color: AppColors.primaryColor,
-                tooltip: 'add'.tr,
-                onPressed: () {
-                  _invoiceCommissionBloc.add(
-                      GetInvoiceCommissionEvent(invoiceId: widget.invoiceId));
-                },
-                icon: Icons.add,
-              ),
+            CustomIconButton(
+              color: AppColors.primaryColor,
+              tooltip: 'add'.tr,
+              onPressed: widget.enableEditing
+                  ? () {
+                      _invoiceCommissionBloc.add(CreateInvoiceCommissionEvent(
+                          invoiceId: widget.invoiceId,
+                          invoiceCommissionEntity:
+                              _invoiceCommissionBloc.getCommissionEntity()));
+                    }
+                  : null,
+              icon: Icons.add,
+            ),
           ],
         ),
       ],
