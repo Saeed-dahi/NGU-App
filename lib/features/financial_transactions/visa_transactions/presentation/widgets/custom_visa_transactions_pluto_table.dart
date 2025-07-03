@@ -96,11 +96,11 @@ class CustomVisaTransactionsPlutoTable extends StatelessWidget {
           data: cheque.id,
           cells: {
             'gross_amount': PlutoCell(
-                value: cheque.nature == ChequeNature.incoming.name
+                value: cheque.nature == TransactionNature.incoming.name
                     ? cheque.amount
                     : ''),
             'commission_rate': PlutoCell(
-                value: cheque.nature == ChequeNature.outgoing.name
+                value: cheque.nature == TransactionNature.outgoing.name
                     ? cheque.amount
                     : ''),
             'commission_amount':

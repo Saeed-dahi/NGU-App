@@ -7,15 +7,13 @@ import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
-import 'package:ngu_app/features/cheques/domain/entities/cheque_entity.dart';
 import 'package:ngu_app/features/cheques/presentation/pages/cheque_record.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomChequesPlutoTable extends StatelessWidget {
+class CustomBankTransactionsPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
-  final List<ChequeEntity> cheques;
 
-  CustomChequesPlutoTable({super.key, required this.cheques});
+  CustomBankTransactionsPlutoTable({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +44,14 @@ class CustomChequesPlutoTable extends StatelessWidget {
 
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
-      _buildCustomColumn('debit', showSum: true),
-      _buildCustomColumn('credit', showSum: true),
-      _buildCustomColumn('issued_from_account'),
-      _buildCustomColumn('target_bank_account'),
-      _buildCustomColumn('issued_to_account'),
-      _buildCustomColumn('description'),
-      _buildCustomColumn('due_date'),
-      _buildCustomColumn('date'),
+      _buildCustomColumn('gross_amount', showSum: true),
+      _buildCustomColumn('commission_rate', showSum: true),
+      _buildCustomColumn('commission_amount', showSum: true),
+      _buildCustomColumn('net_amount', showSum: true),
+      _buildCustomColumn('bank_account'),
+      _buildCustomColumn('visa_account'),
+      _buildCustomColumn('commission_account'),
+      _buildCustomColumn('notes'),
     ];
   }
 
@@ -91,29 +89,28 @@ class CustomChequesPlutoTable extends StatelessWidget {
   }
 
   Iterable<PlutoRow> _buildRows() {
-    return cheques.map(
+    return [].map(
       (cheque) {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
           data: cheque.id,
           cells: {
-            'debit': PlutoCell(
+            'gross_amount': PlutoCell(
                 value: cheque.nature == TransactionNature.incoming.name
                     ? cheque.amount
                     : ''),
-            'credit': PlutoCell(
+            'commission_rate': PlutoCell(
                 value: cheque.nature == TransactionNature.outgoing.name
                     ? cheque.amount
                     : ''),
-            'issued_from_account':
+            'commission_amount':
                 PlutoCell(value: cheque.issuedFromAccount!.arName),
-            'target_bank_account':
-                PlutoCell(value: cheque.targetBankAccount!.arName),
-            'issued_to_account':
-                PlutoCell(value: cheque.issuedToAccount!.arName),
-            'description': PlutoCell(value: cheque.notes),
-            'due_date': PlutoCell(value: cheque.dueDate),
-            'date': PlutoCell(value: cheque.date),
+            'net_amount': PlutoCell(value: cheque.targetBankAccount!.arName),
+            'bank_account': PlutoCell(value: cheque.issuedToAccount!.arName),
+            'visa_account': PlutoCell(value: cheque.visaAccount!.arName),
+            'commission_account':
+                PlutoCell(value: cheque.commissionAccount!.arName),
+            'notes': PlutoCell(value: cheque.notes),
           },
         );
       },

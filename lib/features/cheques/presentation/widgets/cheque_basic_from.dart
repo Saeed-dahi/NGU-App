@@ -33,7 +33,7 @@ class ChequeBasicForm extends StatelessWidget {
           TableRow(
             children: [
               CustomDatePicker(
-                dateInput: chequeFormCubit.dateController,
+                controller: chequeFormCubit.dateController,
                 labelText: 'date'.tr,
                 required: false,
                 enabled: enableEditing,
@@ -100,14 +100,14 @@ class ChequeBasicForm extends StatelessWidget {
                 error: chequeFormCubit.errors['description']?.join('\n'),
               ),
               CustomDatePicker(
-                dateInput: chequeFormCubit.dueDateController,
+                controller: chequeFormCubit.dueDateController,
                 labelText: 'due_date'.tr,
                 required: false,
                 enabled: enableEditing,
                 error: chequeFormCubit.errors['due_date']?.join('\n'),
               ),
               CustomDropdown(
-                dropdownValue: getEnumValues(ChequeNature.values),
+                dropdownValue: getEnumValues(TransactionNature.values),
                 value: chequeFormCubit.chequeNature,
                 helper: 'cheque_nature'.tr,
                 enabled: enableEditing,

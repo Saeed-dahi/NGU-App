@@ -103,6 +103,11 @@ Map<String, String> ar = {
   'visa_account': 'حساب الماكينة',
   'gross_amount': 'المبلغ الإجمالي',
   'net_amount': 'المبلغ الصافي',
+  'transaction_nature': 'طبيعة التحويل',
+  'transaction_status': 'حالة التحويل',
+  'completed': 'مكتمل',
+  'pending': 'معلق',
+  'returned': 'مرتجع',
 
   // Currencies
   'currencies': 'العملات',

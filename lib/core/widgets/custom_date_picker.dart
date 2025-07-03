@@ -6,7 +6,7 @@ import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 import 'package:ngu_app/core/widgets/snack_bar.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  final TextEditingController dateInput;
+  final TextEditingController controller;
   final String labelText;
   Function? onPressed = () {};
   final bool enabled;
@@ -16,7 +16,7 @@ class CustomDatePicker extends StatefulWidget {
   String? error;
   CustomDatePicker(
       {super.key,
-      required this.dateInput,
+      required this.controller,
       this.onPressed,
       required this.labelText,
       this.autofocus = false,
@@ -33,11 +33,11 @@ class CustomDatePicker extends StatefulWidget {
 
 class _CustomDatePicker extends State<CustomDatePicker> {
   void _initController() {
-    if (widget.dateInput.text.isNotEmpty) {
-      widget.dateInput.text = DateFormat('yyyy-MM-dd')
-          .format(DateTime.parse(widget.dateInput.text));
+    if (widget.controller.text.isNotEmpty) {
+      widget.controller.text = DateFormat('yyyy-MM-dd')
+          .format(DateTime.parse(widget.controller.text));
     } else {
-      widget.dateInput.text = DateTime.now().toString().substring(0, 10);
+      widget.controller.text = DateTime.now().toString().substring(0, 10);
     }
   }
 
@@ -45,7 +45,7 @@ class _CustomDatePicker extends State<CustomDatePicker> {
   Widget build(BuildContext context) {
     _initController();
     return CustomInputField(
-        controller: widget.dateInput,
+        controller: widget.controller,
         inputType: TextInputType.datetime,
         autofocus: widget.autofocus,
         label: widget.labelText,
@@ -62,7 +62,7 @@ class _CustomDatePicker extends State<CustomDatePicker> {
         onEditingComplete: () {
           try {
             DateFormat format = DateFormat('dd-MM-yyyy');
-            DateTime date = format.parseStrict(widget.dateInput.text);
+            DateTime date = format.parseStrict(widget.controller.text);
             _updateUiAfterChangeDate(date);
           } catch (e) {
             ShowSnackBar.showValidationSnackbar(messages: ['error_date'.tr]);
@@ -73,10 +73,10 @@ class _CustomDatePicker extends State<CustomDatePicker> {
 
   _onChange(String value) {
     if (value.length == 2) {
-      widget.dateInput.text += '-';
+      widget.controller.text += '-';
     }
     if (value.length == 5) {
-      widget.dateInput.text += '-';
+      widget.controller.text += '-';
     }
   }
 
@@ -85,7 +85,7 @@ class _CustomDatePicker extends State<CustomDatePicker> {
       String formattedDate = DateFormat('yyyy-MM-dd').format(date);
 
       setState(() {
-        widget.dateInput.text = formattedDate;
+        widget.controller.text = formattedDate;
       });
     }
   }

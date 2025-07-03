@@ -44,6 +44,15 @@ enum DiscountType { percentage, amount }
 
 enum InvoiceCommissionType { profit, total }
 
+enum TransactionNature { incoming, outgoing }
+
+enum TransactionStatus {
+  pending,
+  completed,
+  canceled,
+  returned,
+}
+
 getEnumValues<T extends Enum>(List<T> enumValues) {
   return enumValues.map((e) => e.name).toList();
 }

@@ -101,6 +101,11 @@ Map<String, String> en = {
   'visa_transactions_table': 'Visa Transactions Table',
   'bank_account': 'Bank Account',
   'visa_account': 'Visa Account',
+  'transaction_nature': 'Nature of Transaction',
+  'transaction_status': 'Transaction Status',
+  'completed': 'Completed',
+  'pending': 'Pending',
+  'returned': 'Returned',
 
   // Currencies
   'currencies': 'Currencies',

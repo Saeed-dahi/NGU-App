@@ -19,6 +19,8 @@ import 'package:ngu_app/features/cheques/presentation/pages/cheques_table_page.d
 import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_account_record.dart';
 
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_account_statement_dialog.dart';
+import 'package:ngu_app/features/financial_transactions/bank_transactions/presentation/pages/bank_transaction_page.dart';
+import 'package:ngu_app/features/financial_transactions/bank_transactions/presentation/pages/bank_transactions_table_page.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
 import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/pages/visa_transaction_page.dart';
@@ -228,18 +230,20 @@ class AccountingSection extends StatelessWidget {
         Column(
           children: [
             BasicListTile(
-              title: 'bank_transactions'.tr,
-              icon: Icons.table_chart_outlined,
-              onTap: () => context.read<TabCubit>().addNewTab(
-                  content: const ChequesTablePage(), title: 'cheques_table'.tr),
-              image:
-                  Image.asset('assets/images/bank_transaction.png', width: 30),
-            ),
+                title: 'bank_transactions'.tr,
+                onTap: () => ShowDialog.showCustomDialog(
+                    height: 0.55,
+                    width: 0.7,
+                    context: context,
+                    content: const BankTransactionPage()),
+                image: Image.asset('assets/images/bank_transaction.png',
+                    width: 30)),
             BasicListTile(
               title: 'bank_transactions_table'.tr,
               icon: Icons.table_chart_outlined,
               onTap: () => context.read<TabCubit>().addNewTab(
-                  content: const ChequesTablePage(), title: 'cheques_table'.tr),
+                  content: const BankTransactionsTablePage(),
+                  title: 'bank_transactions_table'.tr),
             ),
           ],
         ),
@@ -248,7 +252,6 @@ class AccountingSection extends StatelessWidget {
           children: [
             BasicListTile(
               title: 'visa_transactions'.tr,
-              icon: Icons.table_chart_outlined,
               onTap: () => context.read<TabCubit>().addNewTab(
                   content: const VisaTransactionPage(),
                   title: 'visa_transactions'.tr),

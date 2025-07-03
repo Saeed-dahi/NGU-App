@@ -43,7 +43,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 required: false,
               ),
               CustomDatePicker(
-                dateInput: invoiceFormCubit.dateController,
+                controller: invoiceFormCubit.dateController,
                 labelText: 'created_at'.tr,
                 enabled: enable,
                 error: errors['date']?.join('\n'),
@@ -74,7 +74,7 @@ class CustomInvoiceFields extends StatelessWidget {
                 required: false,
               ),
               CustomDatePicker(
-                dateInput: invoiceFormCubit.dueDateController,
+                controller: invoiceFormCubit.dueDateController,
                 labelText: 'due_date'.tr,
                 enabled: enable,
                 error: errors['due_date']?.join('\n'),

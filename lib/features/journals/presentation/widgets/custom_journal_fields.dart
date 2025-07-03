@@ -52,7 +52,7 @@ class CustomJournalFields extends StatelessWidget {
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.2,
             child: CustomDatePicker(
-                dateInput: journalCreatedAtController,
+                controller: journalCreatedAtController,
                 enabled: enableEditing,
                 labelText: 'created_at'.tr),
           ),

@@ -57,7 +57,7 @@ class CustomAdjustmentNoteFields extends StatelessWidget {
                           required: false,
                         ),
                         CustomDatePicker(
-                          dateInput: adjustmentNoteFormCubit.dateController,
+                          controller: adjustmentNoteFormCubit.dateController,
                           labelText: 'created_at'.tr,
                           enabled: enableEditing,
                           error: errors['date']?.join('\n'),
