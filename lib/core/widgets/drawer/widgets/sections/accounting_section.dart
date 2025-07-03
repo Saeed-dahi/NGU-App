@@ -21,6 +21,8 @@ import 'package:ngu_app/features/closing_accounts/presentation/pages/closing_acc
 import 'package:ngu_app/features/closing_accounts/presentation/widgets/closing_account_statement_dialog.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
+import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/pages/visa_transaction_page.dart';
+import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/pages/visa_transactions_table_page.dart';
 
 class AccountingSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -44,6 +46,7 @@ class AccountingSection extends StatelessWidget {
               _buildVouchers(context),
               _detailedReports(context),
               _cheques(context),
+              _financialTransactions(context),
               _totalReports(context),
               _currencies(),
               _closingVouchers(context),
@@ -212,6 +215,54 @@ class AccountingSection extends StatelessWidget {
           icon: Icons.table_chart_outlined,
           onTap: () => context.read<TabCubit>().addNewTab(
               content: const ChequesTablePage(), title: 'cheques_table'.tr),
+        ),
+      ],
+    );
+  }
+
+  CustomExpansionTile _financialTransactions(BuildContext context) {
+    return CustomExpansionTile(
+      title: 'financial_transactions'.tr,
+      image: Image.asset('assets/images/financial_transaction.png', width: 30),
+      children: [
+        Column(
+          children: [
+            BasicListTile(
+              title: 'bank_transactions'.tr,
+              icon: Icons.table_chart_outlined,
+              onTap: () => context.read<TabCubit>().addNewTab(
+                  content: const ChequesTablePage(), title: 'cheques_table'.tr),
+              image:
+                  Image.asset('assets/images/bank_transaction.png', width: 30),
+            ),
+            BasicListTile(
+              title: 'bank_transactions_table'.tr,
+              icon: Icons.table_chart_outlined,
+              onTap: () => context.read<TabCubit>().addNewTab(
+                  content: const ChequesTablePage(), title: 'cheques_table'.tr),
+            ),
+          ],
+        ),
+        const Divider(color: AppColors.primaryColor),
+        Column(
+          children: [
+            BasicListTile(
+              title: 'visa_transactions'.tr,
+              icon: Icons.table_chart_outlined,
+              onTap: () => context.read<TabCubit>().addNewTab(
+                  content: const VisaTransactionPage(),
+                  title: 'visa_transactions'.tr),
+              image:
+                  Image.asset('assets/images/visa_transactions.png', width: 30),
+            ),
+            BasicListTile(
+              title: 'visa_transactions_table'.tr,
+              icon: Icons.table_chart_outlined,
+              onTap: () => context.read<TabCubit>().addNewTab(
+                  content: const VisaTransactionsTablePage(),
+                  title: 'visa_transactions_table'.tr),
+            ),
+          ],
         ),
       ],
     );

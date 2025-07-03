@@ -33,6 +33,7 @@ Map<String, String> ar = {
   'each': 'كل',
   'notes': 'ملاحظات',
   'refresh': 'تحديث',
+  'amount': 'القيمة',
 
   // Accounts
   'accounting': 'المحاسبة',
@@ -89,6 +90,19 @@ Map<String, String> ar = {
   'payment_way': 'طريقة الدفع',
   'client_account': 'حساب العميل',
   'post_dated_cheques_account': 'حساب الشيكات المؤجلة',
+
+  // Financial Transactions
+  'financial_transactions': 'التحويلات المالية',
+  'bank_transactions': 'التحويلات البنكية',
+  'visa_transactions': 'تحويلات الماكينة',
+  'bank_transaction': 'تحويل بنكي',
+  'visa_transaction': 'تحويل ماكينة',
+  'bank_transactions_table': 'جدول التحويلات البنكية',
+  'visa_transactions_table': 'جدول تحويلات الماكينة',
+  'bank_account': 'الحساب البنكي',
+  'visa_account': 'حساب الماكينة',
+  'gross_amount': 'المبلغ الإجمالي',
+  'net_amount': 'المبلغ الصافي',
 
   // Currencies
   'currencies': 'العملات',

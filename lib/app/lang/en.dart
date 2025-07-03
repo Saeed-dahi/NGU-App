@@ -33,6 +33,7 @@ Map<String, String> en = {
   'each': 'Each',
   'notes': 'Notes',
   'refresh': 'Refresh',
+  'amount': 'Amount',
 
   // Accounts
   'accounting': 'Accounting',
@@ -89,6 +90,17 @@ Map<String, String> en = {
   'payment_way': 'Payment Way',
   'client_account': 'Client Account',
   'post_dated_cheques_account': 'Post Dated Cheques Account',
+
+  // Financial Transactions
+  'financial_transactions': 'Financial Transactions',
+  'bank_transactions': 'Bank Transactions',
+  'visa_transactions': 'Visa Transactions',
+  'bank_transaction': 'Bank Transaction',
+  'visa_transaction': 'Visa Transaction',
+  'bank_transactions_table': 'Bank Transactions Table',
+  'visa_transactions_table': 'Visa Transactions Table',
+  'bank_account': 'Bank Account',
+  'visa_account': 'Visa Account',
 
   // Currencies
   'currencies': 'Currencies',
@@ -206,7 +218,8 @@ Map<String, String> en = {
   'commission_type': 'Commission Type',
   'commission_rate': 'Commission Rate',
   'commission_amount': 'Commission Amount',
-  'error_commission': '😒 Commission value is greater than the invoice profit 😒',
+  'error_commission':
+      '😒 Commission value is greater than the invoice profit 😒',
 
   // Account Record
   'account': 'Account',
