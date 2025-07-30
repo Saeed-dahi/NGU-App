@@ -2,15 +2,65 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ngu_app/app/app_config/constant.dart';
 import 'package:ngu_app/app/app_management/app_strings.dart';
+import 'package:ngu_app/core/widgets/dialogs/custom_dialog.dart';
 import 'package:ngu_app/core/widgets/message_screen.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/custom_pluto_grid.dart';
 import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dart';
+import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
 class CustomVisaTransactionPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
+  final Map<String, dynamic> accountsName = {};
 
   CustomVisaTransactionPlutoTable({super.key});
+
+  Future<void> _getAccountName(BuildContext context) async {
+    if (_plutoGridController.stateManager!.currentColumn!.field ==
+        'account_code') {
+      final currentRow = _plutoGridController.stateManager!.currentRow!;
+
+      for (final entry in currentRow.cells.entries) {
+        final currentCellValue = currentRow.cells[entry.key]?.value;
+
+        // Check if we're setting the account name
+        if (entry.key == 'account_name') {
+          final accountCode =
+              currentRow.cells['account_code']!.value.toString();
+          final accountName = accountsName[accountCode];
+          final accountId = accountsName['id_$accountCode'];
+
+          // Check if the account name exists in the map
+          if (accountName != null) {
+            currentRow.cells[entry.key]?.value = accountName;
+            currentRow.data = int.parse(accountId);
+          } else {
+            // If not found, open dialog and await result
+            final result = await _openAccountDialog(context, accountCode);
+            if (result.isNotEmpty) {
+              // Set account name and code based on dialog result
+              currentRow.cells['account_code']?.value = result['account_code'];
+              currentRow.cells['account_name']?.value = result['account_name'];
+              currentRow.data = result['account_id'];
+            }
+          }
+        } else {
+          // For other fields, keep their current value
+          currentRow.cells[entry.key]?.value = currentCellValue;
+        }
+      }
+    }
+    _plutoGridController.stateManager!.notifyListeners();
+  }
+
+  Future<Map<String, dynamic>> _openAccountDialog(
+      BuildContext context, String acc) async {
+    final result = await ShowDialog.showCustomDialog(
+      context: context,
+      content: const AccountsTable(),
+    );
+    return result ?? {};
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +78,18 @@ class CustomVisaTransactionPlutoTable extends StatelessWidget {
           _plutoGridController =
               PlutoGridController(stateManager: event.stateManager);
         },
+        onChanged: (p0) {
+          _plutoGridController.onChanged(p0);
+          _getAccountName(context);
+        },
       ),
     );
   }
 
   List<PlutoColumn> _buildColumns(BuildContext context) {
     return [
-      _buildCustomColumn('account'),
+      _buildCustomColumn('account_code'),
+      _buildCustomColumn('account_name', readOnly: true),
       _buildCustomColumn('amount', showSum: true),
       _buildCustomColumn('notes'),
     ];
@@ -79,7 +134,8 @@ class CustomVisaTransactionPlutoTable extends StatelessWidget {
         return PlutoRow(
           type: PlutoRowTypeGroup(children: FilteredList()),
           cells: {
-            'account': PlutoCell(value: item.productName),
+            'account_code': PlutoCell(value: item.accountCode),
+            'account_name': PlutoCell(value: item.accountName),
             'amount': PlutoCell(value: item.unitName),
             'notes': PlutoCell(value: item.price),
           },
