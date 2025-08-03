@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_editable_text.dart';
 import 'package:ngu_app/core/widgets/custom_icon_button.dart';
 
-class VisaTransactionToolBar extends StatelessWidget {
+class VisaPaymentToolBar extends StatelessWidget {
   void Function()? onSaveAsDraft;
   void Function()? onSaveAsSaved;
   void Function()? onAdd;
   void Function()? onRefresh;
 
-  VisaTransactionToolBar({
+  VisaPaymentToolBar({
     super.key,
     this.onSaveAsDraft,
     this.onSaveAsSaved,

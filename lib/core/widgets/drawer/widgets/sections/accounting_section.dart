@@ -23,8 +23,8 @@ import 'package:ngu_app/features/financial_transactions/bank_transactions/presen
 import 'package:ngu_app/features/financial_transactions/bank_transactions/presentation/pages/bank_transactions_table_page.dart';
 import 'package:ngu_app/features/home/presentation/cubits/tab_cubit/tab_cubit.dart';
 import 'package:ngu_app/features/journals/presentation/pages/journal_vouchers.dart';
-import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/pages/visa_transaction_page.dart';
-import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/pages/visa_transactions_table_page.dart';
+import 'package:ngu_app/features/financial_transactions/visa_payment/presentation/pages/visa_payment_page.dart';
+import 'package:ngu_app/features/financial_transactions/visa_payment/presentation/pages/visa_payments_table_page.dart';
 
 class AccountingSection extends StatelessWidget {
   final bool initiallyExpanded;
@@ -253,7 +253,7 @@ class AccountingSection extends StatelessWidget {
             BasicListTile(
               title: 'visa_transactions'.tr,
               onTap: () => context.read<TabCubit>().addNewTab(
-                  content: const VisaTransactionPage(),
+                  content: const VisaPaymentPage(),
                   title: 'visa_transactions'.tr),
               image:
                   Image.asset('assets/images/visa_transactions.png', width: 30),
@@ -262,7 +262,7 @@ class AccountingSection extends StatelessWidget {
               title: 'visa_transactions_table'.tr,
               icon: Icons.table_chart_outlined,
               onTap: () => context.read<TabCubit>().addNewTab(
-                  content: const VisaTransactionsTablePage(),
+                  content: const VisaPaymentsTablePage(),
                   title: 'visa_transactions_table'.tr),
             ),
           ],

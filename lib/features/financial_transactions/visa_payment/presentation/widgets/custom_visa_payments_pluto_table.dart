@@ -10,10 +10,10 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dar
 import 'package:ngu_app/features/cheques/presentation/pages/cheque_record.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomVisaTransactionsPlutoTable extends StatelessWidget {
+class CustomVisaPaymentsPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
 
-  CustomVisaTransactionsPlutoTable({super.key});
+  CustomVisaPaymentsPlutoTable({super.key});
 
   @override
   Widget build(BuildContext context) {

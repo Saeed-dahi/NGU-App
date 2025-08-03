@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ngu_app/core/widgets/custom_refresh_indicator.dart';
-import 'package:ngu_app/features/financial_transactions/visa_transactions/presentation/widgets/custom_visa_transactions_pluto_table.dart';
+import 'package:ngu_app/features/financial_transactions/visa_payment/presentation/widgets/custom_visa_payments_pluto_table.dart';
 
 class BankTransactionsTablePage extends StatefulWidget {
   final int? accountId;
@@ -31,7 +31,7 @@ class _BankTransactionsTablePageState extends State<BankTransactionsTablePage> {
   Widget build(BuildContext context) {
     return CustomRefreshIndicator(
       child: ListView(
-        children: [CustomVisaTransactionsPlutoTable()],
+        children: [CustomVisaPaymentsPlutoTable()],
       ),
       onRefresh: () => _refresh(),
     );

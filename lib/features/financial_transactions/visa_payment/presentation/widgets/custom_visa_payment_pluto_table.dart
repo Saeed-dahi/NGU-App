@@ -9,11 +9,11 @@ import 'package:ngu_app/core/widgets/tables/pluto_grid/pluto_grid_controller.dar
 import 'package:ngu_app/features/accounts/presentation/pages/accounts_table.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 
-class CustomVisaTransactionPlutoTable extends StatelessWidget {
+class CustomVisaPaymentPlutoTable extends StatelessWidget {
   late PlutoGridController _plutoGridController = PlutoGridController();
   final Map<String, dynamic> accountsName = {};
 
-  CustomVisaTransactionPlutoTable({super.key});
+  CustomVisaPaymentPlutoTable({super.key});
 
   Future<void> _getAccountName(BuildContext context) async {
     if (_plutoGridController.stateManager!.currentColumn!.field ==

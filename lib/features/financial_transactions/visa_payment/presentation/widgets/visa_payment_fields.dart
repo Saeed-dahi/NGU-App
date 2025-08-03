@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 import 'package:ngu_app/core/widgets/custom_account_auto_complete.dart';
 import 'package:ngu_app/core/widgets/custom_input_filed.dart';
 
-class VisaTransactionFields extends StatefulWidget {
+class VisaPaymentFields extends StatefulWidget {
   final bool enableEditing;
 
-  const VisaTransactionFields({super.key, required this.enableEditing});
+  const VisaPaymentFields({super.key, required this.enableEditing});
 
   @override
-  State<VisaTransactionFields> createState() => _VisaTransactionFieldsState();
+  State<VisaPaymentFields> createState() => _VisaPaymentFieldsState();
 }
 
-class _VisaTransactionFieldsState extends State<VisaTransactionFields> {
+class _VisaPaymentFieldsState extends State<VisaPaymentFields> {
   @override
   void initState() {
     super.initState();
